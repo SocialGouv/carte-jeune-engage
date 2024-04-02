@@ -1,16 +1,33 @@
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 import BottomNavigation from "~/components/BottomNavigation";
 import Footer from "~/components/landing/Footer";
 import Header from "~/components/landing/Header";
+import BaseModal from "~/components/modals/BaseModal";
+import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
+import { isStandalone } from "~/utils/tools";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
-  const { setDeferredEvent, setShowing, user, isOtpGenerated } = useAuth();
+  const {
+    deferredEvent,
+    setDeferredEvent,
+    setShowing,
+    user,
+    isOtpGenerated,
+    showModalInstallApp,
+    setShowModalInstallApp,
+  } = useAuth();
+
+  const { isOpen: isOpenModalInstallApp, onClose: onCloseModalInstallApp } =
+    useDisclosure({
+      isOpen: showModalInstallApp && deferredEvent !== null,
+      onClose: () => setShowModalInstallApp(false),
+    });
 
   const isLanding =
     (pathname === "/" ||
@@ -88,6 +105,12 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
           h="full"
         >
           {children}
+          {showModalInstallApp && (
+            <InstallAppModal
+              onClose={onCloseModalInstallApp}
+              isOpen={isOpenModalInstallApp}
+            />
+          )}
         </Container>
         {isLanding && <Footer />}
         {(pathname === "/dashboard" ||
