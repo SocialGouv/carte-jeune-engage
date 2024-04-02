@@ -1,3 +1,10 @@
+# [0.32.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.31.0...v0.32.0) (2024-04-02)
+
+
+### Features
+
+* add modal to install pwa with ios and android mode ([7c550c2](https://github.com/SocialGouv/carte-jeune-engage/commit/7c550c2ae7acc93ab709f53b80021c21448c1b12))
+
 # [0.31.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.30.3...v0.31.0) (2024-03-27)
 
 
