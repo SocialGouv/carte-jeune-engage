@@ -57,6 +57,7 @@
     "superjson": "^1.13.3",
     "tsx": "^4.7.0",
     "usehooks-ts": "^2.14.0",
+    "web-push": "^3.6.7",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -64,6 +65,7 @@
     "@types/papaparse": "^5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/web-push": "^3",
     "typescript": "^5",
     "webpack": "^5.89.0"
   },

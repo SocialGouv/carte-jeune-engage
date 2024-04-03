@@ -50,6 +50,7 @@ public/images/payload/media/*
 # Next Pwa
 public/sw*.js*
 public/workbox*.js*
+public/worker*.js*
 public/fallback*.js*
 # Sentry Config File
 .sentryclirc
