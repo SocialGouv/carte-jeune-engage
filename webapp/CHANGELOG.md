@@ -1,3 +1,10 @@
+## [0.32.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.1...v0.32.2) (2024-04-04)
+
+
+### Bug Fixes
+
+* handle ios case for onboarding install pwa modal ([ac5748e](https://github.com/SocialGouv/carte-jeune-engage/commit/ac5748e3852fad72eecc3472eb8e772b7efd60b5))
+
 ## [0.32.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.0...v0.32.1) (2024-04-04)
 
 
