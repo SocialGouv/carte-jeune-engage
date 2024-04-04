@@ -23,7 +23,7 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   HiArrowRight,
   HiBuildingStorefront,
@@ -57,7 +57,19 @@ export default function OfferPage() {
   const { user } = useAuth();
 
   const router = useRouter();
-  const { id } = router.query;
+  const { id, couponStatus } = router.query as {
+    id: string;
+    couponStatus: "active" | "inactive";
+  };
+
+  const updateCouponStatus = (isCouponActive: boolean) => {
+    router.replace({
+      query: {
+        ...router.query,
+        couponStatus: isCouponActive ? "active" : "inactive",
+      },
+    });
+  };
 
   const [timeoutIdExternalLink, setTimeoutIdExternalLink] =
     useState<NodeJS.Timeout>();
@@ -65,7 +77,7 @@ export default function OfferPage() {
   const { data: resultOffer, isLoading: isLoadingOffer } =
     api.offer.getById.useQuery(
       {
-        id: parseInt(id as string),
+        id: parseInt(id),
       },
       { enabled: id !== undefined }
     );
@@ -83,6 +95,17 @@ export default function OfferPage() {
 
   const { data: offer } = resultOffer || {};
   const { data: coupon } = resultCoupon || {};
+
+  if (
+    (!couponStatus ||
+      (couponStatus !== "active" && couponStatus !== "inactive")) &&
+    router.isReady &&
+    !isLoadingCoupon
+  ) {
+    updateCouponStatus(!!coupon);
+  }
+
+  useEffect(() => updateCouponStatus(!!coupon), [coupon]);
 
   const { mutateAsync: mutateAsyncCouponToUser, isSuccess } =
     api.coupon.assignToUser.useMutation({
