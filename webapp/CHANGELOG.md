@@ -1,3 +1,11 @@
+## [0.32.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.0...v0.32.1) (2024-04-04)
+
+
+### Bug Fixes
+
+* add status in queryparams for hotjar purpose ([4045a4f](https://github.com/SocialGouv/carte-jeune-engage/commit/4045a4f6d7000e1f9695a0fb7bb08b18505db4d0))
+* coupon guard for multiple assign to one user issue ([30c414b](https://github.com/SocialGouv/carte-jeune-engage/commit/30c414bb2655eb91b967d02e510c1a2cd3066e00))
+
 # [0.32.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.31.0...v0.32.0) (2024-04-02)
 
 
