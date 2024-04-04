@@ -111,6 +111,7 @@ export const getBaseUrl = () => {
 };
 
 export const isIOS = () => {
+  if (typeof navigator === "undefined") return false;
   return !!navigator.userAgent.match(/(iPod|iPhone|iPad)/);
 };
 

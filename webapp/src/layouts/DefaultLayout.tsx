@@ -8,7 +8,7 @@ import Header from "~/components/landing/Header";
 import BaseModal from "~/components/modals/BaseModal";
 import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
-import { isStandalone } from "~/utils/tools";
+import { isIOS, isStandalone } from "~/utils/tools";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -25,7 +25,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
 
   const { isOpen: isOpenModalInstallApp, onClose: onCloseModalInstallApp } =
     useDisclosure({
-      isOpen: showModalInstallApp && deferredEvent !== null,
+      isOpen: showModalInstallApp && (!isIOS() ? deferredEvent !== null : true),
       onClose: () => setShowModalInstallApp(false),
     });
 
