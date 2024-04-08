@@ -77,11 +77,6 @@ export default function Dashboard() {
           <Heading as="h2" fontSize="2xl">
             Quelles économies allez-vous faire aujourd’hui ?
           </Heading>
-          <Button my={4}>
-            <Link href="/dashboard/notif-test" passHref>
-              Onglet de test des notifications
-            </Link>
-          </Button>
           <SimpleGrid columns={4} mt={6} spacingX={4}>
             {categories?.map((category) => (
               <Link

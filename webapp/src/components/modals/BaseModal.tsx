@@ -22,6 +22,7 @@ type BaseModalProps = {
   size?: ResponsiveValue<string>;
   pb?: ResponsiveValue<number>;
   pt?: ResponsiveValue<number>;
+  heightModalContent?: ResponsiveValue<number | string>;
 };
 
 const BaseModal = ({
@@ -33,6 +34,7 @@ const BaseModal = ({
   size,
   pb,
   pt,
+  heightModalContent,
 }: BaseModalProps) => {
   const isMobile = useBreakpointValue({ base: true, lg: false });
 
@@ -44,6 +46,7 @@ const BaseModal = ({
       <ModalOverlay bgColor={isMobile ? "bgWhite" : undefined} />
       <ModalContent
         minH={isMobile ? "full" : "auto"}
+        h={heightModalContent ? heightModalContent : "auto"}
         bgColor="bgWhite"
         pt={hideCloseBtn ? 6 : 0}
       >

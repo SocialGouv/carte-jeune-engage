@@ -67,6 +67,16 @@ export interface User {
   projectDescription?: string | null;
   status_image?: ('pending' | 'approved') | null;
   preferences?: (number | Category)[] | null;
+  notification_status?: ('enabled' | 'disabled') | null;
+  notification_subscription?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   otp_request_token?: string | null;
   updatedAt: string;
   createdAt: string;

@@ -1,16 +1,30 @@
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 import BottomNavigation from "~/components/BottomNavigation";
 import Footer from "~/components/landing/Footer";
 import Header from "~/components/landing/Header";
+import NotificationModal from "~/components/modals/NotificationModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
-  const { setDeferredEvent, setShowing, user, isOtpGenerated } = useAuth();
+  const {
+    setDeferredEvent,
+    setShowing,
+    user,
+    isOtpGenerated,
+    showNotificationModal,
+    setShowNotificationModal,
+  } = useAuth();
+
+  const { isOpen: isNotificationModalOpen, onClose: onNotificationModalClose } =
+    useDisclosure({
+      isOpen: showNotificationModal && !!user && !user.notification_status,
+      onClose: () => setShowNotificationModal(false),
+    });
 
   const isLanding =
     (pathname === "/" ||
@@ -88,6 +102,10 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
           h="full"
         >
           {children}
+          <NotificationModal
+            isOpen={isNotificationModalOpen}
+            onClose={onNotificationModalClose}
+          />
         </Container>
         {isLanding && <Footer />}
         {(pathname === "/dashboard" ||

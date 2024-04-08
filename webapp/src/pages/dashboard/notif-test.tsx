@@ -2,6 +2,8 @@ import { Button, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import type { MouseEventHandler } from "react";
 import { useEffect, useState } from "react";
+import { useAuth } from "~/providers/Auth";
+import { api } from "~/utils/api";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -17,12 +19,13 @@ const base64ToUint8Array = (base64: string) => {
 };
 
 const Index = () => {
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [subscription, setSubscription] = useState<PushSubscription | null>(
-    null
-  );
+  const { user, refetchUser } = useAuth();
+
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
+
+  const { mutateAsync: updateUser, isLoading: isLoadingUpdateUser } =
+    api.user.update.useMutation();
 
   useEffect(() => {
     if (
@@ -32,18 +35,6 @@ const Index = () => {
     ) {
       // run only in browser
       navigator.serviceWorker.ready.then((reg) => {
-        reg.pushManager.getSubscription().then((sub) => {
-          if (
-            sub &&
-            !(
-              sub.expirationTime &&
-              Date.now() > sub.expirationTime - 5 * 60 * 1000
-            )
-          ) {
-            setSubscription(sub);
-            setIsSubscribed(true);
-          }
-        });
         setRegistration(reg);
       });
     }
@@ -60,48 +51,13 @@ const Index = () => {
       return;
     }
     event.preventDefault();
-
-    const result = await window.Notification.requestPermission();
-
-    if (result !== "granted") {
-      console.error("Permission denied.");
-      return;
-    }
-
-    const sub = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: base64ToUint8Array(
-        process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
-      ),
-    });
-
-    // TODO: you should call your API to save subscription data on the server in order to send web push notification from the server
-    setSubscription(sub);
-    setIsSubscribed(true);
-    console.log("Web push subscribed!");
-    console.log(sub);
-  };
-
-  const unsubscribeButtonOnClick: MouseEventHandler<HTMLButtonElement> = async (
-    event
-  ) => {
-    if (!subscription) {
-      console.error("Web push not subscribed");
-      return;
-    }
-    event.preventDefault();
-    await subscription.unsubscribe();
-    // TODO: you should call your API to delete or invalidate subscription data on the server
-    setSubscription(null);
-    setIsSubscribed(false);
-    console.log("Web push unsubscribed!");
   };
 
   const sendNotificationButtonOnClick: MouseEventHandler<
     HTMLButtonElement
   > = async (event) => {
     event.preventDefault();
-    if (!subscription) {
+    if (!user || !user.notification_subscription) {
       console.error("Web push not subscribed");
       return;
     }
@@ -111,7 +67,7 @@ const Index = () => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(subscription),
+      body: JSON.stringify(user.notification_subscription),
     });
   };
 
@@ -124,21 +80,14 @@ const Index = () => {
       <Button
         type="button"
         onClick={subscribeButtonOnClick}
-        isDisabled={isSubscribed}
+        isDisabled={user?.notification_status === "enabled"}
       >
         Subscribe
       </Button>
       <Button
         type="button"
-        onClick={unsubscribeButtonOnClick}
-        isDisabled={!isSubscribed}
-      >
-        Unsubscribe
-      </Button>
-      <Button
-        type="button"
         onClick={sendNotificationButtonOnClick}
-        isDisabled={!isSubscribed}
+        isDisabled={user?.notification_status === "disabled"}
       >
         Send Notification
       </Button>
