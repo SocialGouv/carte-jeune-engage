@@ -1,3 +1,10 @@
+## [0.32.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.2...v0.32.3) (2024-04-08)
+
+
+### Bug Fixes
+
+* add continue button on ios modal ([a2813f3](https://github.com/SocialGouv/carte-jeune-engage/commit/a2813f3a79be150bd40b5d046f744c9203cb7b33))
+
 ## [0.32.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.1...v0.32.2) (2024-04-04)
 
 
