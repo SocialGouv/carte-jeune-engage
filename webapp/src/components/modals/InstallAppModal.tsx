@@ -144,6 +144,9 @@ const InstallAppModal = ({
             </Text>
             <Icon as={MdOutlineAddBox} w={6} h={6} ml={2} />
           </Flex>
+          <Button type="button" onClick={onClose}>
+            Continuer
+          </Button>
         </ModalContent>
       </Modal>
     </BaseModal>
