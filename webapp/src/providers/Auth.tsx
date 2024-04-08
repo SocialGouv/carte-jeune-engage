@@ -37,7 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [isOtpGenerated, setIsOtpGenerated] = useState<boolean>(false);
   const [showNotificationModal, setShowNotificationModal] =
-    useState<boolean>(false);
+    useState<boolean>(true);
 
   const [showing, setShowing] = useState(false);
   const [deferredEvent, setDeferredEvent] =

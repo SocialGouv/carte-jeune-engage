@@ -12,14 +12,19 @@ const Notification = (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).send("Invalid request method.");
   }
 
-  const subscription = req.body as webPush.PushSubscription;
+  const { sub, title, message, slug } = req.body as {
+    sub: webPush.PushSubscription;
+    slug: string;
+    title: string;
+    message: string;
+  };
 
   webPush
     .sendNotification(
-      subscription,
+      sub,
       JSON.stringify({
-        title: "Hello!",
-        message: "This is a test message",
+        title,
+        message,
       })
     )
     .then((response) => {
