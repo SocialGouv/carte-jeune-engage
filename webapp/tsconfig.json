@@ -10,7 +10,7 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
-    "lib": ["dom", "dom.iterable", "ES2022"],
+    "lib": ["dom", "dom.iterable", "ES2022", "webworker"],
     "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/notifications/re"
   ],
   "exclude": ["node_modules"]
 }

@@ -20,6 +20,7 @@ import { Coupons } from "./collections/Coupon";
 import { Savings } from "./collections/Saving";
 import { Supervisors } from "./collections/Supervisor";
 import { Permissions } from "./collections/Permission";
+import { Notifications } from "./collections/Notification";
 
 const adapter = s3Adapter({
   config: {
@@ -71,6 +72,7 @@ export default buildConfig({
     Offers,
     Coupons,
     Savings,
+    Notifications,
   ],
   localization: {
     locales: ["fr"],

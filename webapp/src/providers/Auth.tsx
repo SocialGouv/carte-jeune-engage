@@ -21,6 +21,8 @@ type AuthContext = {
   setIsOtpGenerated: (isOtpGenerated: boolean) => void;
   showing: boolean;
   setShowing: (showing: boolean) => void;
+  showNotificationModal: boolean;
+  setShowNotificationModal: (showNotificationModal: boolean) => void;
   showModalInstallApp: boolean;
   setShowModalInstallApp: (showModalInstallApp: boolean) => void;
   deferredEvent: BeforeInstallPromptEvent | null;
@@ -36,6 +38,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<UserIncluded | null>(null);
 
   const [isOtpGenerated, setIsOtpGenerated] = useState<boolean>(false);
+  const [showNotificationModal, setShowNotificationModal] =
+    useState<boolean>(true);
   const [showModalInstallApp, setShowModalInstallApp] =
     useState<boolean>(false);
 
@@ -84,6 +88,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsOtpGenerated,
         showing,
         setShowing,
+        showNotificationModal,
+        setShowNotificationModal,
         showModalInstallApp,
         setShowModalInstallApp,
         deferredEvent,

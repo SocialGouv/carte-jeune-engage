@@ -5,7 +5,7 @@ import { ReactNode, useEffect } from "react";
 import BottomNavigation from "~/components/BottomNavigation";
 import Footer from "~/components/landing/Footer";
 import Header from "~/components/landing/Header";
-import BaseModal from "~/components/modals/BaseModal";
+import NotificationModal from "~/components/modals/NotificationModal";
 import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
 import { isIOS, isStandalone } from "~/utils/tools";
@@ -19,14 +19,25 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     setShowing,
     user,
     isOtpGenerated,
+    showNotificationModal,
+    setShowNotificationModal,
     showModalInstallApp,
     setShowModalInstallApp,
   } = useAuth();
 
+  const { isOpen: isNotificationModalOpen, onClose: onNotificationModalClose } =
+    useDisclosure({
+      isOpen: showNotificationModal && !!user && !user.notification_status,
+      onClose: () => setShowNotificationModal(false),
+    });
+
   const { isOpen: isOpenModalInstallApp, onClose: onCloseModalInstallApp } =
     useDisclosure({
       isOpen: showModalInstallApp && (!isIOS() ? deferredEvent !== null : true),
-      onClose: () => setShowModalInstallApp(false),
+      onClose: () => {
+        setShowModalInstallApp(false);
+        setShowNotificationModal(true);
+      },
     });
 
   const isLanding =
@@ -105,6 +116,12 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
           h="full"
         >
           {children}
+          {showNotificationModal && (
+            <NotificationModal
+              isOpen={isNotificationModalOpen}
+              onClose={onNotificationModalClose}
+            />
+          )}
           {showModalInstallApp && (
             <InstallAppModal
               onClose={onCloseModalInstallApp}
