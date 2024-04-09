@@ -1,3 +1,23 @@
+# [0.33.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.4...v0.33.0) (2024-04-09)
+
+
+### Bug Fixes
+
+* add payload migrations ([47d3815](https://github.com/SocialGouv/carte-jeune-engage/commit/47d3815d62fd1c2185330a1cec2b21cf3cbf1063))
+* add push private key to dev and prepord secrets and push public key to args and configmap ([627ce34](https://github.com/SocialGouv/carte-jeune-engage/commit/627ce34fc776543636a691d8c54a87adf708a619))
+* change relative to absolute path on collection coupon for payload purpose ([f6b1128](https://github.com/SocialGouv/carte-jeune-engage/commit/f6b1128e5e65ff5b4a29e8cbbb76207b76f06c5e))
+* kontinuous config ([aab8991](https://github.com/SocialGouv/carte-jeune-engage/commit/aab899171d6f90df39838b24c01a690ecb42f677))
+* notif used coupon on afterChange hook added baseUrl for dynamic fetching ([f1cd918](https://github.com/SocialGouv/carte-jeune-engage/commit/f1cd9181e1bc93bec4ad71b460a662bcf76838f8))
+* onClose modal install app function syntax and add migrations for notification entity ([49a5e90](https://github.com/SocialGouv/carte-jeune-engage/commit/49a5e90dd966c316b75bbad1541f15d22a4cdb04))
+
+
+### Features
+
+* add modal for notification after onboarding, register user subscription in database ([7d4f574](https://github.com/SocialGouv/carte-jeune-engage/commit/7d4f5741c491cb7a9829600372306164d856f0d7))
+* add script in package.json for cron-job task, added try catch guards, console logs, notification entity ([8b84df8](https://github.com/SocialGouv/carte-jeune-engage/commit/8b84df858b080db12dacdd3a639929abcac5769c))
+* begin notification implementation with test page ([6f1ad4b](https://github.com/SocialGouv/carte-jeune-engage/commit/6f1ad4ba4e5c221aec70977f647ffc13bc978815))
+* setup notification on coupon used and begin other notifications for all users ([2cb8f06](https://github.com/SocialGouv/carte-jeune-engage/commit/2cb8f063a6e1cd10f3e46029a318e8981073a4bc))
+
 ## [0.32.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.3...v0.32.4) (2024-04-09)
 
 
