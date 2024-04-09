@@ -1,3 +1,39 @@
+## [0.32.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.3...v0.32.4) (2024-04-09)
+
+
+### Bug Fixes
+
+* add qr code image for preprod for temporary fix for dynamic qr code ([19447e0](https://github.com/SocialGouv/carte-jeune-engage/commit/19447e04e6c89224b38c5ba6a9fc0cba476357e9))
+
+## [0.32.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.2...v0.32.3) (2024-04-08)
+
+
+### Bug Fixes
+
+* add continue button on ios modal ([a2813f3](https://github.com/SocialGouv/carte-jeune-engage/commit/a2813f3a79be150bd40b5d046f744c9203cb7b33))
+
+## [0.32.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.1...v0.32.2) (2024-04-04)
+
+
+### Bug Fixes
+
+* handle ios case for onboarding install pwa modal ([ac5748e](https://github.com/SocialGouv/carte-jeune-engage/commit/ac5748e3852fad72eecc3472eb8e772b7efd60b5))
+
+## [0.32.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.0...v0.32.1) (2024-04-04)
+
+
+### Bug Fixes
+
+* add status in queryparams for hotjar purpose ([4045a4f](https://github.com/SocialGouv/carte-jeune-engage/commit/4045a4f6d7000e1f9695a0fb7bb08b18505db4d0))
+* coupon guard for multiple assign to one user issue ([30c414b](https://github.com/SocialGouv/carte-jeune-engage/commit/30c414bb2655eb91b967d02e510c1a2cd3066e00))
+
+# [0.32.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.31.0...v0.32.0) (2024-04-02)
+
+
+### Features
+
+* add modal to install pwa with ios and android mode ([7c550c2](https://github.com/SocialGouv/carte-jeune-engage/commit/7c550c2ae7acc93ab709f53b80021c21448c1b12))
+
 # [0.31.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.30.3...v0.31.0) (2024-03-27)
 
 

@@ -92,7 +92,7 @@ export const onBoardingSteps = [
 export default function OnBoarding() {
   const router = useRouter();
 
-  const { user, refetchUser, setShowNotificationModal } = useAuth();
+  const { user, refetchUser, setShowModalInstallApp } = useAuth();
 
   const [hasAcceptedCGU, setHasAcceptedCGU] = useState<boolean>(false);
   const { onBoardingStep } = router.query as {
@@ -254,7 +254,7 @@ export default function OnBoarding() {
           onClick={() => {
             localStorage.removeItem("cje-signup-form");
             localStorage.removeItem("cje-onboarding-form");
-            setShowNotificationModal(true);
+            setShowModalInstallApp(true);
             router.push("/dashboard");
           }}
           rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
