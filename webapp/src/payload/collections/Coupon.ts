@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import type { Props } from "payload/components/views/List";
 import { type CollectionConfig } from "payload/types";
 import { requests } from "payload/dist/admin/api";
-import { getBaseUrl } from "~/utils/tools";
+import { getBaseUrl } from "../../utils/tools";
 
 const ImportCoupons = dynamic<Props>(
   () => import("../components/ImportCoupons"),
