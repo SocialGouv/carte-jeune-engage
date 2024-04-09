@@ -27,7 +27,7 @@
     "**/*.tsx",
     "**/*.cjs",
     ".next/types/**/*.ts",
-    "src/utils/notifications/re"
+    "src/notifications/re"
   ],
   "exclude": ["node_modules"]
 }

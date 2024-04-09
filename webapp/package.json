@@ -8,6 +8,7 @@
     "start": "next start",
     "seed:dev": "PAYLOAD_DROP_DATABASE=true tsx ./src/payload/seed/index.ts",
     "seed:prod": "tsx ./src/payload/seed/index.ts",
+    "cron-job": "tsx ./src/notifications/index.ts",
     "payload": "PAYLOAD_CONFIG_PATH=./src/payload/payload.config.ts payload",
     "lint": "next lint"
   },
