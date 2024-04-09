@@ -1,3 +1,10 @@
+## [0.32.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.3...v0.32.4) (2024-04-09)
+
+
+### Bug Fixes
+
+* add qr code image for preprod for temporary fix for dynamic qr code ([19447e0](https://github.com/SocialGouv/carte-jeune-engage/commit/19447e04e6c89224b38c5ba6a9fc0cba476357e9))
+
 ## [0.32.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.2...v0.32.3) (2024-04-08)
 
 
