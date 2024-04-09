@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import type { Props } from "payload/components/views/List";
 import { type CollectionConfig } from "payload/types";
 import { requests } from "payload/dist/admin/api";
+import { getBaseUrl } from "~/utils/tools";
 
 const ImportCoupons = dynamic<Props>(
   () => import("../components/ImportCoupons"),
@@ -117,22 +118,18 @@ export const Coupons: CollectionConfig = {
               }
 
               if (tmpUser && tmpUser.notification_subscription) {
-                await requests.get(
-                  `${req.payload.config.serverURL}/api/notification`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      sub: tmpUser.notification_subscription,
-                      slug: "coupon-used",
-                      title: "Bon de réduction utilisé !",
-                      message: `Votre réduction ${tmpPartner.name} est ajoutée à vos économies 🎉.
-                		Venez voir ce que vous économisez avec la carte “jeune engage” ? 👀`,
-                    }),
-                  }
-                );
+                await requests.get(`${getBaseUrl()}/api/notification`, {
+                  method: "POST",
+                  headers: {
+                    "Content-type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    sub: tmpUser.notification_subscription,
+                    slug: "coupon-used",
+                    title: "Bon de réduction utilisé !",
+                    message: `Votre réduction ${tmpPartner.name} est ajoutée à vos économies 🎉. Venez voir ce que vous économisez avec la carte “jeune engage” ? 👀`,
+                  }),
+                });
               }
             }
 
