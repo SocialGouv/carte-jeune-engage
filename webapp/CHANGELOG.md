@@ -1,3 +1,10 @@
+## [0.33.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.1...v0.33.2) (2024-04-10)
+
+
+### Bug Fixes
+
+* add web push public key to preprod and prod envs ([a1a9dd0](https://github.com/SocialGouv/carte-jeune-engage/commit/a1a9dd061698f3e5b788fe8e79ec0344c2169f6c))
+
 ## [0.33.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.0...v0.33.1) (2024-04-10)
 
 
