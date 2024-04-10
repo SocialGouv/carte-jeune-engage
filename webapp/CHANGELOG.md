@@ -1,3 +1,10 @@
+## [0.33.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.0...v0.33.1) (2024-04-10)
+
+
+### Bug Fixes
+
+* modal notification modal default value ([15bf68b](https://github.com/SocialGouv/carte-jeune-engage/commit/15bf68b85fc21e2f1c05af0ff7774ec3a5181171))
+
 # [0.33.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.4...v0.33.0) (2024-04-09)
 
 
