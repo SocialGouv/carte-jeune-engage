@@ -1,3 +1,10 @@
+## [0.33.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.2...v0.33.3) (2024-04-10)
+
+
+### Bug Fixes
+
+* add page to handle user notification on account page ([2bb7ec7](https://github.com/SocialGouv/carte-jeune-engage/commit/2bb7ec70e0b515c8c59a5ae2eb6ccc098681fc19))
+
 ## [0.33.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.1...v0.33.2) (2024-04-10)
 
 
