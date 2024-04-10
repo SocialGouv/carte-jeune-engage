@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [isOtpGenerated, setIsOtpGenerated] = useState<boolean>(false);
   const [showNotificationModal, setShowNotificationModal] =
-    useState<boolean>(true);
+    useState<boolean>(false);
   const [showModalInstallApp, setShowModalInstallApp] =
     useState<boolean>(false);
 
