@@ -11,6 +11,7 @@ jobs:
           NEXT_PUBLIC_MATOMO_TRACKING_ENABLED: "true"
           NEXT_PUBLIC_MATOMO_URL: https://matomo.fabrique.social.gouv.fr/
           NEXT_PUBLIC_MATOMO_SITE_ID: 103
+          NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY: BEhweKLgZWqV1WJF6rRUaNiN-qjZPd7KlI_i3E9u2Xg_z2oPePiwgiNbIebpSTXx38epVeVxzfEDsr4atZLf4bA
 app:
   host: cje.fabrique.social.gouv.fr
   autoscale:
