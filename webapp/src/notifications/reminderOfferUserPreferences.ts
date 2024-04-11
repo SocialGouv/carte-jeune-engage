@@ -10,6 +10,13 @@ export async function sendReminderOfferUserPreferences() {
   let nbOfNotificationsSent = 0;
   let nbOfNotificationsInDb = 0;
 
+  // Only send notification on Wednesday
+  const today = new Date();
+  if (today.getDay() !== 3) {
+    console.log(`[${slug}] - Not Wednesday`);
+    return;
+  }
+
   try {
     const payload = await getPayloadClient({ seed: false });
 

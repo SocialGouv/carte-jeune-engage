@@ -136,3 +136,16 @@ export const base64ToUint8Array = (base64: string) => {
   }
   return outputArray;
 };
+
+export const isNbOfDaysToEndOfTheMonth = (nbOfDays: number) => {
+  const today = new Date();
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const targetDate = new Date(lastDayOfMonth);
+  targetDate.setDate(targetDate.getDate() - (nbOfDays - 1)); // Set to 10 days before the last day
+
+  return (
+    today.getDate() === targetDate.getDate() &&
+    today.getMonth() === targetDate.getMonth() &&
+    today.getFullYear() === targetDate.getFullYear()
+  );
+};

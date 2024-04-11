@@ -1,3 +1,4 @@
+import { isNbOfDaysToEndOfTheMonth } from "~/utils/tools";
 import { getPayloadClient } from "../payload/payloadClient";
 import { sendPushNotification } from "../utils/sendPushNotification";
 
@@ -8,6 +9,11 @@ export async function sendReminderAuchan() {
 
   let nbOfNotificationsSent = 0;
   let nbOfNotificationsInDb = 0;
+
+  if (!isNbOfDaysToEndOfTheMonth(10)) {
+    console.log(`[${slug}] - Not 10 days before the end of the month`);
+    return;
+  }
 
   try {
     const payload = await getPayloadClient({ seed: false });
