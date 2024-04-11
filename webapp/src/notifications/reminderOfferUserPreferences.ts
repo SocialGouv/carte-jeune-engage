@@ -12,7 +12,7 @@ export async function sendReminderOfferUserPreferences() {
 
   // Only send notification on Wednesday
   const today = new Date();
-  if (today.getDay() !== 3) {
+  if (today.getDay() !== 4) {
     console.log(`[${slug}] - Not Wednesday`);
     return;
   }
