@@ -44,7 +44,9 @@ export async function sendReminderAuchan() {
           payload,
           userId: user.id,
           payloadNotification: {
-            title: `🗓️ Plus que 10 jours pour l’offre Auchan du mois de ${currentMonth} 🛒  Il n’y a plus qu’à l’activer et rendez-vous au magasin de Sarcelles`,
+            title: "🗓️ J-10 pour l’offre Auchan",
+            message:
+              "10% chez Auchan Sarcelles expire dans 10j. Activez l’offre et rendez-vous au Auchan de Sarcelles pour en profiter.",
             slug,
           },
         }

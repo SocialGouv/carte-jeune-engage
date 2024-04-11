@@ -52,7 +52,8 @@ export async function sendNewOfferAvailable() {
             payload,
             userId: user.id,
             payloadNotification: {
-              title: `${offer.partner.name} offre une réduction ${offer?.title} disponible sur l'appli 👀`,
+              title: "🎁 Nouvelle offre sur l’appli !",
+              message: `${offer.partner.name} ${offer?.title}, maintenant disponible sur l’appli`,
               slug,
             },
           });

@@ -62,7 +62,8 @@ export async function sendReminderOfferUserPreferences() {
           payload,
           userId: user.id,
           payloadNotification: {
-            title: `${offer.partner.name} offre une réduction ${offer?.title} disponible sur l'appli 👀`,
+            title: `${offer.partner.name} fait une offre 👀`,
+            message: `Une réduction ${offer.title} disponible sur l’appli carte “jeune engagé”`,
             slug,
           },
         }

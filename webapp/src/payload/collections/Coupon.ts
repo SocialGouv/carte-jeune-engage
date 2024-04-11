@@ -126,7 +126,7 @@ export const Coupons: CollectionConfig = {
                   body: JSON.stringify({
                     sub: tmpUser.notification_subscription,
                     slug: "coupon-used",
-                    title: "Bon de réduction utilisé !",
+                    title: "Vos économies sont enregistrées !",
                     message: `Votre réduction ${tmpPartner.name} est ajoutée à vos économies 🎉. Venez voir ce que vous économisez avec la carte “jeune engage” ? 👀`,
                   }),
                 });
