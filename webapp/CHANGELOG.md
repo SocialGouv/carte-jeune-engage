@@ -1,3 +1,14 @@
+## [0.33.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.3...v0.33.4) (2024-04-11)
+
+
+### Bug Fixes
+
+* add back navigation in notification page ([181eaa7](https://github.com/SocialGouv/carte-jeune-engage/commit/181eaa756c1179f8a70c811a5de26a411d377615))
+* add specific conditions for notification kind ([2192c20](https://github.com/SocialGouv/carte-jeune-engage/commit/2192c20d584c3ddf92942de9a39f837a9bc0b8d5))
+* notification already sent guard ([6028bd2](https://github.com/SocialGouv/carte-jeune-engage/commit/6028bd294188d2375b4c51900b5dab9456e179b9))
+* spelling for title and message on all notifications ([df7a19e](https://github.com/SocialGouv/carte-jeune-engage/commit/df7a19ef3ef0dc5d3b8c3b65ffbdd2435e30d7eb))
+* workaroud handle for user subcription to push notification for ios purpose ([2feec62](https://github.com/SocialGouv/carte-jeune-engage/commit/2feec622afeb6ec7f07b59bab34f6512d5619798))
+
 ## [0.33.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.2...v0.33.3) (2024-04-10)
 
 
