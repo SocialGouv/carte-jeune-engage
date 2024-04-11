@@ -36,21 +36,22 @@ export async function sendPushNotification({
         equals: userId,
       },
       createdAt: {
-        equals: new Date().toISOString().split("T")[0],
+        greater_than_equal: new Date().toISOString().split("T")[0],
       },
     },
   });
 
-  const notificationAlreadySent = notifications.docs.length > 0;
+  const notificationSent = notifications.docs[0];
 
-  if (notificationAlreadySent) {
+  if (notificationSent) {
     console.log("[Notification db create] - Already sent", {
+      notificationId: notificationSent.id,
       slug,
       user: userId,
     });
     return {
-      notificationSent: true,
-      notificationInDb: true,
+      notificationSent: false,
+      notificationInDb: false,
       error: "",
     };
   }
