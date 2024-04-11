@@ -1,10 +1,13 @@
-import { Flex, Heading, Switch, Text } from "@chakra-ui/react";
+import { Flex, Heading, Icon, Switch, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { HiArrowLeft } from "react-icons/hi2";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import { base64ToUint8Array } from "~/utils/tools";
 
 export default function AccountNotifications() {
+  const router = useRouter();
   const { user, refetchUser } = useAuth();
 
   const [notificationPushActive, setNotificationPushActive] = useState(false);
@@ -72,6 +75,13 @@ export default function AccountNotifications() {
 
   return (
     <Flex flexDir="column" pt={12} px={8} h="full">
+      <Icon
+        as={HiArrowLeft}
+        w={6}
+        h={6}
+        onClick={() => router.back()}
+        cursor="pointer"
+      />
       <Heading
         as="h2"
         size="lg"
