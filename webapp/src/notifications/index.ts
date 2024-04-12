@@ -4,6 +4,7 @@ import "dotenv/config";
 import { sendNewOfferAvailable } from "./newOfferAvailable";
 import { sendReminderAuchan } from "./reminderAuchan";
 import { sendReminderOfferUserPreferences } from "./reminderOfferUserPreferences";
+import { sendReminderOfferActivated } from "./reminderOfferActivated";
 
 export const initNotifications = async () => {
   try {
@@ -14,6 +15,7 @@ export const initNotifications = async () => {
     await sendNewOfferAvailable();
     await sendReminderAuchan();
     await sendReminderOfferUserPreferences();
+    await sendReminderOfferActivated();
     console.log(
       "[INIT] - End sending notifications",
       new Date().toLocaleString("fr-FR")
