@@ -36,7 +36,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
       isOpen: showModalInstallApp && (!isIOS() ? deferredEvent !== null : true),
       onClose: () => {
         setShowModalInstallApp(false);
-        setShowNotificationModal(true);
+        if (!isIOS()) setShowNotificationModal(true);
       },
     });
 
