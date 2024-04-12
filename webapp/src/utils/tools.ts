@@ -106,7 +106,7 @@ export const getBaseUrl = () => {
   if (process.env.NEXT_PUBLIC_ENV_APP === "production")
     return "https://cje.fabrique.social.gouv.fr";
   if (process.env.NEXT_PUBLIC_ENV_APP === "preproduction")
-    return "https://cje-preprod.ovh.fabrique.social.gouv.fr/";
+    return "https://cje-preprod.ovh.fabrique.social.gouv.fr";
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
