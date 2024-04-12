@@ -1,3 +1,10 @@
+## [0.34.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.0...v0.34.1) (2024-04-12)
+
+
+### Bug Fixes
+
+* getBaseUrl preproduction link remove slash at end ([2c1df95](https://github.com/SocialGouv/carte-jeune-engage/commit/2c1df95d1d9d7647c2f1928e7a2fb2aafe9b712b))
+
 # [0.34.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.4...v0.34.0) (2024-04-12)
 
 
