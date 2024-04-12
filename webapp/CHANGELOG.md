@@ -1,3 +1,17 @@
+# [0.34.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.4...v0.34.0) (2024-04-12)
+
+
+### Bug Fixes
+
+* add url and icon to notification, get current offer for auchan reminder ([508134d](https://github.com/SocialGouv/carte-jeune-engage/commit/508134d98a04d60c2a470ecb42b5e4ea7db75ccc))
+* hide notifications for ios ([560603a](https://github.com/SocialGouv/carte-jeune-engage/commit/560603a6377d2a6cbc6b49fcf1ced7b12925a2bc))
+* use absolute path instead of relative path for cron-job purpose ([17bb681](https://github.com/SocialGouv/carte-jeune-engage/commit/17bb681f587964c6ba62241f20f2d0f44ac46859))
+
+
+### Features
+
+* add new notification for reminder of offer activated ([0255987](https://github.com/SocialGouv/carte-jeune-engage/commit/025598718e3b06bff8c57fd1bb23e7bccbca0a7a))
+
 ## [0.33.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.3...v0.33.4) (2024-04-11)
 
 
