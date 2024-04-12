@@ -1,7 +1,7 @@
-import { getBaseUrl, isNbOfDaysToEndOfTheMonth } from "~/utils/tools";
+import { getBaseUrl, isNbOfDaysToEndOfTheMonth } from "../utils/tools";
 import { getPayloadClient } from "../payload/payloadClient";
 import { sendPushNotification } from "../utils/sendPushNotification";
-import { Offer, Partner } from "~/payload/payload-types";
+import { Offer, Partner } from "../payload/payload-types";
 
 const slug = "reminder-auchan";
 
