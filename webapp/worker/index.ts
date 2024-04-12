@@ -1,15 +1,25 @@
 declare const self: ServiceWorkerGlobalScope;
 
 self.addEventListener("push", (event) => {
-  console.log("Push received", event);
   const data = JSON.parse(event.data?.text() ?? '{ title: "" }');
   event.waitUntil(
-    self.registration.showNotification(data.title, { body: data.message })
+    self.registration.showNotification(data.title, {
+      body: data.message,
+      icon: data.icon,
+      data: {
+        url: data?.url,
+      },
+    })
   );
 });
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
+
+  if (event.notification.data.url) {
+    return self.clients.openWindow(event.notification.data.url);
+  }
+
   event.waitUntil(
     self.clients
       .matchAll({ type: "window", includeUncontrolled: true })

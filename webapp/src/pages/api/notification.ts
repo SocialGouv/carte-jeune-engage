@@ -12,11 +12,12 @@ const Notification = (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).send("Invalid request method.");
   }
 
-  const { sub, title, message, slug } = req.body as {
+  const { sub, title, message, url } = req.body as {
     sub: webPush.PushSubscription;
     slug: string;
     title: string;
     message: string;
+    url?: string;
   };
 
   webPush
@@ -25,6 +26,8 @@ const Notification = (req: NextApiRequest, res: NextApiResponse) => {
       JSON.stringify({
         title,
         message,
+        icon: "https://cje.fabrique.social.gouv.fr/pwa/appIcon/maskable_icon_x192.png",
+        url,
       })
     )
     .then((response) => {

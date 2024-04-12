@@ -1,6 +1,7 @@
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { getPayloadClient } from "../payload/payloadClient";
 import { sendPushNotification } from "../utils/sendPushNotification";
+import { getBaseUrl } from "~/utils/tools";
 
 const slug = "reminder-offer-user-preferences";
 
@@ -12,7 +13,7 @@ export async function sendReminderOfferUserPreferences() {
 
   // Only send notification on Wednesday
   const today = new Date();
-  if (today.getDay() !== 4) {
+  if (today.getDay() !== 3) {
     console.log(`[${slug}] - Not Wednesday`);
     return;
   }
@@ -64,6 +65,7 @@ export async function sendReminderOfferUserPreferences() {
           payloadNotification: {
             title: `${offer.partner.name} fait une offre 👀`,
             message: `Une réduction ${offer.title} disponible sur l’appli carte “jeune engagé”`,
+            url: `${getBaseUrl()}/dashboard/offer/${offer.id}`,
             slug,
           },
         }

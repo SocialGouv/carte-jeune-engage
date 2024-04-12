@@ -9,6 +9,7 @@ type NotificationParams = {
     title: string;
     message?: string;
     slug: string;
+    url?: string;
   };
 };
 
@@ -24,7 +25,7 @@ export async function sendPushNotification({
   userId,
   payloadNotification,
 }: NotificationParams): Promise<NotificationResponse> {
-  const { title, message, slug } = payloadNotification;
+  const { title, message, slug, url } = payloadNotification;
 
   const notifications = await payload.find({
     collection: "notifications",
@@ -66,6 +67,7 @@ export async function sendPushNotification({
       title,
       message,
       slug,
+      url,
     }),
   })
     .then(async () => {

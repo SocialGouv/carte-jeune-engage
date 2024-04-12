@@ -1,6 +1,7 @@
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { getPayloadClient } from "../payload/payloadClient";
 import { sendPushNotification } from "../utils/sendPushNotification";
+import { getBaseUrl } from "~/utils/tools";
 
 const slug = "new-offer-available";
 
@@ -54,6 +55,7 @@ export async function sendNewOfferAvailable() {
             payloadNotification: {
               title: "🎁 Nouvelle offre sur l’appli !",
               message: `${offer.partner.name} ${offer?.title}, maintenant disponible sur l’appli`,
+              url: `${getBaseUrl()}/dashboard/offer/${offer.id}`,
               slug,
             },
           });
