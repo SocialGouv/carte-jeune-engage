@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { Supervisor } from "~/payload/payload-types";
 import {
   createTRPCRouter,
   supervisorProtectedProcedure,
@@ -34,37 +35,51 @@ export const permissionRouter = createTRPCRouter({
       }
 
       try {
+        const currentSupervisor = await ctx.payload.findByID({
+          collection: "supervisors",
+          id: ctx.session.id,
+        });
+
         const permission = await ctx.payload.create({
           collection: "permissions",
           data: {
             phone_number,
+            createdBy: currentSupervisor.id,
           },
         });
 
-        const octopushResponse = await fetch(
-          "https://api.octopush.com/v1/public/sms-campaign/send",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "api-login": process.env.OCTOPUSH_API_LOGIN as string,
-              "api-key": process.env.OCTOPUSH_API_KEY as string,
-              "cache-control": "no-cache",
-            },
-            body: JSON.stringify({
-              recipients: [
-                {
-                  phone_number: hasDialingCode
-                    ? phone_number
-                    : `+33${phone_number.substring(1)}`,
-                },
-              ],
-              text: `
-								Vos réductions carte « jeune engagé » vous attendent ! Pour en bénéficier téléchargez l'application ici : https://cje.fabrique.social.gouv.fr/. STOP au 30101
-							`,
-            }),
+        const smsText = (supervisorKind: Supervisor["kind"]) => {
+          if (supervisorKind === "SC") {
+            return `Le Service civique vous donne accès à l’appli carte « jeune engagé »!`;
+          } else if (supervisorKind === "ML") {
+            return `Votre conseiller Mission locale vous donne accès à l’appli carte « jeune engagé »!`;
+          } else if (supervisorKind === "FT") {
+            return `Votre conseiller France travail vous donne accès à l’appli carte « jeune engagé »!`;
+          } else {
+            return `Vos réductions carte « jeune engagé » vous attendent !`;
           }
-        )
+        };
+
+        await fetch("https://api.octopush.com/v1/public/sms-campaign/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "api-login": process.env.OCTOPUSH_API_LOGIN as string,
+            "api-key": process.env.OCTOPUSH_API_KEY as string,
+            "cache-control": "no-cache",
+          },
+          body: JSON.stringify({
+            recipients: [
+              {
+                phone_number: hasDialingCode
+                  ? phone_number
+                  : `+33${phone_number.substring(1)}`,
+              },
+            ],
+            // prettier-ignore
+            text: `${smsText(currentSupervisor.kind)} Téléchargez l'application ici : https://cje.fabrique.social.gouv.fr/. STOP au 30101`,
+          }),
+        })
           .then((response) => response.json())
           .then((data) => data);
 

@@ -125,6 +125,7 @@ export interface Category {
 export interface Supervisor {
   id: number;
   cgu?: boolean | null;
+  kind?: ('ML' | 'SC' | 'FT') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -143,6 +144,7 @@ export interface Supervisor {
 export interface Permission {
   id: number;
   phone_number: string;
+  createdBy?: (number | null) | Supervisor;
   updatedAt: string;
   createdAt: string;
 }
