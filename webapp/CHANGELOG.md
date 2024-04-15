@@ -1,3 +1,11 @@
+## [0.35.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.0...v0.35.1) (2024-04-15)
+
+
+### Bug Fixes
+
+* add kind of supervisor to permission ([6b4bbea](https://github.com/SocialGouv/carte-jeune-engage/commit/6b4bbea64a7ee07359a16c0c99744fe367ef2a8d))
+* add migrations ([4139f81](https://github.com/SocialGouv/carte-jeune-engage/commit/4139f810da4a60e0e92b2f421c9b4b1cc129a63e))
+
 # [0.35.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.2...v0.35.0) (2024-04-15)
 
 
