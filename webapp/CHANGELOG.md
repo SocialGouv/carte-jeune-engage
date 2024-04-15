@@ -1,3 +1,12 @@
+## [0.34.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.1...v0.34.2) (2024-04-15)
+
+
+### Bug Fixes
+
+* ignore .kontinuous ([18445a2](https://github.com/SocialGouv/carte-jeune-engage/commit/18445a2aca00dd211a796b3e1e5fbebf29c93f5f))
+* prod cronjob ([3b21af3](https://github.com/SocialGouv/carte-jeune-engage/commit/3b21af346c613d4588717a3a1d1e67f0777a9816))
+* TZ ([72e413e](https://github.com/SocialGouv/carte-jeune-engage/commit/72e413e4f5a7675a9eb0e306692647b758fe415c))
+
 ## [0.34.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.0...v0.34.1) (2024-04-12)
 
 
