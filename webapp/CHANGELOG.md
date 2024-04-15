@@ -1,3 +1,10 @@
+# [0.35.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.2...v0.35.0) (2024-04-15)
+
+
+### Features
+
+* add new kind on supervisor, attach supervisor to permission and personalize sms message on user invite ([9755a07](https://github.com/SocialGouv/carte-jeune-engage/commit/9755a072f702c14824f30388bd0c475a916c4a0d))
+
 ## [0.34.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.1...v0.34.2) (2024-04-15)
 
 
