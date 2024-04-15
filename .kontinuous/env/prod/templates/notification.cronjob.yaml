@@ -39,7 +39,7 @@ spec:
                 - secretRef:
                     name: app-sealed-secret
                 - secretRef:
-                    name: carte-jeune-engage-dev-app-access-key
+                    name: carte-jeune-engage-prod-app-access-key
               volumeMounts:
                 - name: tz-paris
                   mountPath: /etc/localtime
