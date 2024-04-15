@@ -45,6 +45,7 @@ export const permissionRouter = createTRPCRouter({
           data: {
             phone_number,
             createdBy: currentSupervisor.id,
+            supervisorKind: currentSupervisor.kind,
           },
         });
 

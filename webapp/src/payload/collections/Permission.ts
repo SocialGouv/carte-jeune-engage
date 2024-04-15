@@ -23,5 +23,15 @@ export const Permissions: CollectionConfig = {
       relationTo: "supervisors",
       label: "Créé par",
     },
+    {
+      name: "supervisorKind",
+      type: "select",
+      label: "Type de référent",
+      options: [
+        { label: "Mission locale", value: "ML" },
+        { label: "Service civique", value: "SC" },
+        { label: "France travail", value: "FT" },
+      ],
+    },
   ],
 };

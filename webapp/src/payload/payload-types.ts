@@ -145,6 +145,7 @@ export interface Permission {
   id: number;
   phone_number: string;
   createdBy?: (number | null) | Supervisor;
+  supervisorKind?: ('ML' | 'SC' | 'FT') | null;
   updatedAt: string;
   createdAt: string;
 }
