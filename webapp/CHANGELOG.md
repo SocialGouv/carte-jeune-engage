@@ -1,3 +1,11 @@
+## [0.35.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.4...v0.35.5) (2024-04-16)
+
+
+### Bug Fixes
+
+* fallback url on go back in page offer ([4c19002](https://github.com/SocialGouv/carte-jeune-engage/commit/4c19002fe37515383cdfd256845f8e88f350edb4))
+* remove tarteaucitron and hotjar on admin panel ([5d31e66](https://github.com/SocialGouv/carte-jeune-engage/commit/5d31e66638773b73bd14d4e99b6f4611ce6b93f0))
+
 ## [0.35.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.3...v0.35.4) (2024-04-16)
 
 
