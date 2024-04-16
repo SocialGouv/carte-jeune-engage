@@ -276,8 +276,8 @@ export default function Account() {
       />
       <Flex flexDir="column" mt={8} gap={8} px={5}>
         {itemsSecondary.map((item) => {
-          if (item.href === "/dashboard/account/notification" && isIOS())
-            return;
+          // if (item.href === "/dashboard/account/notification" && isIOS())
+          //   return;
           return (
             <Link
               href={item.href ?? ""}
