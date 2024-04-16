@@ -57,19 +57,26 @@ export async function sendPushNotification({
     };
   }
 
-  return await fetch(`${getBaseUrl()}/api/notification`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      sub,
-      title,
-      message,
-      slug,
-      url,
-    }),
-  })
+  return await fetch(
+    `${
+      process.env.NODE_ENV === "production"
+        ? "http://app"
+        : "http://localhost:3000"
+    }/api/notification`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sub,
+        title,
+        message,
+        slug,
+        url,
+      }),
+    }
+  )
     .then(async () => {
       return await payload
         .create({

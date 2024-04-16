@@ -71,11 +71,13 @@ export async function sendReminderOfferActivated() {
       }
     }
 
-    console.log(`[${slug}] - Summary`, {
-      nbOfNotificationsSent,
-      nbOfNotificationsInDb,
-      slug,
-    });
+    if (nbOfNotificationsSent > 0 || nbOfNotificationsInDb > 0) {
+      console.log(`[${slug}] - Summary`, {
+        nbOfNotificationsSent,
+        nbOfNotificationsInDb,
+        slug,
+      });
+    }
   } catch (e) {
     console.log({
       error: `[${slug}] - Error on condition to send notification`,
