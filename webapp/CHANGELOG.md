@@ -1,3 +1,10 @@
+## [0.35.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.5...v0.35.6) (2024-04-16)
+
+
+### Bug Fixes
+
+* wording on landing and in not eligible modal ([1777b6c](https://github.com/SocialGouv/carte-jeune-engage/commit/1777b6c5048fb124c31b00d2af6b9138151fc07e))
+
 ## [0.35.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.4...v0.35.5) (2024-04-16)
 
 
