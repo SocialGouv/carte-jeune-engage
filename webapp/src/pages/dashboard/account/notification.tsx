@@ -12,25 +12,33 @@ export default function AccountNotifications() {
 
   const [notificationPushActive, setNotificationPushActive] = useState(false);
 
-  // const [registration, setRegistration] =
-  //   useState<ServiceWorkerRegistration | null>(null);
+  const [registration, setRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
   });
 
-  // useEffect(() => {
-  //   if (
-  //     typeof window !== "undefined" &&
-  //     "serviceWorker" in navigator &&
-  //     (window as any).workbox !== undefined
-  //   ) {
-  //     // run only in browser
-  //     navigator.serviceWorker.ready.then((reg) => {
-  //       setRegistration(reg);
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      (window as any).workbox !== undefined
+    ) {
+      // run only in browser
+      navigator.serviceWorker.ready.then((reg) => {
+        setRegistration(reg);
+      });
+
+      let swRegistration = navigator.serviceWorker.register("/sw.js");
+
+      if (swRegistration) {
+        swRegistration.then((reg) => {
+          setRegistration(reg);
+        });
+      }
+    }
+  }, []);
 
   const handleRequestNotification = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -93,6 +101,7 @@ export default function AccountNotifications() {
               checked={notificationPushActive}
             />
           </Flex>
+          <Text>{registration ? "Registered" : "Not registered"}</Text>
         </Flex>
       )}
     </Flex>
