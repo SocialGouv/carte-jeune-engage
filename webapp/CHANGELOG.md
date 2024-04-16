@@ -1,3 +1,11 @@
+## [0.35.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.3...v0.35.4) (2024-04-16)
+
+
+### Bug Fixes
+
+* add guard for router can go back for offer page ([4427f6d](https://github.com/SocialGouv/carte-jeune-engage/commit/4427f6d0043f7f16550f82839f84b99f4e01b19a))
+* add url for local and prod env for icon image in notification ([1d9005f](https://github.com/SocialGouv/carte-jeune-engage/commit/1d9005f8387708c790864da953d7e50ab333bf2e))
+
 ## [0.35.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.2...v0.35.3) (2024-04-16)
 
 
