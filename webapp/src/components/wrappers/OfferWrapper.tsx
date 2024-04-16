@@ -42,7 +42,7 @@ const OfferWrapper = ({ children, offer, isModalOpen }: OfferWrapperProps) => {
             colorScheme="whiteBtn"
             onClick={() => {
               push(["trackEvent", "Retour"]);
-              if (window.history?.length) {
+              if (window.history?.length > 1) {
                 router.back();
               } else {
                 router.push("/dashboard");
