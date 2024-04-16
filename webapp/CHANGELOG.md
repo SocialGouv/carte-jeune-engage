@@ -1,3 +1,10 @@
+## [0.35.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.2...v0.35.3) (2024-04-16)
+
+
+### Bug Fixes
+
+* add app env to cron environnements ([94afdfc](https://github.com/SocialGouv/carte-jeune-engage/commit/94afdfc23306045a0aee73b7a110f351bf859fa2))
+
 ## [0.35.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.1...v0.35.2) (2024-04-16)
 
 
