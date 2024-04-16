@@ -29,6 +29,8 @@ spec:
               env:
                 - name: PRODUCTION
                   value: 'true'
+                - name: NEXT_PUBLIC_ENV_APP
+                  value: preproduction
                 - name: DATABASE_URL
                   value: "$(DATABASE_URL)"
               envFrom:
