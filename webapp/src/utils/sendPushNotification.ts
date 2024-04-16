@@ -58,10 +58,8 @@ export async function sendPushNotification({
   }
 
   return await fetch(
-    `${
-      process.env.NODE_ENV === "production"
-        ? "http://app"
-        : "http://localhost:3000"
+    `http://${
+      process.env.NODE_ENV === "production" ? "app" : "localhost:3000"
     }/api/notification`,
     {
       method: "POST",

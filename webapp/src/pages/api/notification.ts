@@ -26,7 +26,9 @@ const Notification = (req: NextApiRequest, res: NextApiResponse) => {
       JSON.stringify({
         title,
         message,
-        icon: "http://app/pwa/appIcon/maskable_icon_x192.png",
+        icon: `http://${
+          process.env.NODE_ENV === "production" ? "app" : "localhost:3000"
+        }/pwa/appIcon/maskable_icon_x192.png`,
         url,
       })
     )
