@@ -58,6 +58,25 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     setShowing(true);
   };
 
+  const getTarteAuCitronInitByEnv = () => {
+    switch (process.env.NEXT_PUBLIC_ENV_APP) {
+      case "preproduction":
+        return (
+          <script
+            type="text/javascript"
+            src="/static/tarteaucitron/env/preprod/initTarteaucitron.js"
+          />
+        );
+      case "production":
+        return (
+          <script
+            type="text/javascript"
+            src="/static/tarteaucitron/env/prod/initTarteaucitron.js"
+          />
+        );
+    }
+  };
+
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -100,6 +119,12 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
           href="/pwa/appIcon/maskable_icon_x192.png"
         />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        /* Tarteaucitron */
+        <script
+          type="text/javascript"
+          src="/static/tarteaucitron/tarteaucitron.js"
+        />
+        {getTarteAuCitronInitByEnv()}
       </Head>
       <Box
         as="main"
