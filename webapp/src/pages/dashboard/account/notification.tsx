@@ -8,56 +8,25 @@ import { base64ToUint8Array } from "~/utils/tools";
 
 export default function AccountNotifications() {
   const router = useRouter();
-  const { user, refetchUser } = useAuth();
+  const { user, refetchUser, registration } = useAuth();
 
   const [notificationPushActive, setNotificationPushActive] = useState(false);
-
-  const [registration, setRegistration] =
-    useState<ServiceWorkerRegistration | null>(null);
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
   });
 
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      "serviceWorker" in navigator &&
-      (window as any).workbox !== undefined
-    ) {
-      // run only in browser
-      navigator.serviceWorker.ready.then((reg) => {
-        setRegistration(reg);
-      });
-
-      let swRegistration = navigator.serviceWorker.register("/sw.js");
-
-      if (swRegistration) {
-        swRegistration.then((reg) => {
-          setRegistration(reg);
-        });
-      }
-    }
-  }, []);
-
   const handleRequestNotification = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    let swRegistration = await navigator.serviceWorker.getRegistration();
-
-    if (!swRegistration) {
-      console.error("No SW registration available.");
-      return;
-    }
-
-    if (!event.target.checked) {
+    if (!event.target.checked || !registration) {
       setNotificationPushActive(false);
       updateUser({
         notification_status: "disabled",
         notification_subscription: null,
       });
     } else {
-      const sub = await swRegistration.pushManager.subscribe({
+      const sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: base64ToUint8Array(
           process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string
@@ -97,6 +66,7 @@ export default function AccountNotifications() {
             <Text fontWeight="medium">Autoriser les notifications push</Text>
             <Switch
               defaultChecked={user?.notification_status === "enabled"}
+              isDisabled={!registration}
               onChange={handleRequestNotification}
               checked={notificationPushActive}
             />

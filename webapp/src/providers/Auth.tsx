@@ -27,6 +27,8 @@ type AuthContext = {
   setShowModalInstallApp: (showModalInstallApp: boolean) => void;
   deferredEvent: BeforeInstallPromptEvent | null;
   setDeferredEvent: (event: BeforeInstallPromptEvent | null) => void;
+  registration: ServiceWorkerRegistration | null;
+  setRegistration: (registration: ServiceWorkerRegistration | null) => void;
   refetchUser: () => void;
 };
 
@@ -42,6 +44,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     useState<boolean>(false);
   const [showModalInstallApp, setShowModalInstallApp] =
     useState<boolean>(false);
+
+  const [registration, setRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
 
   const [showing, setShowing] = useState(false);
   const [deferredEvent, setDeferredEvent] =
@@ -79,6 +84,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchMe();
   }, []);
 
+  useEffect(() => {
+    let swRegistration = navigator.serviceWorker.register("/sw.js");
+
+    if (swRegistration) {
+      swRegistration.then((reg) => {
+        setRegistration(reg);
+      });
+    }
+  }, []);
+
   return (
     <Context.Provider
       value={{
@@ -94,6 +109,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setShowModalInstallApp,
         deferredEvent,
         setDeferredEvent,
+        registration,
+        setRegistration,
         refetchUser: fetchMe,
       }}
     >

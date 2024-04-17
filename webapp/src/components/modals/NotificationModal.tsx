@@ -13,41 +13,20 @@ const NotificationModal = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const { refetchUser } = useAuth();
-
-  const [registration, setRegistration] =
-    useState<ServiceWorkerRegistration | null>(null);
+  const { refetchUser, registration } = useAuth();
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
   });
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      "serviceWorker" in navigator &&
-      (window as any).workbox !== undefined
-    ) {
-      // run only in browser
-      navigator.serviceWorker.ready.then((reg) => {
-        setRegistration(reg);
-      });
-    }
+    if (!registration) onClose();
   }, []);
 
   const handleRequestNotification = async () => {
     if (!registration) {
       console.error("No SW registration available.");
       return;
-    }
-
-    const result = await window.Notification.requestPermission();
-
-    if (result !== "granted") {
-      updateUser({
-        notification_status: "disabled",
-      });
-      onClose();
     }
 
     const sub = await registration.pushManager.subscribe({
