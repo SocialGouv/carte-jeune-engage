@@ -19,6 +19,7 @@ const pwaOptions = {
   dest: "public",
   reloadOnOnline: true,
   dynamicStartUrl: true,
+  register: false,
   workboxOptions: {
     maximumFileSizeToCacheInBytes: 10000000,
     disableDevLogs: true,

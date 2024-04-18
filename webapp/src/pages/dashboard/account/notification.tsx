@@ -26,9 +26,20 @@ export default function AccountNotifications() {
         notification_subscription: null,
       });
     } else {
-      let swRegistration = await navigator.serviceWorker.register("/sw.js", {
-        scope: "/dashboard/",
-      });
+      // let swRegistration = await navigator.serviceWorker.register("/sw.js", {
+      //   scope: "/dashboard/",
+      // });
+
+      if (
+        "serviceWorker" in navigator &&
+        (window as any).workbox !== undefined
+      ) {
+        (window as any).workbox.register();
+      }
+
+      let swRegistration = await navigator.serviceWorker.getRegistration();
+
+      if (!swRegistration) return;
 
       const sub = await swRegistration.pushManager.subscribe({
         userVisibleOnly: true,
