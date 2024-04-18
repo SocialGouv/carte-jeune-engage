@@ -92,7 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setRegistration(reg);
       });
     }
-  }, []);
+  }, [navigator.serviceWorker]);
 
   return (
     <Context.Provider
