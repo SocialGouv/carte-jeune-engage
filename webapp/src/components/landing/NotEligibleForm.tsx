@@ -95,9 +95,9 @@ const NotEligibleForm = (props: NotEligibleFormProps) => {
           <Text fontSize="xl" fontWeight="medium" mt={8}>
             Êtes-vous bien dans l’une de ces situations ? :
             <UnorderedList ml={8} mt={1}>
-              <ListItem>En CEJ à la Mission locale</ListItem>
-              <ListItem>En CEJ à France travail</ListItem>
-              <ListItem>En service civique</ListItem>
+              <ListItem>Inscrit à la Mission locale (+ de 18 ans)</ListItem>
+              <ListItem>Inscrit à France Travail</ListItem>
+              <ListItem>En service civique (+ de 18 ans)</ListItem>
             </UnorderedList>
           </Text>
           <Flex alignItems="center" w="full" gap={6} mt={4}>

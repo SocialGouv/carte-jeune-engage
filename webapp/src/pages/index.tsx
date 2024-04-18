@@ -485,7 +485,7 @@ export default function Home() {
                 icon={HiMapPin}
               />
               <MapSectionCard
-                text="Réservé aux jeunes en CEJ à la Mission locale, France travail ou en mission Service civique"
+                text="Réservé aux jeunes inscrits à la Mission locale, à France travail ou engagé en Service civique"
                 icon={HiMiniClipboardDocumentCheck}
               />
               <MapSectionCard
@@ -511,13 +511,13 @@ export default function Home() {
               color="secondaryText"
               mt={8}
             >
-              Rappel : vous devez être à France Travail ou à la Mission locale
-              en “Contrat d’engagement jeune”, ou engagé en Service civique.
+              Rappel : vous devez être à France Travail ou à la Mission locale,
+              ou engagé en Service civique.
             </Text>
             <Flex flexDir={{ base: "column", lg: "row" }} gap={8} mt={9}>
               <HowItWorksSectionCard
                 title="Votre conseiller vous inscrit"
-                description="Votre conseiller du contrat d’engagement jeune (CEJ) vous inscrit avec votre numéro de téléphone. "
+                description="Vous avez été inscrit par votre Service civique, conseiller Mission locale ou France travail et vous recevez le SMS d’invitation"
                 number={1}
               />
               <HowItWorksSectionCard
