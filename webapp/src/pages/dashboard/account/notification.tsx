@@ -26,7 +26,9 @@ export default function AccountNotifications() {
         notification_subscription: null,
       });
     } else {
-      let swRegistration = await navigator.serviceWorker.register("/sw.js");
+      let swRegistration = await navigator.serviceWorker.register("/sw.js", {
+        scope: "/dashboard/",
+      });
 
       const sub = await swRegistration.pushManager.subscribe({
         userVisibleOnly: true,
