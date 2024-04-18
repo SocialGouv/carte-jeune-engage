@@ -1,3 +1,10 @@
+## [0.35.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.6...v0.35.7) (2024-04-18)
+
+
+### Bug Fixes
+
+* wording landing ([8fffe3a](https://github.com/SocialGouv/carte-jeune-engage/commit/8fffe3a0706a879fdf8ed941df72fbf2bd661427))
+
 ## [0.35.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.5...v0.35.6) (2024-04-16)
 
 
