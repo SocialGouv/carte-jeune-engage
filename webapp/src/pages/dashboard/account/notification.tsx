@@ -68,12 +68,10 @@ export default function AccountNotifications() {
             <Text fontWeight="medium">Autoriser les notifications push</Text>
             <Switch
               defaultChecked={user?.notification_status === "enabled"}
-              isDisabled={!registration}
               onChange={handleRequestNotification}
               checked={notificationPushActive}
             />
           </Flex>
-          <Text>{registration ? "Registered" : "Not registered"}</Text>
         </Flex>
       )}
     </Flex>
