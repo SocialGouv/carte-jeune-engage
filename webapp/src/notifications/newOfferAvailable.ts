@@ -14,16 +14,42 @@ export async function sendNewOfferAvailable() {
   try {
     const payload = await getPayloadClient({ seed: false });
 
-    const todayOffers = await payload.find({
+    const currentDate = new Date();
+
+    let todayOffers = await payload.find({
       collection: "offers",
       pagination: false,
       depth: 1,
       where: {
-        createdAt: {
-          greater_than_equal: new Date().toISOString().split("T")[0],
+        validityFrom: {
+          greater_than_equal: currentDate.toISOString().split("T")[0],
         },
       },
     });
+
+    await Promise.all(
+      todayOffers.docs.map(async (offer) => {
+        const offerCoupons = await payload.find({
+          collection: "coupons",
+          limit: 1,
+          where: {
+            offer: {
+              equals: offer.id,
+            },
+            user: {
+              exists: false,
+            },
+            used: {
+              equals: false,
+            },
+          },
+        });
+
+        if (offerCoupons.docs.length === 0) {
+          todayOffers.docs = todayOffers.docs.filter((o) => o.id !== offer.id);
+        }
+      })
+    );
 
     if (todayOffers.docs.length === 0) {
       console.log(`[${slug}] - Ending (No new offers today)`);
@@ -52,6 +78,7 @@ export async function sendNewOfferAvailable() {
             sub: user.notification_subscription,
             payload,
             userId: user.id,
+            offerId: offer.id,
             payloadNotification: {
               title: "🎁 Nouvelle offre sur l’appli !",
               message: `${offer.partner.name} ${offer?.title}, maintenant disponible sur l’appli`,
