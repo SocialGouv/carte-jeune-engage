@@ -84,7 +84,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchMe();
   }, []);
 
-  useEffect(() => {
+  if (
+    typeof window !== "undefined" &&
+    "serviceWorker" in navigator &&
+    !registration
+  ) {
     let swRegistration = navigator.serviceWorker.register("/sw.js");
 
     if (swRegistration) {
@@ -92,7 +96,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setRegistration(reg);
       });
     }
-  }, [navigator.serviceWorker]);
+  }
 
   return (
     <Context.Provider
