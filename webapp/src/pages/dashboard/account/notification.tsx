@@ -8,7 +8,7 @@ import { base64ToUint8Array } from "~/utils/tools";
 
 export default function AccountNotifications() {
   const router = useRouter();
-  const { user, refetchUser, registration } = useAuth();
+  const { user, refetchUser } = useAuth();
 
   const [notificationPushActive, setNotificationPushActive] = useState(false);
 
@@ -19,14 +19,16 @@ export default function AccountNotifications() {
   const handleRequestNotification = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (!event.target.checked || !registration) {
+    if (!event.target.checked) {
       setNotificationPushActive(false);
       updateUser({
         notification_status: "disabled",
         notification_subscription: null,
       });
     } else {
-      const sub = await registration.pushManager.subscribe({
+      let swRegistration = await navigator.serviceWorker.register("/sw.js");
+
+      const sub = await swRegistration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: base64ToUint8Array(
           process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string

@@ -84,20 +84,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchMe();
   }, []);
 
-  if (
-    typeof window !== "undefined" &&
-    "serviceWorker" in navigator &&
-    !registration
-  ) {
-    let swRegistration = navigator.serviceWorker.register("/sw.js");
-
-    if (swRegistration) {
-      swRegistration.then((reg) => {
-        setRegistration(reg);
-      });
-    }
-  }
-
   return (
     <Context.Provider
       value={{
