@@ -14,61 +14,57 @@ export async function sendReminderOfferActivated() {
   try {
     const payload = await getPayloadClient({ seed: false });
 
-    const users = await payload.find({
-      collection: "users",
+    const date2DaysAgo = new Date(new Date().setDate(new Date().getDate() - 2));
+
+    const offersActivated = await payload.find({
+      collection: "coupons",
       pagination: false,
-      depth: 0,
+      depth: 1,
       where: {
-        notification_status: {
+        used: {
+          equals: false,
+        },
+        assignUserAt: {
+          greater_than_equal: `${
+            date2DaysAgo.toISOString().split("T")[0]
+          }T00:00:00`,
+          less_than_equal: `${
+            date2DaysAgo.toISOString().split("T")[0]
+          }T23:59:59`,
+        },
+        "user.notification_status": {
           equals: "enabled",
           exists: true,
         },
-        notification_subscription: {
+        "user.notification_subscription": {
           exists: true,
         },
       },
     });
 
-    for (const user of users.docs) {
-      const offersActivated = await payload.find({
-        collection: "coupons",
-        depth: 1,
-        where: {
-          user: {
-            equals: user.id,
+    if (offersActivated.docs.length === 0) {
+      console.log(`[${slug}] - No offers activated 2 days ago found`);
+      return;
+    }
+
+    for (const offerActivated of offersActivated.docs as CouponIncluded[]) {
+      const { notificationSent, notificationInDb } = await sendPushNotification(
+        {
+          sub: offerActivated.user.notification_subscription,
+          payload,
+          userId: offerActivated.user.id,
+          offerId: offerActivated.offer.id,
+          payloadNotification: {
+            title: "Votre offre vous attend !",
+            message: `👉 L’offre ${offerActivated.offer.title} vous attend, utilisez-la quand vous voulez. Ne l’oubliez pas 😶`,
+            url: `${getBaseUrl()}/dashboard/offer/${offerActivated.offer.id}`,
+            slug,
           },
-          used: {
-            equals: false,
-          },
-        },
-      });
-
-      for (const offerActivated of offersActivated.docs as CouponIncluded[]) {
-        if (!offerActivated.assignUserAt) return;
-        const couponUserAssignAt = new Date(offerActivated.assignUserAt);
-        const currentDate = new Date();
-        const diffDays = dateDiffInDays(couponUserAssignAt, currentDate);
-
-        if (diffDays === 2) {
-          const { notificationSent, notificationInDb } =
-            await sendPushNotification({
-              sub: user.notification_subscription,
-              payload,
-              userId: user.id,
-              payloadNotification: {
-                title: "Votre offre vous attend !",
-                message: `👉 L’offre ${offerActivated.offer.title} vous attend, utilisez-la quand vous voulez. Ne l’oubliez pas 😶`,
-                url: `${getBaseUrl()}/dashboard/offer/${
-                  offerActivated.offer.id
-                }`,
-                slug,
-              },
-            });
-
-          if (notificationSent) nbOfNotificationsSent++;
-          if (notificationInDb) nbOfNotificationsInDb++;
         }
-      }
+      );
+
+      if (notificationSent) nbOfNotificationsSent++;
+      if (notificationInDb) nbOfNotificationsInDb++;
     }
 
     if (nbOfNotificationsSent > 0 || nbOfNotificationsInDb > 0) {

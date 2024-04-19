@@ -22,7 +22,12 @@ export async function sendNewOfferAvailable() {
       depth: 1,
       where: {
         validityFrom: {
-          greater_than_equal: currentDate.toISOString().split("T")[0],
+          greater_than_equal: `${
+            currentDate.toISOString().split("T")[0]
+          }T00:00:00`,
+          less_than_equal: `${
+            currentDate.toISOString().split("T")[0]
+          }T23:59:59`,
         },
       },
     });
