@@ -1,3 +1,10 @@
+## [0.35.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.8...v0.35.9) (2024-04-22)
+
+
+### Bug Fixes
+
+* assignToUser AND syntax ([f26fb36](https://github.com/SocialGouv/carte-jeune-engage/commit/f26fb36631eed4d75540210d18be113902c183a1))
+
 ## [0.35.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.7...v0.35.8) (2024-04-22)
 
 
