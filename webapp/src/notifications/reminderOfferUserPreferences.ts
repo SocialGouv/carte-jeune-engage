@@ -86,11 +86,11 @@ export async function sendReminderOfferUserPreferences() {
             },
           });
 
-          if (offerCoupons.docs.length === 0 || userCoupons.docs.length > 0) {
-            offers.docs = offers.docs.filter((o) => o.id !== offer.id);
-          }
+          return offerCoupons.docs.length === 0 || userCoupons.docs.length > 0;
         })
-      );
+      ).then((results) => {
+        offers.docs = offers.docs.filter((_, index) => results[index]);
+      });
 
       if (offers.docs.length === 0) {
         console.log(`[${slug}] - No offers available`);

@@ -50,11 +50,11 @@ export async function sendNewOfferAvailable() {
           },
         });
 
-        if (offerCoupons.docs.length === 0) {
-          todayOffers.docs = todayOffers.docs.filter((o) => o.id !== offer.id);
-        }
+        return offerCoupons.docs.length === 0;
       })
-    );
+    ).then((results) => {
+      todayOffers.docs = todayOffers.docs.filter((_, index) => results[index]);
+    });
 
     if (todayOffers.docs.length === 0) {
       console.log(`[${slug}] - Ending (No new offers today)`);
