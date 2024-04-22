@@ -88,6 +88,27 @@ export const couponRouter = createTRPCRouter({
 
       const couponData = availableCoupon;
 
+      const checkIfCouponIsAlreadyAssigned = await ctx.payload.find({
+        collection: "coupons",
+        where: {
+          and: [
+            { user: { equals: ctx.session.id } },
+            { offer: { equals: offer_id } },
+            {
+              ...payloadWhereOfferIsValid("offer"),
+            },
+            { used: { equals: false } },
+          ],
+        },
+      });
+
+      if (checkIfCouponIsAlreadyAssigned.docs.length > 0) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "An active coupon is already assigned to user",
+        });
+      }
+
       const updatedCoupon = await ctx.payload.update({
         collection: "coupons",
         id: couponData.id,

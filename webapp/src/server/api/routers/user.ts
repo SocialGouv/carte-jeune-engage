@@ -154,12 +154,17 @@ export const userRouter = createTRPCRouter({
         timeAtCEJ: z
           .enum(["started", "lessThan3Months", "moreThan3Months"])
           .optional(),
+        hasAJobIdea: z.enum(["yes", "no"]).optional(),
+        projectTitle: z.string().optional(),
+        projectDescription: z.string().optional(),
         firstName: z.string().optional(),
         lastName: z.string().optional(),
         userEmail: z.string().email().optional(),
         address: z.string().optional(),
         preferences: z.array(z.number()).optional(),
         image: z.number().optional(),
+        notification_subscription: z.any().optional(),
+        notification_status: z.enum(["enabled", "disabled"]).optional(),
       })
     )
     .mutation(async ({ ctx, input: userInput }) => {

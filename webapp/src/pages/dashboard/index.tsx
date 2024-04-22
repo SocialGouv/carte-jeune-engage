@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Center,
   Flex,
   Grid,
@@ -8,14 +9,15 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
+import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "~/utils/api";
-import InstallationBanner from "~/components/InstallationBanner";
+import Script from "next/script";
 import { FiMoreHorizontal } from "react-icons/fi";
+import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
 import OfferCard from "~/components/cards/OfferCard";
-import { push } from "@socialgouv/matomo-next";
+import { api } from "~/utils/api";
 
 export default function Dashboard() {
   const { data: resultCategories, isLoading: isLoadingCategories } =
@@ -65,24 +67,59 @@ export default function Dashboard() {
   }
 
   return (
-    <Box pt={12} pb={32}>
-      <Box px={8}>
-        <InstallationBanner
-          ignoreUserOutcome={false}
-          matomoEvent={["Accueil", "Obtenir l'application"]}
-        />
-        <Heading as="h2" fontSize="2xl">
-          Quelles économies allez-vous faire aujourd’hui ?
-        </Heading>
-        <SimpleGrid columns={4} mt={6} spacingX={4}>
-          {categories?.map((category) => (
+    <>
+      <Box pt={12} pb={32}>
+        <Box px={8}>
+          <InstallationBanner
+            ignoreUserOutcome={false}
+            matomoEvent={["Accueil", "Obtenir l'application"]}
+          />
+          <Heading as="h2" fontSize="2xl">
+            Quelles économies allez-vous faire aujourd’hui ?
+          </Heading>
+          <SimpleGrid columns={4} mt={6} spacingX={4}>
+            {categories?.map((category) => (
+              <Link
+                key={category.id}
+                href={`/dashboard/category/${category.slug}`}
+                onClick={() => {
+                  push(["trackEvent", "Accueil", "Catégories", category.label]);
+                }}
+                passHref
+              >
+                <Flex
+                  justifyContent="center"
+                  alignItems="center"
+                  bgColor="white"
+                  borderRadius="xl"
+                  p={2}
+                >
+                  <Image
+                    src={category.icon.url as string}
+                    alt={category.icon.alt as string}
+                    width={45}
+                    height={45}
+                  />
+                </Flex>
+                <Text
+                  pt={1.5}
+                  fontSize="xs"
+                  textAlign="center"
+                  fontWeight="bold"
+                  bgColor="bgWhite"
+                  w="full"
+                >
+                  {category.label}
+                </Text>
+              </Link>
+            ))}
             <Link
-              key={category.id}
-              href={`/dashboard/category/${category.slug}`}
-              onClick={() => {
-                push(["trackEvent", "Accueil", "Catégories", category.label]);
-              }}
+              key="all"
+              href="/dashboard/categories"
               passHref
+              onClick={() => {
+                push(["trackEvent", "Accueil", `Toutes les catégories`]);
+              }}
             >
               <Flex
                 justifyContent="center"
@@ -91,12 +128,9 @@ export default function Dashboard() {
                 borderRadius="xl"
                 p={2}
               >
-                <Image
-                  src={category.icon.url as string}
-                  alt={category.icon.alt as string}
-                  width={45}
-                  height={45}
-                />
+                <Flex width={45} height={45}>
+                  <Icon as={FiMoreHorizontal} width={10} height={10} m="auto" />
+                </Flex>
               </Flex>
               <Text
                 pt={1.5}
@@ -106,115 +140,22 @@ export default function Dashboard() {
                 bgColor="bgWhite"
                 w="full"
               >
-                {category.label}
+                Tout voir
               </Text>
             </Link>
-          ))}
-          <Link
-            key="all"
-            href="/dashboard/categories"
-            passHref
-            onClick={() => {
-              push(["trackEvent", "Accueil", `Toutes les catégories`]);
-            }}
-          >
-            <Flex
-              justifyContent="center"
-              alignItems="center"
-              bgColor="white"
-              borderRadius="xl"
-              p={2}
-            >
-              <Flex width={45} height={45}>
-                <Icon as={FiMoreHorizontal} width={10} height={10} m="auto" />
-              </Flex>
-            </Flex>
-            <Text
-              pt={1.5}
-              fontSize="xs"
-              textAlign="center"
-              fontWeight="bold"
-              bgColor="bgWhite"
-              w="full"
-            >
-              Tout voir
-            </Text>
-          </Link>
-        </SimpleGrid>
+          </SimpleGrid>
+          {quickAccessPartners && quickAccessPartners?.length > 0 && (
+            <Heading as="h2" fontSize="2xl" mt={6}>
+              Accès rapides
+            </Heading>
+          )}
+        </Box>
         {quickAccessPartners && quickAccessPartners?.length > 0 && (
-          <Heading as="h2" fontSize="2xl" mt={6}>
-            Accès rapides
-          </Heading>
-        )}
-      </Box>
-      {quickAccessPartners && quickAccessPartners?.length > 0 && (
-        <Flex
-          alignItems="center"
-          mt={5}
-          px={8}
-          gap={4}
-          overflowX="auto"
-          sx={{
-            "::-webkit-scrollbar": {
-              display: "none",
-            },
-          }}
-        >
-          {quickAccessPartners?.map((quickAccess) => (
-            <Link
-              key={quickAccess.id}
-              href={`/dashboard/offer/${quickAccess.offer.id}`}
-              onClick={() => {
-                push([
-                  "trackEvent",
-                  "Accueil",
-                  "Accès rapide",
-                  "Offre",
-                  quickAccess.offer.partner.name,
-                  quickAccess.offer.title,
-                ]);
-              }}
-              passHref
-            >
-              <Box
-                bgColor="white"
-                borderRadius="full"
-                border="2px solid #EDEDED"
-              >
-                <Flex
-                  justifyContent="center"
-                  alignItems="center"
-                  borderRadius="full"
-                  border="3px solid"
-                  borderColor="#F7F8FA"
-                  w={65}
-                  h={65}
-                >
-                  <Image
-                    src={quickAccess.partner.icon.url as string}
-                    alt={quickAccess.partner.icon.alt as string}
-                    width={45}
-                    height={45}
-                  />
-                </Flex>
-              </Box>
-            </Link>
-          ))}
-        </Flex>
-      )}
-      {offers && offers?.length > 0 && (
-        <>
-          <Heading as="h2" fontSize="2xl" mt={6} px={8}>
-            Les réductions pour vous
-          </Heading>
-          <Grid
-            templateColumns="repeat(auto-fit, minmax(285px, 1fr))"
-            gridAutoFlow="column"
-            gridAutoColumns="minmax(285px, 1fr)"
-            mt={4}
+          <Flex
+            alignItems="center"
+            mt={5}
             px={8}
             gap={4}
-            pb={2}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
@@ -222,48 +163,111 @@ export default function Dashboard() {
               },
             }}
           >
-            {offers?.map((offer) => (
-              <OfferCard
-                key={offer.id}
-                offer={offer}
-                matomoEvent={[
-                  "Accueil",
-                  "Pour vous",
-                  "Offre",
-                  offer.partner.name,
-                  offer.title,
-                ]}
-              />
+            {quickAccessPartners?.map((quickAccess) => (
+              <Link
+                key={quickAccess.id}
+                href={`/dashboard/offer/${quickAccess.offer.id}`}
+                onClick={() => {
+                  push([
+                    "trackEvent",
+                    "Accueil",
+                    "Accès rapide",
+                    "Offre",
+                    quickAccess.offer.partner.name,
+                    quickAccess.offer.title,
+                  ]);
+                }}
+                passHref
+              >
+                <Box
+                  bgColor="white"
+                  borderRadius="full"
+                  border="2px solid #EDEDED"
+                >
+                  <Flex
+                    justifyContent="center"
+                    alignItems="center"
+                    borderRadius="full"
+                    border="3px solid"
+                    borderColor="#F7F8FA"
+                    w={65}
+                    h={65}
+                  >
+                    <Image
+                      src={quickAccess.partner.icon.url as string}
+                      alt={quickAccess.partner.icon.alt as string}
+                      width={45}
+                      height={45}
+                    />
+                  </Flex>
+                </Box>
+              </Link>
             ))}
-          </Grid>
-        </>
-      )}
-      <Box px={8}>
-        <Heading as="h2" fontSize="2xl" mt={6}>
-          Nos partenaires
-        </Heading>
-        <SimpleGrid columns={4} gap={4} mt={5}>
-          {partners?.map((partner) => (
-            <Flex
-              key={partner.id}
-              flexDir="column"
-              alignItems="center"
-              justifyContent="center"
-              borderRadius="xl"
-              bgColor="white"
-              p={2}
+          </Flex>
+        )}
+        {offers && offers?.length > 0 && (
+          <>
+            <Heading as="h2" fontSize="2xl" mt={6} px={8}>
+              Les réductions pour vous
+            </Heading>
+            <Grid
+              templateColumns="repeat(auto-fit, minmax(285px, 1fr))"
+              gridAutoFlow="column"
+              gridAutoColumns="minmax(285px, 1fr)"
+              mt={4}
+              px={8}
+              gap={4}
+              pb={2}
+              overflowX="auto"
+              sx={{
+                "::-webkit-scrollbar": {
+                  display: "none",
+                },
+              }}
             >
-              <Image
-                src={partner.icon.url as string}
-                alt={partner.icon.alt as string}
-                width={45}
-                height={45}
-                unoptimized
-              />
-            </Flex>
-          ))}
-        </SimpleGrid>
+              {offers?.map((offer) => (
+                <OfferCard
+                  key={offer.id}
+                  offer={offer}
+                  matomoEvent={[
+                    "Accueil",
+                    "Pour vous",
+                    "Offre",
+                    offer.partner.name,
+                    offer.title,
+                  ]}
+                />
+              ))}
+            </Grid>
+          </>
+        )}
+        <Box px={8}>
+          <Heading as="h2" fontSize="2xl" mt={6}>
+            Nos partenaires
+          </Heading>
+          <SimpleGrid columns={4} gap={4} mt={5}>
+            {partners?.map((partner) => (
+              <Flex
+                key={partner.id}
+                flexDir="column"
+                alignItems="center"
+                justifyContent="center"
+                borderRadius="xl"
+                bgColor="white"
+                p={2}
+              >
+                <Image
+                  src={partner.icon.url as string}
+                  alt={partner.icon.alt as string}
+                  width={45}
+                  height={45}
+                  unoptimized
+                />
+              </Flex>
+            ))}
+          </SimpleGrid>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }

@@ -1,16 +1,44 @@
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 import BottomNavigation from "~/components/BottomNavigation";
 import Footer from "~/components/landing/Footer";
 import Header from "~/components/landing/Header";
+import NotificationModal from "~/components/modals/NotificationModal";
+import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
+import { isIOS, isStandalone } from "~/utils/tools";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
-  const { setDeferredEvent, setShowing, user, isOtpGenerated } = useAuth();
+  const {
+    deferredEvent,
+    setDeferredEvent,
+    setShowing,
+    user,
+    isOtpGenerated,
+    showNotificationModal,
+    setShowNotificationModal,
+    showModalInstallApp,
+    setShowModalInstallApp,
+  } = useAuth();
+
+  const { isOpen: isNotificationModalOpen, onClose: onNotificationModalClose } =
+    useDisclosure({
+      isOpen: showNotificationModal && !!user && !user.notification_status,
+      onClose: () => setShowNotificationModal(false),
+    });
+
+  const { isOpen: isOpenModalInstallApp, onClose: onCloseModalInstallApp } =
+    useDisclosure({
+      isOpen: showModalInstallApp && (!isIOS() ? deferredEvent !== null : true),
+      onClose: () => {
+        setShowModalInstallApp(false);
+        if (!isIOS()) setShowNotificationModal(true);
+      },
+    });
 
   const isLanding =
     (pathname === "/" ||
@@ -28,6 +56,25 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     setDeferredEvent(event as BeforeInstallPromptEvent);
 
     setShowing(true);
+  };
+
+  const getTarteAuCitronInitByEnv = () => {
+    switch (process.env.NEXT_PUBLIC_ENV_APP) {
+      case "preproduction":
+        return (
+          <script
+            type="text/javascript"
+            src="/static/tarteaucitron/env/preprod/initTarteaucitron.js"
+          />
+        );
+      case "production":
+        return (
+          <script
+            type="text/javascript"
+            src="/static/tarteaucitron/env/prod/initTarteaucitron.js"
+          />
+        );
+    }
   };
 
   useEffect(() => {
@@ -72,6 +119,12 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
           href="/pwa/appIcon/maskable_icon_x192.png"
         />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        /* Tarteaucitron */
+        <script
+          type="text/javascript"
+          src="/static/tarteaucitron/tarteaucitron.js"
+        />
+        {getTarteAuCitronInitByEnv()}
       </Head>
       <Box
         as="main"
@@ -88,6 +141,18 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
           h="full"
         >
           {children}
+          {showNotificationModal && (
+            <NotificationModal
+              isOpen={isNotificationModalOpen}
+              onClose={onNotificationModalClose}
+            />
+          )}
+          {showModalInstallApp && (
+            <InstallAppModal
+              onClose={onCloseModalInstallApp}
+              isOpen={isOpenModalInstallApp}
+            />
+          )}
         </Container>
         {isLanding && <Footer />}
         {(pathname === "/dashboard" ||

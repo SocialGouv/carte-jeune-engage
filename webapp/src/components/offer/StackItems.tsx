@@ -43,7 +43,7 @@ const StackItems = ({
   return (
     <VStack spacing={props?.spacing ?? 6} align="start" {...props}>
       {title && (
-        <Text fontSize="sm" fontWeight="bold">
+        <Text key="title-item" fontSize="sm" fontWeight="bold">
           {title}
         </Text>
       )}
@@ -72,7 +72,11 @@ const StackItems = ({
               )}
             </>
           )}
-          <TextWithLinks props={{ fontWeight: "medium " }} text={text} />
+          <TextWithLinks
+            key={`${text}-${index}-${icon}`}
+            props={{ fontWeight: "medium " }}
+            text={text}
+          />
         </HStack>
       ))}
     </VStack>

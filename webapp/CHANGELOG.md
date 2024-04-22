@@ -1,3 +1,231 @@
+## [0.35.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.6...v0.35.7) (2024-04-18)
+
+
+### Bug Fixes
+
+* wording landing ([8fffe3a](https://github.com/SocialGouv/carte-jeune-engage/commit/8fffe3a0706a879fdf8ed941df72fbf2bd661427))
+
+## [0.35.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.5...v0.35.6) (2024-04-16)
+
+
+### Bug Fixes
+
+* wording on landing and in not eligible modal ([1777b6c](https://github.com/SocialGouv/carte-jeune-engage/commit/1777b6c5048fb124c31b00d2af6b9138151fc07e))
+
+## [0.35.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.4...v0.35.5) (2024-04-16)
+
+
+### Bug Fixes
+
+* fallback url on go back in page offer ([4c19002](https://github.com/SocialGouv/carte-jeune-engage/commit/4c19002fe37515383cdfd256845f8e88f350edb4))
+* remove tarteaucitron and hotjar on admin panel ([5d31e66](https://github.com/SocialGouv/carte-jeune-engage/commit/5d31e66638773b73bd14d4e99b6f4611ce6b93f0))
+
+## [0.35.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.3...v0.35.4) (2024-04-16)
+
+
+### Bug Fixes
+
+* add guard for router can go back for offer page ([4427f6d](https://github.com/SocialGouv/carte-jeune-engage/commit/4427f6d0043f7f16550f82839f84b99f4e01b19a))
+* add url for local and prod env for icon image in notification ([1d9005f](https://github.com/SocialGouv/carte-jeune-engage/commit/1d9005f8387708c790864da953d7e50ab333bf2e))
+
+## [0.35.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.2...v0.35.3) (2024-04-16)
+
+
+### Bug Fixes
+
+* add app env to cron environnements ([94afdfc](https://github.com/SocialGouv/carte-jeune-engage/commit/94afdfc23306045a0aee73b7a110f351bf859fa2))
+
+## [0.35.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.1...v0.35.2) (2024-04-16)
+
+
+### Bug Fixes
+
+* url to send notification ([af6ce91](https://github.com/SocialGouv/carte-jeune-engage/commit/af6ce91bca74f0ee4b4cba62ab612bfc0e34916e))
+
+## [0.35.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.0...v0.35.1) (2024-04-15)
+
+
+### Bug Fixes
+
+* add kind of supervisor to permission ([6b4bbea](https://github.com/SocialGouv/carte-jeune-engage/commit/6b4bbea64a7ee07359a16c0c99744fe367ef2a8d))
+* add migrations ([4139f81](https://github.com/SocialGouv/carte-jeune-engage/commit/4139f810da4a60e0e92b2f421c9b4b1cc129a63e))
+
+# [0.35.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.2...v0.35.0) (2024-04-15)
+
+
+### Features
+
+* add new kind on supervisor, attach supervisor to permission and personalize sms message on user invite ([9755a07](https://github.com/SocialGouv/carte-jeune-engage/commit/9755a072f702c14824f30388bd0c475a916c4a0d))
+
+## [0.34.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.1...v0.34.2) (2024-04-15)
+
+
+### Bug Fixes
+
+* ignore .kontinuous ([18445a2](https://github.com/SocialGouv/carte-jeune-engage/commit/18445a2aca00dd211a796b3e1e5fbebf29c93f5f))
+* prod cronjob ([3b21af3](https://github.com/SocialGouv/carte-jeune-engage/commit/3b21af346c613d4588717a3a1d1e67f0777a9816))
+* TZ ([72e413e](https://github.com/SocialGouv/carte-jeune-engage/commit/72e413e4f5a7675a9eb0e306692647b758fe415c))
+
+## [0.34.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.34.0...v0.34.1) (2024-04-12)
+
+
+### Bug Fixes
+
+* getBaseUrl preproduction link remove slash at end ([2c1df95](https://github.com/SocialGouv/carte-jeune-engage/commit/2c1df95d1d9d7647c2f1928e7a2fb2aafe9b712b))
+
+# [0.34.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.4...v0.34.0) (2024-04-12)
+
+
+### Bug Fixes
+
+* add url and icon to notification, get current offer for auchan reminder ([508134d](https://github.com/SocialGouv/carte-jeune-engage/commit/508134d98a04d60c2a470ecb42b5e4ea7db75ccc))
+* hide notifications for ios ([560603a](https://github.com/SocialGouv/carte-jeune-engage/commit/560603a6377d2a6cbc6b49fcf1ced7b12925a2bc))
+* use absolute path instead of relative path for cron-job purpose ([17bb681](https://github.com/SocialGouv/carte-jeune-engage/commit/17bb681f587964c6ba62241f20f2d0f44ac46859))
+
+
+### Features
+
+* add new notification for reminder of offer activated ([0255987](https://github.com/SocialGouv/carte-jeune-engage/commit/025598718e3b06bff8c57fd1bb23e7bccbca0a7a))
+
+## [0.33.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.3...v0.33.4) (2024-04-11)
+
+
+### Bug Fixes
+
+* add back navigation in notification page ([181eaa7](https://github.com/SocialGouv/carte-jeune-engage/commit/181eaa756c1179f8a70c811a5de26a411d377615))
+* add specific conditions for notification kind ([2192c20](https://github.com/SocialGouv/carte-jeune-engage/commit/2192c20d584c3ddf92942de9a39f837a9bc0b8d5))
+* notification already sent guard ([6028bd2](https://github.com/SocialGouv/carte-jeune-engage/commit/6028bd294188d2375b4c51900b5dab9456e179b9))
+* spelling for title and message on all notifications ([df7a19e](https://github.com/SocialGouv/carte-jeune-engage/commit/df7a19ef3ef0dc5d3b8c3b65ffbdd2435e30d7eb))
+* workaroud handle for user subcription to push notification for ios purpose ([2feec62](https://github.com/SocialGouv/carte-jeune-engage/commit/2feec622afeb6ec7f07b59bab34f6512d5619798))
+
+## [0.33.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.2...v0.33.3) (2024-04-10)
+
+
+### Bug Fixes
+
+* add page to handle user notification on account page ([2bb7ec7](https://github.com/SocialGouv/carte-jeune-engage/commit/2bb7ec70e0b515c8c59a5ae2eb6ccc098681fc19))
+
+## [0.33.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.1...v0.33.2) (2024-04-10)
+
+
+### Bug Fixes
+
+* add web push public key to preprod and prod envs ([a1a9dd0](https://github.com/SocialGouv/carte-jeune-engage/commit/a1a9dd061698f3e5b788fe8e79ec0344c2169f6c))
+
+## [0.33.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.33.0...v0.33.1) (2024-04-10)
+
+
+### Bug Fixes
+
+* modal notification modal default value ([15bf68b](https://github.com/SocialGouv/carte-jeune-engage/commit/15bf68b85fc21e2f1c05af0ff7774ec3a5181171))
+
+# [0.33.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.4...v0.33.0) (2024-04-09)
+
+
+### Bug Fixes
+
+* add payload migrations ([47d3815](https://github.com/SocialGouv/carte-jeune-engage/commit/47d3815d62fd1c2185330a1cec2b21cf3cbf1063))
+* add push private key to dev and prepord secrets and push public key to args and configmap ([627ce34](https://github.com/SocialGouv/carte-jeune-engage/commit/627ce34fc776543636a691d8c54a87adf708a619))
+* change relative to absolute path on collection coupon for payload purpose ([f6b1128](https://github.com/SocialGouv/carte-jeune-engage/commit/f6b1128e5e65ff5b4a29e8cbbb76207b76f06c5e))
+* kontinuous config ([aab8991](https://github.com/SocialGouv/carte-jeune-engage/commit/aab899171d6f90df39838b24c01a690ecb42f677))
+* notif used coupon on afterChange hook added baseUrl for dynamic fetching ([f1cd918](https://github.com/SocialGouv/carte-jeune-engage/commit/f1cd9181e1bc93bec4ad71b460a662bcf76838f8))
+* onClose modal install app function syntax and add migrations for notification entity ([49a5e90](https://github.com/SocialGouv/carte-jeune-engage/commit/49a5e90dd966c316b75bbad1541f15d22a4cdb04))
+
+
+### Features
+
+* add modal for notification after onboarding, register user subscription in database ([7d4f574](https://github.com/SocialGouv/carte-jeune-engage/commit/7d4f5741c491cb7a9829600372306164d856f0d7))
+* add script in package.json for cron-job task, added try catch guards, console logs, notification entity ([8b84df8](https://github.com/SocialGouv/carte-jeune-engage/commit/8b84df858b080db12dacdd3a639929abcac5769c))
+* begin notification implementation with test page ([6f1ad4b](https://github.com/SocialGouv/carte-jeune-engage/commit/6f1ad4ba4e5c221aec70977f647ffc13bc978815))
+* setup notification on coupon used and begin other notifications for all users ([2cb8f06](https://github.com/SocialGouv/carte-jeune-engage/commit/2cb8f063a6e1cd10f3e46029a318e8981073a4bc))
+
+## [0.32.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.3...v0.32.4) (2024-04-09)
+
+
+### Bug Fixes
+
+* add qr code image for preprod for temporary fix for dynamic qr code ([19447e0](https://github.com/SocialGouv/carte-jeune-engage/commit/19447e04e6c89224b38c5ba6a9fc0cba476357e9))
+
+## [0.32.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.2...v0.32.3) (2024-04-08)
+
+
+### Bug Fixes
+
+* add continue button on ios modal ([a2813f3](https://github.com/SocialGouv/carte-jeune-engage/commit/a2813f3a79be150bd40b5d046f744c9203cb7b33))
+
+## [0.32.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.1...v0.32.2) (2024-04-04)
+
+
+### Bug Fixes
+
+* handle ios case for onboarding install pwa modal ([ac5748e](https://github.com/SocialGouv/carte-jeune-engage/commit/ac5748e3852fad72eecc3472eb8e772b7efd60b5))
+
+## [0.32.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.32.0...v0.32.1) (2024-04-04)
+
+
+### Bug Fixes
+
+* add status in queryparams for hotjar purpose ([4045a4f](https://github.com/SocialGouv/carte-jeune-engage/commit/4045a4f6d7000e1f9695a0fb7bb08b18505db4d0))
+* coupon guard for multiple assign to one user issue ([30c414b](https://github.com/SocialGouv/carte-jeune-engage/commit/30c414bb2655eb91b967d02e510c1a2cd3066e00))
+
+# [0.32.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.31.0...v0.32.0) (2024-04-02)
+
+
+### Features
+
+* add modal to install pwa with ios and android mode ([7c550c2](https://github.com/SocialGouv/carte-jeune-engage/commit/7c550c2ae7acc93ab709f53b80021c21448c1b12))
+
+# [0.31.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.30.3...v0.31.0) (2024-03-27)
+
+
+### Features
+
+* new fields on User ([357be58](https://github.com/SocialGouv/carte-jeune-engage/commit/357be58bf674591c547d38cca2872e6b2dc4f51d))
+* optionnal step with projectTitle & projectDescription ([f8cc68f](https://github.com/SocialGouv/carte-jeune-engage/commit/f8cc68f25deec2e486997ce40eff9b3d7e2f9bb7))
+
+## [0.30.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.30.2...v0.30.3) (2024-03-27)
+
+
+### Bug Fixes
+
+* wording no activated offers ([04de789](https://github.com/SocialGouv/carte-jeune-engage/commit/04de78999d2fecfb17112c6287d29e7fe53624da))
+
+## [0.30.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.30.1...v0.30.2) (2024-03-27)
+
+
+### Bug Fixes
+
+* remove console logs ([5d0c155](https://github.com/SocialGouv/carte-jeune-engage/commit/5d0c155fe5b75d032307f9015bf42e6c3ba1899e))
+
+## [0.30.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.30.0...v0.30.1) (2024-03-27)
+
+
+### Bug Fixes
+
+* zindex tarteaucitron ([43b50af](https://github.com/SocialGouv/carte-jeune-engage/commit/43b50af12c270dfee428a0f037b39c269a95b1c4))
+
+# [0.30.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.29.1...v0.30.0) (2024-03-27)
+
+
+### Bug Fixes
+
+* css ([ad5f79e](https://github.com/SocialGouv/carte-jeune-engage/commit/ad5f79e4af2b05407c832959ede3588076468f56))
+* css ([432759f](https://github.com/SocialGouv/carte-jeune-engage/commit/432759f0120dd251414f6993c45518c73580245e))
+
+
+### Features
+
+* load different hotjar id by env ([cd3489d](https://github.com/SocialGouv/carte-jeune-engage/commit/cd3489d2c96ba8f869abbcd7858d754894768209))
+* tarteaucitron desktop ([305e907](https://github.com/SocialGouv/carte-jeune-engage/commit/305e907b5f8978c521213384f0879ee3392ff61d))
+* tarteaucitron mobile integration ([7aaef13](https://github.com/SocialGouv/carte-jeune-engage/commit/7aaef1341fed17c2178ae714ae1b556c6c515bbd))
+
+## [0.29.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.29.0...v0.29.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* increase nbSeen only on not activated offers ([fb4cf03](https://github.com/SocialGouv/carte-jeune-engage/commit/fb4cf0321e995f5bf72e32434d00158276ad09f6))
+
 # [0.29.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.28.4...v0.29.0) (2024-03-25)
 
 

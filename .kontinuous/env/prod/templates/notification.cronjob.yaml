@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-notification
+spec:
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  schedule: 0 18 * * *
+  timeZone: Europe/Paris
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: notification
+              image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/app:{{ .Values.global.imageTag }}"
+              command: ["yarn", "cron-job"]
+              resources:
+                requests:
+                  cpu: 200m
+                  memory: 2Gi
+                limits:
+                  cpu: 200m
+                  memory: 2Gi
+              {{/* workingDir: /app */}}
+              env:
+                - name: PRODUCTION
+                  value: 'true'
+                - name: NEXT_PUBLIC_ENV_APP
+                  value: production
+                - name: DATABASE_URL
+                  value: "$(DATABASE_URL)"
+              envFrom:
+                - configMapRef:
+                    name: app-configmap
+                - secretRef:
+                    name: pg-app
+                - secretRef:
+                    name: app-sealed-secret
+                - secretRef:
+                    name: carte-jeune-engage-prod-app-access-key
+              volumeMounts:
+                - name: tz-paris
+                  mountPath: /etc/localtime
+          volumes:
+            - name: tz-paris
+              hostPath:
+                path: /usr/share/zoneinfo/Europe/Paris

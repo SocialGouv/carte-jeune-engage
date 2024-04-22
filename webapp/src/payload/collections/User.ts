@@ -133,6 +133,40 @@ export const Users: CollectionConfig = {
       },
     },
     {
+      name: "hasAJobIdea",
+      type: "select",
+      label: "Pense à une idée de formation ou métier",
+      options: [
+        {
+          label: "Oui",
+          value: "yes",
+        },
+        {
+          label: "Non pas encore",
+          value: "no",
+        },
+      ],
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
+      name: "projectTitle",
+      type: "text",
+      label: "Projet",
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
+      name: "projectDescription",
+      type: "textarea",
+      label: "Description du projet",
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
       name: "status_image",
       type: "select",
       label: "Statut de la photo de profil",
@@ -160,8 +194,38 @@ export const Users: CollectionConfig = {
       },
     },
     {
+      name: "notification_status",
+      type: "select",
+      options: [
+        {
+          label: "Activée",
+          value: "enabled",
+        },
+        {
+          label: "Désactivée",
+          value: "disabled",
+        },
+      ],
+      label: "Notification activée",
+      admin: {
+        // readOnly: true,
+        position: "sidebar",
+      },
+    },
+    {
+      name: "notification_subscription",
+      type: "json",
+      admin: {
+        readOnly: true,
+      },
+      label: "Notification",
+    },
+    {
       name: "otp_request_token",
       type: "text",
+      admin: {
+        readOnly: true,
+      },
       label: "OTP request (ne pas toucher)",
     },
   ],

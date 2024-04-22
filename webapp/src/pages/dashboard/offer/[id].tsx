@@ -1,21 +1,21 @@
 import {
-	AspectRatio,
-	Box,
-	Button,
-	Center,
-	Divider,
-	Flex,
-	HStack,
-	Icon,
-	Spinner,
-	TabPanel,
-	TabPanels,
-	Tabs,
-	Text,
-	Link,
-	VStack,
-	useDisclosure,
-	useSteps,
+  AspectRatio,
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  HStack,
+  Icon,
+  Spinner,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  Link,
+  VStack,
+  useDisclosure,
+  useSteps,
 } from "@chakra-ui/react";
 import { useGSAP } from "@gsap/react";
 import { push } from "@socialgouv/matomo-next";
@@ -23,13 +23,13 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
-	HiArrowRight,
-	HiBuildingStorefront,
-	HiOutlineInformationCircle,
-	HiQuestionMarkCircle,
-	HiShoppingCart,
+  HiArrowRight,
+  HiBuildingStorefront,
+  HiOutlineInformationCircle,
+  HiQuestionMarkCircle,
+  HiShoppingCart,
 } from "react-icons/hi2";
 import ChakraNextImage from "~/components/ChakraNextImage";
 import LoadingLoader from "~/components/LoadingLoader";
@@ -50,226 +50,256 @@ import { getItemsExternalLink } from "~/utils/itemsOffer";
 import { isIOS } from "~/utils/tools";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	return hasAccessToOffer(context);
+  return hasAccessToOffer(context);
 };
 
 export default function OfferPage() {
-	const { user } = useAuth();
+  const { user } = useAuth();
 
-	const router = useRouter();
-	const { id } = router.query;
+  const router = useRouter();
+  const { id, couponStatus } = router.query as {
+    id: string;
+    couponStatus: "active" | "inactive";
+  };
 
-	const [timeoutIdExternalLink, setTimeoutIdExternalLink] =
-		useState<NodeJS.Timeout>();
+  const updateCouponStatus = (isCouponActive: boolean) => {
+    router.replace({
+      query: {
+        ...router.query,
+        couponStatus: isCouponActive ? "active" : "inactive",
+      },
+    });
+  };
 
-	const { data: resultOffer, isLoading: isLoadingOffer } =
-		api.offer.getById.useQuery(
-			{
-				id: parseInt(id as string),
-			},
-			{ enabled: id !== undefined }
-		);
+  const [timeoutIdExternalLink, setTimeoutIdExternalLink] =
+    useState<NodeJS.Timeout>();
 
-	const {
-		data: resultCoupon,
-		isLoading: isLoadingCoupon,
-		refetch: refetchCoupon,
-	} = api.coupon.getOne.useQuery(
-		{
-			offer_id: parseInt(id as string),
-		},
-		{ enabled: id !== undefined }
-	);
+  const { data: resultOffer, isLoading: isLoadingOffer } =
+    api.offer.getById.useQuery(
+      {
+        id: parseInt(id),
+      },
+      { enabled: id !== undefined }
+    );
 
-	const { data: offer } = resultOffer || {};
-	const { data: coupon } = resultCoupon || {};
+  const {
+    data: resultCoupon,
+    isLoading: isLoadingCoupon,
+    refetch: refetchCoupon,
+  } = api.coupon.getOne.useQuery(
+    {
+      offer_id: parseInt(id as string),
+    },
+    { enabled: id !== undefined }
+  );
 
-	const { mutate: mutateCouponToUser, isSuccess } =
-		api.coupon.assignToUser.useMutation({
-			onSuccess: () => refetchCoupon(),
-		});
+  const { data: offer } = resultOffer || {};
+  const { data: coupon } = resultCoupon || {};
 
-	const itemsTermsOfUse = useMemo(() => {
-		if (!offer) return [];
-		return getItemsTermsOfUse(offer.kind).filter((item) =>
-			offer.termsOfUse?.map((termOfUse) => termOfUse.slug).includes(item.slug)
-		) as StackItem[];
-	}, [offer]);
+  if (
+    (!couponStatus ||
+      (couponStatus !== "active" && couponStatus !== "inactive")) &&
+    router.isReady &&
+    !isLoadingCoupon
+  ) {
+    updateCouponStatus(!!coupon);
+  }
 
-	const itemsExternalLink = useMemo(() => {
-		if (!offer) return [];
-		return getItemsExternalLink(offer.kind);
-	}, [offer]);
+  useEffect(() => updateCouponStatus(!!coupon), [coupon]);
 
-	const nbSteps = useMemo(() => {
-		if (!offer) return 2;
-		return offer.conditions?.length ? 2 : 1;
-	}, [offer]);
+  const { mutateAsync: mutateAsyncCouponToUser, isSuccess } =
+    api.coupon.assignToUser.useMutation({
+      onSuccess: () => refetchCoupon(),
+    });
 
-	const { activeStep, setActiveStep } = useSteps({
-		index: 1,
-		count: nbSteps,
-	});
+  const itemsTermsOfUse = useMemo(() => {
+    if (!offer) return [];
+    return getItemsTermsOfUse(offer.kind).filter((item) =>
+      offer.termsOfUse?.map((termOfUse) => termOfUse.slug).includes(item.slug)
+    ) as StackItem[];
+  }, [offer]);
 
-	const [isOpenNewPassComponent, setIsOpenNewPassComponent] = useState(false);
+  const itemsExternalLink = useMemo(() => {
+    if (!offer) return [];
+    return getItemsExternalLink(offer.kind);
+  }, [offer]);
 
-	const {
-		isOpen: isOpenActivateOffer,
-		onOpen: onOpenActivateOffer,
-		onClose: onCloseActivateOffer,
-	} = useDisclosure();
+  const nbSteps = useMemo(() => {
+    if (!offer) return 2;
+    return offer.conditions?.length ? 2 : 1;
+  }, [offer]);
 
-	const {
-		isOpen: isOpenTermsOfUse,
-		onOpen: onOpenTermsOfUse,
-		onClose: onCloseTermsOfUse,
-	} = useDisclosure();
+  const { activeStep, setActiveStep } = useSteps({
+    index: 1,
+    count: nbSteps,
+  });
 
-	const {
-		isOpen: isOpenOtherConditions,
-		onOpen: onOpenOtherConditions,
-		onClose: onCloseOtherConditions,
-	} = useDisclosure();
+  const [isOpenNewPassComponent, setIsOpenNewPassComponent] = useState(false);
 
-	const {
-		isOpen: isOpenExternalLink,
-		onOpen: onOpenExternalLink,
-		onClose: onCloseExternalLink,
-	} = useDisclosure({
-		onOpen: () => {
-			const timeoutId = setTimeout(() => {
-				let a = document.createElement("a");
-				document.body.appendChild(a);
-				a.classList.add("hidden");
-				a.href = offer?.url as string;
-				if (!isIOS()) a.target = "_blank";
-				a.click();
-				document.body.removeChild(a);
-				onCloseExternalLink();
-			}, 2000);
-			setTimeoutIdExternalLink(timeoutId);
-		},
-		onClose: () => clearTimeout(timeoutIdExternalLink),
-	});
+  const {
+    isOpen: isOpenActivateOffer,
+    onOpen: onOpenActivateOffer,
+    onClose: onCloseActivateOffer,
+  } = useDisclosure();
 
-	useGSAP(
-		() => {
-			couponAnimation(isSuccess, !!coupon);
-		},
-		{ dependencies: [isLoadingCoupon, coupon, isSuccess] }
-	);
+  const {
+    isOpen: isOpenTermsOfUse,
+    onOpen: onOpenTermsOfUse,
+    onClose: onCloseTermsOfUse,
+  } = useDisclosure();
 
-	const handleActivateOffer = () => {
-		if (
-			offer?.kind.startsWith("voucher") &&
-			user?.status_image !== "approved"
-		) {
-			setIsOpenNewPassComponent(true);
-		} else {
-			onOpenActivateOffer();
-		}
-	};
+  const {
+    isOpen: isOpenOtherConditions,
+    onOpen: onOpenOtherConditions,
+    onClose: onCloseOtherConditions,
+  } = useDisclosure();
 
-	const handleValidateOffer = (offerId: number) => {
-		mutateCouponToUser({ offer_id: offerId });
-		onCloseActivateOffer();
-	};
+  const {
+    isOpen: isOpenExternalLink,
+    onOpen: onOpenExternalLink,
+    onClose: onCloseExternalLink,
+  } = useDisclosure({
+    onOpen: () => {
+      const timeoutId = setTimeout(() => {
+        let a = document.createElement("a");
+        document.body.appendChild(a);
+        a.classList.add("hidden");
+        a.href = offer?.url as string;
+        if (!isIOS()) a.target = "_blank";
+        a.click();
+        document.body.removeChild(a);
+        onCloseExternalLink();
+      }, 2000);
+      setTimeoutIdExternalLink(timeoutId);
+    },
+    onClose: () => clearTimeout(timeoutIdExternalLink),
+  });
 
-	if (isLoadingOffer || !offer || isLoadingCoupon)
-		return (
-			<OfferWrapper>
-				<Center h="full">
-					<LoadingLoader />
-				</Center>
-			</OfferWrapper>
-		);
+  useGSAP(
+    () => {
+      couponAnimation(isSuccess, !!coupon);
+    },
+    { dependencies: [isLoadingCoupon, coupon, isSuccess] }
+  );
 
-	return (
-		<OfferWrapper
-			offer={offer}
-			isModalOpen={
-				isOpenActivateOffer ||
-				isOpenExternalLink ||
-				isOpenNewPassComponent ||
-				isOpenOtherConditions ||
-				isOpenTermsOfUse
-			}
-		>
-			<CouponWrapper
-				coupon={coupon}
-				offer={offer}
-				handleOpenOtherConditions={onOpenOtherConditions}
-				handleActivateOffer={handleActivateOffer}
-				handleOpenExternalLink={onOpenExternalLink}
-			>
-				{offer.kind.startsWith("voucher") && (
-					<>
-						<VStack spacing={3} align="start">
-							<HStack spacing={4}>
-								<Icon as={HiBuildingStorefront} w={6} h={6} />
-								<Text fontWeight="extrabold">Magasins participants</Text>
-							</HStack>
-							<Text fontWeight="medium">
-								{offer.nbOfEligibleStores ?? 1} magasins {offer.partner.name}{" "}
-								participants
-							</Text>
-							<Link
-								as={NextLink}
-								href={offer.linkOfEligibleStores ?? ""}
-								w="full"
-								target="_blank"
-							>
-								<Image
-									src={offer.imageOfEligibleStores.url as string}
-									alt={offer.imageOfEligibleStores.alt as string}
-									width={0}
-									height={114}
-									sizes="100vw"
-									style={{
-										width: "100%",
-										height: "114px",
-										borderRadius: "10px",
-										objectFit: "cover",
-									}}
-								/>
-							</Link>
-							<Link
-								as={NextLink}
-								href={offer.linkOfEligibleStores ?? ""}
-								target="_blank"
-							>
-								<HStack align="center" borderBottom="1px solid black">
-									<Text fontWeight="medium">
-										Voir les magasins participants
-									</Text>
-									<Icon as={HiArrowRight} w={4} h={4} />
-								</HStack>
-							</Link>
-						</VStack>
-						<Divider my={6} />
-					</>
-				)}
-				<HStack spacing={4}>
-					<Button
-						className="btn-conditions"
-						size="sm"
-						w="full"
-						colorScheme="cje-gray"
-						color="black"
-						onClick={() => {
-							push(['trackEvent', 'Offre', offer.partner.name, offer.title, !!coupon ? 'Active' : 'Inactive', 'Comment ça marche'])
-							onOpenTermsOfUse()
-						}}
-					>
-						<Flex flexDir="column" alignItems="center" gap={3}>
-							<Icon as={HiQuestionMarkCircle} w={6} h={6} />
-							<Text fontWeight="bold" fontSize="sm" px={4}>
-								Comment ça marche ?
-							</Text>
-						</Flex>
-					</Button>
-					{/* WAITING FOR THE REAL FEATURE TO BE DEVELOPPED */}
-					{/* {offer.kind.startsWith("voucher") && (
+  const handleActivateOffer = () => {
+    if (
+      offer?.kind.startsWith("voucher") &&
+      user?.status_image !== "approved"
+    ) {
+      setIsOpenNewPassComponent(true);
+    } else {
+      onOpenActivateOffer();
+    }
+  };
+
+  const handleValidateOffer = async (offerId: number) => {
+    await mutateAsyncCouponToUser({ offer_id: offerId });
+    onCloseActivateOffer();
+  };
+
+  if (isLoadingOffer || !offer || isLoadingCoupon)
+    return (
+      <OfferWrapper>
+        <Center h="full">
+          <LoadingLoader />
+        </Center>
+      </OfferWrapper>
+    );
+
+  return (
+    <OfferWrapper
+      offer={offer}
+      isModalOpen={
+        isOpenActivateOffer ||
+        isOpenExternalLink ||
+        isOpenNewPassComponent ||
+        isOpenOtherConditions ||
+        isOpenTermsOfUse
+      }
+    >
+      <CouponWrapper
+        coupon={coupon}
+        offer={offer}
+        handleOpenOtherConditions={onOpenOtherConditions}
+        handleActivateOffer={handleActivateOffer}
+        handleOpenExternalLink={onOpenExternalLink}
+      >
+        {offer.kind.startsWith("voucher") && (
+          <>
+            <VStack spacing={3} align="start">
+              <HStack spacing={4}>
+                <Icon as={HiBuildingStorefront} w={6} h={6} />
+                <Text fontWeight="extrabold">Magasins participants</Text>
+              </HStack>
+              <Text fontWeight="medium">
+                {offer.nbOfEligibleStores ?? 1} magasins {offer.partner.name}{" "}
+                participants
+              </Text>
+              <Link
+                as={NextLink}
+                href={offer.linkOfEligibleStores ?? ""}
+                w="full"
+                target="_blank"
+              >
+                <Image
+                  src={offer.imageOfEligibleStores.url as string}
+                  alt={offer.imageOfEligibleStores.alt as string}
+                  width={0}
+                  height={114}
+                  sizes="100vw"
+                  style={{
+                    width: "100%",
+                    height: "114px",
+                    borderRadius: "10px",
+                    objectFit: "cover",
+                  }}
+                />
+              </Link>
+              <Link
+                as={NextLink}
+                href={offer.linkOfEligibleStores ?? ""}
+                target="_blank"
+              >
+                <HStack align="center" borderBottom="1px solid black">
+                  <Text fontWeight="medium">
+                    Voir les magasins participants
+                  </Text>
+                  <Icon as={HiArrowRight} w={4} h={4} />
+                </HStack>
+              </Link>
+            </VStack>
+            <Divider my={6} />
+          </>
+        )}
+        <HStack spacing={4}>
+          <Button
+            className="btn-conditions"
+            size="sm"
+            w="full"
+            colorScheme="cje-gray"
+            color="black"
+            onClick={() => {
+              push([
+                "trackEvent",
+                "Offre",
+                offer.partner.name,
+                offer.title,
+                !!coupon ? "Active" : "Inactive",
+                "Comment ça marche",
+              ]);
+              onOpenTermsOfUse();
+            }}
+          >
+            <Flex flexDir="column" alignItems="center" gap={3}>
+              <Icon as={HiQuestionMarkCircle} w={6} h={6} />
+              <Text fontWeight="bold" fontSize="sm" px={4}>
+                Comment ça marche ?
+              </Text>
+            </Flex>
+          </Button>
+          {/* WAITING FOR THE REAL FEATURE TO BE DEVELOPPED */}
+          {/* {offer.kind.startsWith("voucher") && (
 						<Button
 							isDisabled
 							className="btn-conditions"
@@ -287,153 +317,162 @@ export default function OfferPage() {
 							</Flex>
 						</Button>
 					)} */}
-				</HStack>
-				{!!(offer.conditions ?? []).length && (
-					<>
-						<Divider my={6} />
-						<Flex flexDir="column" gap={2}>
-							<HStack spacing={4}>
-								<Icon as={HiOutlineInformationCircle} w={6} h={6} />
-								<Text fontWeight="extrabold">Conditions</Text>
-							</HStack>
-							<Text fontWeight="medium" my={2}>
-								<Text>
-									{(offer.conditions ?? []).slice(0, 2).map((condition) => (
-										<Text mb={2}>
-											<TextWithLinks text={condition.text} />
-											<br />
-										</Text>
-									))}
-								</Text>
-							</Text>
-							{(offer.conditions ?? []).length > 2 && (
-								<HStack
-									spacing={1}
-									w="fit-content"
-									borderBottom="1px solid black"
-									onClick={() => {
-										push(['trackEvent', 'Offre', offer.partner.name, offer.title, !!coupon ? 'Active' : 'Inactive', 'Conditions'])
-										onOpenOtherConditions()
-									}}
-								>
-									<Text as="span" fontWeight="medium">
-										Lire la suite
-									</Text>
-									<Icon as={HiArrowRight} w={4} h={4} />
-								</HStack>
-							)}
-						</Flex>
-					</>
-				)}
-			</CouponWrapper>
-			<BaseModal
-				onClose={onCloseActivateOffer}
-				isOpen={isOpenActivateOffer}
-				hideCloseBtn
-			>
-				<StepsWrapper
-					stepContext={{ current: activeStep, total: nbSteps }}
-					onBack={() =>
-						activeStep !== 1
-							? setActiveStep(activeStep - 1)
-							: onCloseActivateOffer()
-					}
-				>
-					<Tabs
-						index={activeStep - 1}
-						onChange={(index) => setActiveStep(index)}
-						h="full"
-					>
-						<TabPanels h="full">
-							<TabPanel as={Flex} flexDir="column" h="full" px={0}>
-								<Text fontSize="2xl" fontWeight="extrabold">
-									Comment bénificier de cette offre ?
-								</Text>
-								<StackItems items={itemsTermsOfUse} props={{ mt: 6 }} />
-								<StepsButtons
-									offer={offer}
-									activeStep={activeStep}
-									setActiveStep={setActiveStep}
-									count={nbSteps}
-									mainBtnText="J'ai compris"
-									handleValidate={() => handleValidateOffer(offer.id)}
-									onClose={onCloseActivateOffer}
-								/>
-							</TabPanel>
-							<TabPanel as={Flex} flexDir="column" h="full" px={0}>
-								<Text fontSize="2xl" fontWeight="extrabold">
-									Conditions de cette offre {offer.partner.name}
-								</Text>
-								<StackItems items={offer.conditions ?? []} props={{ mt: 6 }} />
-								<StepsButtons
-									offer={offer}
-									activeStep={activeStep}
-									setActiveStep={setActiveStep}
-									count={nbSteps}
-									mainBtnText="J'active cette offre"
-									handleValidate={() => handleValidateOffer(offer.id)}
-									onClose={onCloseActivateOffer}
-								/>
-							</TabPanel>
-						</TabPanels>
-					</Tabs>
-				</StepsWrapper>
-			</BaseModal>
-			<BaseModal
-				onClose={onCloseTermsOfUse}
-				isOpen={isOpenTermsOfUse}
-				title="Comment bénéficier de cette offre ?"
-			>
-				<StackItems items={itemsTermsOfUse} props={{ mt: 6 }} />
-			</BaseModal>
-			<BaseModal
-				onClose={onCloseOtherConditions}
-				isOpen={isOpenOtherConditions}
-				title={`Conditions de cette offre ${offer.partner.name}`}
-			>
-				<StackItems items={offer.conditions ?? []} props={{ mt: 6 }} />
-			</BaseModal>
-			<BaseModal
-				onClose={onCloseExternalLink}
-				isOpen={isOpenExternalLink}
-				title={`Nous vous redirigeons vers le site ${offer.partner.name}`}
-			>
-				<Flex flexDir="column">
-					<Flex position="relative" mt={16}>
-						<Spinner
-							mx="auto"
-							thickness="8px"
-							speed="0.85s"
-							emptyColor="gray.200"
-							color="blackLight"
-							boxSize={40}
-						/>
-						<Box
-							bgColor="white"
-							objectFit="cover"
-							objectPosition="center"
-							position="absolute"
-							top="50%"
-							left="50%"
-							transform="translate(-50%, -50%)"
-							p={2}
-							borderRadius="full"
-						>
-							<ChakraNextImage
-								src={offer.partner.icon.url as string}
-								alt={offer.partner.icon.alt as string}
-								width={12}
-								height={12}
-							/>
-						</Box>
-					</Flex>
-					<StackItems items={itemsExternalLink} props={{ mt: 16 }} />
-				</Flex>
-			</BaseModal>
-			<NewPassComponent
-				isOpen={isOpenNewPassComponent}
-				onClose={() => setIsOpenNewPassComponent(false)}
-			/>
-		</OfferWrapper>
-	);
+        </HStack>
+        {!!(offer.conditions ?? []).length && (
+          <>
+            <Divider my={6} />
+            <Flex flexDir="column" gap={2}>
+              <HStack spacing={4}>
+                <Icon as={HiOutlineInformationCircle} w={6} h={6} />
+                <Text fontWeight="extrabold">Conditions</Text>
+              </HStack>
+              <Text fontWeight="medium" my={2}>
+                <Text>
+                  {(offer.conditions ?? []).slice(0, 2).map((condition) => (
+                    <Text mb={2}>
+                      <TextWithLinks text={condition.text} />
+                      <br />
+                    </Text>
+                  ))}
+                </Text>
+              </Text>
+              {(offer.conditions ?? []).length > 2 && (
+                <HStack
+                  spacing={1}
+                  w="fit-content"
+                  borderBottom="1px solid black"
+                  onClick={() => {
+                    push([
+                      "trackEvent",
+                      "Offre",
+                      offer.partner.name,
+                      offer.title,
+                      !!coupon ? "Active" : "Inactive",
+                      "Conditions",
+                    ]);
+                    onOpenOtherConditions();
+                  }}
+                >
+                  <Text as="span" fontWeight="medium">
+                    Lire la suite
+                  </Text>
+                  <Icon as={HiArrowRight} w={4} h={4} />
+                </HStack>
+              )}
+            </Flex>
+          </>
+        )}
+      </CouponWrapper>
+      <BaseModal
+        onClose={onCloseActivateOffer}
+        isOpen={isOpenActivateOffer}
+        hideCloseBtn
+      >
+        <StepsWrapper
+          stepContext={{ current: activeStep, total: nbSteps }}
+          onBack={() =>
+            activeStep !== 1
+              ? setActiveStep(activeStep - 1)
+              : onCloseActivateOffer()
+          }
+        >
+          <Tabs
+            index={activeStep - 1}
+            onChange={(index) => setActiveStep(index)}
+            h="full"
+          >
+            <TabPanels h="full">
+              <TabPanel as={Flex} flexDir="column" h="full" px={0}>
+                <Text fontSize="2xl" fontWeight="extrabold">
+                  Comment bénificier de cette offre ?
+                </Text>
+                <StackItems items={itemsTermsOfUse} props={{ mt: 6 }} />
+                <StepsButtons
+                  offer={offer}
+                  activeStep={activeStep}
+                  setActiveStep={setActiveStep}
+                  count={nbSteps}
+                  mainBtnText="J'ai compris"
+                  handleValidate={() => handleValidateOffer(offer.id)}
+                  isValidateSuccess={isSuccess}
+                  onClose={onCloseActivateOffer}
+                />
+              </TabPanel>
+              <TabPanel as={Flex} flexDir="column" h="full" px={0}>
+                <Text fontSize="2xl" fontWeight="extrabold">
+                  Conditions de cette offre {offer.partner.name}
+                </Text>
+                <StackItems items={offer.conditions ?? []} props={{ mt: 6 }} />
+                <StepsButtons
+                  offer={offer}
+                  activeStep={activeStep}
+                  setActiveStep={setActiveStep}
+                  count={nbSteps}
+                  mainBtnText="J'active cette offre"
+                  handleValidate={() => handleValidateOffer(offer.id)}
+                  isValidateSuccess={isSuccess}
+                  onClose={onCloseActivateOffer}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </StepsWrapper>
+      </BaseModal>
+      <BaseModal
+        onClose={onCloseTermsOfUse}
+        isOpen={isOpenTermsOfUse}
+        title="Comment bénéficier de cette offre ?"
+      >
+        <StackItems items={itemsTermsOfUse} props={{ mt: 6 }} />
+      </BaseModal>
+      <BaseModal
+        onClose={onCloseOtherConditions}
+        isOpen={isOpenOtherConditions}
+        title={`Conditions de cette offre ${offer.partner.name}`}
+      >
+        <StackItems items={offer.conditions ?? []} props={{ mt: 6 }} />
+      </BaseModal>
+      <BaseModal
+        onClose={onCloseExternalLink}
+        isOpen={isOpenExternalLink}
+        title={`Nous vous redirigeons vers le site ${offer.partner.name}`}
+      >
+        <Flex flexDir="column">
+          <Flex position="relative" mt={16}>
+            <Spinner
+              mx="auto"
+              thickness="8px"
+              speed="0.85s"
+              emptyColor="gray.200"
+              color="blackLight"
+              boxSize={40}
+            />
+            <Box
+              bgColor="white"
+              objectFit="cover"
+              objectPosition="center"
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+              p={2}
+              borderRadius="full"
+            >
+              <ChakraNextImage
+                src={offer.partner.icon.url as string}
+                alt={offer.partner.icon.alt as string}
+                width={12}
+                height={12}
+              />
+            </Box>
+          </Flex>
+          <StackItems items={itemsExternalLink} props={{ mt: 16 }} />
+        </Flex>
+      </BaseModal>
+      <NewPassComponent
+        isOpen={isOpenNewPassComponent}
+        onClose={() => setIsOpenNewPassComponent(false)}
+      />
+    </OfferWrapper>
+  );
 }

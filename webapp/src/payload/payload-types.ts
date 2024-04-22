@@ -18,6 +18,7 @@ export interface Config {
     offers: Offer;
     coupons: Coupon;
     savings: Saving;
+    notifications: Notification;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -62,8 +63,21 @@ export interface User {
   userEmail?: string | null;
   cejFrom?: ('franceTravail' | 'missionLocale') | null;
   timeAtCEJ?: ('started' | 'lessThan3Months' | 'moreThan3Months') | null;
+  hasAJobIdea?: ('yes' | 'no') | null;
+  projectTitle?: string | null;
+  projectDescription?: string | null;
   status_image?: ('pending' | 'approved') | null;
   preferences?: (number | Category)[] | null;
+  notification_status?: ('enabled' | 'disabled') | null;
+  notification_subscription?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   otp_request_token?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -111,6 +125,7 @@ export interface Category {
 export interface Supervisor {
   id: number;
   cgu?: boolean | null;
+  kind?: ('ML' | 'SC' | 'FT') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -129,6 +144,8 @@ export interface Supervisor {
 export interface Permission {
   id: number;
   phone_number: string;
+  createdBy?: (number | null) | Supervisor;
+  supervisorKind?: ('ML' | 'SC' | 'FT') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -204,6 +221,29 @@ export interface Saving {
   id: number;
   amount: number;
   coupon: number | Coupon;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications".
+ */
+export interface Notification {
+  id: number;
+  slug: string;
+  user?: (number | null) | User;
+  title: string;
+  message?: string | null;
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  appVersion?: string | null;
   updatedAt: string;
   createdAt: string;
 }

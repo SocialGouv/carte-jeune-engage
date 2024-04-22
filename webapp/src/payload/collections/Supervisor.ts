@@ -27,5 +27,15 @@ export const Supervisors: CollectionConfig = {
       },
       defaultValue: false,
     },
+    {
+      name: "kind",
+      type: "select",
+      label: "Type de référent",
+      options: [
+        { label: "Mission locale", value: "ML" },
+        { label: "Service civique", value: "SC" },
+        { label: "France travail", value: "FT" },
+      ],
+    },
   ],
 };
