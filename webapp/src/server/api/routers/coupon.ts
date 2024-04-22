@@ -62,14 +62,12 @@ export const couponRouter = createTRPCRouter({
               {
                 ...payloadWhereOfferIsValid("offer"),
               },
-              { used: { equals: false } },
+              { used: { equals: false }, user: { exists: false } },
             ],
           },
         });
 
-        const couponsFiltered = coupons.docs.filter(
-          (coupon) => coupon.user === undefined || coupon.user === null
-        );
+        const couponsFiltered = coupons.docs;
 
         if (couponsFiltered.length === 0) {
           throw new TRPCError({
