@@ -62,7 +62,8 @@ export const couponRouter = createTRPCRouter({
               {
                 ...payloadWhereOfferIsValid("offer"),
               },
-              { used: { equals: false }, user: { exists: false } },
+              { used: { equals: false } },
+              { user: { exists: false } },
             ],
           },
         });
