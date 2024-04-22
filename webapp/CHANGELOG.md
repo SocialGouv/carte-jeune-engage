@@ -1,3 +1,10 @@
+## [0.35.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.7...v0.35.8) (2024-04-22)
+
+
+### Bug Fixes
+
+* assignToUser no coupons ([cfe9960](https://github.com/SocialGouv/carte-jeune-engage/commit/cfe9960ad5db2e333caad3c32069ba6c25650ba2))
+
 ## [0.35.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.6...v0.35.7) (2024-04-18)
 
 
