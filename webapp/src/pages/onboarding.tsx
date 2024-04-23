@@ -41,7 +41,7 @@ export type OnBoardingFormStep = {
 export const onBoardingSteps = [
   {
     title:
-      "Vous êtes en Contrat d'engagement jeune (CEJ) avec quel établissement ?",
+      "Bienvenue parmi les “jeunes engagés” ! 🤝 \rQuelle est votre situation ?",
     field: {
       name: "cejFrom",
       kind: "select",
@@ -49,16 +49,7 @@ export const onBoardingSteps = [
     },
   },
   {
-    title: "Depuis combien de temps êtes vous en CEJ ?",
-    field: {
-      name: "timeAtCEJ",
-      kind: "select",
-      label: "Depuis combien de temps",
-    },
-  },
-  {
-    title:
-      "Vous avez déjà une idée de formation ou de métier à la fin du CEJ ?",
+    title: "Déjà une idée de projet professionnel en tête ?",
     field: {
       name: "hasAJobIdea",
       kind: "select",
@@ -67,10 +58,10 @@ export const onBoardingSteps = [
   },
   {
     title:
-      "Dites-nous ce que vous voulez faire et les réductions qui pourraient vous aider !",
+      "Quel est votre projet et quelles réductions pourraient vous aider ?",
     optional: true,
     description:
-      "Nous allons bientôt ajouter des réductions pour vos formations et projet professionnels dites-nous ce dont vous avez besoin !",
+      "Nous ajoutons de nouvelles réductions régulièrement, dites-nous ce dont vous avez besoin",
     field: {
       name: "projectTitle",
       kind: "text",
@@ -78,7 +69,7 @@ export const onBoardingSteps = [
     },
   },
   {
-    title: "Sur quoi voulez-vous le plus faire des économies ?",
+    title: "Quelles catégories vous intéressent le plus ?",
     description:
       "Nous allons vous présenter les meilleures réductions en fonction de vos préférences dans votre appli.",
     field: {
@@ -151,6 +142,7 @@ export default function OnBoarding() {
               { expires: new Date((data.exp as number) * 1000) }
             );
             refetchUser();
+
             setFinishedOnBoarding(true);
           });
         });
@@ -280,14 +272,21 @@ export default function OnBoarding() {
                   currentValue={value}
                   onChange={onChange}
                 >
-                  à France Travail (ex Pôle emploi)
+                  Je suis à France Travail (ex Pôle emploi)
                 </FormBlock>
                 <FormBlock
                   value="missionLocale"
                   currentValue={value}
                   onChange={onChange}
                 >
-                  à la Mission locale
+                  Je suis à la Mission locale
+                </FormBlock>
+                <FormBlock
+                  value="serviceCivique"
+                  currentValue={value}
+                  onChange={onChange}
+                >
+                  Je suis en service civique
                 </FormBlock>
               </>
             )}
@@ -326,48 +325,11 @@ export default function OnBoarding() {
             field={{
               kind: "textarea",
               name: "projectDescription",
-              label:
-                "Sur quoi voulez des réductions ? Du matériel ?  Des outils ?",
+              label: "Quelles réductions pourrait vous faciliter ce projet ?",
             }}
             inputProps={{
               isRequired: false,
             }}
-          />
-        </Flex>
-      );
-    }
-
-    if (currentOnBoardingStep.field.name === "timeAtCEJ") {
-      return (
-        <Flex flexDir="column" alignItems="center" w="full" gap={6}>
-          <Controller
-            control={control}
-            name={currentOnBoardingStep.field.name}
-            render={({ field: { onChange, value } }) => (
-              <>
-                <FormBlock
-                  value="started"
-                  currentValue={value}
-                  onChange={onChange}
-                >
-                  Je viens de commencer
-                </FormBlock>
-                <FormBlock
-                  value="lessThan3Months"
-                  currentValue={value}
-                  onChange={onChange}
-                >
-                  Ça fait - de 3 mois
-                </FormBlock>
-                <FormBlock
-                  value="moreThan3Months"
-                  currentValue={value}
-                  onChange={onChange}
-                >
-                  Ça fait + de 3 mois
-                </FormBlock>
-              </>
-            )}
           />
         </Flex>
       );
@@ -454,7 +416,12 @@ export default function OnBoarding() {
         >
           <Flex flexDir="column" justifyContent="center">
             <Heading as="h1" size="md" fontWeight="extrabold" mb={4}>
-              {currentOnBoardingStep?.title}
+              {currentOnBoardingStep?.title.split("\r").map((line, index) => (
+                <span key={`${line}-${index}`}>
+                  {line}
+                  <br />
+                </span>
+              ))}
             </Heading>
             {currentOnBoardingStep?.description && (
               <Text fontSize="sm" fontWeight="medium" color="secondaryText">
