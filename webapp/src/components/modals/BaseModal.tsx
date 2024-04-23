@@ -46,6 +46,7 @@ const BaseModal = ({
       <ModalOverlay bgColor={isMobile ? "bgWhite" : undefined} />
       <ModalContent
         minH={isMobile ? "full" : "auto"}
+        boxShadow={isMobile ? "none" : "inherit"}
         h={heightModalContent ? heightModalContent : "auto"}
         bgColor="bgWhite"
         pt={hideCloseBtn ? 6 : 0}
