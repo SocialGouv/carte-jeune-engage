@@ -1,10 +1,10 @@
 import { Payload } from "payload";
-import { getBaseUrl } from "./tools";
 
 type NotificationParams = {
   sub: any;
   payload: Payload;
   userId: number;
+  offerId?: number;
   payloadNotification: {
     title: string;
     message?: string;
@@ -23,6 +23,7 @@ export async function sendPushNotification({
   sub,
   payload,
   userId,
+  offerId,
   payloadNotification,
 }: NotificationParams): Promise<NotificationResponse> {
   const { title, message, slug, url } = payloadNotification;
@@ -36,6 +37,11 @@ export async function sendPushNotification({
       user: {
         equals: userId,
       },
+      ...(offerId && {
+        offer: {
+          equals: offerId,
+        },
+      }),
       createdAt: {
         greater_than_equal: new Date().toISOString().split("T")[0],
       },
@@ -82,6 +88,7 @@ export async function sendPushNotification({
           data: {
             slug,
             title,
+            offer: offerId,
             appVersion: process.env.NEXT_PUBLIC_CURRENT_PACKAGE_VERSION,
             user: userId,
           },

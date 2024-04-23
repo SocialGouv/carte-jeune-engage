@@ -1,7 +1,11 @@
-import { getBaseUrl, isNbOfDaysToEndOfTheMonth } from "../utils/tools";
+import {
+  getBaseUrl,
+  isNbOfDaysToEndOfTheMonth,
+  payloadWhereOfferIsValid,
+} from "../utils/tools";
 import { getPayloadClient } from "../payload/payloadClient";
 import { sendPushNotification } from "../utils/sendPushNotification";
-import { Offer, Partner } from "../payload/payload-types";
+import { Offer } from "../payload/payload-types";
 
 const slug = "reminder-auchan";
 
@@ -34,45 +38,14 @@ export async function sendReminderAuchan() {
       },
     });
 
-    const partners = await payload.find({
-      collection: "partners",
-      limit: 1,
-      where: {
-        name: {
-          equals: "Auchan",
-        },
-      },
-    });
-
-    const auchanPartner = partners.docs[0] as Partner;
-
-    if (!auchanPartner) {
-      console.log(`[${slug}] - Ending (Auchan partner not found)`);
-      return;
-    }
-
     const offers = await payload.find({
       collection: "offers",
       limit: 1,
       where: {
-        partner: {
-          equals: auchanPartner.id,
+        "partner.name": {
+          equals: "Auchan",
         },
-        validityTo: {
-          // start day of the month
-          greater_than_equal: new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            1
-          ).toISOString(),
-        },
-        validityFrom: {
-          less_than_equal: new Date(
-            new Date().getFullYear(),
-            new Date().getMonth() + 1,
-            0
-          ).toISOString(),
-        },
+        ...payloadWhereOfferIsValid(),
       },
     });
 

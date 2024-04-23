@@ -233,6 +233,7 @@ export interface Notification {
   slug: string;
   user?: (number | null) | User;
   title: string;
+  offer?: (number | null) | Offer;
   message?: string | null;
   error?:
     | {

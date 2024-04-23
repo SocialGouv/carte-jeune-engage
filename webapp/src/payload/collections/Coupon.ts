@@ -1,8 +1,8 @@
 import dynamic from "next/dynamic";
 import type { Props } from "payload/components/views/List";
 import { type CollectionConfig } from "payload/types";
-import { requests } from "payload/dist/admin/api";
 import { getBaseUrl } from "../../utils/tools";
+import { sendPushNotification } from "../../utils/sendPushNotification";
 
 const ImportCoupons = dynamic<Props>(
   () => import("../components/ImportCoupons"),
@@ -118,17 +118,17 @@ export const Coupons: CollectionConfig = {
               }
 
               if (tmpUser && tmpUser.notification_subscription) {
-                await requests.get(`${getBaseUrl()}/api/notification`, {
-                  method: "POST",
-                  headers: {
-                    "Content-type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    sub: tmpUser.notification_subscription,
-                    slug: "coupon-used",
+                await sendPushNotification({
+                  sub: tmpUser.notification_subscription,
+                  payload: req.payload,
+                  userId: tmpUser.id,
+                  offerId: doc.offer,
+                  payloadNotification: {
                     title: "Vos économies sont enregistrées !",
                     message: `Votre réduction ${tmpPartner.name} est ajoutée à vos économies 🎉. Venez voir ce que vous économisez avec la carte “jeune engage” ? 👀`,
-                  }),
+                    slug: "coupon-used",
+                    url: `${getBaseUrl()}/dashboard/account/history`,
+                  },
                 });
               }
             }

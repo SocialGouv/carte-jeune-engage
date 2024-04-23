@@ -1,7 +1,7 @@
 import { OfferIncluded } from "../server/api/routers/offer";
 import { getPayloadClient } from "../payload/payloadClient";
 import { sendPushNotification } from "../utils/sendPushNotification";
-import { getBaseUrl } from "../utils/tools";
+import { getBaseUrl, payloadWhereOfferIsValid } from "../utils/tools";
 
 const slug = "reminder-offer-user-preferences";
 
@@ -12,11 +12,11 @@ export async function sendReminderOfferUserPreferences() {
   let nbOfNotificationsInDb = 0;
 
   // Only send notification on Wednesday
-  const today = new Date();
-  if (today.getDay() !== 3) {
-    console.log(`[${slug}] - Not Wednesday`);
-    return;
-  }
+  // const today = new Date();
+  // if (today.getDay() !== 3) {
+  //   console.log(`[${slug}] - Not Wednesday`);
+  //   return;
+  // }
 
   try {
     const payload = await getPayloadClient({ seed: false });
@@ -40,7 +40,7 @@ export async function sendReminderOfferUserPreferences() {
     });
 
     for (const user of users.docs) {
-      const offers = await payload.find({
+      let offers = await payload.find({
         collection: "offers",
         pagination: false,
         depth: 1,
@@ -48,10 +48,54 @@ export async function sendReminderOfferUserPreferences() {
           category: {
             in: user.preferences,
           },
+          ...payloadWhereOfferIsValid(),
         },
       });
 
-      if (offers.docs.length === 0) return;
+      await Promise.all(
+        offers.docs.map(async (offer) => {
+          const offerCoupons = await payload.find({
+            collection: "coupons",
+            limit: 1,
+            where: {
+              offer: {
+                equals: offer.id,
+              },
+              user: {
+                exists: false,
+              },
+              used: {
+                equals: false,
+              },
+            },
+          });
+
+          const userCoupons = await payload.find({
+            collection: "coupons",
+            limit: 1,
+            where: {
+              offer: {
+                equals: offer.id,
+              },
+              user: {
+                equals: user.id,
+              },
+              used: {
+                equals: false,
+              },
+            },
+          });
+
+          return offerCoupons.docs.length === 0 || userCoupons.docs.length > 0;
+        })
+      ).then((results) => {
+        offers.docs = offers.docs.filter((_, index) => results[index]);
+      });
+
+      if (offers.docs.length === 0) {
+        console.log(`[${slug}] - No offers available`);
+        return;
+      }
 
       const offer = offers.docs[
         Math.floor(Math.random() * offers.docs.length)

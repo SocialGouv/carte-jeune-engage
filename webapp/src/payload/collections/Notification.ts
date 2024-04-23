@@ -30,6 +30,13 @@ export const Notifications: CollectionConfig = {
       required: true,
     },
     {
+      name: "offer",
+      type: "relationship",
+      label: "Offre",
+      relationTo: "offers",
+      hasMany: false,
+    },
+    {
       name: "message",
       type: "text",
       label: "Message",

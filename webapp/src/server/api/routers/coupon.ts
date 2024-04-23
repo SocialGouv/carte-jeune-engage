@@ -6,7 +6,7 @@ import { payloadWhereOfferIsValid } from "~/utils/tools";
 
 export interface CouponIncluded extends Coupon {
   offer: Offer & { icon: Media; partner: Partner };
-  userRouter: User;
+  user: User;
 }
 
 export const couponRouter = createTRPCRouter({
