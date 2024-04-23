@@ -255,7 +255,7 @@ export default function OnBoarding() {
             localStorage.removeItem("cje-signup-form");
             localStorage.removeItem("cje-onboarding-form");
             setShowModalInstallApp(true);
-            router.push("/dashboard");
+            router.replace("/dashboard");
           }}
           rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
         >
