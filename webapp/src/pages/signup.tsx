@@ -44,7 +44,7 @@ export type SignUpFormStep = {
 
 export const signupSteps = [
   {
-    title: "Bienvenue ! Comment peut-on vous appeler ?",
+    title: "Bienvenue ! On peut vous appeler comment ?",
     field: {
       name: "civility",
       kind: "text",
@@ -74,7 +74,7 @@ export const signupSteps = [
     },
   },
   {
-    title: "Quel est votre nom de famille ?",
+    title: "quel est votre nom de famille ?",
     field: {
       name: "lastName",
       kind: "text",
@@ -137,9 +137,9 @@ export const signupSteps = [
     },
   },
   {
-    title: "Votre adresse",
+    title: "Sélectionnez votre ville",
     description:
-      "Votre adresse nous permet de chercher les meilleures réductions en magasin",
+      "En fonction de votre ville on vous donnera les magasins les plus proches. Si vous n’habitez pas dans le Val d’Oise (95), tout en bas de la liste, sélectionnez “Autre ville”. ",
     field: {
       name: "address",
       kind: "text",
@@ -227,34 +227,51 @@ export default function Signup() {
 
   const formValues = watch();
 
-  const [debouncedAddress, isDebouncePending] = useDebounceValueWithState(
-    formValues.address,
-    500
-  );
-
-  const { data: addressOptions, isLoading: isLoadingAddressOptions } = useQuery(
-    ["getAddressOptions", debouncedAddress],
+  const { data: allMunicipalitiesOf95 } = useQuery(
+    ["getMunicipalitiesOf95"],
     async () => {
       const response = await fetch(
-        `https://api-adresse.data.gouv.fr/search/?q=${debouncedAddress}&limit=4&autocomplete=1&type=housenumber`
+        "https://geo.api.gouv.fr/departements/95/communes"
       );
       const data = await response.json();
-      return data.features.map((feature: any) =>
-        [feature.properties.name, feature.properties.city].join(", ")
-      ) as string[];
-    },
-    {
-      enabled: !!debouncedAddress && debouncedAddress.length > 4,
+      return data.map((commune: any) => commune.nom) as string[];
     }
   );
 
+  /* Old Address autocomplete logic */
+
+  // const [debouncedAddress, isDebouncePending] = useDebounceValueWithState(
+  //   formValues.address,
+  //   500
+  // );
+
+  // const { data: addressOptions, isLoading: isLoadingAddressOptions } = useQuery(
+  //   ["getAddressOptions", debouncedAddress],
+  //   async () => {
+  //     const response = await fetch(
+  //       `https://api-adresse.data.gouv.fr/search/?q=${debouncedAddress}&limit=4&autocomplete=1&type=housenumber`
+  //     );
+  //     const data = await response.json();
+  //     return data.features.map((feature: any) =>
+  //       [feature.properties.name, feature.properties.city].join(", ")
+  //     ) as string[];
+  //   },
+  //   {
+  //     enabled: !!debouncedAddress && debouncedAddress.length > 4,
+  //   }
+  // );
+
+  // useEffect(() => {
+  //   const { address, ...tmpFormValues } = formValues;
+  //   localStorage.setItem(
+  //     "cje-signup-form",
+  //     JSON.stringify({ ...tmpFormValues, address: debouncedAddress })
+  //   );
+  // }, [formValues, debouncedAddress]);
+
   useEffect(() => {
-    const { address, ...tmpFormValues } = formValues;
-    localStorage.setItem(
-      "cje-signup-form",
-      JSON.stringify({ ...tmpFormValues, address: debouncedAddress })
-    );
-  }, [formValues, debouncedAddress]);
+    localStorage.setItem("cje-signup-form", JSON.stringify({ ...formValues }));
+  }, [formValues]);
 
   useEffect(() => {
     if (!signupStep || typeof signupStep !== "string") {
@@ -537,7 +554,12 @@ export default function Signup() {
         >
           <Flex flexDir="column" justifyContent="center">
             <Heading as="h1" size="md" fontWeight="extrabold" mb={4}>
-              {currentSignupStep?.title}
+              {currentSignupStep.field.name !== "lastName"
+                ? currentSignupStep?.title
+                : `${
+                    formValues.firstName.charAt(0).toUpperCase() +
+                    formValues.firstName.slice(1)
+                  }, ${currentSignupStep.title}`}
             </Heading>
             <Text fontSize="sm" fontWeight="medium" color="secondaryText">
               {currentSignupStep?.description ||
@@ -570,18 +592,55 @@ export default function Signup() {
                   />
                 </Flex>
               ) : currentSignupStep.field.name === "address" ? (
-                <FormAutocompleteInput
-                  control={control}
-                  options={addressOptions}
-                  setError={setError}
-                  clearErrors={clearErrors}
-                  isLoading={isLoadingAddressOptions || isDebouncePending}
-                  field={currentSignupStep.field}
-                  fieldError={
-                    errors[currentSignupStep?.field.name as keyof SignUpForm]
-                  }
-                  handleSubmit={() => handleSubmit(onSubmit)()}
-                />
+                <>
+                  {/* <FormAutocompleteInput
+										control={control}
+										options={addressOptions}
+										setError={setError}
+										clearErrors={clearErrors}
+										isLoading={isLoadingAddressOptions || isDebouncePending}
+										field={currentSignupStep.field}
+										fieldError={
+											errors[currentSignupStep?.field.name as keyof SignUpForm]
+										}
+										handleSubmit={() => handleSubmit(onSubmit)()}
+									/> */}
+                  <Flex
+                    flexDir="column"
+                    alignItems="center"
+                    w="full"
+                    gap={4}
+                    pb={32}
+                  >
+                    <Controller
+                      control={control}
+                      name={currentSignupStep.field.name}
+                      render={({ field: { onChange, value } }) => (
+                        <>
+                          {allMunicipalitiesOf95?.map((commune) => (
+                            <FormBlock
+                              key={commune}
+                              wrapperProps={{ py: 4 }}
+                              value={commune}
+                              currentValue={value}
+                              onChange={onChange}
+                            >
+                              {commune}
+                            </FormBlock>
+                          ))}
+                          <FormBlock
+                            value="Autre ville"
+                            wrapperProps={{ py: 4 }}
+                            currentValue={value}
+                            onChange={onChange}
+                          >
+                            Autre ville
+                          </FormBlock>
+                        </>
+                      )}
+                    />
+                  </Flex>
+                </>
               ) : (
                 <FormInput
                   register={register}
@@ -601,6 +660,15 @@ export default function Signup() {
                 ?.message !== undefined
             }
             type="submit"
+            hidden={
+              currentSignupStep.field.name === "address" && !formValues.address
+            }
+            position={
+              currentSignupStep.field.name === "address" ? "fixed" : "relative"
+            }
+            bottom={currentSignupStep.field.name === "address" ? 8 : undefined}
+            left={currentSignupStep.field.name === "address" ? 8 : undefined}
+            right={currentSignupStep.field.name === "address" ? 8 : undefined}
             rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
             isLoading={isLoadingUpdateUser}
           >
