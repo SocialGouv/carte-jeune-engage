@@ -1,3 +1,19 @@
+# [0.36.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.9...v0.36.0) (2024-04-23)
+
+
+### Bug Fixes
+
+* auchan reminder check if offer valid and check in offer query ([1809648](https://github.com/SocialGouv/carte-jeune-engage/commit/1809648009b71689388b1bcbb0ffc44fb9bce29a))
+* check for offer validity, offer coupons and offer of user for offer notification based on user preferences ([fe491ed](https://github.com/SocialGouv/carte-jeune-engage/commit/fe491ed5a50546f5ef5ed14195e677ee8df5a822))
+* promise all modify array after treatment of all elements instead of in the loop ([f0cb42d](https://github.com/SocialGouv/carte-jeune-engage/commit/f0cb42d5c954477af67ae13c4b3c849ad6d0b545))
+* start from coupons instead of users for notification offerActivated, fix coupon included type ([5e5f6e2](https://github.com/SocialGouv/carte-jeune-engage/commit/5e5f6e27233787c62eb480fa9a8f3b41bdd7379b))
+* use utility for afterChange hook notification for coupon used and add correct url ([c34a6c9](https://github.com/SocialGouv/carte-jeune-engage/commit/c34a6c92c5a3558442038c1530dfe01ef45b829d))
+
+
+### Features
+
+* check validity from and if coupons are available for notification of new offer ([f4c720c](https://github.com/SocialGouv/carte-jeune-engage/commit/f4c720ca0505f833c7fe5106d3a0dde977e5ec8c))
+
 ## [0.35.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.8...v0.35.9) (2024-04-22)
 
 
