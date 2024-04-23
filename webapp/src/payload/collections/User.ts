@@ -105,6 +105,10 @@ export const Users: CollectionConfig = {
           label: "Mission locale",
           value: "missionLocale",
         },
+        {
+          label: "Service civique",
+          value: "serviceCivique",
+        },
       ],
       admin: {
         position: "sidebar",
