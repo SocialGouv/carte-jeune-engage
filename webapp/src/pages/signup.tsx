@@ -93,7 +93,7 @@ export const signupSteps = [
     },
   },
   {
-    title: "Quelle est votre date de naissance ?",
+    title: "Votre date de naissance ?",
     description:
       "Votre date de naissance nous permet de personnaliser votre expérience et de garantir la sécurité de vos données",
     field: {
@@ -120,7 +120,7 @@ export const signupSteps = [
     },
   },
   {
-    title: "Quelle est votre adresse email ?",
+    title: "Votre adresse email ?",
     description:
       "Votre adresse email vous permettra aussi de vous reconnecter si vous changez de numéro de téléphone par exemple",
     field: {
