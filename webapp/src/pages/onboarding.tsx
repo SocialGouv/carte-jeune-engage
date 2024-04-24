@@ -256,6 +256,7 @@ export default function OnBoarding() {
             localStorage.removeItem("cje-onboarding-form");
             setShowModalInstallApp(true);
             router.replace("/dashboard");
+            router.reload();
           }}
           rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
         >
