@@ -1,3 +1,16 @@
+## [0.36.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.2...v0.36.3) (2024-04-24)
+
+
+### Bug Fixes
+
+* add acceptedCGU to localStorage instead of useState, fix modal install pwa height ([aa22c09](https://github.com/SocialGouv/carte-jeune-engage/commit/aa22c09ce98a46643b4a8b787452bd36f1264ac1))
+* add new answer to user collection for cejFrom ([9d19239](https://github.com/SocialGouv/carte-jeune-engage/commit/9d19239ff78b9d4f00c1c67856c279b985846375))
+* add notification modal at the end of onboarding ([359bd02](https://github.com/SocialGouv/carte-jeune-engage/commit/359bd02b3a18092ba2c328812ecb615b2258a315))
+* migrations ([a64c599](https://github.com/SocialGouv/carte-jeune-engage/commit/a64c599afef1db9c16f438e66cd7d57d8007b7e2))
+* update wording on signup path, change from address autcomplete to choice of cities ([6e1e7bb](https://github.com/SocialGouv/carte-jeune-engage/commit/6e1e7bbcc29fee051a73bb78a11cd4553537f8cc))
+* wording on onboarding path, remove timeAtCje question ([e7ffe2e](https://github.com/SocialGouv/carte-jeune-engage/commit/e7ffe2e18ed29239fe6ee40811e8f0ef7be02a08))
+* wording on signup titles path ([b9010a6](https://github.com/SocialGouv/carte-jeune-engage/commit/b9010a64ba1408e48cae0ad7b012ec80be6a5c71))
+
 ## [0.36.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.1...v0.36.2) (2024-04-24)
 
 
