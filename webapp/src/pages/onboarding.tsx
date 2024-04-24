@@ -245,7 +245,8 @@ export default function OnBoarding() {
           onClick={() => {
             localStorage.removeItem("cje-signup-form");
             localStorage.removeItem("cje-onboarding-form");
-            router.push("/dashboard");
+            router.replace("/dashboard");
+            router.reload();
           }}
           rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
         >

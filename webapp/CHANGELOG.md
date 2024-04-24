@@ -1,3 +1,10 @@
+## [0.36.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.0...v0.36.1) (2024-04-23)
+
+
+### Bug Fixes
+
+* change from push to replace on onboarding finish to remove navigator history ([f29b708](https://github.com/SocialGouv/carte-jeune-engage/commit/f29b708df6167c787ecf740e06837abec5f1b5a5))
+
 # [0.36.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.35.9...v0.36.0) (2024-04-23)
 
 
