@@ -34,10 +34,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
   const { isOpen: isOpenModalInstallApp, onClose: onCloseModalInstallApp } =
     useDisclosure({
       isOpen: showModalInstallApp && (!isIOS() ? deferredEvent !== null : true),
-      onClose: () => {
-        setShowModalInstallApp(false);
-        if (!isIOS()) setShowNotificationModal(true);
-      },
+      onClose: () => setShowModalInstallApp(false),
     });
 
   const isLanding =

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -88,19 +89,21 @@ const InstallAppModal = ({
             },
           ]}
         />
-        <Flex flexDir="column" mt="auto">
-          <Button colorScheme="blackBtn" onClick={handleInstallApp}>
-            Ajouter l’appli maintenant
-          </Button>
-          <Button
-            colorScheme="transparent"
-            mt={2}
-            color="blackBtn.500"
-            onClick={onClose}
-          >
-            Plus tard
-          </Button>
-        </Flex>
+        <Box mt="auto">
+          <Flex flexDir="column" mt={8}>
+            <Button colorScheme="blackBtn" onClick={handleInstallApp}>
+              Ajouter l’appli maintenant
+            </Button>
+            <Button
+              colorScheme="transparent"
+              mt={2}
+              color="blackBtn.500"
+              onClick={onClose}
+            >
+              Plus tard
+            </Button>
+          </Flex>
+        </Box>
       </Flex>
       <Modal isOpen={isOpenIosModal} onClose={onCloseIosModal} size="md">
         <ModalOverlay />
