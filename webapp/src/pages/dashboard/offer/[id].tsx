@@ -1,5 +1,4 @@
 import {
-  AspectRatio,
   Box,
   Button,
   Center,
@@ -29,11 +28,9 @@ import {
   HiBuildingStorefront,
   HiOutlineInformationCircle,
   HiQuestionMarkCircle,
-  HiShoppingCart,
 } from "react-icons/hi2";
 import ChakraNextImage from "~/components/ChakraNextImage";
 import LoadingLoader from "~/components/LoadingLoader";
-import NewPassComponent from "~/components/NewPassComponent";
 import BaseModal from "~/components/modals/BaseModal";
 import StackItems, { StackItem } from "~/components/offer/StackItems";
 import StepsButtons from "~/components/offer/StepsButtons";
@@ -43,7 +40,6 @@ import OfferWrapper from "~/components/wrappers/OfferWrapper";
 import StepsWrapper from "~/components/wrappers/StepsWrapper";
 import { hasAccessToOffer } from "~/guards/hasAccessToOffer";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectField";
-import { useAuth } from "~/providers/Auth";
 import { couponAnimation } from "~/utils/animations";
 import { api } from "~/utils/api";
 import { getItemsExternalLink } from "~/utils/itemsOffer";
@@ -54,9 +50,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default function OfferPage() {
-  const { user } = useAuth();
-
   const router = useRouter();
+
   const { id, couponStatus } = router.query as {
     id: string;
     couponStatus: "active" | "inactive";
@@ -134,8 +129,6 @@ export default function OfferPage() {
     count: nbSteps,
   });
 
-  const [isOpenNewPassComponent, setIsOpenNewPassComponent] = useState(false);
-
   const {
     isOpen: isOpenActivateOffer,
     onOpen: onOpenActivateOffer,
@@ -182,17 +175,6 @@ export default function OfferPage() {
     { dependencies: [isLoadingCoupon, coupon, isSuccess] }
   );
 
-  const handleActivateOffer = () => {
-    if (
-      offer?.kind.startsWith("voucher") &&
-      user?.status_image !== "approved"
-    ) {
-      setIsOpenNewPassComponent(true);
-    } else {
-      onOpenActivateOffer();
-    }
-  };
-
   const handleValidateOffer = async (offerId: number) => {
     await mutateAsyncCouponToUser({ offer_id: offerId });
     onCloseActivateOffer();
@@ -213,7 +195,6 @@ export default function OfferPage() {
       isModalOpen={
         isOpenActivateOffer ||
         isOpenExternalLink ||
-        isOpenNewPassComponent ||
         isOpenOtherConditions ||
         isOpenTermsOfUse
       }
@@ -222,7 +203,7 @@ export default function OfferPage() {
         coupon={coupon}
         offer={offer}
         handleOpenOtherConditions={onOpenOtherConditions}
-        handleActivateOffer={handleActivateOffer}
+        handleActivateOffer={onOpenActivateOffer}
         handleOpenExternalLink={onOpenExternalLink}
       >
         {offer.kind.startsWith("voucher") && (
@@ -469,10 +450,6 @@ export default function OfferPage() {
           <StackItems items={itemsExternalLink} props={{ mt: 16 }} />
         </Flex>
       </BaseModal>
-      <NewPassComponent
-        isOpen={isOpenNewPassComponent}
-        onClose={() => setIsOpenNewPassComponent(false)}
-      />
     </OfferWrapper>
   );
 }
