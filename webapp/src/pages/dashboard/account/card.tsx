@@ -119,7 +119,7 @@ export default function AccountCard() {
         gap={8}
       >
         <Box borderRadius="full" overflow="hidden">
-          {user.status_image === "approved" ? (
+          {user.status_image === "approved" && user.image ? (
             <Image
               src={user.image.url as string}
               alt={user.image.alt as string}
