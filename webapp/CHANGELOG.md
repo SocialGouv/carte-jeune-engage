@@ -1,3 +1,10 @@
+## [0.36.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.3...v0.36.4) (2024-04-25)
+
+
+### Bug Fixes
+
+* add csv export of permissions with user createdAt ([fd88e90](https://github.com/SocialGouv/carte-jeune-engage/commit/fd88e9022b689f8b1b4961f99a59cfa387611277))
+
 ## [0.36.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.2...v0.36.3) (2024-04-24)
 
 
