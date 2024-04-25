@@ -1,7 +1,6 @@
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import { Box, Button, Tooltip } from "@chakra-ui/react";
 import type { Props } from "payload/components/views/List";
-import usePayloadAPI from "payload/dist/admin/hooks/usePayloadAPI";
 import React, { useEffect, useMemo, useState } from "react";
 import { Permission, User } from "../payload-types";
 import CsvDownloader from "react-csv-downloader";
@@ -18,7 +17,7 @@ const ExportPermissions = ({ data }: Props) => {
     ["users", data.docs?.length],
     async () => {
       const response = await fetch(
-        `/api/users?pagination=false&where[phone_number][in]=${permissionPhoneNumbers}`
+        `/api/users?pagination=false&limit=1000&where[phone_number][in]=${permissionPhoneNumbers}`
       );
       return response.json();
     },
