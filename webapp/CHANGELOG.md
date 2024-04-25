@@ -1,3 +1,10 @@
+## [0.36.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.4...v0.36.5) (2024-04-25)
+
+
+### Bug Fixes
+
+* remove default limit on get of users for export permissions ([0313c04](https://github.com/SocialGouv/carte-jeune-engage/commit/0313c04cf59118837e5bbce85fcd6ff36c1a588b))
+
 ## [0.36.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.3...v0.36.4) (2024-04-25)
 
 
