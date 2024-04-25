@@ -6,17 +6,19 @@ import {
   Grid,
   Heading,
   Icon,
+  IconButton,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { FiMoreHorizontal } from "react-icons/fi";
+import { HiCog6Tooth } from "react-icons/hi2";
 import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
 import OfferCard from "~/components/cards/OfferCard";
+import { PassIcon } from "~/components/icons/pass";
 import { api } from "~/utils/api";
 
 export default function Dashboard() {
@@ -70,11 +72,31 @@ export default function Dashboard() {
     <>
       <Box pt={12} pb={32}>
         <Box px={8}>
+          <Flex justifyContent="space-between" mb={6}>
+            <Link href="/dashboard/account/card" passHref>
+              <IconButton
+                colorScheme="whiteBtn"
+                onClick={() => push(["trackEvent", "Profil", "Ma carte CJE"])}
+                size="md"
+                icon={<PassIcon color="black" w={5} h={6} />}
+                aria-label="Carte CJE"
+              />
+            </Link>
+            <Link href="/dashboard/account" passHref>
+              <IconButton
+                colorScheme="whiteBtn"
+                onClick={() => push(["trackEvent", "Navigation", "Profil"])}
+                size="md"
+                icon={<Icon as={HiCog6Tooth} color="black" w={6} h={6} />}
+                aria-label="Page de profil"
+              />
+            </Link>
+          </Flex>
           <InstallationBanner
             ignoreUserOutcome={false}
             matomoEvent={["Accueil", "Obtenir l'application"]}
           />
-          <Heading as="h2" fontSize="2xl">
+          <Heading as="h2" fontSize="2xl" fontWeight="extrabold">
             Quelles économies allez-vous faire aujourd’hui ?
           </Heading>
           <SimpleGrid columns={4} mt={6} spacingX={4}>

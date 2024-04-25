@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Icon, Text } from "@chakra-ui/react";
 import { deleteCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,7 +13,6 @@ import {
   HiMiniChevronRight,
   HiMiniPower,
   HiUser,
-  HiUserCircle,
   HiShieldCheck,
   HiBookOpen,
   HiMiniShieldCheck,
@@ -29,6 +28,7 @@ import NewPassComponent from "~/components/NewPassComponent";
 import dynamic from "next/dynamic";
 import { push } from "@socialgouv/matomo-next";
 import { isIOS } from "~/utils/tools";
+import { ChevronLeftIcon } from "@chakra-ui/icons";
 
 const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
@@ -126,22 +126,6 @@ export default function Account() {
       matomoEvent: ["Profil", "Suivre mes économies"],
     },
     {
-      label: "Ma carte CJE",
-      href:
-        user?.image && user?.status_image === "approved"
-          ? "/dashboard/account/card"
-          : undefined,
-      onClick: !user?.image
-        ? () => {
-            push(["trackEvent", "Profil", "Ma carte CJE"]);
-            setIsOpenNewPassComponent(true);
-          }
-        : undefined,
-      icon: HiUserCircle,
-      slug: "card",
-      matomoEvent: ["Profil", "Ma carte CJE"],
-    },
-    {
       label: "J'ai besoin d'aide",
       onClick: () => {
         setIsOpenCrisp(true);
@@ -218,7 +202,16 @@ export default function Account() {
 
   return (
     <Box pt={12} pb={36} px={8}>
-      <Box textAlign="center">
+      <Button
+        colorScheme="whiteBtn"
+        onClick={() => router.back()}
+        size="md"
+        width={8}
+        iconSpacing={0}
+        px={0}
+        rightIcon={<ChevronLeftIcon w={6} h={6} color="black" />}
+      />
+      <Box textAlign="center" mt={3}>
         <Text fontSize="2xl" fontWeight="extrabold" lineHeight="shorter">
           {user?.firstName},
           <br />
