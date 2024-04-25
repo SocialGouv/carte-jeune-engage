@@ -154,8 +154,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         {isLanding && <Footer />}
         {(pathname === "/dashboard" ||
           pathname === "/dashboard/wallet" ||
-          pathname === "/dashboard/categories" ||
-          pathname === "/dashboard/account") && <BottomNavigation />}
+          pathname === "/dashboard/categories") && <BottomNavigation />}
       </Box>
     </>
   );
