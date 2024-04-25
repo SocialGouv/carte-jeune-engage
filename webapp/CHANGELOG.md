@@ -1,3 +1,10 @@
+## [0.36.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.5...v0.36.6) (2024-04-25)
+
+
+### Bug Fixes
+
+* hide notification modal for ios ([60b7296](https://github.com/SocialGouv/carte-jeune-engage/commit/60b7296ee4ad7870f32041932653f8270272652f))
+
 ## [0.36.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.4...v0.36.5) (2024-04-25)
 
 
