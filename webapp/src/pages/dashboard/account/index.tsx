@@ -2,18 +2,14 @@ import { Box, Button, Center, Flex, Icon, Text } from "@chakra-ui/react";
 import { deleteCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { User } from "~/payload/payload-types";
 import { useMemo, useState } from "react";
 import {
   HiBuildingLibrary,
   HiChatBubbleOvalLeftEllipsis,
   HiCurrencyEuro,
-  HiExclamationTriangle,
-  HiCheckBadge,
   HiMiniChevronRight,
   HiMiniPower,
   HiUser,
-  HiShieldCheck,
   HiBookOpen,
   HiMiniShieldCheck,
   HiBell,
@@ -31,49 +27,6 @@ import { isIOS } from "~/utils/tools";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 
 const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
-
-const displayDynamicCJECardMessage = (user: User) => {
-  if (!user.image) {
-    return (
-      <>
-        <Flex alignItems="center" color="error">
-          <Icon as={HiExclamationTriangle} w={5} h={5} mr={1.5} />
-          <Text fontSize="xs" fontWeight="bold">
-            Photo manquante
-          </Text>
-        </Flex>
-        <Text fontSize="sm" fontWeight="medium">
-          Finalisez votre carte CJE pour profiter des offres en magasin
-        </Text>
-      </>
-    );
-  } else if (user.image && user.status_image === "pending") {
-    return (
-      <>
-        <Flex alignItems="center" color="primary.500">
-          <Icon as={HiShieldCheck} w={5} h={5} mr={1.5} />
-          <Text fontSize="xs" fontWeight="bold">
-            Notre équipe est en train de créer votre carte...
-          </Text>
-        </Flex>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <Text fontSize="sm" fontWeight="medium">
-        À présenter pour bénéficier des réductions en magasin
-      </Text>
-      <Flex alignItems="center" color="primary.500">
-        <Icon as={HiCheckBadge} w={5} h={5} mr={1.5} />
-        <Text fontSize="xs" fontWeight="bold">
-          Carte vérifiée
-        </Text>
-      </Flex>
-    </>
-  );
-};
 
 export default function Account() {
   const router = useRouter();
@@ -245,19 +198,7 @@ export default function Account() {
                 <Text fontWeight="bold" noOfLines={1}>
                   {item.label}
                 </Text>
-                {item.slug === "card" && displayDynamicCJECardMessage(user)}
               </Flex>
-              {item.slug === "card" && user.status_image !== "approved" && (
-                <Box w={8} mt={3}>
-                  <Box
-                    borderRadius="full"
-                    w={2}
-                    h={2}
-                    bgColor={!user.image ? "error" : "primary.500"}
-                    ml="auto"
-                  />
-                </Box>
-              )}
             </Flex>
           </Link>
         ))}
