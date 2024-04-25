@@ -28,6 +28,7 @@ import ToastComponent from "../ToastComponent";
 import { PassIcon } from "../icons/pass";
 import PassInCreation from "../offer/PassInCreation";
 import { push } from "@socialgouv/matomo-next";
+import PassCard from "../account/PassCard";
 
 type CouponWrapperProps = {
   children: ReactNode;
@@ -65,23 +66,39 @@ const CTAButton = ({
           Aller sur le site
         </Button>
       ) : (
-        <Link
-          href="/dashboard/account/card"
-          onClick={() => {
-            push([
-              "trackEvent",
-              "Offre",
-              offer.partner.name,
-              offer.title,
-              "Active",
-              "Présenter ma carte CJE",
-            ]);
-          }}
+        <Flex
+          flexDir="column"
+          border="1px solid"
+          borderRadius="1.5xl"
+          borderColor="borderGray"
+          gap={4}
+          p={6}
         >
-          <Button leftIcon={<Icon as={PassIcon} w={6} h={6} />} w="full">
-            Présenter ma carte CJE
-          </Button>
-        </Link>
+          <Flex alignSelf="center" alignItems="center" gap={2}>
+            <PassIcon w={5} h={6} />
+            <Text fontSize="lg" fontWeight="bold">
+              Ma carte CJE
+            </Text>
+          </Flex>
+          <PassCard isPage={false} />
+        </Flex>
+        // <Link
+        //   href="/dashboard/account/card"
+        //   onClick={() => {
+        //     push([
+        //       "trackEvent",
+        //       "Offre",
+        //       offer.partner.name,
+        //       offer.title,
+        //       "Active",
+        //       "Présenter ma carte CJE",
+        //     ]);
+        //   }}
+        // >
+        //   <Button leftIcon={<Icon as={PassIcon} w={6} h={6} />} w="full">
+        //     Présenter ma carte CJE
+        //   </Button>
+        // </Link>
       )}
     </Box>
   );
@@ -143,7 +160,7 @@ const CouponWrapper = ({
         w="full"
         bgColor={coupon ? "bgWhite" : "cje-gray.500"}
         border={coupon ? "1px solid" : "none"}
-        borderColor="#B5BBBD"
+        borderColor="borderGray"
         textAlign="center"
         px={4}
         py={5}
