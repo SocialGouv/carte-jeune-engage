@@ -25,6 +25,7 @@ import { onBoardingSteps } from "./onboarding";
 import { api } from "~/utils/api";
 import { getCookie, setCookie } from "cookies-next";
 import { useAuth } from "~/providers/Auth";
+import { isIOS } from "~/utils/tools";
 
 type SignUpForm = {
   hasAcceptedCGU: boolean;
@@ -517,7 +518,7 @@ export default function Signup() {
               mt={4}
               onClick={() => {
                 setValue("hasAcceptedCGU", true);
-                setShowModalInstallApp(true);
+                if (!isIOS()) setShowModalInstallApp(true);
               }}
             >
               J'accepte
