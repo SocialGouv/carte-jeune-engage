@@ -1,4 +1,13 @@
 import { type CollectionConfig } from "payload/types";
+import type { Props } from "payload/components/views/List";
+import dynamic from "next/dynamic";
+
+const ExportPermissions = dynamic<Props>(
+  () => import("../components/ExportPermissions"),
+  {
+    ssr: false,
+  }
+);
 
 export const Permissions: CollectionConfig = {
   slug: "permissions",
@@ -8,6 +17,9 @@ export const Permissions: CollectionConfig = {
   },
   admin: {
     useAsTitle: "phone_number",
+    components: {
+      BeforeListTable: [ExportPermissions],
+    },
   },
   fields: [
     {
