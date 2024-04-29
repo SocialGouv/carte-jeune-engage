@@ -236,38 +236,43 @@ export default function OfferPage() {
                 {offer.nbOfEligibleStores ?? 1} magasins {offer.partner.name}{" "}
                 participants
               </Text>
-              <Link
-                as={NextLink}
-                href={offer.linkOfEligibleStores ?? ""}
-                w="full"
-                target="_blank"
-              >
-                <Image
-                  src={offer.imageOfEligibleStores.url as string}
-                  alt={offer.imageOfEligibleStores.alt as string}
-                  width={0}
-                  height={114}
-                  sizes="100vw"
-                  style={{
-                    width: "100%",
-                    height: "114px",
-                    borderRadius: "10px",
-                    objectFit: "cover",
-                  }}
-                />
-              </Link>
-              <Link
-                as={NextLink}
-                href={offer.linkOfEligibleStores ?? ""}
-                target="_blank"
-              >
-                <HStack align="center" borderBottom="1px solid black">
-                  <Text fontWeight="medium">
-                    Voir les magasins participants
-                  </Text>
-                  <Icon as={HiArrowRight} w={4} h={4} />
-                </HStack>
-              </Link>
+              {offer.imageOfEligibleStores?.url &&
+                offer.linkOfEligibleStores && (
+                  <Link
+                    as={NextLink}
+                    href={offer.linkOfEligibleStores}
+                    w="full"
+                    target="_blank"
+                  >
+                    <Image
+                      src={offer.imageOfEligibleStores.url}
+                      alt={offer.imageOfEligibleStores.alt as string}
+                      width={0}
+                      height={114}
+                      sizes="100vw"
+                      style={{
+                        width: "100%",
+                        height: "114px",
+                        borderRadius: "10px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </Link>
+                )}
+              {offer.linkOfEligibleStores && (
+                <Link
+                  as={NextLink}
+                  href={offer.linkOfEligibleStores ?? ""}
+                  target="_blank"
+                >
+                  <HStack align="center" borderBottom="1px solid black">
+                    <Text fontWeight="medium">
+                      Voir les magasins participants
+                    </Text>
+                    <Icon as={HiArrowRight} w={4} h={4} />
+                  </HStack>
+                </Link>
+              )}
             </VStack>
             <Divider my={6} />
           </>
