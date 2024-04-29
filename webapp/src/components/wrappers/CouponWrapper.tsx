@@ -26,7 +26,6 @@ import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import ToastComponent from "../ToastComponent";
 import { PassIcon } from "../icons/pass";
-import PassInCreation from "../offer/PassInCreation";
 import { push } from "@socialgouv/matomo-next";
 import PassCard from "../account/PassCard";
 
@@ -112,30 +111,7 @@ const CouponWrapper = ({
   handleActivateOffer,
   handleOpenExternalLink,
 }: CouponWrapperProps) => {
-  const { user } = useAuth();
   const toast = useToast();
-
-  const isPassInCreation = useMemo(() => {
-    if (!user) return false;
-    return user.image !== undefined && user.status_image !== "approved";
-  }, [user]);
-
-  const itemsSimpleTermsOfUse = useMemo(() => {
-    if (!offer) return [];
-    return [
-      {
-        icon: "HiMiniCheck",
-        text: !!coupon ? "Cette offre est active" : "J'active cette offre",
-        slug: "activate",
-      },
-      getItemsTermsOfUse(offer.kind).filter((item) =>
-        offer.termsOfUse
-          ?.filter((termOfUse) => termOfUse.isHighlighted)
-          .map((termOfUse) => termOfUse.slug)
-          .includes(item.slug)
-      ) ?? [],
-    ].flat();
-  }, [offer, coupon]);
 
   const handleCopyToClipboard = (text: string) => {
     toast({
@@ -274,10 +250,6 @@ const CouponWrapper = ({
   };
 
   const getCouponWrapperContent = () => {
-    if (offer.kind.startsWith("voucher") && isPassInCreation) {
-      return <PassInCreation />;
-    }
-
     const isOfferWithoutCoupon =
       offer.kind === "voucher_pass" || offer.kind === "code_space";
 
