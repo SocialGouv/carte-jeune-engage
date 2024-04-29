@@ -1,3 +1,10 @@
+## [0.36.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.6...v0.36.7) (2024-04-29)
+
+
+### Bug Fixes
+
+* add check for link and image of eligible stores in offer page ([d08b1c4](https://github.com/SocialGouv/carte-jeune-engage/commit/d08b1c4a5f310195ff15be8bb3e4a398fe8f4c32))
+
 ## [0.36.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.5...v0.36.6) (2024-04-25)
 
 
