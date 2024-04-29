@@ -111,7 +111,7 @@ const PassCard = ({ isPage }: PropsPassCard) => {
             gap={8}
           >
             <Box borderRadius="full" overflow="hidden">
-              {user.status_image === "approved" && user.image ? (
+              {user.image ? (
                 <Image
                   src={user.image.url as string}
                   alt={user.image.alt as string}
