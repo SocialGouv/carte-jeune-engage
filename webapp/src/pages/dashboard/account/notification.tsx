@@ -10,15 +10,16 @@ export default function AccountNotifications() {
   const router = useRouter();
   const { user, refetchUser } = useAuth();
 
-  const [notificationPushActive, setNotificationPushActive] = useState(false);
+  const [isServiceWokerInNavigator, setIsServiceWokerInNavigator] =
+    useState(false);
+  const [isServiceWorkerInRegistration, setIsServiceWorkerInRegistration] =
+    useState(false);
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
   });
 
-  const handleRequestNotification = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleRequestNotification = async () => {
     if (user?.notification_status === "enabled") {
       await updateUser({
         notification_subscription: null,
@@ -28,9 +29,14 @@ export default function AccountNotifications() {
       let swRegistration;
 
       if ("serviceWorker" in navigator) {
+        setIsServiceWokerInNavigator(true);
         swRegistration = await navigator.serviceWorker.getRegistration();
-        if (!swRegistration)
+        if (!swRegistration) {
+          setIsServiceWorkerInRegistration(false);
           swRegistration = await (window as any).workbox.register();
+        } else {
+          setIsServiceWorkerInRegistration(true);
+        }
 
         const sub = await swRegistration.pushManager.subscribe({
           userVisibleOnly: true,
@@ -43,8 +49,8 @@ export default function AccountNotifications() {
           notification_status: "enabled",
           notification_subscription: sub,
         });
-
-        setNotificationPushActive(true);
+      } else {
+        setIsServiceWokerInNavigator(false);
       }
     }
   };
@@ -79,6 +85,16 @@ export default function AccountNotifications() {
           </Flex>
         </Flex>
       )}
+      <Text>
+        {isServiceWokerInNavigator
+          ? "Service Worker disponible dans le navigateur"
+          : "Service Worker indisponible dans le navigateur"}
+      </Text>
+      <Text>
+        {isServiceWorkerInRegistration
+          ? "Service Worker enregistré"
+          : "Service Worker non enregistré"}
+      </Text>
     </Flex>
   );
 }
