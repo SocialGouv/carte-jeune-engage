@@ -1,3 +1,10 @@
+## [0.37.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.0...v0.37.1) (2024-04-30)
+
+
+### Bug Fixes
+
+* events matomo concatenates instead of multiple values ([a89c981](https://github.com/SocialGouv/carte-jeune-engage/commit/a89c9818cf6e7fcfcc0f75756b96f5bc7c7f956f))
+
 # [0.37.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.7...v0.37.0) (2024-04-30)
 
 
