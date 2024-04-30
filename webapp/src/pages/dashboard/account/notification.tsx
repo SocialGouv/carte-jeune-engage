@@ -1,4 +1,4 @@
-import { Flex, Heading, Icon, Switch, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Icon, Switch, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { HiArrowLeft } from "react-icons/hi2";
@@ -17,43 +17,35 @@ export default function AccountNotifications() {
   });
 
   const handleRequestNotification = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    if (!event.target.checked) {
-      setNotificationPushActive(false);
-      updateUser({
-        notification_status: "disabled",
+    if (user?.notification_status === "enabled") {
+      await updateUser({
         notification_subscription: null,
+        notification_status: "disabled",
       });
     } else {
-      // let swRegistration = await navigator.serviceWorker.register("/sw.js", {
-      //   scope: "/dashboard/",
-      // });
+      let swRegistration;
 
-      if (
-        "serviceWorker" in navigator &&
-        (window as any).workbox !== undefined
-      ) {
-        (window as any).workbox.register();
+      if ("serviceWorker" in navigator) {
+        swRegistration = await navigator.serviceWorker.getRegistration();
+        if (!swRegistration)
+          swRegistration = await (window as any).workbox.register();
+
+        const sub = await swRegistration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: base64ToUint8Array(
+            process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string
+          ),
+        });
+
+        await updateUser({
+          notification_status: "enabled",
+          notification_subscription: sub,
+        });
+
+        setNotificationPushActive(true);
       }
-
-      let swRegistration = await navigator.serviceWorker.getRegistration();
-
-      if (!swRegistration) return;
-
-      const sub = await swRegistration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64ToUint8Array(
-          process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string
-        ),
-      });
-
-      await updateUser({
-        notification_status: "enabled",
-        notification_subscription: sub,
-      });
-
-      setNotificationPushActive(true);
     }
   };
 
@@ -79,11 +71,11 @@ export default function AccountNotifications() {
         <Flex flexDir="column" mt={10} gap={6}>
           <Flex alignItems="center" justifyContent="space-between" gap={1}>
             <Text fontWeight="medium">Autoriser les notifications push</Text>
-            <Switch
-              defaultChecked={user?.notification_status === "enabled"}
-              onChange={handleRequestNotification}
-              checked={notificationPushActive}
-            />
+            <Button onClick={handleRequestNotification}>
+              {user.notification_status === "enabled"
+                ? "Désactiver"
+                : "Activer"}
+            </Button>
           </Flex>
         </Flex>
       )}
