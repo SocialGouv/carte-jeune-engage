@@ -162,7 +162,7 @@ export const userRouter = createTRPCRouter({
         userEmail: z.string().email().optional(),
         address: z.string().optional(),
         preferences: z.array(z.number()).optional(),
-        status_image: z.enum(["approved", "pending"]).optional(),
+        status_image: z.enum(["pending"]).optional(),
         image: z.number().optional(),
         notification_subscription: z.any().optional(),
         notification_status: z.enum(["enabled", "disabled"]).optional(),
