@@ -105,7 +105,11 @@ export default function Dashboard() {
                 key={category.id}
                 href={`/dashboard/category/${category.slug}`}
                 onClick={() => {
-                  push(["trackEvent", "Accueil", "Catégories", category.label]);
+                  push([
+                    "trackEvent",
+                    "Accueil",
+                    "Catégories - " + category.label,
+                  ]);
                 }}
                 passHref
               >
@@ -193,10 +197,7 @@ export default function Dashboard() {
                   push([
                     "trackEvent",
                     "Accueil",
-                    "Accès rapide",
-                    "Offre",
-                    quickAccess.offer.partner.name,
-                    quickAccess.offer.title,
+                    `Accès rapide - Offre - ${quickAccess.offer.partner.name} - ${quickAccess.offer.title}`,
                   ]);
                 }}
                 passHref
@@ -254,9 +255,7 @@ export default function Dashboard() {
                   matomoEvent={[
                     "Accueil",
                     "Pour vous",
-                    "Offre",
-                    offer.partner.name,
-                    offer.title,
+                    `Offre - ${offer.partner.name} - ${offer.title} `,
                   ]}
                 />
               ))}

@@ -49,21 +49,14 @@ const StepsButtons = ({
             push([
               "trackEvent",
               "Offre",
-              `${offer.partner.name}`,
-              `${offer.title}`,
-              "Inactive",
-              "J'active mon offre",
-              "J'ai compris",
+              `${offer.partner.name} - ${offer.title} - Inactive - J'active mon offre - J'ai compris`,
             ]);
             setActiveStep(activeStep + 1);
           } else if (handleValidate) {
             push([
               "trackEvent",
               "Offre",
-              `${offer.partner.name}`,
-              `${offer.title}`,
-              "Inactive",
-              "J'active mon offre - Validation",
+              `${offer.partner.name} - ${offer.title} - Inactive - J'active mon offre - Validation`,
             ]);
             setIsValidating(true);
             handleValidate().then(() => setIsValidating(false));
@@ -80,11 +73,11 @@ const StepsButtons = ({
           push([
             "trackEvent",
             "Offre",
-            `${offer.partner.name}`,
-            `${offer.title}`,
-            "Inactive",
-            "J'active mon offre",
-            `Cette offre ne m'intéresse pas ${activeStep === count ? "2" : ""}`,
+            `${offer.partner.name} - ${
+              offer.title
+            } - Inactive - J'active mon offre - Cette offre ne m'intéresse pas ${
+              activeStep === count ? "2" : ""
+            }`,
           ]);
           handleOnClose();
         }}

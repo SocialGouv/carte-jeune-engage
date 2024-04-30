@@ -50,11 +50,7 @@ export default function CategoryOfferList() {
           offer={offer}
           matomoEvent={[
             "Explorer",
-            "Catégories",
-            category.label,
-            "Offre",
-            offer.partner.name,
-            offer.title,
+            `Catégories - ${category.label} - Offre - ${offer.partner.name} - ${offer.title}`,
           ]}
         />
       ))}

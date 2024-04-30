@@ -269,10 +269,9 @@ export default function OfferPage() {
               push([
                 "trackEvent",
                 "Offre",
-                offer.partner.name,
-                offer.title,
-                !!coupon ? "Active" : "Inactive",
-                "Comment ça marche",
+                `${offer.partner.name} - ${offer.title} - ${
+                  !!coupon ? "Active" : "Inactive"
+                } - Comment ça marche`,
               ]);
               onOpenTermsOfUse();
             }}
@@ -331,10 +330,9 @@ export default function OfferPage() {
                     push([
                       "trackEvent",
                       "Offre",
-                      offer.partner.name,
-                      offer.title,
-                      !!coupon ? "Active" : "Inactive",
-                      "Conditions",
+                      `${offer.partner.name} - ${offer.title} - ${
+                        !!coupon ? "Active" : "Inactive"
+                      } - Conditions`,
                     ]);
                     onOpenOtherConditions();
                   }}

@@ -53,10 +53,7 @@ const CTAButton = ({
             push([
               "trackEvent",
               "Offre",
-              offer.partner.name,
-              offer.title,
-              "Active",
-              "Aller sur le site",
+              `${offer.partner.name} - ${offer.title} - Active - Aller sur le site`,
             ]);
             handleOpenExternalLink();
           }}
@@ -79,7 +76,7 @@ const CTAButton = ({
               Ma carte CJE
             </Text>
           </Flex>
-          <PassCard isPage={false} />
+          <PassCard isPage={false} offer={offer} />
         </Flex>
         // <Link
         //   href="/dashboard/account/card"

@@ -14,12 +14,15 @@ import { useAuth } from "~/providers/Auth";
 import NewPassComponent from "../NewPassComponent";
 import Image from "next/image";
 import LoadingLoader from "../LoadingLoader";
+import { push } from "@socialgouv/matomo-next";
+import { OfferIncluded } from "~/server/api/routers/offer";
 
 type PropsPassCard = {
   isPage: boolean;
+  offer?: OfferIncluded;
 };
 
-const PassCard = ({ isPage }: PropsPassCard) => {
+const PassCard = ({ isPage, offer }: PropsPassCard) => {
   const { user } = useAuth();
 
   const {
@@ -94,6 +97,14 @@ const PassCard = ({ isPage }: PropsPassCard) => {
         )}
         <Link
           href="/dashboard/account/card"
+          onClick={() => {
+            if (!isPage)
+              push([
+                "trackEvent",
+                "Offre",
+                `${offer?.partner.name} - ${offer?.title} - Active - Présenter ma carte CJE`,
+              ]);
+          }}
           pointerEvents={isPage ? "none" : "auto"}
           tabIndex={isPage ? -1 : 0}
           aria-disabled={!isPage}
