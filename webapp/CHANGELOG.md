@@ -1,3 +1,25 @@
+# [0.37.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.7...v0.37.0) (2024-04-30)
+
+
+### Bug Fixes
+
+* add protection to card page on image ([535a666](https://github.com/SocialGouv/carte-jeune-engage/commit/535a666f0b2ad5d8576f8fbd90f779f976b45a29))
+* change wording of cta in all kind of offers and remove section how it works on page on offers ([12eab39](https://github.com/SocialGouv/carte-jeune-engage/commit/12eab3939d4c882ad3100e830629b4de94cdf811))
+* display image even if status is pending ([e7d8f90](https://github.com/SocialGouv/carte-jeune-engage/commit/e7d8f901a335cd48ca53f1aa1948f21deafd6c04))
+* remove bottom navigation for page profile ([82a1e44](https://github.com/SocialGouv/carte-jeune-engage/commit/82a1e44da41647aad5c15df1027d3682710a2bb0))
+* remove component from old path and cleanup unused variables ([5df220d](https://github.com/SocialGouv/carte-jeune-engage/commit/5df220dff8ed96720cbae91ae98b5ba3f0eed203))
+* remove status approved of status_image from update mutation in client ([905cea7](https://github.com/SocialGouv/carte-jeune-engage/commit/905cea75d93f0bd7f26430597b6493c06558ede8))
+* remove unnecessary steps in pass cje creation component ([309680a](https://github.com/SocialGouv/carte-jeune-engage/commit/309680af4bb0e2ae665a3d41922d03632cdfd873))
+* remove validation of pass cje to activate pass cje related offer ([0dc8641](https://github.com/SocialGouv/carte-jeune-engage/commit/0dc86412ee2241a92929d80192eae38869ea3b94))
+* update status_image on upload of image, wordings and spacing on new pass component ([1aee400](https://github.com/SocialGouv/carte-jeune-engage/commit/1aee4007cafe384be34c140ad17e8ced617bb272))
+
+
+### Features
+
+* handle different card status on card page with new layout and remove old logic on account index page ([67ff6b7](https://github.com/SocialGouv/carte-jeune-engage/commit/67ff6b7e669e4f9678d5f1a28bc049ea9cc54139))
+* move page pass cje to component for page offer purpose and handle styling cases ([93abdae](https://github.com/SocialGouv/carte-jeune-engage/commit/93abdaed945370e5005e7a65d6123f6cd510d015))
+* new layout on home page with profil page and pass-cje page, remove profil from bottom navigation and pass-cje in profil page ([9d4c854](https://github.com/SocialGouv/carte-jeune-engage/commit/9d4c85436a3f1bdb616a3516378cf730ba3b4f7f))
+
 ## [0.36.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.36.6...v0.36.7) (2024-04-29)
 
 
