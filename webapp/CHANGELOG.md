@@ -1,3 +1,10 @@
+## [0.37.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.1...v0.37.2) (2024-05-02)
+
+
+### Bug Fixes
+
+* close modal instead of changing steps in first step of new pass component ([caee441](https://github.com/SocialGouv/carte-jeune-engage/commit/caee441b35c09a7c3eba771e433bb513ebcff930))
+
 ## [0.37.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.0...v0.37.1) (2024-04-30)
 
 
