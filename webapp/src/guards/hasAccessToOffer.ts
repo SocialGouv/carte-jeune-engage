@@ -44,7 +44,7 @@ export const hasAccessToOffer: GetServerSideProps = async (context) => {
     offer_id: parseInt(context.params?.id as string),
   });
 
-  if (!myCoupon) {
+  if (!myCoupon && !context.query["couponStatus"]) {
     await caller.offer.increaseNbSeen({
       offer_id: parseInt(context.params?.id as string),
     });
