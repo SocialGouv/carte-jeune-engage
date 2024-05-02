@@ -1,3 +1,10 @@
+## [0.37.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.3...v0.37.4) (2024-05-02)
+
+
+### Bug Fixes
+
+* correct birthDate validation condition ([1d916d1](https://github.com/SocialGouv/carte-jeune-engage/commit/1d916d107a66f763c055eac9f4a6400627d80c10))
+
 ## [0.37.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.2...v0.37.3) (2024-05-02)
 
 
