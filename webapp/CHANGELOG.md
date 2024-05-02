@@ -1,3 +1,10 @@
+## [0.37.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.4...v0.37.5) (2024-05-02)
+
+
+### Bug Fixes
+
+* issue that nbSeen for offer page was count 2 times instead of one ([6c7a038](https://github.com/SocialGouv/carte-jeune-engage/commit/6c7a0382d1d6f1052352bfb81242fdee064e2259))
+
 ## [0.37.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.3...v0.37.4) (2024-05-02)
 
 
