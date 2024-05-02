@@ -251,7 +251,11 @@ const NewPassComponent = ({
     >
       <StepsWrapper
         stepContext={{ current: croppedImageSrc ? 2 : 1, total: 2 }}
-        onBack={() => setStepNewPass(undefined)}
+        onBack={() => {
+          setImageSrc(undefined);
+          setCroppedImageSrc(undefined);
+          onClose();
+        }}
       >
         <Flex
           flexDir="column"
