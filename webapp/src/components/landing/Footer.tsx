@@ -94,7 +94,7 @@ const Footer = () => {
           <Flex
             alignItems="center"
             justifyContent={{ base: "center", lg: "start" }}
-            gap={4}
+            gap={{ base: 4, lg: 6 }}
             flexWrap="wrap"
           >
             <Link href="/cgu">
@@ -112,6 +112,9 @@ const Footer = () => {
                 Politique de confidentialité
               </Text>
             </Link>
+            <Text color="white" fontSize="lg" fontWeight="bold">
+              Accessibilité : Non conforme
+            </Text>
           </Flex>
         </Flex>
       </Container>
