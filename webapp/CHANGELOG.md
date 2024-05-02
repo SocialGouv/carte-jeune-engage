@@ -1,3 +1,10 @@
+## [0.37.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.2...v0.37.3) (2024-05-02)
+
+
+### Bug Fixes
+
+* add element in footer ([fe3bb4a](https://github.com/SocialGouv/carte-jeune-engage/commit/fe3bb4a92792e54cda915d439193cbf5ef8af0a3))
+
 ## [0.37.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.1...v0.37.2) (2024-05-02)
 
 
