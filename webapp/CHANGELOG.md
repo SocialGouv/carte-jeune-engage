@@ -1,3 +1,10 @@
+## [0.37.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.5...v0.37.6) (2024-05-06)
+
+
+### Bug Fixes
+
+* cejFrom enum value not registered in update route and user schema ([d161c40](https://github.com/SocialGouv/carte-jeune-engage/commit/d161c407799319dee1fcf1bc7f8eca02d894d42d))
+
 ## [0.37.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.4...v0.37.5) (2024-05-02)
 
 
