@@ -8,12 +8,7 @@ import { base64ToUint8Array } from "~/utils/tools";
 
 export default function AccountNotifications() {
   const router = useRouter();
-  const { user, refetchUser } = useAuth();
-
-  const [isServiceWokerInNavigator, setIsServiceWokerInNavigator] =
-    useState(false);
-  const [isServiceWorkerInRegistration, setIsServiceWorkerInRegistration] =
-    useState(false);
+  const { user, refetchUser, isServiceWorkerRegistered } = useAuth();
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
@@ -29,16 +24,9 @@ export default function AccountNotifications() {
       let swRegistration;
 
       if ("serviceWorker" in navigator) {
-        setIsServiceWokerInNavigator(true);
-
         swRegistration = await navigator.serviceWorker.getRegistration();
 
-        if (!swRegistration) {
-          setIsServiceWorkerInRegistration(false);
-          return;
-        } else {
-          setIsServiceWorkerInRegistration(true);
-        }
+        if (!swRegistration) return;
 
         const sub = await swRegistration.pushManager.subscribe({
           userVisibleOnly: true,
@@ -51,8 +39,6 @@ export default function AccountNotifications() {
           notification_status: "enabled",
           notification_subscription: sub,
         });
-      } else {
-        setIsServiceWokerInNavigator(false);
       }
     }
   };
@@ -79,7 +65,10 @@ export default function AccountNotifications() {
         <Flex flexDir="column" mt={10} gap={6}>
           <Flex alignItems="center" justifyContent="space-between" gap={1}>
             <Text fontWeight="medium">Autoriser les notifications push</Text>
-            <Button onClick={handleRequestNotification}>
+            <Button
+              onClick={handleRequestNotification}
+              isDisabled={!isServiceWorkerRegistered}
+            >
               {user.notification_status === "enabled"
                 ? "Désactiver"
                 : "Activer"}
@@ -88,12 +77,7 @@ export default function AccountNotifications() {
         </Flex>
       )}
       <Text>
-        {isServiceWokerInNavigator
-          ? "Service Worker disponible dans le navigateur"
-          : "Service Worker indisponible dans le navigateur"}
-      </Text>
-      <Text>
-        {isServiceWorkerInRegistration
+        {isServiceWorkerRegistered
           ? "Service Worker enregistré"
           : "Service Worker non enregistré"}
       </Text>

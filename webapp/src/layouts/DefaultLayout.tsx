@@ -9,6 +9,13 @@ import NotificationModal from "~/components/modals/NotificationModal";
 import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
 import { isIOS, isStandalone } from "~/utils/tools";
+import type { Workbox } from "workbox-window";
+
+declare global {
+  interface Window {
+    workbox: Workbox;
+  }
+}
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -20,6 +27,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     user,
     isOtpGenerated,
     showNotificationModal,
+    setIsServiceWorkerRegistered,
     setShowNotificationModal,
     showModalInstallApp,
     setShowModalInstallApp,
@@ -84,7 +92,8 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         "serviceWorker" in navigator &&
         (window as any).workbox !== undefined
       ) {
-        await (window as any).workbox.register();
+        await window.workbox.register();
+        window.workbox.active.then(() => setIsServiceWorkerRegistered(true));
       }
     };
 
