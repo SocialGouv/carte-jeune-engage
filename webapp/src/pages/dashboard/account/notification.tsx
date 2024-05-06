@@ -57,20 +57,6 @@ export default function AccountNotifications() {
     }
   };
 
-  useEffect(() => {
-    const checkServiceWorkerRegistration = async () => {
-      if (
-        typeof window !== "undefined" &&
-        "serviceWorker" in navigator &&
-        (window as any).workbox !== undefined
-      ) {
-        await (window as any).workbox.register();
-      }
-    };
-
-    checkServiceWorkerRegistration();
-  }, []);
-
   return (
     <Flex flexDir="column" pt={12} px={8} h="full">
       <Icon

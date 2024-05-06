@@ -78,6 +78,16 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    const registerServiceWorker = async () => {
+      if (
+        typeof window !== "undefined" &&
+        "serviceWorker" in navigator &&
+        (window as any).workbox !== undefined
+      ) {
+        await (window as any).workbox.register();
+      }
+    };
+
     if (
       typeof window !== "undefined" &&
       "serviceWorker" in navigator &&
@@ -86,6 +96,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
       // const wb = (window as any)?.workbox;
       // add event listeners to handle PWA lifecycle events
       // console.log("PWA is supported");
+      registerServiceWorker();
       window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     }
 
