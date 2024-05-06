@@ -30,10 +30,11 @@ export default function AccountNotifications() {
 
       if ("serviceWorker" in navigator) {
         setIsServiceWokerInNavigator(true);
+        await (window as any).workbox.register();
         swRegistration = await navigator.serviceWorker.getRegistration();
         if (!swRegistration) {
           setIsServiceWorkerInRegistration(false);
-          swRegistration = await (window as any).workbox.register();
+          return;
         } else {
           setIsServiceWorkerInRegistration(true);
         }
