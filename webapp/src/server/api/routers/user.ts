@@ -150,7 +150,9 @@ export const userRouter = createTRPCRouter({
       z.object({
         civility: z.enum(["man", "woman"]).optional(),
         birthDate: z.string().optional(),
-        cejFrom: z.enum(["franceTravail", "missionLocale"]).optional(),
+        cejFrom: z
+          .enum(["franceTravail", "missionLocale", "serviceCivique"])
+          .optional(),
         timeAtCEJ: z
           .enum(["started", "lessThan3Months", "moreThan3Months"])
           .optional(),
