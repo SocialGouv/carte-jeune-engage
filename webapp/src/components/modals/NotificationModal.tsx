@@ -13,23 +13,20 @@ const NotificationModal = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const { refetchUser, registration } = useAuth();
+  const { refetchUser } = useAuth();
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
   });
 
-  useEffect(() => {
-    if (!registration) onClose();
-  }, []);
-
   const handleRequestNotification = async () => {
-    if (!registration) {
-      console.error("No SW registration available.");
-      return;
-    }
+    let swRegistration;
 
-    const sub = await registration.pushManager.subscribe({
+    swRegistration = await navigator.serviceWorker.getRegistration();
+
+    if (!swRegistration) return;
+
+    const sub = await swRegistration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string
