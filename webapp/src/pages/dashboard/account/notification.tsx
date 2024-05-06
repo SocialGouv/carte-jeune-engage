@@ -30,8 +30,9 @@ export default function AccountNotifications() {
 
       if ("serviceWorker" in navigator) {
         setIsServiceWokerInNavigator(true);
-        await (window as any).workbox.register();
+
         swRegistration = await navigator.serviceWorker.getRegistration();
+
         if (!swRegistration) {
           setIsServiceWorkerInRegistration(false);
           return;
@@ -55,6 +56,20 @@ export default function AccountNotifications() {
       }
     }
   };
+
+  useEffect(() => {
+    const checkServiceWorkerRegistration = async () => {
+      if (
+        typeof window !== "undefined" &&
+        "serviceWorker" in navigator &&
+        (window as any).workbox !== undefined
+      ) {
+        await (window as any).workbox.register();
+      }
+    };
+
+    checkServiceWorkerRegistration();
+  }, []);
 
   return (
     <Flex flexDir="column" pt={12} px={8} h="full">
