@@ -192,9 +192,8 @@ const CouponWrapper = ({
             left={0}
             w="full"
             h="full"
-            backdropFilter={"blur(4.5px)"}
-            pointerEvents={"none"}
-            transition="visibility 1s ease"
+            backdropFilter={!coupon ? "blur(4.5px)" : "blur(0)"}
+            pointerEvents="none"
           />
         </Flex>
         {coupon && (
