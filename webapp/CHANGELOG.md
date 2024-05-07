@@ -1,3 +1,10 @@
+## [0.37.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.6...v0.37.7) (2024-05-07)
+
+
+### Bug Fixes
+
+* issue default blur animation on offer page for code and barcode ([3c3a8d3](https://github.com/SocialGouv/carte-jeune-engage/commit/3c3a8d362b65d21517c4be43df810477e63af79b))
+
 ## [0.37.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.5...v0.37.6) (2024-05-06)
 
 
