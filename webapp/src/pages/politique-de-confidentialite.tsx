@@ -1,9 +1,8 @@
-import { ChevronLeftIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Divider,
   Heading,
-  Link,
   ListItem,
   Text,
   UnorderedList,
@@ -16,6 +15,7 @@ import {
   Td,
   Button,
 } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/next-js";
 import { useRouter } from "next/router";
 import { useAuth } from "~/providers/Auth";
 
@@ -85,12 +85,18 @@ export default function PrivacyPolicy() {
         <Divider mt={3} mb={4} />
         <VStack spacing={4} fontSize={{ base: "md", lg: "2xl" }} align="start">
           <Text>
-            Carte Jeune Engagé traite des données à caractère personnel pour
-            permettre aux jeunes engagés en dispositif d’insertion d’accéder à
-            des avantages sur des biens et services et développer des
-            partenariats avec des entreprises pour ajouter des avantages pour
-            les jeunes engagés.
+            Carte Jeune Engagé traite des données à caractère personnel pour :
           </Text>
+          <UnorderedList pl={8}>
+            <ListItem>
+              Permettre aux jeunes engagés en dispositif d’insertion d’accéder à
+              des avantages sur des biens et services ;
+            </ListItem>
+            <ListItem>
+              Développer des partenariats avec des entreprises pour ajouter des
+              avantages pour les jeunes engagés
+            </ListItem>
+          </UnorderedList>
         </VStack>
       </Box>
       <Box>
@@ -102,14 +108,17 @@ export default function PrivacyPolicy() {
           <Text>
             Carte Jeune Engagé traite les données identifiantes suivantes :
           </Text>
-          <Text>
-            Données de contact des jeunes : nom, prénom, âge, numéro de
-            téléphone, adresse postale, photo (pour la carte à présenter en
-            magasin) ;
-          </Text>
-          <Text>
-            Données de contact des conseillers : adresse e-mail professionnelle.
-          </Text>
+          <UnorderedList pl={8}>
+            <ListItem>
+              <strong>Données de contact des jeunes</strong> : nom, prénom, âge,
+              numéro de téléphone, adresse postale, photo (pour la carte à
+              présenter en magasin) ;
+            </ListItem>
+            <ListItem>
+              <strong>Données de contact des conseillers</strong> : adresse
+              e-mail professionnelle.
+            </ListItem>
+          </UnorderedList>
         </VStack>
       </Box>
       <Box>
@@ -121,10 +130,15 @@ export default function PrivacyPolicy() {
         <VStack spacing={4} fontSize={{ base: "md", lg: "2xl" }} align="start">
           <Text>
             Carte Jeune Engagé traite des données à caractère personnel en se
-            basant sur l’exécution d’une mission d’intérêt public ou relevant de
-            l’exercice de l’autorité publique dont est investi le responsable de
-            traitement au sens de l’article 6-1 e) du RGPD.
+            basant sur :
           </Text>
+          <UnorderedList pl={8}>
+            <ListItem>
+              L’exécution d’une mission d’intérêt public ou relevant de
+              l’exercice de l’autorité publique dont est investi le responsable
+              de traitement au sens de l’article 6-1 e) du RGPD.
+            </ListItem>
+          </UnorderedList>
         </VStack>
       </Box>
       <Box>
@@ -133,28 +147,39 @@ export default function PrivacyPolicy() {
         </SubHeading>
         <Divider mt={3} mb={4} />
         <VStack spacing={4} fontSize={{ base: "md", lg: "2xl" }} align="start">
-          <Text>
-            Les données de contact des jeunes sont conservées 2 ans à compter du
-            dernier contact et les données de contact des conseillers sont
-            conservées 2 ans à compter de la dernière connexion.
-          </Text>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Catégorie de données</Th>
+                <Th>Durée de la conservation</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>Données de contact des jeunes</Td>
+                <Td>Données de contact des conseillers</Td>
+              </Tr>
+              <Tr>
+                <Td>2 ans à compter du dernier contact </Td>
+                <Td>2 ans à compter de la dernière connexion</Td>
+              </Tr>
+            </Tbody>
+          </Table>
         </VStack>
       </Box>
       <Box>
         <SubHeading>Quels sont vos droits ?</SubHeading>
         <Divider mt={3} mb={4} />
         <VStack spacing={4} fontSize={{ base: "md", lg: "2xl" }} align="start">
-          <Text>
-            Vous disposez :
-            <UnorderedList pl={8}>
-              <ListItem>
-                d’un droit d’information et d’un droit d’accès à vos données ;
-              </ListItem>
-              <ListItem>d’un droit de rectification ;</ListItem>
-              <ListItem>d’un droit d’opposition ;</ListItem>
-              <ListItem>d’un droit à la limitation du traitement.</ListItem>
-            </UnorderedList>
-          </Text>
+          <Text>Vous disposez :</Text>
+          <UnorderedList pl={8}>
+            <ListItem>
+              d’un droit d’information et d’un droit d’accès à vos données ;
+            </ListItem>
+            <ListItem>d’un droit de rectification ;</ListItem>
+            <ListItem>d’un droit d’opposition ;</ListItem>
+            <ListItem>d’un droit à la limitation du traitement.</ListItem>
+          </UnorderedList>
           <Text>
             Pour les exercer, contactez-nous à l’adresse suivante :
             cje@fabrique.social.gouv.fr
@@ -165,13 +190,17 @@ export default function PrivacyPolicy() {
             où nous ne parvenons pas à vous identifier, nous pouvons être amenés
             à vous demander une preuve de votre identité.
           </Text>
-          <Link
-            href="https://www.cnil.fr/fr/modele/courrier/exercer-son-droit-dacces"
-            isExternal
-          >
+          <Text>
             Pour vous aider dans votre démarche, vous trouverez un modèle de
-            courrier élaboré par la CNIL ici.
-          </Link>
+            courrier élaboré par la CNIL ici :{" "}
+            <Link
+              href="https://www.cnil.fr/fr/modele/courrier/exercer-son-droit-dacces"
+              color="teal.500"
+              isExternal
+            >
+              https://www.cnil.fr/fr/modele/courrier/exercer-son-droit-dacces
+            </Link>
+          </Text>
           <Text>
             Nous nous engageons à vous répondre dans un délai raisonnable qui ne
             saurait dépasser 1 mois à compter de la réception de votre demande.
@@ -187,9 +216,13 @@ export default function PrivacyPolicy() {
           <Text>
             Les accès aux données sont strictement encadrés et juridiquement
             justifiés. Les personnes suivantes vont avoir accès aux données :
-            Les membres de l’équipe de Carte Jeune Engagé qui y ont accès de
-            fait (développeurs notamment).
           </Text>
+          <UnorderedList pl={8}>
+            <ListItem>
+              Les membres de l’équipe de Carte Jeune Engagé qui y ont accès de
+              fait (développeurs notamment)
+            </ListItem>
+          </UnorderedList>
         </VStack>
       </Box>
       <Box>
@@ -248,6 +281,7 @@ export default function PrivacyPolicy() {
                 <Td>
                   <Link
                     href="https://storage.gra.cloud.ovh.net/v1/AUTH_325716a587c64897acbef9a4a4726e38/contracts/9e74492-OVH_Data_Protection_Agreement-FR-6.0.pdf"
+                    color="teal.500"
                     isExternal
                   >
                     Lien Garantie
@@ -261,6 +295,21 @@ export default function PrivacyPolicy() {
                 <Td>
                   <Link
                     href="https://help.crisp.chat/en/article/how-to-sign-my-gdpr-data-processing-agreement-dpa-1wfmngo/"
+                    color="teal.500"
+                    isExternal
+                  >
+                    Lien Garantie
+                  </Link>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>Hotjar</Td>
+                <Td>Irlande</Td>
+                <Td>Mesure d'audience</Td>
+                <Td>
+                  <Link
+                    href="https://www.hotjar.com/legal/support/dpa/"
+                    color="teal.500"
                     isExternal
                   >
                     Lien Garantie
@@ -303,7 +352,7 @@ export default function PrivacyPolicy() {
           <Text>
             Ce consentement de la personne concernée pour une ou plusieurs
             finalités spécifiques constitue une base légale au sens du RGPD et
-            doit être entendu au sens de l'article 6-a du Règlement (UE)
+            doit être entendu au sens de l'article 6-1 a) du Règlement (UE)
             2016/679 du Parlement européen et du Conseil du 27 avril 2016
             relatif à la protection des personnes physiques à l'égard du
             traitement des données à caractère personnel et à la libre
@@ -311,15 +360,77 @@ export default function PrivacyPolicy() {
           </Text>
           <Text>
             À tout moment, vous pouvez refuser l’utilisation des cookies et
-            désactiver le dépôt sur votre ordinateur en utilisant la fonction
-            dédiée de votre navigateur (fonction disponible notamment sur
-            Microsoft Internet Explorer 11, Google Chrome, Mozilla Firefox,
-            Apple Safari et Opera).
+            désactiver le dépôt sur le bandeau cookies mis en place via «
+            tarteaucitron ».
           </Text>
           <Text>
+            Nous utilisons notamment l’outil de mesure d’audience Matomo,
+            configuré en mode exempté et ne nécessitant pas le recueil de votre
+            consentement conformément aux recommandations de la CNIL.
+          </Text>
+          <Text>
+            Pour l’outil Matomo, vous pouvez décider de ne jamais être suivi, y
+            compris anonymement :
+          </Text>
+          <Box mb={4}>
+            <div id="matomo-opt-out"></div>
+            <script src="https://matomo.fabrique.social.gouv.fr/index.php?module=CoreAdminHome&action=optOutJS&divId=matomo-opt-out&language=auto&showIntro=1"></script>
+          </Box>
+          <Text>Cookies déposés :</Text>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Cookie</Th>
+                <Th>Pays destinataire</Th>
+                <Th>Traitement réalisé</Th>
+                <Th>Base légale</Th>
+                <Th>Durée de conservation</Th>
+                <Th>Garanties</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>Hotjar</Td>
+                <Td>Irlande</Td>
+                <Td>Mesure d'audience</Td>
+                <Td>Consentement</Td>
+                <Td>13 mois</Td>
+                <Td>
+                  <Link
+                    href="https://www.hotjar.com/legal/support/dpa/"
+                    color="teal.500"
+                    isExternal
+                  >
+                    Lien Garantie
+                  </Link>
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+          <Text mt={8}>
             Pour aller plus loin, vous pouvez consulter les ﬁches proposées par
             la Commission Nationale de l'Informatique et des Libertés (CNIL) :
           </Text>
+          <UnorderedList pl={8}>
+            <ListItem>
+              <Link
+                href="https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+                color="teal.500"
+                isExternal
+              >
+                Cookies & traceurs : que dit la loi ?
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link
+                href="https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser"
+                color="teal.500"
+                isExternal
+              >
+                Cookies : les outils pour les maîtriser
+              </Link>
+            </ListItem>
+          </UnorderedList>
         </VStack>
       </Box>
     </VStack>
