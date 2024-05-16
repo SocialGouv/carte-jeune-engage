@@ -1,3 +1,10 @@
+## [0.37.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.7...v0.37.8) (2024-05-16)
+
+
+### Bug Fixes
+
+* update politique de confidentialite content and add matomo opt out script ([03b0263](https://github.com/SocialGouv/carte-jeune-engage/commit/03b0263b231b46705363c121b6263405cea5c832))
+
 ## [0.37.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.6...v0.37.7) (2024-05-07)
 
 
