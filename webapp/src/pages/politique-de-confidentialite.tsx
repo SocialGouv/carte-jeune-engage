@@ -147,24 +147,26 @@ export default function PrivacyPolicy() {
         </SubHeading>
         <Divider mt={3} mb={4} />
         <VStack spacing={4} fontSize={{ base: "md", lg: "2xl" }} align="start">
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Catégorie de données</Th>
-                <Th>Durée de la conservation</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>Données de contact des jeunes</Td>
-                <Td>Données de contact des conseillers</Td>
-              </Tr>
-              <Tr>
-                <Td>2 ans à compter du dernier contact </Td>
-                <Td>2 ans à compter de la dernière connexion</Td>
-              </Tr>
-            </Tbody>
-          </Table>
+          <Box overflowX="auto" w="full">
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Catégorie de données</Th>
+                  <Th>Durée de la conservation</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>Données de contact des jeunes</Td>
+                  <Td>Données de contact des conseillers</Td>
+                </Tr>
+                <Tr>
+                  <Td>2 ans à compter du dernier contact </Td>
+                  <Td>2 ans à compter de la dernière connexion</Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </Box>
         </VStack>
       </Box>
       <Box>
@@ -264,60 +266,62 @@ export default function PrivacyPolicy() {
             apportent des garanties suffisantes en matière de confidentialité et
             de sécurité.
           </Text>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Sous-traitant</Th>
-                <Th>Pays destinataire</Th>
-                <Th>Traitement réalisé</Th>
-                <Th>Garanties</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>OVH</Td>
-                <Td>France</Td>
-                <Td>Hébergement</Td>
-                <Td>
-                  <Link
-                    href="https://storage.gra.cloud.ovh.net/v1/AUTH_325716a587c64897acbef9a4a4726e38/contracts/9e74492-OVH_Data_Protection_Agreement-FR-6.0.pdf"
-                    color="teal.500"
-                    isExternal
-                  >
-                    Lien Garantie
-                  </Link>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>Crisp</Td>
-                <Td>France</Td>
-                <Td>Outil de chat et de support</Td>
-                <Td>
-                  <Link
-                    href="https://help.crisp.chat/en/article/how-to-sign-my-gdpr-data-processing-agreement-dpa-1wfmngo/"
-                    color="teal.500"
-                    isExternal
-                  >
-                    Lien Garantie
-                  </Link>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>Hotjar</Td>
-                <Td>Irlande</Td>
-                <Td>Mesure d'audience</Td>
-                <Td>
-                  <Link
-                    href="https://www.hotjar.com/legal/support/dpa/"
-                    color="teal.500"
-                    isExternal
-                  >
-                    Lien Garantie
-                  </Link>
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
+          <Box overflowX="auto" w="full">
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Sous-traitant</Th>
+                  <Th>Pays destinataire</Th>
+                  <Th>Traitement réalisé</Th>
+                  <Th>Garanties</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>OVH</Td>
+                  <Td>France</Td>
+                  <Td>Hébergement</Td>
+                  <Td>
+                    <Link
+                      href="https://storage.gra.cloud.ovh.net/v1/AUTH_325716a587c64897acbef9a4a4726e38/contracts/9e74492-OVH_Data_Protection_Agreement-FR-6.0.pdf"
+                      color="teal.500"
+                      isExternal
+                    >
+                      Lien Garantie
+                    </Link>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>Crisp</Td>
+                  <Td>France</Td>
+                  <Td>Outil de chat et de support</Td>
+                  <Td>
+                    <Link
+                      href="https://help.crisp.chat/en/article/how-to-sign-my-gdpr-data-processing-agreement-dpa-1wfmngo/"
+                      color="teal.500"
+                      isExternal
+                    >
+                      Lien Garantie
+                    </Link>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>Hotjar</Td>
+                  <Td>Irlande</Td>
+                  <Td>Mesure d'audience</Td>
+                  <Td>
+                    <Link
+                      href="https://www.hotjar.com/legal/support/dpa/"
+                      color="teal.500"
+                      isExternal
+                    >
+                      Lien Garantie
+                    </Link>
+                  </Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </Box>
         </VStack>
       </Box>
       <Box>
@@ -373,40 +377,42 @@ export default function PrivacyPolicy() {
             compris anonymement :
           </Text>
           <Box mb={4}>
-            <div id="matomo-opt-out"></div>
+            <Box id="matomo-opt-out" py={4} px={2}></Box>
             <script src="https://matomo.fabrique.social.gouv.fr/index.php?module=CoreAdminHome&action=optOutJS&divId=matomo-opt-out&language=auto&showIntro=1"></script>
           </Box>
           <Text>Cookies déposés :</Text>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Cookie</Th>
-                <Th>Pays destinataire</Th>
-                <Th>Traitement réalisé</Th>
-                <Th>Base légale</Th>
-                <Th>Durée de conservation</Th>
-                <Th>Garanties</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>Hotjar</Td>
-                <Td>Irlande</Td>
-                <Td>Mesure d'audience</Td>
-                <Td>Consentement</Td>
-                <Td>13 mois</Td>
-                <Td>
-                  <Link
-                    href="https://www.hotjar.com/legal/support/dpa/"
-                    color="teal.500"
-                    isExternal
-                  >
-                    Lien Garantie
-                  </Link>
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
+          <Box overflowX="auto" w="full">
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Cookie</Th>
+                  <Th>Pays destinataire</Th>
+                  <Th>Traitement réalisé</Th>
+                  <Th>Base légale</Th>
+                  <Th>Durée de conservation</Th>
+                  <Th>Garanties</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>Hotjar</Td>
+                  <Td>Irlande</Td>
+                  <Td>Mesure d'audience</Td>
+                  <Td>Consentement</Td>
+                  <Td>13 mois</Td>
+                  <Td>
+                    <Link
+                      href="https://www.hotjar.com/legal/support/dpa/"
+                      color="teal.500"
+                      isExternal
+                    >
+                      Lien Garantie
+                    </Link>
+                  </Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </Box>
           <Text mt={8}>
             Pour aller plus loin, vous pouvez consulter les ﬁches proposées par
             la Commission Nationale de l'Informatique et des Libertés (CNIL) :
