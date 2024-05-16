@@ -1,3 +1,10 @@
+## [0.37.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.8...v0.37.9) (2024-05-16)
+
+
+### Bug Fixes
+
+* table overflow on mobile ([6ea0c6a](https://github.com/SocialGouv/carte-jeune-engage/commit/6ea0c6ad9486b8a71ff91813e464bc2016596a11))
+
 ## [0.37.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.7...v0.37.8) (2024-05-16)
 
 
