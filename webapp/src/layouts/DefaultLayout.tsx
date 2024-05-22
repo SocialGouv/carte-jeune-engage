@@ -9,6 +9,7 @@ import NotificationModal from "~/components/modals/NotificationModal";
 import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
 import { isIOS, isStandalone } from "~/utils/tools";
+import { push } from "@socialgouv/matomo-next";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -73,6 +74,17 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         );
     }
   };
+
+  useEffect(() => {
+    const handleHotjarAllowed = () =>
+      push(["trackEvent", "Landing", "Hotjar accepté"]);
+
+    document.addEventListener("hotjar_allowed", handleHotjarAllowed);
+
+    return () => {
+      document.removeEventListener("hotjar_allowed", handleHotjarAllowed);
+    };
+  }, []);
 
   useEffect(() => {
     if (
