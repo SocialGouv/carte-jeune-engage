@@ -1,3 +1,10 @@
+## [0.37.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.9...v0.37.10) (2024-05-22)
+
+
+### Bug Fixes
+
+* track user has allowed hotjar in tarteaucitron banner ([cb190a5](https://github.com/SocialGouv/carte-jeune-engage/commit/cb190a55d167bb35ae259828c8b677d802027c90))
+
 ## [0.37.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.8...v0.37.9) (2024-05-16)
 
 
