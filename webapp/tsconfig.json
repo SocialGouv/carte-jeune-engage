@@ -18,7 +18,8 @@
     "plugins": [{ "name": "next" }],
     "incremental": true,
     "baseUrl": ".",
-    "paths": { "~/*": ["./src/*"] }
+    "paths": { "~/*": ["./src/*"] },
+    "types": ["@serwist/next/typings"]
   },
   "include": [
     ".eslintrc.cjs",

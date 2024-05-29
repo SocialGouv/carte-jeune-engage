@@ -10,37 +10,54 @@ export default function AccountNotifications() {
   const router = useRouter();
   const { user, refetchUser, isServiceWorkerRegistered } = useAuth();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
   });
 
+  const [registration, setRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      window.serwist !== undefined
+    ) {
+      // run only in browser
+      navigator.serviceWorker.ready.then((reg) => {
+        setRegistration(reg);
+      });
+    }
+  }, []);
+
   const handleRequestNotification = async () => {
+    setIsLoading(true);
     if (user?.notification_status === "enabled") {
       await updateUser({
         notification_subscription: null,
         notification_status: "disabled",
       });
     } else {
-      let swRegistration;
-
-      if ("serviceWorker" in navigator) {
-        swRegistration = await navigator.serviceWorker.getRegistration();
-
-        if (!swRegistration) return;
-
-        const sub = await swRegistration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: base64ToUint8Array(
-            process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string
-          ),
-        });
-
-        await updateUser({
-          notification_status: "enabled",
-          notification_subscription: sub,
-        });
+      if (!registration) {
+        console.error("No SW registration available.");
+        return;
       }
+
+      const sub = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: base64ToUint8Array(
+          process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string
+        ),
+      });
+
+      await updateUser({
+        notification_status: "enabled",
+        notification_subscription: sub,
+      });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -67,6 +84,7 @@ export default function AccountNotifications() {
             <Text fontWeight="medium">Autoriser les notifications push</Text>
             <Button
               onClick={handleRequestNotification}
+              isLoading={isLoading}
               isDisabled={!isServiceWorkerRegistered}
             >
               {user.notification_status === "enabled"

@@ -9,13 +9,6 @@ import NotificationModal from "~/components/modals/NotificationModal";
 import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
 import { isIOS, isStandalone } from "~/utils/tools";
-import type { Workbox } from "workbox-window";
-
-declare global {
-  interface Window {
-    workbox: Workbox;
-  }
-}
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -86,17 +79,6 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    const registerServiceWorker = async () => {
-      if (
-        typeof window !== "undefined" &&
-        "serviceWorker" in navigator &&
-        (window as any).workbox !== undefined
-      ) {
-        await window.workbox.register();
-        window.workbox.active.then(() => setIsServiceWorkerRegistered(true));
-      }
-    };
-
     if (
       typeof window !== "undefined" &&
       "serviceWorker" in navigator &&
@@ -105,7 +87,6 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
       // const wb = (window as any)?.workbox;
       // add event listeners to handle PWA lifecycle events
       // console.log("PWA is supported");
-      registerServiceWorker();
       window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     }
 
@@ -116,6 +97,19 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
       );
     };
   }, [user]);
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      window.serwist !== undefined
+    ) {
+      // run only in browser
+      navigator.serviceWorker.ready.then(() => {
+        setIsServiceWorkerRegistered(true);
+      });
+    }
+  }, []);
 
   return (
     <>
