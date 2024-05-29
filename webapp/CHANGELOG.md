@@ -1,3 +1,11 @@
+## [0.37.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.10...v0.37.11) (2024-05-29)
+
+
+### Bug Fixes
+
+* delete relative quickAccess on partner delete ([8cea128](https://github.com/SocialGouv/carte-jeune-engage/commit/8cea1280a40c6d9e0eb3b94f519a4ba3392b7632))
+* resolution of image partner on link site of an online offer ([3a5aea0](https://github.com/SocialGouv/carte-jeune-engage/commit/3a5aea045c767f6878ce3134668fe267c6b23c2d))
+
 ## [0.37.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.9...v0.37.10) (2024-05-22)
 
 
