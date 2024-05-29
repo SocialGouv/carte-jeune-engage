@@ -29,7 +29,6 @@ import {
   HiOutlineInformationCircle,
   HiQuestionMarkCircle,
 } from "react-icons/hi2";
-import ChakraNextImage from "~/components/ChakraNextImage";
 import LoadingLoader from "~/components/LoadingLoader";
 import BaseModal from "~/components/modals/BaseModal";
 import StackItems, { StackItem } from "~/components/offer/StackItems";
@@ -442,11 +441,14 @@ export default function OfferPage() {
               p={2}
               borderRadius="full"
             >
-              <ChakraNextImage
+              <Image
                 src={offer.partner.icon.url as string}
                 alt={offer.partner.icon.alt as string}
-                width={12}
-                height={12}
+                width={74}
+                height={74}
+                style={{
+                  borderRadius: "100%",
+                }}
               />
             </Box>
           </Flex>
