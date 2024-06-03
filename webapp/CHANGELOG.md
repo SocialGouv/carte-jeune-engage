@@ -1,3 +1,15 @@
+# [0.38.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.11...v0.38.0) (2024-06-03)
+
+
+### Bug Fixes
+
+* wording on hot it works step ([4f967e9](https://github.com/SocialGouv/carte-jeune-engage/commit/4f967e9ee6b2b3d1dfd07ced46d8f98a25021d1f))
+
+
+### Features
+
+* change package for next pwa capabilities and IOS notification issue ([0ad4228](https://github.com/SocialGouv/carte-jeune-engage/commit/0ad4228b33e208b8e68c7c844e7adf2883194db6))
+
 ## [0.37.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.10...v0.37.11) (2024-05-29)
 
 
