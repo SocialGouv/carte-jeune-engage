@@ -2,7 +2,6 @@ import { Button, Flex, Heading, Image } from "@chakra-ui/react";
 import BaseModal from "./BaseModal";
 import StackItems from "../offer/StackItems";
 import { useAuth } from "~/providers/Auth";
-import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { base64ToUint8Array } from "~/utils/tools";
 
@@ -13,44 +12,19 @@ const NotificationModal = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const { refetchUser } = useAuth();
-
-  const [registration, setRegistration] =
-    useState<ServiceWorkerRegistration | null>(null);
+  const { refetchUser, serviceWorkerRegistration } = useAuth();
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
   });
 
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      "serviceWorker" in navigator &&
-      (window as any).workbox !== undefined
-    ) {
-      // run only in browser
-      navigator.serviceWorker.ready.then((reg) => {
-        setRegistration(reg);
-      });
-    }
-  }, []);
-
   const handleRequestNotification = async () => {
-    if (!registration) {
+    if (!serviceWorkerRegistration) {
       console.error("No SW registration available.");
       return;
     }
 
-    const result = await window.Notification.requestPermission();
-
-    if (result !== "granted") {
-      updateUser({
-        notification_status: "disabled",
-      });
-      onClose();
-    }
-
-    const sub = await registration.pushManager.subscribe({
+    const sub = await serviceWorkerRegistration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string

@@ -24,6 +24,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     setShowNotificationModal,
     showModalInstallApp,
     setShowModalInstallApp,
+    setServiceWorkerRegistration,
   } = useAuth();
 
   const { isOpen: isNotificationModalOpen, onClose: onNotificationModalClose } =
@@ -84,6 +85,19 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     return () => {
       document.removeEventListener("hotjar_allowed", handleHotjarAllowed);
     };
+  }, []);
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      window.serwist !== undefined
+    ) {
+      // run only in browser
+      navigator.serviceWorker.ready.then((reg) => {
+        setServiceWorkerRegistration(reg);
+      });
+    }
   }, []);
 
   useEffect(() => {

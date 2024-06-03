@@ -1,6 +1,6 @@
-import { Flex, Heading, Icon, Switch, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HiArrowLeft } from "react-icons/hi2";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
@@ -8,48 +8,28 @@ import { base64ToUint8Array } from "~/utils/tools";
 
 export default function AccountNotifications() {
   const router = useRouter();
-  const { user, refetchUser } = useAuth();
+  const { user, refetchUser, serviceWorkerRegistration } = useAuth();
 
-  const [notificationPushActive, setNotificationPushActive] = useState(false);
-
-  // const [registration, setRegistration] =
-  //   useState<ServiceWorkerRegistration | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
   });
 
-  // useEffect(() => {
-  //   if (
-  //     typeof window !== "undefined" &&
-  //     "serviceWorker" in navigator &&
-  //     (window as any).workbox !== undefined
-  //   ) {
-  //     // run only in browser
-  //     navigator.serviceWorker.ready.then((reg) => {
-  //       setRegistration(reg);
-  //     });
-  //   }
-  // }, []);
-
-  const handleRequestNotification = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let swRegistration = await navigator.serviceWorker.getRegistration();
-
-    if (!swRegistration) {
-      console.error("No SW registration available.");
-      return;
-    }
-
-    if (!event.target.checked) {
-      setNotificationPushActive(false);
-      updateUser({
-        notification_status: "disabled",
+  const handleRequestNotification = async () => {
+    setIsLoading(true);
+    if (user?.notification_status === "enabled") {
+      await updateUser({
         notification_subscription: null,
+        notification_status: "disabled",
       });
     } else {
-      const sub = await swRegistration.pushManager.subscribe({
+      if (!serviceWorkerRegistration) {
+        console.error("No SW registration available.");
+        return;
+      }
+
+      const sub = await serviceWorkerRegistration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: base64ToUint8Array(
           process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY as string
@@ -60,9 +40,8 @@ export default function AccountNotifications() {
         notification_status: "enabled",
         notification_subscription: sub,
       });
-
-      setNotificationPushActive(true);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -87,11 +66,15 @@ export default function AccountNotifications() {
         <Flex flexDir="column" mt={10} gap={6}>
           <Flex alignItems="center" justifyContent="space-between" gap={1}>
             <Text fontWeight="medium">Autoriser les notifications push</Text>
-            <Switch
-              defaultChecked={user?.notification_status === "enabled"}
-              onChange={handleRequestNotification}
-              checked={notificationPushActive}
-            />
+            <Button
+              onClick={handleRequestNotification}
+              isLoading={isLoading}
+              isDisabled={serviceWorkerRegistration === null}
+            >
+              {user.notification_status === "enabled"
+                ? "Désactiver"
+                : "Activer"}
+            </Button>
           </Flex>
         </Flex>
       )}

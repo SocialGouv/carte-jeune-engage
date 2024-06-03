@@ -209,26 +209,22 @@ export default function Account() {
         matomoEvent={["Profil", "Obtenir l'application"]}
       />
       <Flex flexDir="column" mt={8} gap={8} px={5}>
-        {itemsSecondary.map((item) => {
-          if (item.href === "/dashboard/account/notification" && isIOS())
-            return;
-          return (
-            <Link
-              href={item.href ?? ""}
-              key={item.icon.toString()}
-              onClick={item.onClick}
-              color="blue"
-            >
-              <Flex alignItems="center" gap={4}>
-                <Icon as={item.icon} color={item.iconColor} w={6} h={6} />
-                <Text fontSize="sm" fontWeight="bold" noOfLines={1}>
-                  {item.label}
-                </Text>
-                <Icon as={HiMiniChevronRight} w={6} h={6} ml="auto" />
-              </Flex>
-            </Link>
-          );
-        })}
+        {itemsSecondary.map((item) => (
+          <Link
+            href={item.href ?? ""}
+            key={item.icon.toString()}
+            onClick={item.onClick}
+            color="blue"
+          >
+            <Flex alignItems="center" gap={4}>
+              <Icon as={item.icon} color={item.iconColor} w={6} h={6} />
+              <Text fontSize="sm" fontWeight="bold" noOfLines={1}>
+                {item.label}
+              </Text>
+              <Icon as={HiMiniChevronRight} w={6} h={6} ml="auto" />
+            </Flex>
+          </Link>
+        ))}
       </Flex>
       <Text fontSize="xs" fontWeight="medium" textAlign="center" mt={12}>
         Version appli beta test V

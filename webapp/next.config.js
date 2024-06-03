@@ -1,4 +1,9 @@
 // next.config.js
+const {
+  PHASE_DEVELOPMENT_SERVER,
+  PHASE_PRODUCTION_BUILD,
+} = require("next/constants");
+
 const path = require("path");
 const { withPayload } = require("@payloadcms/next-payload");
 const { withSentryConfig } = require("@sentry/nextjs");
@@ -12,16 +17,6 @@ const nextOptions = {
   },
   env: {
     NEXT_PUBLIC_CURRENT_PACKAGE_VERSION: version,
-  },
-};
-
-const pwaOptions = {
-  dest: "public",
-  reloadOnOnline: true,
-  dynamicStartUrl: true,
-  workboxOptions: {
-    maximumFileSizeToCacheInBytes: 10000000,
-    disableDevLogs: true,
   },
 };
 
@@ -47,11 +42,23 @@ const sentryOptions = {
   automaticVercelMonitors: true,
 };
 
-const withPWA = require("@ducanh2912/next-pwa").default(pwaOptions);
+module.exports = async (phase) => {
+  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
+    const withSerwist = (await import("@serwist/next")).default({
+      swSrc: "worker/index.ts",
+      swDest: "public/sw.js",
+    });
 
-module.exports = withPayload(
-  withPWA(
-    withSentryConfig(nextOptions, sentryWebpackPluginOptions, sentryOptions)
-  ),
-  payloadOptions
-);
+    return withPayload(
+      withSerwist(
+        withSentryConfig(nextOptions, sentryWebpackPluginOptions, sentryOptions)
+      ),
+      payloadOptions
+    );
+  }
+
+  return withPayload(
+    withSentryConfig(nextOptions, sentryWebpackPluginOptions, sentryOptions),
+    payloadOptions
+  );
+};

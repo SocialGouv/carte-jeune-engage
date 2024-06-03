@@ -27,6 +27,10 @@ type AuthContext = {
   setShowModalInstallApp: (showModalInstallApp: boolean) => void;
   deferredEvent: BeforeInstallPromptEvent | null;
   setDeferredEvent: (event: BeforeInstallPromptEvent | null) => void;
+  serviceWorkerRegistration: ServiceWorkerRegistration | null;
+  setServiceWorkerRegistration: (
+    registration: ServiceWorkerRegistration | null
+  ) => void;
   refetchUser: () => void;
 };
 
@@ -46,6 +50,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [showing, setShowing] = useState(false);
   const [deferredEvent, setDeferredEvent] =
     useState<BeforeInstallPromptEvent | null>(null);
+
+  const [serviceWorkerRegistration, setServiceWorkerRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
 
   const router = useRouter();
 
@@ -92,6 +99,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setShowNotificationModal,
         showModalInstallApp,
         setShowModalInstallApp,
+        serviceWorkerRegistration,
+        setServiceWorkerRegistration,
         deferredEvent,
         setDeferredEvent,
         refetchUser: fetchMe,
