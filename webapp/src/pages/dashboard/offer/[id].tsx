@@ -367,7 +367,7 @@ export default function OfferPage() {
             <TabPanels h="full">
               <TabPanel as={Flex} flexDir="column" h="full" px={0}>
                 <Text fontSize="2xl" fontWeight="extrabold">
-                  Comment bénificier de cette offre ?
+                  Comment bénéficier de cette offre ?
                 </Text>
                 <StackItems items={itemsTermsOfUse} props={{ mt: 6 }} />
                 <StepsButtons
