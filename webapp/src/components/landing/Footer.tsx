@@ -35,7 +35,7 @@ const Footer = () => {
   };
 
   return (
-    <Flex flexDir="column" w="full">
+    <Flex flexDir="column" w="full" mt={24}>
       <Box bgColor="bgWhite">
         <Container
           maxWidth="container.xl"

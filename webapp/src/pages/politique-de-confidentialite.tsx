@@ -139,6 +139,11 @@ export default function PrivacyPolicy() {
               de traitement au sens de l’article 6-1 e) du RGPD.
             </ListItem>
           </UnorderedList>
+          <Text>
+            Cette mission d'intérêt public se traduit en pratique par le décret
+            n° 82-367 du 30 avril 1982 portant création d'un comité
+            interministériel de la jeunesse.
+          </Text>
         </VStack>
       </Box>
       <Box>

@@ -119,16 +119,15 @@ export default function CGU() {
           <Text>
             L’Utilisateur de la Plateforme doit répondre aux conditions
             suivantes :
-            <UnorderedList pl={4} mt={1}>
-              <ListItem>avoir entre 18 et 25 ans ;</ListItem>
-              <ListItem>
-                être inscrit dans l’un des parcours d’insertion suivants :
-                contrat d’engagement jeune (CEJ), école de la 2ème chance,
-                établissement pour l’insertion dans l’emploi (EPIDE), service
-                civique.
-              </ListItem>
-            </UnorderedList>
           </Text>
+          <UnorderedList pl={4} mt={1}>
+            <ListItem>avoir entre 18 et 25 ans ;</ListItem>
+            <ListItem>
+              être inscrit dans l’un des parcours d’insertion suivants : contrat
+              d’engagement jeune (CEJ), école de la 2ème chance, établissement
+              pour l’insertion dans l’emploi (EPIDE), service civique.
+            </ListItem>
+          </UnorderedList>
           <Text>
             L’accès est libre et gratuit à tout Utilisateur qui remplit les
             conditions d’accès. La non-satisfaction de l’une des conditions
@@ -149,18 +148,18 @@ export default function CGU() {
           <Text>
             La création du compte nécessite de renseigner les informations
             suivantes :
-            <UnorderedList pl={4} mt={1}>
-              <ListItem>nom,</ListItem>
-              <ListItem>prénom,</ListItem>
-              <ListItem>âge,</ListItem>
-              <ListItem>numéro de téléphone,</ListItem>
-              <ListItem>adresse postale,</ListItem>
-              <ListItem>
-                photo récente pour les réductions en magasin ou l’accès aux
-                salles de sport.
-              </ListItem>
-            </UnorderedList>
           </Text>
+          <UnorderedList pl={4} mt={1}>
+            <ListItem>nom,</ListItem>
+            <ListItem>prénom,</ListItem>
+            <ListItem>âge,</ListItem>
+            <ListItem>numéro de téléphone,</ListItem>
+            <ListItem>adresse postale,</ListItem>
+            <ListItem>
+              photo récente pour les réductions en magasin ou l’accès aux salles
+              de sport.
+            </ListItem>
+          </UnorderedList>
           <Text>
             L’Utilisateur accède à son compte en renseignant son numéro de
             téléphone.
