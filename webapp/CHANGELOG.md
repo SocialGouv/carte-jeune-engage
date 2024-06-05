@@ -1,3 +1,11 @@
+## [0.38.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.1...v0.38.2) (2024-06-05)
+
+
+### Bug Fixes
+
+* missing part in privacy policy, hydratation in cgu page and footer top spacing ([dbda4f0](https://github.com/SocialGouv/carte-jeune-engage/commit/dbda4f07b38f398505ff2c93274b5c540c3410e8))
+* refactor modal component landing ([9828e15](https://github.com/SocialGouv/carte-jeune-engage/commit/9828e157d9c15ac8053ffb668750d5b7fa01822e))
+
 ## [0.38.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.0...v0.38.1) (2024-06-05)
 
 
