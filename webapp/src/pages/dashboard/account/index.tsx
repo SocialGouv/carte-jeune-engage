@@ -23,7 +23,6 @@ import { UserIncluded } from "~/server/api/routers/user";
 import NewPassComponent from "~/components/NewPassComponent";
 import dynamic from "next/dynamic";
 import { push } from "@socialgouv/matomo-next";
-import { isIOS } from "~/utils/tools";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 
 const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;

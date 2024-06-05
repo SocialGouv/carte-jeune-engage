@@ -1,7 +1,8 @@
-import { Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { Button, Center, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { HiArrowLeft } from "react-icons/hi2";
+import LoadingLoader from "~/components/LoadingLoader";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import { base64ToUint8Array } from "~/utils/tools";
@@ -44,33 +45,47 @@ export default function AccountNotifications() {
     setIsLoading(false);
   };
 
+  const WrapperNotification = ({ children }: { children: React.ReactNode }) => {
+    return (
+      <Flex flexDir="column" pt={12} px={8} h="full">
+        <Icon
+          as={HiArrowLeft}
+          w={6}
+          h={6}
+          onClick={() => router.back()}
+          cursor="pointer"
+        />
+        <Heading
+          as="h2"
+          size="lg"
+          fontWeight="extrabold"
+          mt={4}
+          textAlign="center"
+        >
+          Mes notifications
+        </Heading>
+        {children}
+      </Flex>
+    );
+  };
+
+  if (!serviceWorkerRegistration) {
+    return (
+      <WrapperNotification>
+        <Center h="25%">
+          <LoadingLoader />
+        </Center>
+      </WrapperNotification>
+    );
+  }
+
   return (
-    <Flex flexDir="column" pt={12} px={8} h="full">
-      <Icon
-        as={HiArrowLeft}
-        w={6}
-        h={6}
-        onClick={() => router.back()}
-        cursor="pointer"
-      />
-      <Heading
-        as="h2"
-        size="lg"
-        fontWeight="extrabold"
-        mt={4}
-        textAlign="center"
-      >
-        Mes notifications
-      </Heading>
+    <WrapperNotification>
       {user && (
         <Flex flexDir="column" mt={10} gap={6}>
           <Flex alignItems="center" justifyContent="space-between" gap={1}>
             <Text fontWeight="medium">Autoriser les notifications push</Text>
-            <Button
-              onClick={handleRequestNotification}
-              isLoading={isLoading}
-              isDisabled={serviceWorkerRegistration === null}
-            >
+            <Button onClick={handleRequestNotification} isLoading={isLoading}>
               {user.notification_status === "enabled"
                 ? "Désactiver"
                 : "Activer"}
@@ -78,6 +93,6 @@ export default function AccountNotifications() {
           </Flex>
         </Flex>
       )}
-    </Flex>
+    </WrapperNotification>
   );
 }

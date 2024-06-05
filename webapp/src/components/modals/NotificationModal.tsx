@@ -1,9 +1,10 @@
-import { Button, Flex, Heading, Image } from "@chakra-ui/react";
+import { Button, Center, Flex, Heading, Image } from "@chakra-ui/react";
 import BaseModal from "./BaseModal";
 import StackItems from "../offer/StackItems";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import { base64ToUint8Array } from "~/utils/tools";
+import LoadingLoader from "../LoadingLoader";
 
 const NotificationModal = ({
   onClose,
@@ -36,8 +37,25 @@ const NotificationModal = ({
       notification_subscription: sub,
     });
 
+    refetchUser();
     onClose();
   };
+
+  if (!serviceWorkerRegistration) {
+    return (
+      <BaseModal
+        onClose={onClose}
+        isOpen={isOpen}
+        hideCloseBtn={true}
+        pb={6}
+        heightModalContent="full"
+      >
+        <Center h="full">
+          <LoadingLoader />
+        </Center>
+      </BaseModal>
+    );
+  }
 
   return (
     <BaseModal
