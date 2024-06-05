@@ -1,3 +1,10 @@
+## [0.38.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.0...v0.38.1) (2024-06-05)
+
+
+### Bug Fixes
+
+* add loading for modal and settings of notifications, remove unused imports ([c1894b9](https://github.com/SocialGouv/carte-jeune-engage/commit/c1894b986e42ef7d8a668d236976a0f82b955c2b))
+
 # [0.38.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.37.11...v0.38.0) (2024-06-03)
 
 
