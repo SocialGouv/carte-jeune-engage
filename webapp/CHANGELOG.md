@@ -1,3 +1,10 @@
+## [0.38.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.4...v0.38.5) (2024-06-17)
+
+
+### Bug Fixes
+
+* remove page query params from users request ([c0efede](https://github.com/SocialGouv/carte-jeune-engage/commit/c0efede45dcb57877a5331e812d692a401488328))
+
 ## [0.38.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.3...v0.38.4) (2024-06-17)
 
 
