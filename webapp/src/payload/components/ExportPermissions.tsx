@@ -25,10 +25,10 @@ const ExportPermissions = ({ data }: Props) => {
       }
 
       const responses = await Promise.all(
-        permissionChunks.map(async (chunk, index) => {
+        permissionChunks.map(async (chunk) => {
           const response = await fetch(
-            `/api/users?pagination=false&limit=${chunk.length}&page=${
-              index + 1
+            `/api/users?pagination=false&limit=${
+              chunk.length
             }&where[phone_number][in]=${chunk.join(",")}`
           );
           return response.json();
