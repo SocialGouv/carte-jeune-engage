@@ -1,3 +1,10 @@
+## [0.38.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.2...v0.38.3) (2024-06-17)
+
+
+### Bug Fixes
+
+* handle user requests for permissions for export in chunk instead of one request ([af418ae](https://github.com/SocialGouv/carte-jeune-engage/commit/af418ae2a6784e37570be55d3c29885c05e8bed5))
+
 ## [0.38.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.1...v0.38.2) (2024-06-05)
 
 
