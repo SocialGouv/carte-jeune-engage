@@ -1,3 +1,10 @@
+## [0.38.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.3...v0.38.4) (2024-06-17)
+
+
+### Bug Fixes
+
+* & in url for users request ([3253c22](https://github.com/SocialGouv/carte-jeune-engage/commit/3253c22f0e5deb8653719f3da555d935a7998122))
+
 ## [0.38.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.2...v0.38.3) (2024-06-17)
 
 
