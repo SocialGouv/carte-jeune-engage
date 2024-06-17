@@ -10,16 +10,34 @@ const ExportPermissions = ({ data }: Props) => {
   const [csvData, setCsvData] = useState<any[]>([]);
 
   const permissionPhoneNumbers = useMemo(() => {
-    return data.docs?.map((user: User) => user.phone_number).join(",");
+    return data.docs?.map((user: User) => user.phone_number);
   }, [data.docs]);
 
   const { data: users } = useQuery(
-    ["users", data.docs?.length],
+    ["users", data.docs],
     async () => {
-      const response = await fetch(
-        `/api/users?pagination=false&limit=1000&where[phone_number][in]=${permissionPhoneNumbers}`
+      const permissionChunks = [];
+      const chunkSize = 500;
+
+      for (let i = 0; i < permissionPhoneNumbers.length; i += chunkSize) {
+        const chunk = permissionPhoneNumbers.slice(i, i + chunkSize);
+        permissionChunks.push(chunk);
+      }
+
+      const responses = await Promise.all(
+        permissionChunks.map(async (chunk, index) => {
+          const response = await fetch(
+            `/api/users?pagination=false&limit=${chunk.length}page=${
+              index + 1
+            }&where[phone_number][in]=${chunk.join(",")}`
+          );
+          return response.json();
+        })
       );
-      return response.json();
+
+      const users = responses.flatMap((response) => response.docs);
+
+      return { docs: users };
     },
     { enabled: data.docs?.length > 0 }
   );
