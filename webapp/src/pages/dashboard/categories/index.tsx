@@ -7,6 +7,9 @@ import { api } from "~/utils/api";
 import { push } from "@socialgouv/matomo-next";
 
 export default function CategoriesList() {
+  const { data: resultNewCategory, isLoading: isLoadingNewCategory } =
+    api.globals.getNewCategory.useQuery();
+
   const { data: resultCategories, isLoading: isLoadingCategories } =
     api.category.getList.useQuery({
       page: 1,
@@ -14,9 +17,15 @@ export default function CategoriesList() {
       sort: "createdAt",
     });
 
+  const { data: newCategory } = resultNewCategory || {};
   const { data: categories } = resultCategories || {};
 
-  if (isLoadingCategories || !categories)
+  if (
+    isLoadingCategories ||
+    isLoadingNewCategory ||
+    !categories ||
+    !newCategory
+  )
     return (
       <CategoriesWrapper isLoading>
         <Center w="full" h="full">
@@ -27,7 +36,7 @@ export default function CategoriesList() {
 
   return (
     <CategoriesWrapper>
-      {categories.map((category) => (
+      {[newCategory, ...categories].map((category) => (
         <Link
           key={category.id}
           href={`/dashboard/category/${category.slug}`}

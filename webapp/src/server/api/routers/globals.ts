@@ -6,6 +6,7 @@ import {
 import { PartnerIncluded } from "./partner";
 import { OfferIncluded } from "./offer";
 import { Media } from "~/payload/payload-types";
+import { CategoryIncluded } from "./category";
 
 export const globalsRouter = createTRPCRouter({
   quickAccessGetAll: userProtectedProcedure.query(async ({ ctx }) => {
@@ -50,6 +51,23 @@ export const globalsRouter = createTRPCRouter({
 
     return {
       data: landingFAQ.items,
+    };
+  }),
+
+  getNewCategory: userProtectedProcedure.query(async ({ ctx }) => {
+    const newCategory = await ctx.payload.findGlobal({
+      slug: "newCategory",
+      depth: 1,
+    });
+
+    const tmpNewCategory = newCategory as CategoryIncluded & {
+      items: { offer: OfferIncluded }[];
+    };
+
+    tmpNewCategory.slug = "new";
+
+    return {
+      data: tmpNewCategory,
     };
   }),
 });

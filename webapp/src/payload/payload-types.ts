@@ -26,6 +26,7 @@ export interface Config {
     quickAccess: QuickAccess;
     landingPartners: LandingPartner;
     landingFAQ: LandingFAQ;
+    newCategory: NewCategory;
   };
 }
 /**
@@ -332,6 +333,23 @@ export interface LandingFAQ {
     | {
         title: string;
         content: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newCategory".
+ */
+export interface NewCategory {
+  id: number;
+  label: string;
+  icon: number | Media;
+  items?:
+    | {
+        offer?: (number | null) | Offer;
         id?: string | null;
       }[]
     | null;

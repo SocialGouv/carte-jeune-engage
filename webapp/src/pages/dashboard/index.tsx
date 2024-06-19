@@ -22,10 +22,13 @@ import { PassIcon } from "~/components/icons/pass";
 import { api } from "~/utils/api";
 
 export default function Dashboard() {
+  const { data: resultNewCategory, isLoading: isLoadingNewCategory } =
+    api.globals.getNewCategory.useQuery();
+
   const { data: resultCategories, isLoading: isLoadingCategories } =
     api.category.getList.useQuery({
       page: 1,
-      perPage: 3,
+      perPage: 2,
       sort: "createdAt",
     });
 
@@ -48,6 +51,7 @@ export default function Dashboard() {
       sort: "name",
     });
 
+  const { data: newCategory } = resultNewCategory || {};
   const { data: categories } = resultCategories || {};
   const { data: quickAccessPartners } = resultQuickAccess || {};
   const { data: offers } = resultOffers || {};
@@ -57,7 +61,9 @@ export default function Dashboard() {
     isLoadingCategories ||
     isLoadingQuickAccess ||
     isLoadingOffers ||
-    isLoadingPartners
+    isLoadingPartners ||
+    isLoadingNewCategory ||
+    !newCategory
   ) {
     return (
       <Box pt={12} px={8} h="full">
@@ -100,7 +106,7 @@ export default function Dashboard() {
             Quelles économies allez-vous faire aujourd’hui ?
           </Heading>
           <SimpleGrid columns={4} mt={6} spacingX={4}>
-            {categories?.map((category) => (
+            {[newCategory, ...(categories || [])]?.map((category) => (
               <Link
                 key={category.id}
                 href={`/dashboard/category/${category.slug}`}

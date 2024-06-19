@@ -9,6 +9,7 @@ import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
 import { QuickAccess } from "./globals/QuickAccess";
 import { LandingPartners } from "./globals/LandingPartners";
 import { LandingFAQ } from "./globals/LandingFAQ";
+import { NewCategory } from "./globals/NewCategory";
 
 import { Admins } from "./collections/Admin";
 import { Users } from "./collections/User";
@@ -78,7 +79,7 @@ export default buildConfig({
     locales: ["fr"],
     defaultLocale: "fr",
   },
-  globals: [QuickAccess, LandingPartners, LandingFAQ],
+  globals: [QuickAccess, LandingPartners, LandingFAQ, NewCategory],
   typescript: {
     outputFile: path.resolve(__dirname, "./payload-types.ts"),
   },

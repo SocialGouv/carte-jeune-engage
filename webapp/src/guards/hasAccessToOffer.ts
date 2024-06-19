@@ -26,7 +26,7 @@ export const hasAccessToOffer: GetServerSideProps = async (context) => {
   const caller = createCaller({ payload, session });
 
   const { data: offerListAvailables } = await caller.offer.getListOfAvailables({
-    offerId: parseInt(context.params?.id as string),
+    offerIds: [parseInt(context.params?.id as string)],
     page: 1,
     perPage: 1,
   });
