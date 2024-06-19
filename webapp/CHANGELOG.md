@@ -1,3 +1,10 @@
+## [0.39.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.39.0...v0.39.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* add migration for new global ([5e917ed](https://github.com/SocialGouv/carte-jeune-engage/commit/5e917eda1d2a224ee16040b35216b7779ff3f941))
+
 # [0.39.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.5...v0.39.0) (2024-06-19)
 
 
