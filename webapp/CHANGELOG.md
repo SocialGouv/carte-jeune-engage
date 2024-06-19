@@ -1,3 +1,10 @@
+# [0.39.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.5...v0.39.0) (2024-06-19)
+
+
+### Features
+
+* add global for specific category ([38595e6](https://github.com/SocialGouv/carte-jeune-engage/commit/38595e679b2a5c16699030aad2919c8d85cd15a3))
+
 ## [0.38.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.38.4...v0.38.5) (2024-06-17)
 
 
