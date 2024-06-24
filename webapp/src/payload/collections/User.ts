@@ -1,6 +1,7 @@
 import { type CollectionConfig } from "payload/types";
 import { User } from "../payload-types";
 import { getBaseUrl } from "../../utils/tools";
+import UserCustomView from "../components/UserCustomView";
 
 const getHtmlPassAccepted = (user: User) => {
   return `
@@ -33,6 +34,11 @@ export const Users: CollectionConfig = {
   },
   admin: {
     useAsTitle: "email",
+    components: {
+      views: {
+        Edit: UserCustomView,
+      },
+    },
   },
   fields: [
     {
