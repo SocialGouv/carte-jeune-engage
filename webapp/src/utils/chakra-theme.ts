@@ -213,4 +213,7 @@ export const theme = extendTheme({
     heading: Marianne.style.fontFamily,
     body: Marianne.style.fontFamily,
   },
+  fontSizes: {
+    xss: "0.7rem",
+  },
 });

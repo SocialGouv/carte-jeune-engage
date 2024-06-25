@@ -135,7 +135,7 @@ export default function Dashboard() {
                 </Flex>
                 <Text
                   pt={1.5}
-                  fontSize="xs"
+                  fontSize="xss"
                   textAlign="center"
                   fontWeight="bold"
                   bgColor="bgWhite"
@@ -166,7 +166,7 @@ export default function Dashboard() {
               </Flex>
               <Text
                 pt={1.5}
-                fontSize="xs"
+                fontSize="xss"
                 textAlign="center"
                 fontWeight="bold"
                 bgColor="bgWhite"
