@@ -1,3 +1,10 @@
+## [0.39.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.39.1...v0.39.2) (2024-06-25)
+
+
+### Bug Fixes
+
+* reduce fontSize of text on categories home component to avoid long text overlap ([4264452](https://github.com/SocialGouv/carte-jeune-engage/commit/4264452d1558d3f6b79bd4f9cec75c5c675251f5))
+
 ## [0.39.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.39.0...v0.39.1) (2024-06-19)
 
 
