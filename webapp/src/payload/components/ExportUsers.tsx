@@ -117,6 +117,7 @@ const ExportUsers = ({ data }: Props) => {
   return (
     <Box w="fit-content">
       <CsvDownloader
+        separator=";"
         filename={`Export_utilisateurs_${new Date().getTime()}`}
         datas={csvData}
         columns={columns}
