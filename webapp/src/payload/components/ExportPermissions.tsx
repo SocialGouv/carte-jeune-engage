@@ -63,7 +63,6 @@ const ExportPermissions = ({ data }: Props) => {
 
   useEffect(() => {
     if (users && data?.docs?.length > 0) {
-      console.log(users);
       setCsvData(
         data.docs.map((permission: Permission) => {
           const currentUser = users.docs.find(

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Edit } from "payload/components/views/Edit";
-
 const UserCustomView = (props: any) => {
   const [couponsNumber, setCouponsNumber] = useState(0);
 
@@ -25,7 +24,12 @@ const UserCustomView = (props: any) => {
       customHeader={
         <>
           <div
-            style={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "start",
+              flexGrow: 1,
+            }}
           >
             <h1
               className="doc-header__title render-title"
@@ -41,30 +45,6 @@ const UserCustomView = (props: any) => {
                 <span className="doc-controls__label">Nombre de coupons: </span>
                 <span className="doc-controls__value">{couponsNumber}</span>
               </div>
-            </div>
-          </div>
-          <div className="doc-tabs">
-            <div className="doc-tabs__tabs-container">
-              <ul className="doc-tabs__tabs">
-                <li className="doc-tab doc-tab--active">
-                  <a
-                    className="doc-tab__link"
-                    tabIndex={-1}
-                    href="/admin/collections/coupons/1"
-                  >
-                    <span className="doc-tab__label">Edit</span>
-                  </a>
-                </li>
-                <li className="doc-tab">
-                  <a
-                    className="doc-tab__link"
-                    tabIndex={0}
-                    href="/admin/collections/coupons/1/api"
-                  >
-                    <span className="doc-tab__label">API</span>
-                  </a>
-                </li>
-              </ul>
             </div>
           </div>
         </>
