@@ -1,3 +1,11 @@
+# [0.40.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.39.2...v0.40.0) (2024-06-26)
+
+
+### Features
+
+* add export of users in csv with number of coupons of each user ([5a9d51a](https://github.com/SocialGouv/carte-jeune-engage/commit/5a9d51a9d6dfb03876c437daed158fe8a878c589))
+* add user coupons number on edit page ([66cb5ae](https://github.com/SocialGouv/carte-jeune-engage/commit/66cb5ae5297f7290909ae4b2bcf07cbcee1ddbb0))
+
 ## [0.39.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.39.1...v0.39.2) (2024-06-25)
 
 
