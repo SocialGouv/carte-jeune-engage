@@ -1,3 +1,10 @@
+## [0.40.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.40.0...v0.40.1) (2024-06-26)
+
+
+### Bug Fixes
+
+* chagne separator for export field address issue ([bff8392](https://github.com/SocialGouv/carte-jeune-engage/commit/bff8392d05fd4d74fc26edbc77939903ad03295e))
+
 # [0.40.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.39.2...v0.40.0) (2024-06-26)
 
 
