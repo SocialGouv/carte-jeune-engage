@@ -1,3 +1,10 @@
+## [0.40.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.40.1...v0.40.2) (2024-06-27)
+
+
+### Bug Fixes
+
+* remove line breaks from projectDescription textarea for export csv issue ([2fdfebd](https://github.com/SocialGouv/carte-jeune-engage/commit/2fdfebd9b30287ff08f0572479e01921179f15a1))
+
 ## [0.40.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.40.0...v0.40.1) (2024-06-26)
 
 
