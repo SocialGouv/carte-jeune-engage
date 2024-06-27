@@ -97,7 +97,9 @@ const ExportUsers = ({ data }: Props) => {
             address: doc.address,
             hasAJobIdea: doc.hasAJobIdea === "yes" ? "Oui" : "Non",
             projectTitle: doc.projectTitle,
-            projectDescription: doc.projectDescription,
+            projectDescription: doc.projectDescription
+              ? doc.projectDescription.split(/\r?\n|\r/).join(", ")
+              : "",
             civility: doc.civility === "man" ? "Homme" : "Femme",
             birthDate: doc.birthDate,
             cejFrom:
