@@ -14,17 +14,15 @@ jobs:
           NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY: BEhweKLgZWqV1WJF6rRUaNiN-qjZPd7KlI_i3E9u2Xg_z2oPePiwgiNbIebpSTXx38epVeVxzfEDsr4atZLf4bA
 app:
   host: cje.fabrique.social.gouv.fr
-  autoscale:
-    minReplicas: 2
-    maxReplicas: 10
-    enabled: true
   resources:
     limits:
-      cpu: 500m
-      memory: 1024Mi
+      cpu: 100m
+      memory: 768Mi
     requests:
-      cpu: 500m
+      cpu: 200m
       memory: 1024Mi
+  autoscale:
+    enabled: true
   envFrom:
     - secretRef:
         name: pg-app
@@ -34,3 +32,12 @@ app:
         name: app-configmap
     - secretRef:
         name: carte-jeune-engage-prod-app-access-key
+
+pg:
+  cnpg-cluster:
+    resources:
+      requests:
+        memory: 1Gi
+      limits:
+        cpu: "1"
+        memory: 1Gi
