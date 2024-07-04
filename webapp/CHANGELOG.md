@@ -1,3 +1,10 @@
+## [0.40.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.40.3...v0.40.4) (2024-07-04)
+
+
+### Bug Fixes
+
+* mistake values ([2388445](https://github.com/SocialGouv/carte-jeune-engage/commit/2388445547402d24f2b822d0311532c51d640d1c))
+
 ## [0.40.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.40.2...v0.40.3) (2024-07-04)
 
 
