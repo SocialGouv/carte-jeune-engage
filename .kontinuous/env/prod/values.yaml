@@ -16,13 +16,11 @@ app:
   host: cje.fabrique.social.gouv.fr
   resources:
     limits:
-      cpu: 100m
-      memory: 768Mi
-    requests:
       cpu: 200m
       memory: 1024Mi
-  autoscale:
-    enabled: true
+    requests:
+      cpu: 100m
+      memory: 768Mi
   envFrom:
     - secretRef:
         name: pg-app
