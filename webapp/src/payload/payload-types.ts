@@ -106,6 +106,8 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -190,6 +192,12 @@ export interface Offer {
       }[]
     | null;
   conditions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  conditionBlocks?:
     | {
         text: string;
         id?: string | null;

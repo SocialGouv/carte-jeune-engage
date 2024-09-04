@@ -38,7 +38,7 @@ import CouponWrapper from "~/components/wrappers/CouponWrapper";
 import OfferWrapper from "~/components/wrappers/OfferWrapper";
 import StepsWrapper from "~/components/wrappers/StepsWrapper";
 import { hasAccessToOffer } from "~/guards/hasAccessToOffer";
-import { getItemsTermsOfUse } from "~/payload/components/CustomSelectField";
+import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { couponAnimation } from "~/utils/animations";
 import { api } from "~/utils/api";
 import { getItemsExternalLink } from "~/utils/itemsOffer";

@@ -1,6 +1,7 @@
 import { type CollectionConfig } from "payload/types";
-import { CustomSelectTermsOfUse } from "../components/CustomSelectField";
+import { CustomSelectTermsOfUse } from "../components/CustomSelectTermsOfUse";
 import { QuickAccess } from "../payload-types";
+import { CustomSelectConditionBlocks } from "../components/CustomSelectBlocksOfUse";
 
 export const Offers: CollectionConfig = {
 	slug: "offers",
@@ -162,6 +163,28 @@ export const Offers: CollectionConfig = {
 					name: "text",
 					type: "text",
 					label: "Texte",
+					required: true,
+				},
+			],
+		},
+		{
+			name: "conditionBlocks",
+			type: "array",
+			label: "Condition Blocs",
+			labels: {
+				singular: "Condition Bloc",
+				plural: "Condition Blocs",
+			},
+			fields: [
+				{
+					name: "text",
+					type: "text",
+					label: "Texte",
+					admin: {
+						components: {
+							Field: CustomSelectConditionBlocks,
+						},
+					},
 					required: true,
 				},
 			],

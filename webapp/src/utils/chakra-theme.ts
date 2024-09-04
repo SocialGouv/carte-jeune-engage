@@ -70,9 +70,14 @@ export const theme = extendTheme({
     Button: {
       sizes: {
         lg: {
-          borderRadius: "xl",
+          borderRadius: "2.25xl",
           py: 8,
           fontWeight: "bold",
+        },
+        md: {
+          borderRadius: "2.25xl",
+          py: 7,
+          fontWeight: 800,
         },
         sm: {
           borderRadius: "lg",
@@ -205,9 +210,10 @@ export const theme = extendTheme({
     "landing-phone-number-component":
       "0px 4px 9.9px 0px rgba(177, 177, 177, 0.25)",
     "landing-qr-code-desktop": "0px 0px 24.2px 0px rgba(145, 145, 145, 0.25)",
+    default: "0px 24px 24px -10px #00000040",
   },
   radii: {
-    "1.5xl": "1.25rem",
+    "2.25xl": "1.125rem",
   },
   fonts: {
     heading: Marianne.style.fontFamily,

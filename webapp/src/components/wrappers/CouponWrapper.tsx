@@ -16,11 +16,12 @@ import { FiCopy, FiLock, FiUnlock } from "react-icons/fi";
 import {
   HiBuildingStorefront,
   HiCursorArrowRays,
+  HiMiniEye,
   HiOutlineInformationCircle,
   HiReceiptPercent,
 } from "react-icons/hi2";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import { getItemsTermsOfUse } from "~/payload/components/CustomSelectField";
+import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { useAuth } from "~/providers/Auth";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
@@ -123,6 +124,7 @@ const CouponWrapper = ({
     navigator.clipboard.writeText(text);
   };
 
+  // Keep logic for coupon page
   const displayCoupon = () => {
     return (
       <Flex
@@ -169,9 +171,10 @@ const CouponWrapper = ({
               value={coupon?.code ?? "6FHDJFHEIDJF"}
               background={coupon ? "white" : "#edeff3"}
               format={
-                coupon?.code && offer?.barcodeFormat
-                  ? offer?.barcodeFormat
-                  : "CODE128"
+                // coupon?.code && offer?.barcodeFormat
+                //   ? offer?.barcodeFormat
+                //   : "CODE128"
+                "CODE128"
               }
               height={70}
             />
@@ -251,16 +254,19 @@ const CouponWrapper = ({
 
     return (
       <>
-        {!isOfferWithoutCoupon && displayCoupon()}
+        {/* {!isOfferWithoutCoupon && displayCoupon()} */}
         <Flex flexDir="column" mt={isOfferWithoutCoupon ? 20 : 6}>
           {!coupon ? (
             <Button
+              fontSize={14}
+              size="md"
               onClick={() => {
                 push(["trackEvent", "Inactive", "J'active mon offre"]);
                 handleActivateOffer();
               }}
+              leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
             >
-              Obtenir la réduction
+              Voir mon code
             </Button>
           ) : (
             <CTAButton
@@ -269,7 +275,6 @@ const CouponWrapper = ({
             />
           )}
         </Flex>
-        <Divider my={6} />
       </>
     );
   };
@@ -288,31 +293,6 @@ const CouponWrapper = ({
       h="full"
       pb={12}
     >
-      <Heading
-        as="h3"
-        fontSize="2xl"
-        fontWeight="extrabold"
-        textAlign="center"
-        mt={6}
-      >
-        {offer.title}
-      </Heading>
-      <Flex alignItems="center" alignSelf="center" gap={2} mt={4}>
-        <Icon
-          as={
-            offer.kind.startsWith("code")
-              ? HiCursorArrowRays
-              : HiBuildingStorefront
-          }
-          w={6}
-          h={6}
-        />
-        <Text fontWeight="medium">
-          {offer.kind.startsWith("code")
-            ? `En ligne sur ${offer.partner.name}`
-            : `dans ${offer.nbOfEligibleStores ?? 1} magasins participants`}
-        </Text>
-      </Flex>
       {getCouponWrapperContent()}
       <Flex flexDir="column">{children}</Flex>
     </Flex>
