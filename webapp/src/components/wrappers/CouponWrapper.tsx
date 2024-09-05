@@ -4,6 +4,7 @@ import {
   Flex,
   HStack,
   Icon,
+  Link,
   Text,
   useToast,
 } from "@chakra-ui/react";
@@ -19,12 +20,13 @@ import { PassIcon } from "../icons/pass";
 import { push } from "@socialgouv/matomo-next";
 import PassCard from "../account/PassCard";
 import { dottedPattern } from "~/utils/chakra-theme";
+import NextLink from "next/link";
 
 type CouponWrapperProps = {
   children: ReactNode;
   coupon?: CouponIncluded;
   offer: OfferIncluded;
-  handleActivateOffer: () => void;
+  handleActivateOffer: (offer_id: number) => void;
   handleOpenExternalLink: () => void;
 };
 
@@ -213,52 +215,7 @@ const CouponWrapper = ({
     );
   };
 
-  const getCouponWrapperContent = () => {
-    const isOfferWithoutCoupon =
-      offer.kind === "voucher_pass" || offer.kind === "code_space";
-
-    return (
-      <>
-        {/* {!isOfferWithoutCoupon && displayCoupon()} */}
-        <Flex flexDir="column" mt={isOfferWithoutCoupon ? 20 : 6} px={4}>
-          {!coupon ? (
-            <Button
-              fontSize={14}
-              size="md"
-              onClick={() => {
-                push(["trackEvent", "Inactive", "J'active mon offre"]);
-                handleActivateOffer();
-              }}
-              leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
-            >
-              Voir mon code
-            </Button>
-          ) : (
-            <CTAButton
-              offer={offer}
-              handleOpenExternalLink={handleOpenExternalLink}
-            />
-          )}
-        </Flex>
-      </>
-    );
-  };
-
-  return (
-    <Flex flexDir="column" zIndex={1} h="full">
-      <Flex flexDir="column" shadow="2xl" bgColor="white">
-        {getCouponWrapperContent()}
-        {children}
-      </Flex>
-      <Box
-        shadow="2xl"
-        position="relative"
-        sx={{ ...dottedPattern(offer.partner.color) }}
-        w="full"
-      />
-      <Box h="200px" w="full" bgColor={offer.partner.color} />
-    </Flex>
-  );
+  return <></>;
 };
 
 export default CouponWrapper;

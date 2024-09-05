@@ -5,59 +5,38 @@ import {
   Flex,
   HStack,
   Icon,
-  Spinner,
   Text,
   Link,
   VStack,
-  useDisclosure,
   UnorderedList,
   ListItem,
   OrderedList,
+  Button,
 } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
+import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { HiArrowRight } from "react-icons/hi";
-import { HiBuildingStorefront } from "react-icons/hi2";
+import { HiBuildingStorefront, HiMiniEye } from "react-icons/hi2";
+import OfferCard from "~/components/cards/OfferCard";
 import LoadingLoader from "~/components/LoadingLoader";
-import BaseModal from "~/components/modals/BaseModal";
-import StackItems, { StackItem } from "~/components/offer/StackItems";
+import { StackItem } from "~/components/offer/StackItems";
 import TextWithLinks from "~/components/offer/TextWithLinks";
-import CouponWrapper from "~/components/wrappers/CouponWrapper";
-import OfferWrapper from "~/components/wrappers/OfferWrapper";
-import { hasAccessToOffer } from "~/guards/hasAccessToOffer";
+import OfferHeaderWrapper from "~/components/wrappers/OfferHeaderWrapper";
 import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { api } from "~/utils/api";
+import { dottedPattern } from "~/utils/chakra-theme";
 import ReactIcon from "~/utils/dynamicIcon";
-import { getItemsExternalLink } from "~/utils/itemsOffer";
-import { isIOS } from "~/utils/tools";
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return hasAccessToOffer(context);
-};
 
 export default function OfferPage() {
   const router = useRouter();
 
-  const { id, couponStatus } = router.query as {
+  const { id } = router.query as {
     id: string;
-    couponStatus: "active" | "inactive";
   };
-
-  const updateCouponStatus = (isCouponActive: boolean) => {
-    router.replace({
-      query: {
-        ...router.query,
-        couponStatus: isCouponActive ? "active" : "inactive",
-      },
-    });
-  };
-
-  const [timeoutIdExternalLink, setTimeoutIdExternalLink] =
-    useState<NodeJS.Timeout>();
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
     api.offer.getById.useQuery(
@@ -81,18 +60,7 @@ export default function OfferPage() {
   const { data: offer } = resultOffer || {};
   const { data: coupon } = resultCoupon || {};
 
-  if (
-    (!couponStatus ||
-      (couponStatus !== "active" && couponStatus !== "inactive")) &&
-    router.isReady &&
-    !isLoadingCoupon
-  ) {
-    updateCouponStatus(!!coupon);
-  }
-
-  useEffect(() => updateCouponStatus(!!coupon), [coupon]);
-
-  const { mutateAsync: mutateAsyncCouponToUser, isSuccess } =
+  const { mutateAsync: mutateAsyncCouponToUser } =
     api.coupon.assignToUser.useMutation({
       onSuccess: () => refetchCoupon(),
     });
@@ -122,63 +90,44 @@ export default function OfferPage() {
     return offer.conditions ?? [];
   }, [offer, isConditionsOpen]);
 
-  const itemsExternalLink = useMemo(() => {
-    if (!offer) return [];
-    return getItemsExternalLink(offer.kind);
-  }, [offer]);
-
-  const {
-    isOpen: isOpenActivateOffer,
-    onOpen: onOpenActivateOffer,
-    onClose: onCloseActivateOffer,
-  } = useDisclosure();
-
-  const {
-    isOpen: isOpenExternalLink,
-    onOpen: onOpenExternalLink,
-    onClose: onCloseExternalLink,
-  } = useDisclosure({
-    onOpen: () => {
-      const timeoutId = setTimeout(() => {
-        let a = document.createElement("a");
-        document.body.appendChild(a);
-        a.classList.add("hidden");
-        a.href = offer?.url as string;
-        if (!isIOS()) a.target = "_blank";
-        a.click();
-        document.body.removeChild(a);
-        onCloseExternalLink();
-      }, 2000);
-      setTimeoutIdExternalLink(timeoutId);
-    },
-    onClose: () => clearTimeout(timeoutIdExternalLink),
-  });
-
   const handleValidateOffer = async (offerId: number) => {
-    await mutateAsyncCouponToUser({ offer_id: offerId });
-    onCloseActivateOffer();
+    if (coupon) {
+      router.push(`/dashboard/offer/${offerId}/coupon`);
+    } else {
+      await mutateAsyncCouponToUser({ offer_id: offerId });
+    }
   };
 
-  if (isLoadingOffer || !offer || isLoadingCoupon)
+  if (isLoadingOffer || isLoadingCoupon || !offer)
     return (
-      <OfferWrapper>
+      <OfferHeaderWrapper kind="offer">
         <Center h="full">
           <LoadingLoader />
         </Center>
-      </OfferWrapper>
+      </OfferHeaderWrapper>
     );
 
   return (
-    <OfferWrapper
-      offer={offer}
-      isModalOpen={isOpenActivateOffer || isOpenExternalLink}
+    <OfferHeaderWrapper
+      kind="offer"
+      partnerColor={offer.partner.color}
+      headerComponent={<OfferCard offer={offer} />}
     >
-      <CouponWrapper
-        coupon={coupon}
-        offer={offer}
-        handleActivateOffer={onOpenActivateOffer}
-        handleOpenExternalLink={onOpenExternalLink}
-      >
+      <Flex flexDir="column" h="full">
+        <Box mt={6} px={4} w="full">
+          <Button
+            fontSize={14}
+            w="full"
+            size="md"
+            onClick={() => {
+              push(["trackEvent", "Inactive", "J'active mon offre"]);
+              handleValidateOffer(offer.id);
+            }}
+            leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
+          >
+            Voir mon code
+          </Button>
+        </Box>
         {offer.kind.startsWith("voucher") && (
           <>
             <VStack spacing={3} align="start">
@@ -275,7 +224,7 @@ export default function OfferPage() {
                 </Text>
               </Flex>
             ))}
-            <Center minW="43%" mr={4}>
+            <Center minW="43%" mr={4} key="read-all-conditions">
               <Text
                 fontWeight={800}
                 color="blackLight"
@@ -380,47 +329,14 @@ export default function OfferPage() {
             <Text>{offer.partner.description}</Text>
           </Flex>
         </Flex>
-      </CouponWrapper>
-      <BaseModal
-        onClose={onCloseExternalLink}
-        isOpen={isOpenExternalLink}
-        title={`Nous vous redirigeons vers le site ${offer.partner.name}`}
-      >
-        <Flex flexDir="column">
-          <Flex position="relative" mt={16}>
-            <Spinner
-              mx="auto"
-              thickness="8px"
-              speed="0.85s"
-              emptyColor="gray.200"
-              color="blackLight"
-              boxSize={40}
-            />
-            <Box
-              bgColor="white"
-              objectFit="cover"
-              objectPosition="center"
-              position="absolute"
-              top="50%"
-              left="50%"
-              transform="translate(-50%, -50%)"
-              p={2}
-              borderRadius="full"
-            >
-              <Image
-                src={offer.partner.icon.url as string}
-                alt={offer.partner.icon.alt as string}
-                width={74}
-                height={74}
-                style={{
-                  borderRadius: "100%",
-                }}
-              />
-            </Box>
-          </Flex>
-          <StackItems items={itemsExternalLink} props={{ mt: 16 }} />
-        </Flex>
-      </BaseModal>
-    </OfferWrapper>
+        <Box
+          shadow="2xl"
+          position="relative"
+          sx={{ ...dottedPattern(offer?.partner?.color as string) }}
+          w="full"
+        />
+        <Box h="200px" w="full" bgColor={offer?.partner.color} />
+      </Flex>
+    </OfferHeaderWrapper>
   );
 }

@@ -5,7 +5,7 @@ import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
 
 export interface CouponIncluded extends Coupon {
-  offer: Offer & { icon: Media; partner: Partner };
+  offer: Offer & { partner: Partner & { icon: Media } };
   user: User;
 }
 
@@ -15,11 +15,9 @@ export const couponRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { offer_id } = input;
 
-      const nowDate = new Date().toISOString().split("T")[0];
-
       const coupons = await ctx.payload.find({
         collection: "coupons",
-        depth: 2,
+        depth: 3,
         where: {
           and: [
             { offer: { equals: offer_id } },
