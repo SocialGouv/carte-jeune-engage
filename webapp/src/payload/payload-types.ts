@@ -199,7 +199,7 @@ export interface Offer {
     | null;
   conditionBlocks?:
     | {
-        text: string;
+        slug: string;
         id?: string | null;
       }[]
     | null;

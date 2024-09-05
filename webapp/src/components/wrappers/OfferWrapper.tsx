@@ -27,12 +27,13 @@ const OfferWrapper = ({ children, offer, isModalOpen }: OfferWrapperProps) => {
           content={isModalOpen ? bgWhiteColor : offer?.partner.color}
         />
       </Head>
-      <Flex flexDir="column" h="full">
+      <Flex flexDir="column">
         <Flex
           flexDir="column"
           bgColor={offer?.partner.color}
           px={8}
-          py={6}
+          pt={6}
+          pb={8}
           gap={6}
         >
           <IconButton

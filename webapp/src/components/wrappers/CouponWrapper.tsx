@@ -1,40 +1,29 @@
 import {
   Box,
   Button,
-  Divider,
   Flex,
   HStack,
-  Heading,
   Icon,
   Text,
   useToast,
 } from "@chakra-ui/react";
-import Link from "next/link";
-import { ReactNode, useMemo } from "react";
+import { ReactNode } from "react";
 import Barcode from "react-barcode";
 import { FiCopy, FiLock, FiUnlock } from "react-icons/fi";
-import {
-  HiBuildingStorefront,
-  HiCursorArrowRays,
-  HiMiniEye,
-  HiOutlineInformationCircle,
-  HiReceiptPercent,
-} from "react-icons/hi2";
+import { HiMiniEye, HiReceiptPercent } from "react-icons/hi2";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
-import { useAuth } from "~/providers/Auth";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import ToastComponent from "../ToastComponent";
 import { PassIcon } from "../icons/pass";
 import { push } from "@socialgouv/matomo-next";
 import PassCard from "../account/PassCard";
+import { dottedPattern } from "~/utils/chakra-theme";
 
 type CouponWrapperProps = {
   children: ReactNode;
   coupon?: CouponIncluded;
   offer: OfferIncluded;
-  handleOpenOtherConditions: () => void;
   handleActivateOffer: () => void;
   handleOpenExternalLink: () => void;
 };
@@ -105,7 +94,6 @@ const CouponWrapper = ({
   children,
   coupon,
   offer,
-  handleOpenOtherConditions,
   handleActivateOffer,
   handleOpenExternalLink,
 }: CouponWrapperProps) => {
@@ -199,29 +187,6 @@ const CouponWrapper = ({
             pointerEvents="none"
           />
         </Flex>
-        {coupon && (
-          <HStack spacing={2} align="center">
-            <Icon as={HiOutlineInformationCircle} w={6} h={6} mt={0.5} />
-            <Text
-              fontWeight="medium"
-              textDecoration="underline"
-              textUnderlineOffset={3}
-              onClick={() => {
-                push([
-                  "trackEvent",
-                  "Offre",
-                  offer.partner.name,
-                  offer.title,
-                  "Active",
-                  "Conditions 2",
-                ]);
-                handleOpenOtherConditions();
-              }}
-            >
-              Conditions d’utilisation
-            </Text>
-          </HStack>
-        )}
         <Flex
           id="coupon-code-icon"
           position="absolute"
@@ -255,7 +220,7 @@ const CouponWrapper = ({
     return (
       <>
         {/* {!isOfferWithoutCoupon && displayCoupon()} */}
-        <Flex flexDir="column" mt={isOfferWithoutCoupon ? 20 : 6}>
+        <Flex flexDir="column" mt={isOfferWithoutCoupon ? 20 : 6} px={4}>
           {!coupon ? (
             <Button
               fontSize={14}
@@ -280,21 +245,18 @@ const CouponWrapper = ({
   };
 
   return (
-    <Flex
-      flexDir="column"
-      overflowY="auto"
-      zIndex={1}
-      sx={{
-        "::-webkit-scrollbar": {
-          display: "none",
-        },
-      }}
-      px={8}
-      h="full"
-      pb={12}
-    >
-      {getCouponWrapperContent()}
-      <Flex flexDir="column">{children}</Flex>
+    <Flex flexDir="column" zIndex={1} h="full">
+      <Flex flexDir="column" shadow="2xl" bgColor="white">
+        {getCouponWrapperContent()}
+        {children}
+      </Flex>
+      <Box
+        shadow="2xl"
+        position="relative"
+        sx={{ ...dottedPattern(offer.partner.color) }}
+        w="full"
+      />
+      <Box h="100px" w="full" bgColor={offer.partner.color} />
     </Flex>
   );
 };

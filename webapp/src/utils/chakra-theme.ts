@@ -201,6 +201,7 @@ export const theme = extendTheme({
     error: "#FF5959",
     errorLight: "#FFE8E8",
     bgWhite: "#F7F7F7",
+    bgGray: "#F2F2F8",
     disabled: "#9595B1",
     secondaryText: "#5C5C70",
     borderGray: "#B5BBBD",
@@ -213,6 +214,7 @@ export const theme = extendTheme({
     default: "0px 24px 24px -10px #00000040",
   },
   radii: {
+    "2lg": "0.625rem",
     "2.25xl": "1.125rem",
   },
   fonts: {
