@@ -119,7 +119,7 @@ export default function OfferPage() {
 
   const offerConditions = useMemo(() => {
     if (!offer) return [];
-    if (!isConditionsOpen) return offer.conditions?.slice(0, 1) ?? [];
+    if (!isConditionsOpen) return offer.conditions?.slice(0, 2) ?? [];
     return offer.conditions ?? [];
   }, [offer, isConditionsOpen]);
 
@@ -306,20 +306,22 @@ export default function OfferPage() {
           </Flex>
         )}
         <Flex flexDir="column" px={4}>
-          <HStack spacing={4}>
-            <Flex flexDir="column" gap={3} mt={8}>
-              <Text fontWeight="extrabold" fontSize={20}>
-                Comment utiliser l'offre ?
-              </Text>
-              <OrderedList fontWeight={500} pl={3}>
-                {itemsTermsOfUse.map((termOfUse) => (
-                  <ListItem mb={2}>
-                    <TextWithLinks text={termOfUse.text} />
-                  </ListItem>
-                ))}
-              </OrderedList>
-            </Flex>
-          </HStack>
+          {itemsTermsOfUse.length > 0 && (
+            <HStack spacing={4}>
+              <Flex flexDir="column" gap={3} mt={8}>
+                <Text fontWeight="extrabold" fontSize={20}>
+                  Comment utiliser l'offre ?
+                </Text>
+                <OrderedList fontWeight={500} pl={3}>
+                  {itemsTermsOfUse.map((termOfUse) => (
+                    <ListItem mb={2}>
+                      <TextWithLinks text={termOfUse.text} />
+                    </ListItem>
+                  ))}
+                </OrderedList>
+              </Flex>
+            </HStack>
+          )}
           {!!(offer.conditions ?? []).length && (
             <>
               <Divider my={6} />
