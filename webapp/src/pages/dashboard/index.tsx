@@ -1,34 +1,27 @@
 import {
   Box,
-  Button,
   Center,
   Flex,
   Grid,
   Heading,
-  Icon,
-  IconButton,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import Link from "next/link";
-import { FiMoreHorizontal } from "react-icons/fi";
-import { HiCog6Tooth } from "react-icons/hi2";
 import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
+import SearchBar from "~/components/SearchBar";
 import OfferCard from "~/components/cards/OfferCard";
-import { PassIcon } from "~/components/icons/pass";
+import { CategoryIncluded } from "~/server/api/routers/category";
 import { api } from "~/utils/api";
 
 export default function Dashboard() {
-  const { data: resultNewCategory, isLoading: isLoadingNewCategory } =
-    api.globals.getNewCategory.useQuery();
-
   const { data: resultCategories, isLoading: isLoadingCategories } =
     api.category.getList.useQuery({
       page: 1,
-      perPage: 2,
+      perPage: 100,
       sort: "createdAt",
     });
 
@@ -40,7 +33,6 @@ export default function Dashboard() {
       page: 1,
       perPage: 50,
       sort: "partner.name",
-      matchPreferences: true,
     });
 
   const { data: resultPartners, isLoading: isLoadingPartners } =
@@ -51,19 +43,96 @@ export default function Dashboard() {
       sort: "name",
     });
 
-  const { data: newCategory } = resultNewCategory || {};
   const { data: categories } = resultCategories || {};
   const { data: quickAccessPartners } = resultQuickAccess || {};
   const { data: offers } = resultOffers || {};
   const { data: partners } = resultPartners || {};
 
+  const firstCategoryRow = categories?.slice(
+    0,
+    Math.ceil((categories?.length || 0) / 2)
+  );
+  const secondCategoryRow = categories?.slice(
+    Math.ceil((categories?.length || 0) / 2)
+  );
+
+  const renderCategory = (category: CategoryIncluded) => {
+    const associatedOffers = offers
+      ?.filter((offer) => offer.category.id === category.id)
+      .slice(0, 6);
+
+    let backgroundColor;
+    if (associatedOffers) {
+      backgroundColor = associatedOffers[0]?.partner?.color || "#FECB24";
+    }
+
+    return (
+      <Link
+        key={category.id}
+        href={`/dashboard/category/${category.slug}`}
+        onClick={() => {
+          push(["trackEvent", "Accueil", "Catégories - " + category.label]);
+        }}
+        passHref
+      >
+        <Flex
+          justifyContent="flex-start"
+          flexDir="column"
+          alignItems="center"
+          bgColor={backgroundColor}
+          borderRadius="20px"
+          p={4}
+          minW="160px"
+          maxW="160px"
+          minH="196px"
+          height="100%"
+        >
+          <Image
+            src={category.icon.url as string}
+            alt={category.icon.alt as string}
+            width={40}
+            height={24}
+          />
+          <Text
+            wordBreak="break-word"
+            whiteSpace="normal"
+            fontSize="md"
+            textAlign="center"
+            fontWeight="extrabold"
+            mb={5}
+            noOfLines={2}
+          >
+            {category.label}
+          </Text>
+          <Grid templateColumns="repeat(3, 1fr)" gridColumnGap={2}>
+            {associatedOffers?.map((offer) => (
+              <Box
+                key={offer.id}
+                borderRadius="50%"
+                overflow="hidden"
+                width="40px"
+                height="40px"
+              >
+                <Image
+                  src={offer.partner.icon.url as string}
+                  alt={offer.partner.icon.alt as string}
+                  width={40}
+                  height={40}
+                  objectFit="cover"
+                />
+              </Box>
+            ))}
+          </Grid>
+        </Flex>
+      </Link>
+    );
+  };
+
   if (
     isLoadingCategories ||
     isLoadingQuickAccess ||
     isLoadingOffers ||
-    isLoadingPartners ||
-    isLoadingNewCategory ||
-    !newCategory
+    isLoadingPartners
   ) {
     return (
       <Box pt={12} px={8} h="full">
@@ -77,111 +146,41 @@ export default function Dashboard() {
   return (
     <>
       <Box pt={12} pb={32}>
-        <Box px={8}>
-          <Flex justifyContent="space-between" mb={6}>
-            <Link href="/dashboard/account/card" passHref>
-              <IconButton
-                colorScheme="whiteBtn"
-                onClick={() => push(["trackEvent", "Profil", "Ma carte CJE"])}
-                size="md"
-                icon={<PassIcon color="black" w={5} h={6} />}
-                aria-label="Carte CJE"
-              />
-            </Link>
-            <Link href="/dashboard/account" passHref>
-              <IconButton
-                colorScheme="whiteBtn"
-                onClick={() => push(["trackEvent", "Navigation", "Profil"])}
-                size="md"
-                icon={<Icon as={HiCog6Tooth} color="black" w={6} h={6} />}
-                aria-label="Page de profil"
-              />
-            </Link>
-          </Flex>
-          <InstallationBanner
-            ignoreUserOutcome={false}
-            matomoEvent={["Accueil", "Obtenir l'application"]}
-          />
-          <Heading as="h2" fontSize="2xl" fontWeight="extrabold">
-            Quelles économies allez-vous faire aujourd’hui ?
+        <InstallationBanner
+          ignoreUserOutcome={false}
+          matomoEvent={["Accueil", "Obtenir l'application"]}
+        />
+        <Box
+          px={8}
+          pb={4}
+          borderBottomWidth={1}
+          borderBottomColor="cje-gray.400"
+          mb={6}
+        >
+          <Heading as="h2" fontSize="2xl" fontWeight="extrabold" mb={9}>
+            Explorer
           </Heading>
-          <SimpleGrid columns={4} mt={6} spacingX={4}>
-            {[newCategory, ...(categories || [])]?.map((category) => (
-              <Link
-                key={category.id}
-                href={`/dashboard/category/${category.slug}`}
-                onClick={() => {
-                  push([
-                    "trackEvent",
-                    "Accueil",
-                    "Catégories - " + category.label,
-                  ]);
-                }}
-                passHref
-              >
-                <Flex
-                  justifyContent="center"
-                  alignItems="center"
-                  bgColor="white"
-                  borderRadius="xl"
-                  p={2}
-                >
-                  <Image
-                    src={category.icon.url as string}
-                    alt={category.icon.alt as string}
-                    width={45}
-                    height={45}
-                  />
-                </Flex>
-                <Text
-                  pt={1.5}
-                  fontSize="xss"
-                  textAlign="center"
-                  fontWeight="bold"
-                  bgColor="bgWhite"
-                  w="full"
-                >
-                  {category.label}
-                </Text>
-              </Link>
-            ))}
-            <Link
-              key="all"
-              href="/dashboard/categories"
-              passHref
-              onClick={() => {
-                push(["trackEvent", "Accueil", `Toutes les catégories`]);
-              }}
-            >
-              <Flex
-                justifyContent="center"
-                alignItems="center"
-                bgColor="white"
-                borderRadius="xl"
-                p={2}
-              >
-                <Flex width={45} height={45}>
-                  <Icon as={FiMoreHorizontal} width={10} height={10} m="auto" />
-                </Flex>
-              </Flex>
-              <Text
-                pt={1.5}
-                fontSize="xss"
-                textAlign="center"
-                fontWeight="bold"
-                bgColor="bgWhite"
-                w="full"
-              >
-                Tout voir
-              </Text>
-            </Link>
-          </SimpleGrid>
-          {quickAccessPartners && quickAccessPartners?.length > 0 && (
-            <Heading as="h2" fontSize="2xl" mt={6}>
-              Accès rapides
-            </Heading>
-          )}
+          <SearchBar />
         </Box>
+        <Flex
+          overflowX="auto"
+          whiteSpace="nowrap"
+          flexWrap="nowrap"
+          position="relative"
+          sx={{
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
+          px={8}
+        >
+          <Flex direction="column" gap={4}>
+            <Flex gap="10px" mb={2}>
+              {firstCategoryRow?.map(renderCategory)}
+            </Flex>
+            <Flex gap="10px">{secondCategoryRow?.map(renderCategory)}</Flex>
+          </Flex>
+        </Flex>
         {quickAccessPartners && quickAccessPartners?.length > 0 && (
           <Flex
             alignItems="center"
