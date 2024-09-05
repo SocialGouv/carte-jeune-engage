@@ -21,7 +21,6 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiArrowRight } from "react-icons/hi";
 import { HiBuildingStorefront } from "react-icons/hi2";
-import { set } from "zod";
 import LoadingLoader from "~/components/LoadingLoader";
 import BaseModal from "~/components/modals/BaseModal";
 import StackItems, { StackItem } from "~/components/offer/StackItems";

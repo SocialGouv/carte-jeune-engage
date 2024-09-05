@@ -256,7 +256,7 @@ const CouponWrapper = ({
         sx={{ ...dottedPattern(offer.partner.color) }}
         w="full"
       />
-      <Box h="100px" w="full" bgColor={offer.partner.color} />
+      <Box h="200px" w="full" bgColor={offer.partner.color} />
     </Flex>
   );
 };
