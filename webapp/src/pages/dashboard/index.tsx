@@ -28,11 +28,20 @@ export default function Dashboard() {
   const { data: resultQuickAccess, isLoading: isLoadingQuickAccess } =
     api.globals.quickAccessGetAll.useQuery();
 
-  const { data: resultOffers, isLoading: isLoadingOffers } =
+  const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
     api.offer.getListOfAvailables.useQuery({
       page: 1,
-      perPage: 50,
+      perPage: 10,
       sort: "partner.name",
+      kinds: ["code", "code_space"],
+    });
+
+  const { data: resultOffersInStore, isLoading: isLoadingOffersInStore } =
+    api.offer.getListOfAvailables.useQuery({
+      page: 1,
+      perPage: 10,
+      sort: "partner.name",
+      kinds: ["voucher", "voucher_pass"],
     });
 
   const { data: resultPartners, isLoading: isLoadingPartners } =
@@ -45,7 +54,8 @@ export default function Dashboard() {
 
   const { data: categories } = resultCategories || {};
   const { data: quickAccessPartners } = resultQuickAccess || {};
-  const { data: offers } = resultOffers || {};
+  const { data: offersOnline } = resultOffersOnline || {};
+  const { data: offersInStore } = resultOffersInStore || {};
   const { data: partners } = resultPartners || {};
 
   const firstCategoryRow = categories?.slice(
@@ -57,8 +67,8 @@ export default function Dashboard() {
   );
 
   const renderCategory = (category: CategoryIncluded) => {
-    const associatedOffers = offers
-      ?.filter((offer) => offer.category.id === category.id)
+    const associatedOffers = [...(offersOnline || []), ...(offersInStore || [])]
+      .filter((offer) => offer.category.id === category.id)
       .slice(0, 6);
 
     let backgroundColor;
@@ -131,7 +141,8 @@ export default function Dashboard() {
   if (
     isLoadingCategories ||
     isLoadingQuickAccess ||
-    isLoadingOffers ||
+    isLoadingOffersOnline ||
+    isLoadingOffersInStore ||
     isLoadingPartners
   ) {
     return (
@@ -181,7 +192,7 @@ export default function Dashboard() {
             <Flex gap="10px">{secondCategoryRow?.map(renderCategory)}</Flex>
           </Flex>
         </Flex>
-        {quickAccessPartners && quickAccessPartners?.length > 0 && (
+        {/* {quickAccessPartners && quickAccessPartners?.length > 0 && (
           <Flex
             alignItems="center"
             mt={5}
@@ -232,11 +243,45 @@ export default function Dashboard() {
               </Link>
             ))}
           </Flex>
-        )}
-        {offers && offers?.length > 0 && (
+        )} */}
+        {offersOnline && offersOnline?.length > 0 && (
           <>
-            <Heading as="h2" fontSize="2xl" mt={6} px={8}>
-              Les réductions pour vous
+            <Heading as="h2" fontSize="2xl" fontWeight={800} mt={8} px={8}>
+              À utiliser en ligne
+            </Heading>
+            <Grid
+              templateColumns="repeat(auto-fit, minmax(285px, 1fr))"
+              gridAutoFlow="column"
+              gridAutoColumns="minmax(285px, 1fr)"
+              mt={6}
+              px={8}
+              gap={4}
+              pb={2}
+              overflowX="auto"
+              sx={{
+                "::-webkit-scrollbar": {
+                  display: "none",
+                },
+              }}
+            >
+              {offersOnline?.map((offer) => (
+                <OfferCard
+                  key={offer.id}
+                  offer={offer}
+                  matomoEvent={[
+                    "Accueil",
+                    "Pour vous",
+                    `Offre - ${offer.partner.name} - ${offer.title} `,
+                  ]}
+                />
+              ))}
+            </Grid>
+          </>
+        )}
+        {offersInStore && offersInStore?.length > 0 && (
+          <>
+            <Heading as="h2" fontSize="2xl" px={8}>
+              À utiliser en magasin
             </Heading>
             <Grid
               templateColumns="repeat(auto-fit, minmax(285px, 1fr))"
@@ -253,7 +298,7 @@ export default function Dashboard() {
                 },
               }}
             >
-              {offers?.map((offer) => (
+              {offersInStore?.map((offer) => (
                 <OfferCard
                   key={offer.id}
                   offer={offer}
@@ -267,7 +312,7 @@ export default function Dashboard() {
             </Grid>
           </>
         )}
-        <Box px={8}>
+        {/* <Box px={8}>
           <Heading as="h2" fontSize="2xl" mt={6}>
             Nos partenaires
           </Heading>
@@ -292,7 +337,7 @@ export default function Dashboard() {
               </Flex>
             ))}
           </SimpleGrid>
-        </Box>
+        </Box> */}
       </Box>
     </>
   );

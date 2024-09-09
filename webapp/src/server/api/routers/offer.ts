@@ -18,6 +18,9 @@ export const offerRouter = createTRPCRouter({
         z.object({
           offerIds: z.array(z.number()).optional(),
           categoryId: z.number().optional(),
+          kinds: z
+            .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
+            .optional(),
           isCurrentUser: z.boolean().optional(),
           matchPreferences: z.boolean().optional(),
         })
@@ -32,6 +35,7 @@ export const offerRouter = createTRPCRouter({
         offerIds,
         isCurrentUser,
         matchPreferences,
+        kinds,
       } = input;
 
       let where = {
@@ -62,6 +66,12 @@ export const offerRouter = createTRPCRouter({
       if (offerIds) {
         where.id = {
           in: offerIds || [],
+        };
+      }
+
+      if (kinds && kinds.length) {
+        where.kind = {
+          in: kinds,
         };
       }
 

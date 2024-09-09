@@ -111,7 +111,7 @@ export default function OfferPage() {
     <OfferHeaderWrapper
       kind="offer"
       partnerColor={offer.partner.color}
-      headerComponent={<OfferCard offer={offer} />}
+      headerComponent={<OfferCard offer={offer} variant="minimal" />}
     >
       <Flex flexDir="column">
         <Box mt={6} px={4} w="full">

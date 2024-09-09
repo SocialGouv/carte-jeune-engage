@@ -1,22 +1,39 @@
-import { Flex, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import { Flex, Text, Icon, Image, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { dottedPattern } from "~/utils/chakra-theme";
-import { OfferKindBadge } from "../OfferKindBadge";
 import { push } from "@socialgouv/matomo-next";
+import { HiOutlineBookmark, HiOutlineClock } from "react-icons/hi2";
+import { HiClock } from "react-icons/hi2";
 
 type OfferCardProps = {
   offer: OfferIncluded;
-  displayExpiryDate?: boolean;
+  variant?: "default" | "minimal";
   matomoEvent?: string[];
 };
 
 const OfferCard = ({
   offer,
-  displayExpiryDate = false,
+  variant = "default",
   matomoEvent = [],
 }: OfferCardProps) => {
+  const match = offer.title.match(/\d+%/);
+
+  const [percentage, restOfString] = match
+    ? [match[0], offer.title.replace(match[0], "").trim()]
+    : [null, offer.title];
+
+  const differenceInDays = Math.floor(
+    (new Date(offer.validityTo).setHours(0, 0, 0, 0) -
+      new Date().setHours(0, 0, 0, 0)) /
+      (1000 * 3600 * 24)
+  );
+
+  const expiryText =
+    differenceInDays > 0
+      ? `Fin dans ${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
+      : "Offre expirée";
+
   return (
     <Link
       href={`/dashboard/offer/${offer.id}`}
@@ -24,56 +41,121 @@ const OfferCard = ({
         if (!!matomoEvent.length) push(["trackEvent", ...matomoEvent]);
       }}
     >
-      <Flex flexDir="column">
+      <Flex flexDir="column" pb={8}>
         <Flex
-          bgColor={offer.partner.color}
-          py={5}
-          borderTopRadius={12}
+          borderTopRadius={20}
           position="relative"
-          justifyContent="center"
-          alignItems="center"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          overflow="hidden"
+          height="256px"
           sx={{ ...dottedPattern("#ffffff") }}
         >
-          <Flex alignItems="center" borderRadius="full" p={1} bgColor="white">
-            <Image
-              src={offer.partner.icon.url ?? ""}
-              alt={offer.partner.icon.alt ?? ""}
-              width={42}
-              height={42}
-              style={{
-                borderRadius: "50%",
-              }}
-            />
+          <Image
+            src="/images/landing/mobile-showcase.png"
+            alt="image-test"
+            objectFit="cover"
+            objectPosition="center"
+            width="100%"
+            height="100%"
+          />
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            width="100%"
+            height="50%"
+            bgGradient="linear(to-b, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))"
+            zIndex={1}
+          />
+          <Flex
+            position="absolute"
+            top={0}
+            w="100%"
+            justifyContent={variant === "default" ? "space-between" : "center"}
+            alignItems="center"
+            p={variant === "default" ? 5 : 2}
+            zIndex={2}
+          >
+            <Flex align="center" gap={3}>
+              <Flex
+                alignItems="center"
+                borderRadius="18px"
+                p={1}
+                bgColor="white"
+              >
+                <Image
+                  src={offer.partner.icon.url ?? ""}
+                  alt={offer.partner.icon.alt ?? ""}
+                  width={10}
+                  height={10}
+                  borderRadius="18px"
+                />
+              </Flex>
+              <Text fontSize="xl" fontWeight="bold" color="white">
+                {offer.partner.name}
+              </Text>
+            </Flex>
+            {variant === "default" && (
+              <Flex
+                alignItems="center"
+                justify="center"
+                borderRadius="18px"
+                py={3}
+                px={3.5}
+                bgColor="white"
+              >
+                <Icon as={HiOutlineBookmark} h={6} w={6} onClick={() => {}} />
+              </Flex>
+            )}
           </Flex>
         </Flex>
         <Flex
-          flexDir="column"
+          flexDir={variant === "default" ? "column" : "column-reverse"}
           p={3}
           bgColor="white"
-          borderBottomRadius={8}
+          borderBottomRadius={20}
           gap={2}
-          boxShadow="md"
+          shadow="default"
         >
-          <Text fontSize="sm" fontWeight="medium">
-            {offer.partner.name}
-          </Text>
-          <Text fontWeight="bold" fontSize="sm" noOfLines={2} h="42px">
-            {offer.title}
-          </Text>
-          <OfferKindBadge kind={offer.kind} variant="light" />
-          {displayExpiryDate && (
-            <Flex
-              alignSelf="start"
-              borderRadius="2xl"
-              bgColor="bgWhite"
-              py={2}
-              px={3}
+          <Flex
+            alignSelf="center"
+            align="center"
+            borderRadius="2xl"
+            color={variant === "default" ? "white" : "black"}
+            bgColor={variant === "default" ? "bgRed" : "inherit"}
+            py={1}
+            px={2}
+          >
+            <Icon
+              as={variant === "default" ? HiClock : HiOutlineClock}
+              w={4}
+              h={4}
+              mr={1}
+            />
+            <Text
+              fontSize={variant === "default" ? 12 : 14}
+              fontWeight={700}
+              mb={0.5}
             >
-              <Text fontSize="xs" fontWeight="medium">
-                Expire le : {new Date(offer.validityTo).toLocaleDateString()}
+              {expiryText}
+            </Text>
+          </Flex>
+          <Flex
+            flexDir="column"
+            alignItems="center"
+            justify="center"
+            textAlign="center"
+          >
+            {percentage && (
+              <Text fontSize="lg" fontWeight={800}>
+                {percentage}
               </Text>
-            </Flex>
-          )}
+            )}
+            <Text minH="80px" fontWeight={500} mt={1}>
+              {restOfString}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
     </Link>

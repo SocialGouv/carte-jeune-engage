@@ -59,6 +59,7 @@ const BottomNavigation = () => {
   return (
     <SimpleGrid
       id="cje-bottom-navigation"
+      zIndex={100}
       columns={navigationItems.length}
       borderTopRadius={24}
       bgColor="white"
