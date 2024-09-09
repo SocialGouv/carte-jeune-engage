@@ -15,11 +15,7 @@ type CategoryWithOffers = CategoryIncluded & { offers: OfferIncluded[] };
 
 export default function Dashboard() {
   const { data: resultCategories, isLoading: isLoadingCategories } =
-    api.category.getList.useQuery({
-      page: 1,
-      perPage: 100,
-      sort: "createdAt",
-    });
+    api.globals.categoriesListOrdered.useQuery();
 
   const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
     api.offer.getListOfAvailables.useQuery({

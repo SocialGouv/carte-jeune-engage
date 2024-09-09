@@ -70,4 +70,19 @@ export const globalsRouter = createTRPCRouter({
       data: tmpNewCategory,
     };
   }),
+
+  categoriesListOrdered: publicProcedure.query(async ({ ctx }) => {
+    const categoriesList = await ctx.payload.findGlobal({
+      slug: "categories_list",
+      depth: 2,
+    });
+
+    const categories = categoriesList.items?.map(
+      (item) => item.category
+    ) as CategoryIncluded[];
+
+    return {
+      data: categories,
+    };
+  }),
 });

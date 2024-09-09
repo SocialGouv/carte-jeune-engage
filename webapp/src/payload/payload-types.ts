@@ -27,6 +27,7 @@ export interface Config {
     landingPartners: LandingPartner;
     landingFAQ: LandingFAQ;
     newCategory: NewCategory;
+    categories_list: CategoriesList;
   };
 }
 /**
@@ -359,6 +360,21 @@ export interface NewCategory {
   items?:
     | {
         offer?: (number | null) | Offer;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_list".
+ */
+export interface CategoriesList {
+  id: number;
+  items?:
+    | {
+        category: number | Category;
         id?: string | null;
       }[]
     | null;
