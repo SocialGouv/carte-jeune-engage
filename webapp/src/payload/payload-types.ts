@@ -117,6 +117,7 @@ export interface Category {
   id: number;
   slug: string;
   label: string;
+  color?: string | null;
   icon: number | Media;
   updatedAt: string;
   createdAt: string;
