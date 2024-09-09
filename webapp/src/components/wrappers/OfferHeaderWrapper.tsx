@@ -46,19 +46,13 @@ const OfferHeaderWrapper = ({
       <Head>
         <meta name="theme-color" content={backgroundColor} />
       </Head>
-      <Flex
-        flexDir="column"
-        h="full"
-        bgColor={kind === "coupon" ? backgroundColor : "inherit"}
-      >
+      <Flex flexDir="column" h="full">
         <Flex
           flexDir="column"
-          bgColor={kind === "offer" ? backgroundColor : "inherit"}
+          bgColor={backgroundColor}
           h="full"
           px={8}
-          pt={6}
-          pb={8}
-          gap={6}
+          py={6}
           ref={intersectionRef}
         >
           <IconButton
@@ -66,6 +60,7 @@ const OfferHeaderWrapper = ({
             shadow="default"
             aria-label="Retour"
             colorScheme="whiteBtn"
+            mb={6}
             onClick={() => {
               push(["trackEvent", "Retour"]);
               if (window.history?.length > 1) {
@@ -79,8 +74,9 @@ const OfferHeaderWrapper = ({
             icon={<ChevronLeftIcon w={6} h={6} color="black" />}
           />
           {headerComponent}
+          {kind === "coupon" && children}
         </Flex>
-        {children}
+        {kind === "offer" && children}
         {kind === "offer" && (
           <Fade in={!isIntersecting} style={{ zIndex: 10 }}>
             <Flex

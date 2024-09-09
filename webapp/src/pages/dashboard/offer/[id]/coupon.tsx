@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Divider,
   Flex,
+  Icon,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -18,6 +19,7 @@ import { hasAccessToOffer } from "~/guards/hasAccessToOffer";
 import { api } from "~/utils/api";
 import { isIOS } from "~/utils/tools";
 import NextImage from "next/image";
+import { HiOutlineClock } from "react-icons/hi2";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return hasAccessToOffer(context);
@@ -30,18 +32,26 @@ export default function CouponPage() {
     id: string;
   };
 
-  const {
-    data: resultCoupon,
-    isLoading: isLoadingCoupon,
-    refetch: refetchCoupon,
-  } = api.coupon.getOne.useQuery(
-    {
-      offer_id: parseInt(id as string),
-    },
-    { enabled: id !== undefined }
-  );
+  const { data: resultCoupon, isLoading: isLoadingCoupon } =
+    api.coupon.getOne.useQuery(
+      {
+        offer_id: parseInt(id as string),
+      },
+      { enabled: id !== undefined }
+    );
 
   const { data: coupon } = resultCoupon || {};
+
+  const differenceInDays = Math.floor(
+    (new Date(coupon?.offer.validityTo as string).setHours(0, 0, 0, 0) -
+      new Date().setHours(0, 0, 0, 0)) /
+      (1000 * 3600 * 24)
+  );
+
+  const expiryText =
+    differenceInDays > 0
+      ? `Fin dans ${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
+      : "Offre expirée";
 
   const [timeoutIdExternalLink, setTimeoutIdExternalLink] =
     useState<NodeJS.Timeout>();
@@ -112,56 +122,71 @@ export default function CouponPage() {
         />
       }
     >
-      <BaseModal
-        pb={1}
-        heightModalContent="100%"
-        isOpen={isOpenExternalLink}
-        onClose={onCloseExternalLink}
-      >
+      <Flex flexDir="column">
         <Flex
-          flexDir="column"
-          justifyContent="space-around"
-          alignItems="center"
-          h="full"
+          align="center"
+          borderRadius="2xl"
+          color="white"
+          py={1}
+          px={2}
+          mt={3}
         >
-          <CircularProgress
-            value={timeoutProgress}
-            color="blackLight"
-            sx={{
-              "& > div:first-child": {
-                transitionProperty: "width",
-              },
-            }}
-          />
-          <Text fontWeight={800} fontSize={38} textAlign="center" mb={16}>
-            On vous emmène
-            <br />
-            sur le site de
-            <br />
-            <Flex alignItems="center" justifyContent="center" mt={4} mb={1}>
-              <Image
-                as={NextImage}
-                src={coupon.offer.partner.icon.url as string}
-                alt={coupon.offer.partner.icon.alt as string}
-                bgColor="white"
-                p={1}
-                width={12}
-                height={12}
-                borderRadius="2.5xl"
-              />
-              <Text ml={3} fontSize={24}>
-                {coupon.offer.partner.name}
-              </Text>
-            </Flex>
-            en toute sécurité
-          </Text>
-          <Text fontSize={12} fontWeight={700} textAlign="center" px={16}>
-            🍪 N’oubliez pas d’accepter les cookies si on vous le demande.
-            <Divider borderWidth={0} my={2} />
-            Sinon la réduction peut ne pas fonctionner 😬
+          <Icon as={HiOutlineClock} w={4} h={4} mr={2} />
+          <Text fontSize={14} fontWeight={700}>
+            {expiryText}
           </Text>
         </Flex>
-      </BaseModal>
+        <BaseModal
+          pb={1}
+          heightModalContent="100%"
+          isOpen={isOpenExternalLink}
+          onClose={onCloseExternalLink}
+        >
+          <Flex
+            flexDir="column"
+            justifyContent="space-around"
+            alignItems="center"
+            h="full"
+          >
+            <CircularProgress
+              value={timeoutProgress}
+              color="blackLight"
+              sx={{
+                "& > div:first-child": {
+                  transitionProperty: "width",
+                },
+              }}
+            />
+            <Text fontWeight={800} fontSize={38} textAlign="center" mb={16}>
+              On vous emmène
+              <br />
+              sur le site de
+              <br />
+              <Flex alignItems="center" justifyContent="center" mt={4} mb={1}>
+                <Image
+                  as={NextImage}
+                  src={coupon.offer.partner.icon.url as string}
+                  alt={coupon.offer.partner.icon.alt as string}
+                  bgColor="white"
+                  p={1}
+                  width={12}
+                  height={12}
+                  borderRadius="2.5xl"
+                />
+                <Text ml={3} fontSize={24}>
+                  {coupon.offer.partner.name}
+                </Text>
+              </Flex>
+              en toute sécurité
+            </Text>
+            <Text fontSize={12} fontWeight={700} textAlign="center" px={16}>
+              🍪 N’oubliez pas d’accepter les cookies si on vous le demande.
+              <Divider borderWidth={0} my={2} />
+              Sinon la réduction peut ne pas fonctionner 😬
+            </Text>
+          </Flex>
+        </BaseModal>
+      </Flex>
     </OfferHeaderWrapper>
   );
 }
