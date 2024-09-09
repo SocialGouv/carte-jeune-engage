@@ -215,7 +215,9 @@ export const theme = extendTheme({
   },
   radii: {
     "2lg": "0.625rem",
+    "1.5xl": "0.875rem",
     "2.25xl": "1.125rem",
+    "2.5xl": "1.25rem",
   },
   fonts: {
     heading: Marianne.style.fontFamily,

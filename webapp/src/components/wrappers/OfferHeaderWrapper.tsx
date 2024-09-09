@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { push } from "@socialgouv/matomo-next";
 import { HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
 import { useIntersectionObserver } from "usehooks-ts";
+import { TinyColor } from "@ctrl/tinycolor";
 
 type OfferHeaderWrapperProps = {
   children: ReactNode;
@@ -30,7 +31,11 @@ const OfferHeaderWrapper = ({
   const router = useRouter();
 
   const theme = useTheme();
-  const backgroundColor = partnerColor ?? theme.colors.white;
+  const backgroundColor = partnerColor
+    ? kind === "coupon"
+      ? new TinyColor(partnerColor).darken(20).toHexString()
+      : partnerColor
+    : theme.colors.white;
 
   const { isIntersecting, ref: intersectionRef } = useIntersectionObserver({
     threshold: 0.2,
@@ -41,10 +46,15 @@ const OfferHeaderWrapper = ({
       <Head>
         <meta name="theme-color" content={backgroundColor} />
       </Head>
-      <Flex flexDir="column">
+      <Flex
+        flexDir="column"
+        h="full"
+        bgColor={kind === "coupon" ? backgroundColor : "inherit"}
+      >
         <Flex
           flexDir="column"
-          bgColor={backgroundColor}
+          bgColor={kind === "offer" ? backgroundColor : "inherit"}
+          h="full"
           px={8}
           pt={6}
           pb={8}

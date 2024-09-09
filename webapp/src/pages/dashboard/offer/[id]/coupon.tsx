@@ -1,13 +1,23 @@
-import { Center, useDisclosure } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/next-js";
+import {
+  Center,
+  CircularProgress,
+  Divider,
+  Flex,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import CouponCard from "~/components/cards/CouponCard";
 import LoadingLoader from "~/components/LoadingLoader";
+import BaseModal from "~/components/modals/BaseModal";
 import OfferHeaderWrapper from "~/components/wrappers/OfferHeaderWrapper";
 import { hasAccessToOffer } from "~/guards/hasAccessToOffer";
 import { api } from "~/utils/api";
 import { isIOS } from "~/utils/tools";
+import NextImage from "next/image";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return hasAccessToOffer(context);
@@ -35,6 +45,9 @@ export default function CouponPage() {
 
   const [timeoutIdExternalLink, setTimeoutIdExternalLink] =
     useState<NodeJS.Timeout>();
+  const [intervalIdExternalLink, setIntervalIdExternalLink] =
+    useState<NodeJS.Timeout>();
+  const [timeoutProgress, setTimeoutProgress] = useState<number>(0);
 
   const {
     isOpen: isOpenExternalLink,
@@ -42,7 +55,11 @@ export default function CouponPage() {
     onClose: onCloseExternalLink,
   } = useDisclosure({
     onOpen: () => {
+      const totalTimeout = 2000;
+      const startTime = Date.now();
+
       const timeoutId = setTimeout(() => {
+        clearInterval(intervalIdExternalLink);
         let a = document.createElement("a");
         document.body.appendChild(a);
         a.classList.add("hidden");
@@ -51,10 +68,28 @@ export default function CouponPage() {
         a.click();
         document.body.removeChild(a);
         onCloseExternalLink();
-      }, 2000);
+      }, totalTimeout);
+
       setTimeoutIdExternalLink(timeoutId);
+
+      const intervalId = setInterval(() => {
+        const currentTime = Date.now();
+        const elapsedTime = currentTime - startTime;
+
+        setTimeoutProgress(
+          Math.min((elapsedTime / totalTimeout) * 100 + 20, 100)
+        );
+
+        if (elapsedTime >= totalTimeout) clearInterval(intervalId);
+      }, 100);
+
+      setIntervalIdExternalLink(intervalId);
     },
-    onClose: () => clearTimeout(timeoutIdExternalLink),
+    onClose: () => {
+      clearInterval(intervalIdExternalLink);
+      setTimeoutProgress(0);
+      clearTimeout(timeoutIdExternalLink);
+    },
   });
 
   if (isLoadingCoupon || !coupon)
@@ -70,11 +105,63 @@ export default function CouponPage() {
     <OfferHeaderWrapper
       kind="coupon"
       partnerColor={coupon.offer.partner.color}
-      headerComponent={<CouponCard coupon={coupon} />}
+      headerComponent={
+        <CouponCard
+          coupon={coupon}
+          handleOpenExternalLink={onOpenExternalLink}
+        />
+      }
     >
-      <>
-        Coupon {coupon.id} {coupon.user.firstName}
-      </>
+      <BaseModal
+        pb={1}
+        heightModalContent="100%"
+        isOpen={isOpenExternalLink}
+        onClose={onCloseExternalLink}
+      >
+        <Flex
+          flexDir="column"
+          justifyContent="space-around"
+          alignItems="center"
+          h="full"
+        >
+          <CircularProgress
+            value={timeoutProgress}
+            color="blackLight"
+            sx={{
+              "& > div:first-child": {
+                transitionProperty: "width",
+              },
+            }}
+          />
+          <Text fontWeight={800} fontSize={38} textAlign="center" mb={16}>
+            On vous emmène
+            <br />
+            sur le site de
+            <br />
+            <Flex alignItems="center" justifyContent="center" mt={4} mb={1}>
+              <Image
+                as={NextImage}
+                src={coupon.offer.partner.icon.url as string}
+                alt={coupon.offer.partner.icon.alt as string}
+                bgColor="white"
+                p={1}
+                width={12}
+                height={12}
+                borderRadius="2.5xl"
+              />
+              <Text ml={3} fontSize={24}>
+                {coupon.offer.partner.name}
+              </Text>
+            </Flex>
+            en toute sécurité
+          </Text>
+          <Text fontSize={12} fontWeight={700} textAlign="center" px={16}>
+            🍪 N’oubliez pas d’accepter les cookies si on vous le demande.
+            <Divider borderWidth={0} my={2} />
+            Sinon la réduction peut ne pas fonctionner 😬
+          </Text>
+        </Flex>
+      </BaseModal>
     </OfferHeaderWrapper>
   );
 }

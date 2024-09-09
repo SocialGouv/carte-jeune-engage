@@ -113,7 +113,7 @@ export default function OfferPage() {
       partnerColor={offer.partner.color}
       headerComponent={<OfferCard offer={offer} />}
     >
-      <Flex flexDir="column" h="full">
+      <Flex flexDir="column">
         <Box mt={6} px={4} w="full">
           <Button
             fontSize={14}
@@ -262,7 +262,7 @@ export default function OfferPage() {
                 </Text>
                 <OrderedList fontWeight={500} pl={3}>
                   {itemsTermsOfUse.map((termOfUse) => (
-                    <ListItem mb={2}>
+                    <ListItem key={termOfUse.text} mb={2}>
                       <TextWithLinks text={termOfUse.text} />
                     </ListItem>
                   ))}
@@ -284,7 +284,7 @@ export default function OfferPage() {
                   ref={conditionsRef}
                 >
                   {offerConditions.map((condition) => (
-                    <ListItem mb={2}>
+                    <ListItem key={condition.text} mb={2}>
                       <TextWithLinks text={condition.text} />
                     </ListItem>
                   ))}
