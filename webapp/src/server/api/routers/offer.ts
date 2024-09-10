@@ -1,6 +1,13 @@
 import { Where, WhereField } from "payload/types";
 import { z } from "zod";
-import { Category, Offer, Media, Partner, Tag } from "~/payload/payload-types";
+import {
+  Category,
+  Offer,
+  Media,
+  Partner,
+  Tag,
+  Coupon,
+} from "~/payload/payload-types";
 import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
 import { ZGetListParams } from "~/server/types";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
@@ -10,6 +17,10 @@ export interface OfferIncluded extends Offer {
   category: Category & { icon: Media };
   tags: (Tag & { icon: Media })[];
   imageOfEligibleStores: Media;
+}
+
+export interface OfferIncludedWithUserCoupon extends OfferIncluded {
+  userCoupon?: Coupon;
 }
 
 export const offerRouter = createTRPCRouter({
@@ -121,24 +132,32 @@ export const offerRouter = createTRPCRouter({
         couponCountOfOffersPromises
       );
 
-      const offersFiltered = offers.docs.filter((offer, index) => {
-        const myUnusedOfferCoupons = myUnusedCoupons.docs.find(
-          (coupon) => coupon.offer === offer.id
-        );
+      const offersFiltered = (offers.docs as OfferIncludedWithUserCoupon[])
+        .map((offer) => {
+          const myUnusedOfferCoupon = myUnusedCoupons.docs.find(
+            (coupon) => coupon.offer === offer.id
+          );
+          return {
+            ...offer,
+            userCoupon: myUnusedOfferCoupon,
+          };
+        })
+        .filter((offer, index) => {
+          const myUnusedOfferCoupon = offer.userCoupon;
 
-        if (
-          !isCurrentUser &&
-          (offer.kind === "voucher_pass" || offer.kind === "code_space")
-        )
-          return true;
-        else if (isCurrentUser) return !!myUnusedOfferCoupons;
+          if (
+            !isCurrentUser &&
+            (offer.kind === "voucher_pass" || offer.kind === "code_space")
+          )
+            return true;
+          else if (isCurrentUser) return !!myUnusedOfferCoupon;
 
-        const coupons = couponCountOfOffers[index];
-        return (!!coupons && !!coupons.docs.length) || !!myUnusedOfferCoupons;
-      });
+          const coupons = couponCountOfOffers[index];
+          return (!!coupons && !!coupons.docs.length) || !!myUnusedOfferCoupon;
+        });
 
       return {
-        data: offersFiltered as OfferIncluded[],
+        data: offersFiltered,
         metadata: { page, count: offers.docs.length },
       };
     }),

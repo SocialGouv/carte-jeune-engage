@@ -17,7 +17,7 @@ import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HiArrowRight } from "react-icons/hi";
 import { HiBuildingStorefront, HiMiniEye } from "react-icons/hi2";
 import OfferCard from "~/components/cards/OfferCard";
@@ -67,6 +67,7 @@ export default function OfferPage() {
 
   const conditionsRef = useRef<HTMLUListElement>(null);
   const [isConditionsOpen, setIsConditionsOpen] = useState(false);
+  const [displayBookmarkModal, setDisplayBookmarkModal] = useState(false);
 
   const offerConditionBlocks = useMemo(() => {
     if (!offer) return [];
@@ -98,9 +99,30 @@ export default function OfferPage() {
     }
   };
 
+  const handleBookmarkOfferToUser = async () => {
+    return await mutateAsyncCouponToUser({
+      offer_id: parseInt(id),
+      isBookmarked: true,
+    });
+  };
+
+  useEffect(() => {
+    let timeoutIdToOpenBookmarkModal: NodeJS.Timeout;
+    if (!coupon) {
+      timeoutIdToOpenBookmarkModal = setTimeout(() => {
+        setDisplayBookmarkModal(true);
+      }, 3000);
+    }
+    return () => clearTimeout(timeoutIdToOpenBookmarkModal);
+  }, []);
+
   if (isLoadingOffer || isLoadingCoupon || !offer)
     return (
-      <OfferHeaderWrapper kind="offer">
+      <OfferHeaderWrapper
+        kind="offer"
+        displayBookmarkModal={false}
+        handleBookmarkOfferToUser={handleBookmarkOfferToUser}
+      >
         <Center h="full">
           <LoadingLoader />
         </Center>
@@ -112,6 +134,8 @@ export default function OfferPage() {
       kind="offer"
       partnerColor={offer.partner.color}
       headerComponent={<OfferCard offer={offer} variant="minimal" />}
+      displayBookmarkModal={displayBookmarkModal}
+      handleBookmarkOfferToUser={handleBookmarkOfferToUser}
     >
       <Flex flexDir="column">
         <Box mt={6} px={4} w="full">

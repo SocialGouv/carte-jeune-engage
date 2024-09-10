@@ -66,6 +66,17 @@ export const Coupons: CollectionConfig = {
       hasMany: false,
       required: true,
     },
+    {
+      name: "bookmarked",
+      type: "checkbox",
+      label: "Enregistré",
+      admin: {
+        description:
+          "Cette case est cochée si le coupon a été enregistré par l'utilisateur",
+        position: "sidebar",
+      },
+      defaultValue: false,
+    },
   ],
   hooks: {
     afterChange: [

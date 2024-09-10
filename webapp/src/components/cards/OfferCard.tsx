@@ -3,19 +3,26 @@ import Link from "next/link";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { push } from "@socialgouv/matomo-next";
-import { HiOutlineBookmark, HiOutlineClock } from "react-icons/hi2";
+import { HiBookmark, HiOutlineBookmark, HiOutlineClock } from "react-icons/hi2";
 import { HiClock } from "react-icons/hi2";
 
 type OfferCardProps = {
   offer: OfferIncluded;
   variant?: "default" | "minimal";
   matomoEvent?: string[];
+  isBookmarked?: boolean;
+  handleBookmarkOffer?: (
+    offerId: number,
+    isBookmarked: boolean
+  ) => Promise<void>;
 };
 
 const OfferCard = ({
   offer,
   variant = "default",
   matomoEvent = [],
+  isBookmarked = false,
+  handleBookmarkOffer,
 }: OfferCardProps) => {
   const match = offer.title.match(/\d+%/);
 
@@ -104,8 +111,17 @@ const OfferCard = ({
                 py={3}
                 px={3.5}
                 bgColor="white"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleBookmarkOffer &&
+                    handleBookmarkOffer(offer.id, isBookmarked);
+                }}
               >
-                <Icon as={HiOutlineBookmark} h={6} w={6} onClick={() => {}} />
+                <Icon
+                  as={isBookmarked ? HiBookmark : HiOutlineBookmark}
+                  h={6}
+                  w={6}
+                />
               </Flex>
             )}
           </Flex>

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Head from "next/head";
 import {
   Button,
@@ -6,20 +6,30 @@ import {
   Flex,
   Icon,
   IconButton,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  Text,
+  useDisclosure,
   useTheme,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { push } from "@socialgouv/matomo-next";
-import { HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
+import { HiCheckCircle, HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
 import { useIntersectionObserver } from "usehooks-ts";
 import { TinyColor } from "@ctrl/tinycolor";
+import { Coupon } from "~/payload/payload-types";
+import BookmarkOfferModal from "../modals/BookmarkOfferModal";
 
 type OfferHeaderWrapperProps = {
   children: ReactNode;
   kind: "offer" | "coupon";
   partnerColor?: string;
   headerComponent?: ReactNode;
+  displayBookmarkModal: boolean;
+  handleBookmarkOfferToUser: () => Promise<{ data: Coupon }>;
 };
 
 const OfferHeaderWrapper = ({
@@ -27,6 +37,8 @@ const OfferHeaderWrapper = ({
   kind,
   partnerColor,
   headerComponent,
+  displayBookmarkModal,
+  handleBookmarkOfferToUser,
 }: OfferHeaderWrapperProps) => {
   const router = useRouter();
 
@@ -40,6 +52,33 @@ const OfferHeaderWrapper = ({
   const { isIntersecting, ref: intersectionRef } = useIntersectionObserver({
     threshold: 0.2,
   });
+
+  const handleBackButton = () => {
+    if (window.history?.length > 1) {
+      router.back();
+    } else {
+      router.push("/dashboard");
+    }
+  };
+
+  const [isModalOfferBookmarkSuccess, setIsModalOfferBookmarkSuccess] =
+    useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    onClose: () => handleBackButton(),
+  });
+
+  const handleBookmarkOffer = async () => {
+    try {
+      await handleBookmarkOfferToUser();
+      setIsModalOfferBookmarkSuccess(true);
+      setTimeout(() => {
+        setIsModalOfferBookmarkSuccess(false);
+        onClose();
+      }, 1000);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -63,10 +102,10 @@ const OfferHeaderWrapper = ({
             mb={6}
             onClick={() => {
               push(["trackEvent", "Retour"]);
-              if (window.history?.length > 1) {
-                router.back();
+              if (displayBookmarkModal) {
+                onOpen();
               } else {
-                router.push("/dashboard");
+                handleBackButton();
               }
             }}
             borderRadius="2.25xl"
@@ -115,6 +154,12 @@ const OfferHeaderWrapper = ({
           </Fade>
         )}
       </Flex>
+      <BookmarkOfferModal
+        isOpen={isOpen}
+        onClose={onClose}
+        isModalOfferBookmarkSuccess={isModalOfferBookmarkSuccess}
+        handleBookmarkOffer={handleBookmarkOffer}
+      />
     </>
   );
 };

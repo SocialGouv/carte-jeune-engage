@@ -34,9 +34,11 @@ export const couponRouter = createTRPCRouter({
     }),
 
   assignToUser: userProtectedProcedure
-    .input(z.object({ offer_id: z.number() }))
+    .input(
+      z.object({ offer_id: z.number(), isBookmarked: z.boolean().optional() })
+    )
     .mutation(async ({ ctx, input }) => {
-      const { offer_id } = input;
+      const { offer_id, isBookmarked } = input;
 
       const currentOffer = await ctx.payload.findByID({
         collection: "offers",
@@ -111,7 +113,39 @@ export const couponRouter = createTRPCRouter({
       const updatedCoupon = await ctx.payload.update({
         collection: "coupons",
         id: couponData.id,
-        data: { user: ctx.session.id },
+        data: { user: ctx.session.id, bookmarked: isBookmarked ?? false },
+      });
+
+      return { data: updatedCoupon };
+    }),
+
+  unassignFromUser: userProtectedProcedure
+    .input(z.object({ coupon_id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const { coupon_id } = input;
+
+      const coupon = await ctx.payload.findByID({
+        collection: "coupons",
+        id: coupon_id,
+        depth: 0,
+      });
+
+      if (!coupon)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Coupon not found",
+        });
+
+      if (coupon.user !== ctx.session.id)
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Coupon not assigned to user",
+        });
+
+      const updatedCoupon = await ctx.payload.update({
+        collection: "coupons",
+        id: coupon_id,
+        data: { user: null, bookmarked: false },
       });
 
       return { data: updatedCoupon };

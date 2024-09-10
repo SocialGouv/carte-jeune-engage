@@ -19,7 +19,6 @@ import SearchBar from "~/components/SearchBar";
 import OfferCard from "~/components/cards/OfferCard";
 import { CategoryIncluded } from "~/server/api/routers/category";
 import { OfferIncluded } from "~/server/api/routers/offer";
-import { TagIncluded } from "~/server/api/routers/tag";
 import { api } from "~/utils/api";
 import { paginateArray } from "~/utils/tools";
 
@@ -32,20 +31,41 @@ export default function Dashboard() {
   const { data: resultTags, isLoading: isLoadingTags } =
     api.globals.tagsListOrdered.useQuery();
 
-  const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
-    api.offer.getListOfAvailables.useQuery({
-      page: 1,
-      perPage: 10,
-      sort: "partner.name",
-      kinds: ["code", "code_space"],
-    });
+  const {
+    data: resultOffersOnline,
+    isLoading: isLoadingOffersOnline,
+    refetch: refetchOffersOnline,
+  } = api.offer.getListOfAvailables.useQuery({
+    page: 1,
+    perPage: 10,
+    sort: "partner.name",
+    kinds: ["code", "code_space"],
+  });
 
-  const { data: resultOffersInStore, isLoading: isLoadingOffersInStore } =
-    api.offer.getListOfAvailables.useQuery({
-      page: 1,
-      perPage: 10,
-      sort: "partner.name",
-      kinds: ["voucher", "voucher_pass"],
+  const {
+    data: resultOffersInStore,
+    isLoading: isLoadingOffersInStore,
+    refetch: refetchOfferInStore,
+  } = api.offer.getListOfAvailables.useQuery({
+    page: 1,
+    perPage: 10,
+    sort: "partner.name",
+    kinds: ["voucher", "voucher_pass"],
+  });
+
+  const { mutateAsync: mutateAsyncCouponToUser } =
+    api.coupon.assignToUser.useMutation({
+      onSuccess: () => {
+        refetchOffersOnline();
+        refetchOfferInStore();
+      },
+    });
+  const { mutateAsync: mutateAsyncRemoveCouponFromUser } =
+    api.coupon.unassignFromUser.useMutation({
+      onSuccess: () => {
+        refetchOffersOnline();
+        refetchOfferInStore();
+      },
     });
 
   const { data: categories } = resultCategories || {};
@@ -54,11 +74,9 @@ export default function Dashboard() {
   const { data: offersInStore } = resultOffersInStore || {};
 
   const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
-
   const paginatedTags = paginateArray(tags ?? [], 6);
 
   const formatedCategories = [] as CategoryWithOffers[];
-
   (categories || []).forEach((category) => {
     if (allOffers.some((offer) => offer.category.id === category.id)) {
       formatedCategories.push({
@@ -67,6 +85,23 @@ export default function Dashboard() {
       });
     }
   });
+
+  const handleAssignUserToCoupon = async (
+    offerId: number,
+    isAssignedToUser: boolean
+  ) => {
+    if (!isAssignedToUser) {
+      await mutateAsyncCouponToUser({ offer_id: offerId, isBookmarked: true });
+    } else {
+      const currentUserCoupon = allOffers.find(
+        (offer) => offer.id === offerId
+      )?.userCoupon;
+      if (!currentUserCoupon) return;
+      await mutateAsyncRemoveCouponFromUser({
+        coupon_id: currentUserCoupon.id,
+      });
+    }
+  };
 
   const firstCategoryRow = formatedCategories.filter(
     (_, index) => index % 2 === 0
@@ -216,6 +251,8 @@ export default function Dashboard() {
               <OfferCard
                 key={offer.id}
                 offer={offer}
+                isBookmarked={!!offer.userCoupon}
+                handleBookmarkOffer={handleAssignUserToCoupon}
                 matomoEvent={[
                   "Accueil",
                   "Pour vous",
@@ -228,7 +265,7 @@ export default function Dashboard() {
       )}
       {offersInStore && offersInStore?.length > 0 && (
         <>
-          <Heading as="h2" fontSize="2xl" px={8}>
+          <Heading as="h2" fontSize="2xl" fontWeight={800} px={8}>
             À utiliser en magasin
           </Heading>
           <Grid
@@ -250,6 +287,8 @@ export default function Dashboard() {
               <OfferCard
                 key={offer.id}
                 offer={offer}
+                isBookmarked={!!offer.userCoupon}
+                handleBookmarkOffer={handleAssignUserToCoupon}
                 matomoEvent={[
                   "Accueil",
                   "Pour vous",
