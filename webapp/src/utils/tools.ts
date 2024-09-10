@@ -158,3 +158,14 @@ export const dateDiffInDays = (a: Date, b: Date) => {
 
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 };
+
+export function paginateArray<T>(array: T[], itemsPerPage: number): T[][] {
+  return array.reduce((acc: T[][], item: T, index: number) => {
+    const pageIndex = Math.floor(index / itemsPerPage);
+    if (!acc[pageIndex]) {
+      acc[pageIndex] = [];
+    }
+    acc[pageIndex].push(item);
+    return acc;
+  }, []);
+}

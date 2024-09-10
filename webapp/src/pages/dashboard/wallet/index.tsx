@@ -100,7 +100,7 @@ export default function Wallet() {
 				{inStoreOffers && inStoreOffers.length > 0 ? (
 					<Flex flexDir="column" gap={6}>
 						{inStoreOffers?.map((offer) => (
-							<OfferCard key={offer.id} offer={offer} displayExpiryDate />
+							<OfferCard key={offer.id} offer={offer} />
 						))}
 					</Flex>
 				) : (
@@ -111,7 +111,7 @@ export default function Wallet() {
 				{onlineOffers && onlineOffers.length > 0 ? (
 					<Flex flexDir="column" gap={6}>
 						{onlineOffers?.map((offer) => (
-							<OfferCard key={offer.id} offer={offer} displayExpiryDate />
+							<OfferCard key={offer.id} offer={offer} />
 						))}
 					</Flex>
 				) : (

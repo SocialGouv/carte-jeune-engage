@@ -21,6 +21,7 @@ import { CategoryIncluded } from "~/server/api/routers/category";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { TagIncluded } from "~/server/api/routers/tag";
 import { api } from "~/utils/api";
+import { paginateArray } from "~/utils/tools";
 
 type CategoryWithOffers = CategoryIncluded & { offers: OfferIncluded[] };
 
@@ -54,14 +55,7 @@ export default function Dashboard() {
 
   const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
 
-  const paginatedTags = (tags || []).reduce((acc, tag, index) => {
-    const pageIndex = Math.floor(index / 6);
-    if (!acc[pageIndex]) {
-      acc[pageIndex] = [];
-    }
-    acc[pageIndex].push(tag);
-    return acc;
-  }, [] as TagIncluded[][]);
+  const paginatedTags = paginateArray(tags ?? [], 6);
 
   const formatedCategories = [] as CategoryWithOffers[];
 
