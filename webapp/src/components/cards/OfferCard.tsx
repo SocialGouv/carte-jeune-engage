@@ -1,22 +1,24 @@
 import { Flex, Text, Icon, Image, Box } from "@chakra-ui/react";
-import Link from "next/link";
 import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { push } from "@socialgouv/matomo-next";
 import { HiBookmark, HiOutlineBookmark, HiOutlineClock } from "react-icons/hi2";
 import { HiClock } from "react-icons/hi2";
 import { api } from "~/utils/api";
+import { ConditionalLink } from "~/utils/tools";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
   variant?: "default" | "minimal";
   matomoEvent?: string[];
+  onClick?: () => void;
 };
 
 const OfferCard = ({
   offer,
   variant = "default",
   matomoEvent = [],
+  onClick,
 }: OfferCardProps) => {
   const utils = api.useUtils();
 
@@ -64,13 +66,21 @@ const OfferCard = ({
   };
 
   return (
-    <Link
-      href={`/dashboard/offer/${offer.id}`}
-      onClick={() => {
-        if (!!matomoEvent.length) push(["trackEvent", ...matomoEvent]);
+    <ConditionalLink
+      to={`/dashboard/offer/${offer.id}`}
+      condition={variant === "default"}
+      props={{
+        onClick: () => {
+          if (!!matomoEvent.length) push(["trackEvent", ...matomoEvent]);
+        },
+        _hover: { textDecoration: "none" },
       }}
     >
-      <Flex flexDir="column" pb={8}>
+      <Flex
+        flexDir="column"
+        pb={variant === "default" ? 8 : 0}
+        onClick={() => onClick && onClick()}
+      >
         <Flex
           borderTopRadius={20}
           position="relative"
@@ -195,7 +205,7 @@ const OfferCard = ({
           </Flex>
         </Flex>
       </Flex>
-    </Link>
+    </ConditionalLink>
   );
 };
 

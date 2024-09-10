@@ -1,4 +1,5 @@
-import { Text } from "@chakra-ui/react";
+import { ChakraProps, Link, LinkProps } from "@chakra-ui/react";
+import NextLink from "next/link";
 import crypto from "crypto";
 import { Where } from "payload/types";
 
@@ -168,4 +169,24 @@ export function paginateArray<T>(array: T[], itemsPerPage: number): T[][] {
     acc[pageIndex].push(item);
     return acc;
   }, []);
+}
+
+export function ConditionalLink({
+  children,
+  condition,
+  to,
+  props,
+}: {
+  children: React.ReactNode;
+  condition: boolean;
+  to: string;
+  props: ChakraProps & LinkProps;
+}) {
+  return !!condition && to ? (
+    <Link as={NextLink} href={to} passHref {...props}>
+      {children}
+    </Link>
+  ) : (
+    <>{children}</>
+  );
 }

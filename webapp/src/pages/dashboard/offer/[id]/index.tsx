@@ -33,6 +33,13 @@ import { api } from "~/utils/api";
 import { dottedPattern } from "~/utils/chakra-theme";
 import ReactIcon from "~/utils/dynamicIcon";
 import { isIOS } from "~/utils/tools";
+import { motion, AnimatePresence } from "framer-motion";
+
+const flipVariants = {
+  hidden: { rotateY: 90 },
+  visible: { rotateY: 0 },
+  exit: { rotateY: -90 },
+};
 
 export default function OfferPage() {
   const router = useRouter();
@@ -68,6 +75,7 @@ export default function OfferPage() {
       onSuccess: () => refetchCoupon(),
     });
 
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [kind, setKind] = useState<"offer" | "coupon">("offer");
   const conditionsRef = useRef<HTMLUListElement>(null);
   const [isConditionsOpen, setIsConditionsOpen] = useState(false);
@@ -96,11 +104,8 @@ export default function OfferPage() {
   }, [offer, isConditionsOpen]);
 
   const handleValidateOffer = async (offerId: number) => {
-    if (coupon) {
-      setKind("coupon");
-    } else {
-      await mutateAsyncCouponToUser({ offer_id: offerId });
-    }
+    if (!coupon) await mutateAsyncCouponToUser({ offer_id: offerId });
+    setKind("coupon");
   };
 
   const handleBookmarkOfferToUser = async () => {
@@ -170,6 +175,12 @@ export default function OfferPage() {
   });
 
   useEffect(() => {
+    if (!isLoadingOffer && !isLoadingCoupon && offer) {
+      setIsFirstLoad(false);
+    }
+  }, [isLoadingOffer, isLoadingCoupon, offer]);
+
+  useEffect(() => {
     let timeoutIdToOpenBookmarkModal: NodeJS.Timeout;
     if (!isLoadingCoupon && !coupon) {
       timeoutIdToOpenBookmarkModal = setTimeout(() => {
@@ -193,277 +204,292 @@ export default function OfferPage() {
       </OfferHeaderWrapper>
     );
 
-  if (kind === "coupon" && coupon) {
-    return (
-      <OfferHeaderWrapper
-        kind="coupon"
-        setKind={setKind}
-        partnerColor={coupon.offer.partner.color}
-        headerComponent={
-          <CouponCard
-            coupon={coupon}
-            handleOpenExternalLink={onOpenExternalLink}
-          />
-        }
-      >
-        <Flex flexDir="column">
-          <Flex
-            align="center"
-            borderRadius="2xl"
-            color="white"
-            py={1}
-            px={2}
-            mt={3}
-          >
-            <Icon as={HiOutlineClock} w={4} h={4} mr={2} />
-            <Text fontSize={14} fontWeight={700}>
-              {expiryText}
-            </Text>
-          </Flex>
-          {coupon.offer.kind.startsWith("voucher") && (
-            <Box mt={4}>
-              <InStoreSection offer={offer} withoutBackground />
-            </Box>
-          )}
-          <BaseModal
-            pb={1}
-            heightModalContent="100%"
-            isOpen={isOpenExternalLink}
-            onClose={onCloseExternalLink}
-          >
+  const OfferContent = () => (
+    <Flex flexDir="column">
+      <Box mt={6} px={4} w="full">
+        <Button
+          fontSize={14}
+          w="full"
+          size="md"
+          onClick={() => {
+            push(["trackEvent", "Inactive", "J'active mon offre"]);
+            handleValidateOffer(offer.id);
+          }}
+          leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
+        >
+          Voir mon code
+        </Button>
+      </Box>
+      {offerConditionBlocks.length > 0 && (
+        <Flex
+          gap={3}
+          mt={7}
+          w="full"
+          h="max-content"
+          py={1}
+          pl={4}
+          overflowX="scroll"
+          sx={{
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
+        >
+          {offerConditionBlocks.map(({ text, icon }, index) => (
             <Flex
+              key={text}
+              position="relative"
+              minW="43%"
               flexDir="column"
-              justifyContent="space-around"
               alignItems="center"
-              h="full"
+              justifyContent="center"
+              py={4}
+              px={6}
             >
-              <CircularProgress
-                value={timeoutProgress}
-                color="blackLight"
-                sx={{
-                  "& > div:first-child": {
-                    transitionProperty: "width",
-                  },
-                }}
+              <Box
+                position="absolute"
+                inset={0}
+                bg="bgGray"
+                zIndex={1}
+                borderRadius="3xl"
+                transform={`rotate(${index % 2 === 0 ? 3 : -2}deg)`}
               />
-              <Text fontWeight={800} fontSize={38} textAlign="center" mb={16}>
-                On vous emmène
-                <br />
-                sur le site de
-                <br />
-                <Flex alignItems="center" justifyContent="center" mt={4} mb={1}>
-                  <Box bgColor="white" p={1} borderRadius="2.5xl">
-                    <Image
-                      src={coupon.offer.partner.icon.url as string}
-                      alt={coupon.offer.partner.icon.alt as string}
-                      width={12}
-                      height={12}
-                    />
-                  </Box>
-                  <Text ml={3} fontSize={24}>
-                    {coupon.offer.partner.name}
-                  </Text>
-                </Flex>
-                en toute sécurité
-              </Text>
-              <Text fontSize={12} fontWeight={700} textAlign="center" px={16}>
-                🍪 N’oubliez pas d’accepter les cookies si on vous le demande.
-                <Divider borderWidth={0} my={2} />
-                Sinon la réduction peut ne pas fonctionner 😬
+              <Box p={4} bg="white" borderRadius="full" zIndex={2}>
+                {typeof icon === "string" && (
+                  <ReactIcon icon={icon} size={24} color="inherit" />
+                )}
+              </Box>
+              <Text fontWeight={500} textAlign="center" mt={2} zIndex={2}>
+                {text}
               </Text>
             </Flex>
-          </BaseModal>
+          ))}
+          <Center minW="43%" mr={4} key="read-all-conditions">
+            <Text
+              fontWeight={800}
+              color="blackLight"
+              textDecor="underline"
+              textDecorationThickness="2px"
+              textUnderlineOffset={2}
+              onClick={() => {
+                setIsConditionsOpen(true);
+                conditionsRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }}
+            >
+              Lire toutes
+              <br />
+              les conditions{" "}
+              <Icon
+                as={HiArrowRight}
+                w={4}
+                h={4}
+                borderBottom="2px solid black"
+                pb="1px"
+                mb={-1}
+              />
+            </Text>
+          </Center>
         </Flex>
-      </OfferHeaderWrapper>
-    );
-  }
+      )}
+      {offer.kind.startsWith("voucher") && (
+        <Box mt={8} px={4} w="full">
+          <InStoreSection offer={offer} />
+        </Box>
+      )}
+      <Flex flexDir="column" px={4}>
+        {itemsTermsOfUse.length > 0 && (
+          <HStack spacing={4}>
+            <Flex flexDir="column" gap={3} mt={8}>
+              <Text fontWeight="extrabold" fontSize={20}>
+                Comment utiliser l'offre ?
+              </Text>
+              <OrderedList fontWeight={500} pl={3}>
+                {itemsTermsOfUse.map((termOfUse) => (
+                  <ListItem key={termOfUse.text} mb={2}>
+                    <TextWithLinks text={termOfUse.text} />
+                  </ListItem>
+                ))}
+              </OrderedList>
+            </Flex>
+          </HStack>
+        )}
+        {!!(offer.conditions ?? []).length && (
+          <>
+            <Divider my={6} />
+            <Flex flexDir="column">
+              <Text fontWeight="extrabold" fontSize={20}>
+                Conditions de l'offre
+              </Text>
+              <UnorderedList fontWeight={500} pl={3} mt={3} ref={conditionsRef}>
+                {offerConditions.map((condition) => (
+                  <ListItem key={condition.text} mb={2}>
+                    <TextWithLinks text={condition.text} />
+                  </ListItem>
+                ))}
+              </UnorderedList>
+              {(offer?.conditions ?? []).length > 2 && !isConditionsOpen && (
+                <Text
+                  as="span"
+                  alignSelf="start"
+                  fontWeight={700}
+                  lineHeight="shorter"
+                  borderBottom="2px solid black"
+                  onClick={() => {
+                    // push([
+                    //   "trackEvent",
+                    //   "Offre",
+                    //   `${offer.partner.name} - ${offer.title} - ${
+                    //     !!coupon ? "Active" : "Inactive"
+                    //   } - Conditions`,
+                    // ]);
+                    setIsConditionsOpen(true);
+                  }}
+                >
+                  Lire toutes les conditions
+                </Text>
+              )}
+            </Flex>
+          </>
+        )}
+        <Divider my={6} />
+        <Flex flexDir="column" gap={3} w="full" pb={10}>
+          <Flex alignItems="center" gap={2.5}>
+            <Box bg="white" borderRadius="2lg" p={1}>
+              <Image
+                src={offer.partner.icon.url as string}
+                alt="Logo partenaire"
+                width={40}
+                height={40}
+              />
+            </Box>
+            <Text fontWeight="extrabold">{offer.partner.name}</Text>
+          </Flex>
+          <Text>{offer.partner.description}</Text>
+        </Flex>
+      </Flex>
+      <Box
+        shadow="2xl"
+        position="relative"
+        sx={{ ...dottedPattern(offer?.partner?.color as string) }}
+        w="full"
+      />
+      <Box h="200px" w="full" bgColor={offer?.partner.color} />
+    </Flex>
+  );
+
+  const CouponContent = () => (
+    <Flex flexDir="column">
+      <Flex
+        align="center"
+        borderRadius="2xl"
+        color="white"
+        py={1}
+        px={2}
+        mt={3}
+      >
+        <Icon as={HiOutlineClock} w={4} h={4} mr={2} />
+        <Text fontSize={14} fontWeight={700}>
+          {expiryText}
+        </Text>
+      </Flex>
+      {coupon?.offer.kind.startsWith("voucher") && (
+        <Box mt={4}>
+          <InStoreSection offer={offer} withoutBackground />
+        </Box>
+      )}
+      <BaseModal
+        pb={1}
+        heightModalContent="100%"
+        isOpen={isOpenExternalLink}
+        onClose={onCloseExternalLink}
+      >
+        <Flex
+          flexDir="column"
+          justifyContent="space-around"
+          alignItems="center"
+          h="full"
+        >
+          <CircularProgress
+            value={timeoutProgress}
+            color="blackLight"
+            sx={{
+              "& > div:first-child": {
+                transitionProperty: "width",
+              },
+            }}
+          />
+          <Text fontWeight={800} fontSize={38} textAlign="center" mb={16}>
+            On vous emmène
+            <br />
+            sur le site de
+            <br />
+            <Flex alignItems="center" justifyContent="center" mt={4} mb={1}>
+              <Box bgColor="white" p={1} borderRadius="2.5xl">
+                <Image
+                  src={coupon?.offer.partner.icon.url as string}
+                  alt={coupon?.offer.partner.icon.alt as string}
+                  width={12}
+                  height={12}
+                />
+              </Box>
+              <Text ml={3} fontSize={24}>
+                {coupon?.offer.partner.name}
+              </Text>
+            </Flex>
+            en toute sécurité
+          </Text>
+          <Text fontSize={12} fontWeight={700} textAlign="center" px={16}>
+            🍪 N’oubliez pas d’accepter les cookies si on vous le demande.
+            <Divider borderWidth={0} my={2} />
+            Sinon la réduction peut ne pas fonctionner 😬
+          </Text>
+        </Flex>
+      </BaseModal>
+    </Flex>
+  );
 
   return (
     <OfferHeaderWrapper
-      kind="offer"
+      kind={kind}
       setKind={setKind}
       partnerColor={offer.partner.color}
-      headerComponent={<OfferCard offer={offer} variant="minimal" />}
+      headerComponent={
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={kind === "offer" || !coupon ? "offer" : "coupon"}
+            initial={isFirstLoad ? false : "hidden"}
+            animate="visible"
+            exit="exit"
+            variants={flipVariants}
+            transition={{ duration: 0.4 }}
+            style={{ perspective: 1000 }}
+            layout
+          >
+            {kind === "offer" || !coupon ? (
+              <motion.div style={{ backfaceVisibility: "hidden" }} layout>
+                <OfferCard
+                  offer={offer}
+                  variant="minimal"
+                  onClick={() => setKind("coupon")}
+                />
+              </motion.div>
+            ) : (
+              <motion.div style={{ backfaceVisibility: "hidden" }} layout>
+                <CouponCard
+                  coupon={coupon}
+                  handleOpenExternalLink={onOpenExternalLink}
+                />
+              </motion.div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      }
       displayBookmarkModal={displayBookmarkModal}
       handleBookmarkOfferToUser={handleBookmarkOfferToUser}
     >
-      <Flex flexDir="column">
-        <Box mt={6} px={4} w="full">
-          <Button
-            fontSize={14}
-            w="full"
-            size="md"
-            onClick={() => {
-              push(["trackEvent", "Inactive", "J'active mon offre"]);
-              handleValidateOffer(offer.id);
-            }}
-            leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
-          >
-            Voir mon code
-          </Button>
-        </Box>
-        {offerConditionBlocks.length > 0 && (
-          <Flex
-            gap={3}
-            mt={7}
-            w="full"
-            h="max-content"
-            py={1}
-            pl={4}
-            overflowX="scroll"
-            sx={{
-              "&::-webkit-scrollbar": {
-                display: "none",
-              },
-            }}
-          >
-            {offerConditionBlocks.map(({ text, icon }, index) => (
-              <Flex
-                key={text}
-                position="relative"
-                minW="43%"
-                flexDir="column"
-                alignItems="center"
-                justifyContent="center"
-                py={4}
-                px={6}
-              >
-                <Box
-                  position="absolute"
-                  inset={0}
-                  bg="bgGray"
-                  zIndex={1}
-                  borderRadius="3xl"
-                  transform={`rotate(${index % 2 === 0 ? 3 : -2}deg)`}
-                />
-                <Box p={4} bg="white" borderRadius="full" zIndex={2}>
-                  {typeof icon === "string" && (
-                    <ReactIcon icon={icon} size={24} color="inherit" />
-                  )}
-                </Box>
-                <Text fontWeight={500} textAlign="center" mt={2} zIndex={2}>
-                  {text}
-                </Text>
-              </Flex>
-            ))}
-            <Center minW="43%" mr={4} key="read-all-conditions">
-              <Text
-                fontWeight={800}
-                color="blackLight"
-                textDecor="underline"
-                textDecorationThickness="2px"
-                textUnderlineOffset={2}
-                onClick={() => {
-                  setIsConditionsOpen(true);
-                  conditionsRef.current?.scrollIntoView({
-                    behavior: "smooth",
-                  });
-                }}
-              >
-                Lire toutes
-                <br />
-                les conditions{" "}
-                <Icon
-                  as={HiArrowRight}
-                  w={4}
-                  h={4}
-                  borderBottom="2px solid black"
-                  pb="1px"
-                  mb={-1}
-                />
-              </Text>
-            </Center>
-          </Flex>
-        )}
-        {offer.kind.startsWith("voucher") && (
-          <Box mt={8} px={4} w="full">
-            <InStoreSection offer={offer} />
-          </Box>
-        )}
-        <Flex flexDir="column" px={4}>
-          {itemsTermsOfUse.length > 0 && (
-            <HStack spacing={4}>
-              <Flex flexDir="column" gap={3} mt={8}>
-                <Text fontWeight="extrabold" fontSize={20}>
-                  Comment utiliser l'offre ?
-                </Text>
-                <OrderedList fontWeight={500} pl={3}>
-                  {itemsTermsOfUse.map((termOfUse) => (
-                    <ListItem key={termOfUse.text} mb={2}>
-                      <TextWithLinks text={termOfUse.text} />
-                    </ListItem>
-                  ))}
-                </OrderedList>
-              </Flex>
-            </HStack>
-          )}
-          {!!(offer.conditions ?? []).length && (
-            <>
-              <Divider my={6} />
-              <Flex flexDir="column">
-                <Text fontWeight="extrabold" fontSize={20}>
-                  Conditions de l'offre
-                </Text>
-                <UnorderedList
-                  fontWeight={500}
-                  pl={3}
-                  mt={3}
-                  ref={conditionsRef}
-                >
-                  {offerConditions.map((condition) => (
-                    <ListItem key={condition.text} mb={2}>
-                      <TextWithLinks text={condition.text} />
-                    </ListItem>
-                  ))}
-                </UnorderedList>
-                {(offer?.conditions ?? []).length > 2 && !isConditionsOpen && (
-                  <Text
-                    as="span"
-                    alignSelf="start"
-                    fontWeight={700}
-                    lineHeight="shorter"
-                    borderBottom="2px solid black"
-                    onClick={() => {
-                      // push([
-                      //   "trackEvent",
-                      //   "Offre",
-                      //   `${offer.partner.name} - ${offer.title} - ${
-                      //     !!coupon ? "Active" : "Inactive"
-                      //   } - Conditions`,
-                      // ]);
-                      setIsConditionsOpen(true);
-                    }}
-                  >
-                    Lire toutes les conditions
-                  </Text>
-                )}
-              </Flex>
-            </>
-          )}
-          <Divider my={6} />
-          <Flex flexDir="column" gap={3} w="full" pb={10}>
-            <Flex alignItems="center" gap={2.5}>
-              <Box bg="white" borderRadius="2lg" p={1}>
-                <Image
-                  src={offer.partner.icon.url as string}
-                  alt="Logo partenaire"
-                  width={40}
-                  height={40}
-                />
-              </Box>
-              <Text fontWeight="extrabold">{offer.partner.name}</Text>
-            </Flex>
-            <Text>{offer.partner.description}</Text>
-          </Flex>
-        </Flex>
-        <Box
-          shadow="2xl"
-          position="relative"
-          sx={{ ...dottedPattern(offer?.partner?.color as string) }}
-          w="full"
-        />
-        <Box h="200px" w="full" bgColor={offer?.partner.color} />
-      </Flex>
+      {kind === "offer" ? <OfferContent /> : <CouponContent />}
     </OfferHeaderWrapper>
   );
 }
