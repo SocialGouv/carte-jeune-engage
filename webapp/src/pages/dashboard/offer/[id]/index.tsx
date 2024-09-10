@@ -22,6 +22,7 @@ import { HiArrowRight } from "react-icons/hi";
 import { HiBuildingStorefront, HiMiniEye } from "react-icons/hi2";
 import OfferCard from "~/components/cards/OfferCard";
 import LoadingLoader from "~/components/LoadingLoader";
+import InStoreSection from "~/components/offer/InStoreSection";
 import { StackItem } from "~/components/offer/StackItems";
 import TextWithLinks from "~/components/offer/TextWithLinks";
 import OfferHeaderWrapper from "~/components/wrappers/OfferHeaderWrapper";
@@ -152,58 +153,6 @@ export default function OfferPage() {
             Voir mon code
           </Button>
         </Box>
-        {offer.kind.startsWith("voucher") && (
-          <>
-            <VStack spacing={3} align="start">
-              <HStack spacing={4}>
-                <Icon as={HiBuildingStorefront} w={6} h={6} />
-                <Text fontWeight="extrabold">Magasins participants</Text>
-              </HStack>
-              <Text fontWeight="medium">
-                {offer.nbOfEligibleStores ?? 1} magasins {offer.partner.name}{" "}
-                participants
-              </Text>
-              {offer.imageOfEligibleStores?.url &&
-                offer.linkOfEligibleStores && (
-                  <Link
-                    as={NextLink}
-                    href={offer.linkOfEligibleStores}
-                    w="full"
-                    target="_blank"
-                  >
-                    <Image
-                      src={offer.imageOfEligibleStores.url}
-                      alt={offer.imageOfEligibleStores.alt as string}
-                      width={0}
-                      height={114}
-                      sizes="100vw"
-                      style={{
-                        width: "100%",
-                        height: "114px",
-                        borderRadius: "10px",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </Link>
-                )}
-              {offer.linkOfEligibleStores && (
-                <Link
-                  as={NextLink}
-                  href={offer.linkOfEligibleStores ?? ""}
-                  target="_blank"
-                >
-                  <HStack align="center" borderBottom="1px solid black">
-                    <Text fontWeight="medium">
-                      Voir les magasins participants
-                    </Text>
-                    <Icon as={HiArrowRight} w={4} h={4} />
-                  </HStack>
-                </Link>
-              )}
-            </VStack>
-            <Divider my={6} />
-          </>
-        )}
         {offerConditionBlocks.length > 0 && (
           <Flex
             gap={3}
@@ -276,6 +225,11 @@ export default function OfferPage() {
               </Text>
             </Center>
           </Flex>
+        )}
+        {offer.kind.startsWith("voucher") && (
+          <Box mt={8} px={4} w="full">
+            <InStoreSection offer={offer} />
+          </Box>
         )}
         <Flex flexDir="column" px={4}>
           {itemsTermsOfUse.length > 0 && (

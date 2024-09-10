@@ -23,8 +23,8 @@ type OfferHeaderWrapperProps = {
   kind: "offer" | "coupon";
   partnerColor?: string;
   headerComponent?: ReactNode;
-  displayBookmarkModal: boolean;
-  handleBookmarkOfferToUser: () => Promise<{ data: Coupon }>;
+  displayBookmarkModal?: boolean;
+  handleBookmarkOfferToUser?: () => Promise<{ data: Coupon }>;
 };
 
 const OfferHeaderWrapper = ({
@@ -64,7 +64,7 @@ const OfferHeaderWrapper = ({
 
   const handleBookmarkOffer = async () => {
     try {
-      await handleBookmarkOfferToUser();
+      handleBookmarkOfferToUser && (await handleBookmarkOfferToUser());
       setIsModalOfferBookmarkSuccess(true);
       setTimeout(() => {
         setIsModalOfferBookmarkSuccess(false);
@@ -84,7 +84,7 @@ const OfferHeaderWrapper = ({
         <Flex
           flexDir="column"
           bgColor={backgroundColor}
-          h="full"
+          flex={1}
           px={8}
           py={6}
           ref={intersectionRef}
@@ -92,6 +92,7 @@ const OfferHeaderWrapper = ({
           <IconButton
             alignSelf="start"
             shadow="default"
+            flexShrink={0}
             aria-label="Retour"
             colorScheme="whiteBtn"
             mb={6}

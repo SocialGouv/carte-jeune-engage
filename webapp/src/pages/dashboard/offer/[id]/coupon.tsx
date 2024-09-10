@@ -1,5 +1,6 @@
 import { Image } from "@chakra-ui/next-js";
 import {
+  Box,
   Center,
   CircularProgress,
   Divider,
@@ -20,6 +21,8 @@ import { api } from "~/utils/api";
 import { isIOS } from "~/utils/tools";
 import NextImage from "next/image";
 import { HiOutlineClock } from "react-icons/hi2";
+import InStoreSection from "~/components/offer/InStoreSection";
+import { OfferIncluded } from "~/server/api/routers/offer";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return hasAccessToOffer(context);
@@ -136,6 +139,14 @@ export default function CouponPage() {
             {expiryText}
           </Text>
         </Flex>
+        {coupon.offer.kind.startsWith("voucher") && (
+          <Box mt={4}>
+            <InStoreSection
+              offer={coupon.offer as OfferIncluded}
+              withoutBackground
+            />
+          </Box>
+        )}
         <BaseModal
           pb={1}
           heightModalContent="100%"

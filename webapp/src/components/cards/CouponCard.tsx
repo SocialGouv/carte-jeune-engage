@@ -1,4 +1,4 @@
-import { Flex, Icon, Link, Text, useToast } from "@chakra-ui/react";
+import { Flex, Icon, Text, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { CouponIncluded } from "~/server/api/routers/coupon";
@@ -7,15 +7,15 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 import Barcode from "react-barcode";
 import { Offer } from "~/payload/payload-types";
 import { PiArrowUpRightBold } from "react-icons/pi";
-import NextLink from "next/link";
 import { push } from "@socialgouv/matomo-next";
+import _ from "lodash";
 
 const CouponCodeCard = ({
-  code,
+  coupon,
   offerKind,
   barCodeFormat,
 }: {
-  code: string;
+  coupon: CouponIncluded;
   offerKind: Offer["kind"];
   barCodeFormat: Offer["barcodeFormat"];
 }) => {
@@ -25,21 +25,62 @@ const CouponCodeCard = ({
       return (
         <Text fontSize={24} fontWeight={800} letterSpacing={2}>
           {offerKind === "code"
-            ? code
+            ? coupon.code
             : "Le code est déjà appliqué sur le site 😉"}
         </Text>
       );
     case "voucher":
     case "voucher_pass":
       return (
-        <Barcode
-          value={code}
-          background="white"
-          format={
-            barCodeFormat === "upc" ? "UPC" : (barCodeFormat ?? "CODE128")
-          }
-          height={70}
-        />
+        <Flex flexDir="column">
+          <Flex w="auto" bgColor="white" borderRadius="2lg" p={2}>
+            <Barcode
+              value={coupon.code}
+              background="white"
+              format={
+                barCodeFormat === "upc" ? "UPC" : (barCodeFormat ?? "CODE128")
+              }
+              height={70}
+            />
+          </Flex>
+          <Flex
+            position="relative"
+            justifyContent="space-between"
+            alignItems="center"
+            w="full"
+            mt={2}
+            fontWeight={500}
+            fontSize={12}
+            color="blackLight"
+          >
+            <Text textAlign="start">
+              {_.capitalize(coupon.user.firstName as string)}
+              <br />
+              {_.capitalize(coupon.user.lastName as string)}
+            </Text>
+            <Image
+              src="/images/cje-logo.png"
+              alt="Logo CJE"
+              width={40}
+              height={20}
+              // center absolute element
+              style={{
+                position: "absolute",
+                right: "50%",
+                transform: "translateX(50%)",
+              }}
+            />
+            <Text textAlign="end">
+              {new Date(coupon.offer.validityTo).toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+              <br />
+              {new Date(coupon.offer.validityTo).toLocaleTimeString("fr-FR")}
+            </Text>
+          </Flex>
+        </Flex>
       );
   }
 };
@@ -105,7 +146,7 @@ const CouponCard = ({ coupon, handleOpenExternalLink }: CouponCardProps) => {
           flexDir="column"
           position="relative"
           gap={5}
-          borderRadius="2.5xl"
+          borderRadius="2xl"
           w="full"
           bgColor="bgGray"
           textAlign="center"
@@ -123,7 +164,7 @@ const CouponCard = ({ coupon, handleOpenExternalLink }: CouponCardProps) => {
           }}
         >
           <CouponCodeCard
-            code={coupon.code}
+            coupon={coupon}
             offerKind={coupon.offer.kind}
             barCodeFormat={coupon.offer.barcodeFormat}
           />
