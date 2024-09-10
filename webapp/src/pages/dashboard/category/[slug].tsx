@@ -24,20 +24,17 @@ export default function CategoryOfferList() {
 
   const { data: category } = resultCategory || {};
 
-  const {
-    data: resultOffers,
-    isLoading: isLoadingOffers,
-    isRefetching: isRefetchingOffers,
-  } = api.offer.getListOfAvailables.useQuery(
-    {
-      page: 1,
-      perPage: 50,
-      sort: "partner.name",
-      categoryId: category?.id,
-      tagIds: selectedTagIds,
-    },
-    { enabled: category?.id !== undefined }
-  );
+  const { data: resultOffers, isLoading: isLoadingOffers } =
+    api.offer.getListOfAvailables.useQuery(
+      {
+        page: 1,
+        perPage: 50,
+        sort: "partner.name",
+        categoryId: category?.id,
+        tagIds: selectedTagIds,
+      },
+      { enabled: category?.id !== undefined }
+    );
 
   const { data: offers } = resultOffers || {};
 
@@ -64,7 +61,7 @@ export default function CategoryOfferList() {
 
   if (!category) return;
 
-  if (isLoadingOffers || isRefetchingOffers || !offers || !tagsFromOffers)
+  if (isLoadingOffers || !tagsFromOffers)
     return (
       <CategoryWrapper category={category}>
         <Center w="full" h="full">
@@ -80,7 +77,7 @@ export default function CategoryOfferList() {
       selectedTagIds={selectedTagIds}
       onSelectTag={handleOnSelectTag}
     >
-      {offers.map((offer) => (
+      {offers?.map((offer) => (
         <OfferCard
           key={offer.id}
           offer={offer}

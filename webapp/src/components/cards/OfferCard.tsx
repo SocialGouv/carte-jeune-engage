@@ -1,29 +1,25 @@
 import { Flex, Text, Icon, Image, Box } from "@chakra-ui/react";
 import Link from "next/link";
-import { OfferIncluded } from "~/server/api/routers/offer";
+import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { push } from "@socialgouv/matomo-next";
 import { HiBookmark, HiOutlineBookmark, HiOutlineClock } from "react-icons/hi2";
 import { HiClock } from "react-icons/hi2";
+import { api } from "~/utils/api";
 
 type OfferCardProps = {
-  offer: OfferIncluded;
+  offer: OfferIncludedWithUserCoupon;
   variant?: "default" | "minimal";
   matomoEvent?: string[];
-  isBookmarked?: boolean;
-  handleBookmarkOffer?: (
-    offerId: number,
-    isBookmarked: boolean
-  ) => Promise<void>;
 };
 
 const OfferCard = ({
   offer,
   variant = "default",
   matomoEvent = [],
-  isBookmarked = false,
-  handleBookmarkOffer,
 }: OfferCardProps) => {
+  const utils = api.useUtils();
+
   const match = offer.title.match(/\d+%/);
 
   const [percentage, restOfString] = match
@@ -36,10 +32,36 @@ const OfferCard = ({
       (1000 * 3600 * 24)
   );
 
+  const isBookmarked = !!offer.userCoupon;
+
   const expiryText =
     differenceInDays > 0
       ? `Fin dans ${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
       : "Offre expirée";
+
+  const { mutateAsync: mutateAsyncCouponToUser } =
+    api.coupon.assignToUser.useMutation({
+      onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
+    });
+  const { mutateAsync: mutateAsyncRemoveCouponFromUser } =
+    api.coupon.unassignFromUser.useMutation({
+      onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
+    });
+
+  const handleBookmarkOffer = async (
+    offerId: number,
+    isAssignedToUser: boolean
+  ) => {
+    if (!isAssignedToUser) {
+      await mutateAsyncCouponToUser({ offer_id: offerId, isBookmarked: true });
+    } else {
+      const currentUserCoupon = offer.userCoupon;
+      if (!currentUserCoupon) return;
+      await mutateAsyncRemoveCouponFromUser({
+        coupon_id: currentUserCoupon.id,
+      });
+    }
+  };
 
   return (
     <Link
@@ -113,8 +135,7 @@ const OfferCard = ({
                 bgColor="white"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleBookmarkOffer &&
-                    handleBookmarkOffer(offer.id, isBookmarked);
+                  handleBookmarkOffer(offer.id, isBookmarked);
                 }}
               >
                 <Icon

@@ -53,21 +53,6 @@ export default function Dashboard() {
     kinds: ["voucher", "voucher_pass"],
   });
 
-  const { mutateAsync: mutateAsyncCouponToUser } =
-    api.coupon.assignToUser.useMutation({
-      onSuccess: () => {
-        refetchOffersOnline();
-        refetchOfferInStore();
-      },
-    });
-  const { mutateAsync: mutateAsyncRemoveCouponFromUser } =
-    api.coupon.unassignFromUser.useMutation({
-      onSuccess: () => {
-        refetchOffersOnline();
-        refetchOfferInStore();
-      },
-    });
-
   const { data: categories } = resultCategories || {};
   const { data: tags } = resultTags || {};
   const { data: offersOnline } = resultOffersOnline || {};
@@ -85,23 +70,6 @@ export default function Dashboard() {
       });
     }
   });
-
-  const handleAssignUserToCoupon = async (
-    offerId: number,
-    isAssignedToUser: boolean
-  ) => {
-    if (!isAssignedToUser) {
-      await mutateAsyncCouponToUser({ offer_id: offerId, isBookmarked: true });
-    } else {
-      const currentUserCoupon = allOffers.find(
-        (offer) => offer.id === offerId
-      )?.userCoupon;
-      if (!currentUserCoupon) return;
-      await mutateAsyncRemoveCouponFromUser({
-        coupon_id: currentUserCoupon.id,
-      });
-    }
-  };
 
   const firstCategoryRow = formatedCategories.filter(
     (_, index) => index % 2 === 0
@@ -251,8 +219,6 @@ export default function Dashboard() {
               <OfferCard
                 key={offer.id}
                 offer={offer}
-                isBookmarked={!!offer.userCoupon}
-                handleBookmarkOffer={handleAssignUserToCoupon}
                 matomoEvent={[
                   "Accueil",
                   "Pour vous",
@@ -287,8 +253,6 @@ export default function Dashboard() {
               <OfferCard
                 key={offer.id}
                 offer={offer}
-                isBookmarked={!!offer.userCoupon}
-                handleBookmarkOffer={handleAssignUserToCoupon}
                 matomoEvent={[
                   "Accueil",
                   "Pour vous",

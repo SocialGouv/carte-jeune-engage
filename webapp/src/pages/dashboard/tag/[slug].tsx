@@ -24,19 +24,16 @@ export default function CategoryOfferList() {
 
   const { data: tag } = resultTag || {};
 
-  const {
-    data: resultOffers,
-    isLoading: isLoadingOffers,
-    isRefetching: isRefetchingOffers,
-  } = api.offer.getListOfAvailables.useQuery(
-    {
-      page: 1,
-      perPage: 50,
-      sort: "partner.name",
-      tagIds: [tag?.id as number, ...selectedTagIds],
-    },
-    { enabled: tag?.id !== undefined }
-  );
+  const { data: resultOffers, isLoading: isLoadingOffers } =
+    api.offer.getListOfAvailables.useQuery(
+      {
+        page: 1,
+        perPage: 50,
+        sort: "partner.name",
+        tagIds: [tag?.id as number, ...selectedTagIds],
+      },
+      { enabled: tag?.id !== undefined }
+    );
 
   const { data: offers } = resultOffers || {};
 
@@ -67,7 +64,7 @@ export default function CategoryOfferList() {
 
   if (!tag) return;
 
-  if (isLoadingOffers || isRefetchingOffers || !offers || !tagsFromOffers)
+  if (isLoadingOffers || !offers || !tagsFromOffers)
     return (
       <CategoryWrapper>
         <Center w="full" h="full">
