@@ -19,6 +19,7 @@ export interface Config {
     coupons: Coupon;
     savings: Saving;
     notifications: Notification;
+    tags: Tag;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -28,6 +29,7 @@ export interface Config {
     landingFAQ: LandingFAQ;
     newCategory: NewCategory;
     categories_list: CategoriesList;
+    tags_list: TagsList;
   };
 }
 /**
@@ -178,6 +180,7 @@ export interface Offer {
   title: string;
   partner: number | Partner;
   category: number | Category;
+  tags?: (number | Tag)[] | null;
   validityFrom?: string | null;
   validityTo: string;
   kind: 'voucher' | 'voucher_pass' | 'code' | 'code_space';
@@ -206,6 +209,18 @@ export interface Offer {
       }[]
     | null;
   nbSeen?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  slug: string;
+  label: string;
+  icon: number | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -375,6 +390,21 @@ export interface CategoriesList {
   items?:
     | {
         category: number | Category;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_list".
+ */
+export interface TagsList {
+  id: number;
+  items?:
+    | {
+        tag: number | Tag;
         id?: string | null;
       }[]
     | null;

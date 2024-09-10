@@ -18,11 +18,11 @@ export const CategoriesList: GlobalConfig = {
           type: "relationship",
           relationTo: "categories",
           label: "Catégorie",
-          filterOptions: (options: any) => ({
-            id: {
-              not_in: options.data.items.map((item: any) => item.category),
-            },
-          }),
+          // filterOptions: (options: any) => ({
+          //   id: {
+          //     not_in: options.data.items.map((item: any) => item.category),
+          //   },
+          // }),
           required: true,
         },
       ],

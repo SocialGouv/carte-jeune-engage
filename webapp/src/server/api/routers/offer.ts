@@ -1,6 +1,6 @@
 import { Where, WhereField } from "payload/types";
 import { z } from "zod";
-import { Category, Offer, Media, Partner } from "~/payload/payload-types";
+import { Category, Offer, Media, Partner, Tag } from "~/payload/payload-types";
 import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
 import { ZGetListParams } from "~/server/types";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
@@ -8,6 +8,7 @@ import { payloadWhereOfferIsValid } from "~/utils/tools";
 export interface OfferIncluded extends Offer {
   partner: Partner & { icon: Media };
   category: Category & { icon: Media };
+  tags: (Tag & { icon: Media })[];
   imageOfEligibleStores: Media;
 }
 
@@ -17,6 +18,7 @@ export const offerRouter = createTRPCRouter({
       ZGetListParams.merge(
         z.object({
           offerIds: z.array(z.number()).optional(),
+          tagIds: z.array(z.number()).optional(),
           categoryId: z.number().optional(),
           kinds: z
             .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
@@ -36,6 +38,7 @@ export const offerRouter = createTRPCRouter({
         isCurrentUser,
         matchPreferences,
         kinds,
+        tagIds,
       } = input;
 
       let where = {
@@ -65,7 +68,13 @@ export const offerRouter = createTRPCRouter({
 
       if (offerIds) {
         where.id = {
-          in: offerIds || [],
+          in: offerIds,
+        };
+      }
+
+      if (tagIds) {
+        where.tags = {
+          in: tagIds,
         };
       }
 
@@ -81,6 +90,7 @@ export const offerRouter = createTRPCRouter({
         page: page,
         where: where as Where,
         sort: sort,
+        depth: 3,
       });
 
       const myUnusedCoupons = await ctx.payload.find({

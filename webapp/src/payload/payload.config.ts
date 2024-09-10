@@ -11,6 +11,7 @@ import { LandingPartners } from "./globals/LandingPartners";
 import { LandingFAQ } from "./globals/LandingFAQ";
 import { NewCategory } from "./globals/NewCategory";
 import { CategoriesList } from "./globals/CategoriesList";
+import { TagsList } from "./globals/TagsList";
 
 import { Admins } from "./collections/Admin";
 import { Users } from "./collections/User";
@@ -23,6 +24,7 @@ import { Savings } from "./collections/Saving";
 import { Supervisors } from "./collections/Supervisor";
 import { Permissions } from "./collections/Permission";
 import { Notifications } from "./collections/Notification";
+import { Tags } from "./collections/Tag";
 
 const adapter = s3Adapter({
   config: {
@@ -75,12 +77,20 @@ export default buildConfig({
     Coupons,
     Savings,
     Notifications,
+    Tags,
   ],
   localization: {
     locales: ["fr"],
     defaultLocale: "fr",
   },
-  globals: [QuickAccess, LandingPartners, LandingFAQ, NewCategory, CategoriesList],
+  globals: [
+    QuickAccess,
+    LandingPartners,
+    LandingFAQ,
+    NewCategory,
+    CategoriesList,
+    TagsList,
+  ],
   typescript: {
     outputFile: path.resolve(__dirname, "./payload-types.ts"),
   },

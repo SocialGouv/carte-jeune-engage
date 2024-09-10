@@ -15,14 +15,14 @@ export default function CategoryOfferList() {
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [tagsFromOffers, setTagsFromOffers] = useState<TagIncluded[]>();
 
-  const { data: resultCategory } = api.category.getBySlug.useQuery(
+  const { data: resultTag } = api.tag.getBySlug.useQuery(
     {
       slug: slug as string,
     },
     { enabled: slug !== undefined }
   );
 
-  const { data: category } = resultCategory || {};
+  const { data: tag } = resultTag || {};
 
   const {
     data: resultOffers,
@@ -33,10 +33,9 @@ export default function CategoryOfferList() {
       page: 1,
       perPage: 50,
       sort: "partner.name",
-      categoryId: category?.id,
-      tagIds: selectedTagIds,
+      tagIds: [tag?.id as number, ...selectedTagIds],
     },
-    { enabled: category?.id !== undefined }
+    { enabled: tag?.id !== undefined }
   );
 
   const { data: offers } = resultOffers || {};
@@ -48,6 +47,10 @@ export default function CategoryOfferList() {
         : [...prev, tagId]
     );
   };
+
+  useEffect(() => {
+    if (tag) setSelectedTagIds([tag.id]);
+  }, [tag]);
 
   useEffect(() => {
     if (isFirstLoading && offers && offers.length > 0) {
@@ -62,11 +65,11 @@ export default function CategoryOfferList() {
     }
   }, [offers]);
 
-  if (!category) return;
+  if (!tag) return;
 
   if (isLoadingOffers || isRefetchingOffers || !offers || !tagsFromOffers)
     return (
-      <CategoryWrapper category={category}>
+      <CategoryWrapper>
         <Center w="full" h="full">
           <LoadingLoader />
         </Center>
@@ -75,7 +78,6 @@ export default function CategoryOfferList() {
 
   return (
     <CategoryWrapper
-      category={category}
       tags={tagsFromOffers}
       selectedTagIds={selectedTagIds}
       onSelectTag={handleOnSelectTag}
@@ -86,7 +88,7 @@ export default function CategoryOfferList() {
           offer={offer}
           matomoEvent={[
             "Explorer",
-            `Catégories - ${category.label} - Offre - ${offer.partner.name} - ${offer.title}`,
+            `Étiquette - ${tag.label} - Offre - ${offer.partner.name} - ${offer.title}`,
           ]}
         />
       ))}

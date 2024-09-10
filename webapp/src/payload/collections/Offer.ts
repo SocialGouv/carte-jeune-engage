@@ -36,6 +36,13 @@ export const Offers: CollectionConfig = {
       required: true,
     },
     {
+      name: "tags",
+      type: "relationship",
+      label: "Étiquettes",
+      relationTo: "tags",
+      hasMany: true,
+    },
+    {
       name: "validityFrom",
       type: "date",
       label: "Offre valide à partir du",

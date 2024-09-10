@@ -1,14 +1,25 @@
-import { Box, Center, Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Divider,
+  Flex,
+  Grid,
+  Heading,
+  Icon,
+  Text,
+} from "@chakra-ui/react";
 import { mostReadable } from "@ctrl/tinycolor";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import Link from "next/link";
+import { HiChevronRight } from "react-icons/hi2";
 import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
 import SearchBar from "~/components/SearchBar";
 import OfferCard from "~/components/cards/OfferCard";
 import { CategoryIncluded } from "~/server/api/routers/category";
 import { OfferIncluded } from "~/server/api/routers/offer";
+import { TagIncluded } from "~/server/api/routers/tag";
 import { api } from "~/utils/api";
 
 type CategoryWithOffers = CategoryIncluded & { offers: OfferIncluded[] };
@@ -16,6 +27,9 @@ type CategoryWithOffers = CategoryIncluded & { offers: OfferIncluded[] };
 export default function Dashboard() {
   const { data: resultCategories, isLoading: isLoadingCategories } =
     api.globals.categoriesListOrdered.useQuery();
+
+  const { data: resultTags, isLoading: isLoadingTags } =
+    api.globals.tagsListOrdered.useQuery();
 
   const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
     api.offer.getListOfAvailables.useQuery({
@@ -34,10 +48,20 @@ export default function Dashboard() {
     });
 
   const { data: categories } = resultCategories || {};
+  const { data: tags } = resultTags || {};
   const { data: offersOnline } = resultOffersOnline || {};
   const { data: offersInStore } = resultOffersInStore || {};
 
   const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
+
+  const paginatedTags = (tags || []).reduce((acc, tag, index) => {
+    const pageIndex = Math.floor(index / 6);
+    if (!acc[pageIndex]) {
+      acc[pageIndex] = [];
+    }
+    acc[pageIndex].push(tag);
+    return acc;
+  }, [] as TagIncluded[][]);
 
   const formatedCategories = [] as CategoryWithOffers[];
 
@@ -124,7 +148,12 @@ export default function Dashboard() {
     );
   };
 
-  if (isLoadingCategories || isLoadingOffersOnline || isLoadingOffersInStore) {
+  if (
+    isLoadingCategories ||
+    isLoadingOffersOnline ||
+    isLoadingOffersInStore ||
+    isLoadingTags
+  ) {
     return (
       <Box pt={12} px={8} h="full">
         <Center h="full" w="full">
@@ -236,6 +265,68 @@ export default function Dashboard() {
             ))}
           </Grid>
         </>
+      )}
+      {tags && tags.length > 0 && (
+        <Flex flexDir="column">
+          <Flex flexDir="column" textAlign="center" px={8}>
+            <Divider mb={6} borderColor="cje-gray.100" />
+            <Text fontWeight={800} fontSize={14} color="disabled">
+              Ce qu'il vous faut
+            </Text>
+            <Text fontWeight={800} fontSize={18} mt={2}>
+              Besoin de quelque chose en particulier ?
+            </Text>
+          </Flex>
+          <Flex
+            overflowX="auto"
+            whiteSpace="nowrap"
+            flexWrap="nowrap"
+            position="relative"
+            sx={{
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+            mt={6}
+            px={10}
+            gap={8}
+          >
+            {paginatedTags.map((tagsPage) => (
+              <Flex
+                key={tagsPage.map((tagPage) => tagPage.slug).join("-")}
+                flexDir="column"
+                minW="90%"
+                gap={6}
+              >
+                {tagsPage.map((tag) => (
+                  <Link
+                    key={tag.id}
+                    href={`/dashboard/tag/${tag.slug}`}
+                    onClick={() => {
+                      push(["trackEvent", "Accueil", "Tags - " + tag.label]);
+                    }}
+                    passHref
+                  >
+                    <Flex alignItems="center" justifyContent="space-between">
+                      <Flex alignItems="center">
+                        <Image
+                          src={tag.icon.url as string}
+                          alt={tag.icon.alt as string}
+                          width={40}
+                          height={40}
+                        />
+                        <Text fontWeight={500} color="blackLight" ml={4}>
+                          {tag.label}
+                        </Text>
+                      </Flex>
+                      <Icon as={HiChevronRight} w={6} h={6} mt={0.5} />
+                    </Flex>
+                  </Link>
+                ))}
+              </Flex>
+            ))}
+          </Flex>
+        </Flex>
       )}
     </Box>
   );
