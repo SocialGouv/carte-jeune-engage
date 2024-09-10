@@ -6,18 +6,13 @@ import {
   Flex,
   Icon,
   IconButton,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  Text,
   useDisclosure,
   useTheme,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { push } from "@socialgouv/matomo-next";
-import { HiCheckCircle, HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
+import { HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
 import { useIntersectionObserver } from "usehooks-ts";
 import { TinyColor } from "@ctrl/tinycolor";
 import { Coupon } from "~/payload/payload-types";
