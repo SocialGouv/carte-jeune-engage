@@ -236,7 +236,6 @@ export interface Coupon {
   user?: (number | null) | User;
   assignUserAt?: string | null;
   offer: number | Offer;
-  bookmarked?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }

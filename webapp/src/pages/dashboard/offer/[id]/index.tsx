@@ -6,22 +6,23 @@ import {
   HStack,
   Icon,
   Text,
-  Link,
-  VStack,
   UnorderedList,
   ListItem,
   OrderedList,
   Button,
+  useDisclosure,
+  CircularProgress,
 } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiArrowRight } from "react-icons/hi";
-import { HiBuildingStorefront, HiMiniEye } from "react-icons/hi2";
+import { HiMiniEye, HiOutlineClock } from "react-icons/hi2";
+import CouponCard from "~/components/cards/CouponCard";
 import OfferCard from "~/components/cards/OfferCard";
 import LoadingLoader from "~/components/LoadingLoader";
+import BaseModal from "~/components/modals/BaseModal";
 import InStoreSection from "~/components/offer/InStoreSection";
 import { StackItem } from "~/components/offer/StackItems";
 import TextWithLinks from "~/components/offer/TextWithLinks";
@@ -31,6 +32,7 @@ import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse"
 import { api } from "~/utils/api";
 import { dottedPattern } from "~/utils/chakra-theme";
 import ReactIcon from "~/utils/dynamicIcon";
+import { isIOS } from "~/utils/tools";
 
 export default function OfferPage() {
   const router = useRouter();
@@ -66,6 +68,7 @@ export default function OfferPage() {
       onSuccess: () => refetchCoupon(),
     });
 
+  const [kind, setKind] = useState<"offer" | "coupon">("offer");
   const conditionsRef = useRef<HTMLUListElement>(null);
   const [isConditionsOpen, setIsConditionsOpen] = useState(false);
   const [displayBookmarkModal, setDisplayBookmarkModal] = useState(false);
@@ -94,7 +97,7 @@ export default function OfferPage() {
 
   const handleValidateOffer = async (offerId: number) => {
     if (coupon) {
-      router.push(`/dashboard/offer/${offerId}/coupon`);
+      setKind("coupon");
     } else {
       await mutateAsyncCouponToUser({ offer_id: offerId });
     }
@@ -103,24 +106,84 @@ export default function OfferPage() {
   const handleBookmarkOfferToUser = async () => {
     return await mutateAsyncCouponToUser({
       offer_id: parseInt(id),
-      isBookmarked: true,
     });
   };
 
+  const differenceInDays = Math.floor(
+    (new Date(coupon?.offer.validityTo as string).setHours(0, 0, 0, 0) -
+      new Date().setHours(0, 0, 0, 0)) /
+      (1000 * 3600 * 24)
+  );
+
+  const expiryText =
+    differenceInDays > 0
+      ? `Fin dans ${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
+      : "Offre expirée";
+
+  const [timeoutIdExternalLink, setTimeoutIdExternalLink] =
+    useState<NodeJS.Timeout>();
+  const [intervalIdExternalLink, setIntervalIdExternalLink] =
+    useState<NodeJS.Timeout>();
+  const [timeoutProgress, setTimeoutProgress] = useState<number>(0);
+
+  const {
+    isOpen: isOpenExternalLink,
+    onOpen: onOpenExternalLink,
+    onClose: onCloseExternalLink,
+  } = useDisclosure({
+    onOpen: () => {
+      const totalTimeout = 2000;
+      const startTime = Date.now();
+
+      const timeoutId = setTimeout(() => {
+        clearInterval(intervalIdExternalLink);
+        let a = document.createElement("a");
+        document.body.appendChild(a);
+        a.classList.add("hidden");
+        a.href = coupon?.offer?.url as string;
+        if (!isIOS()) a.target = "_blank";
+        a.click();
+        document.body.removeChild(a);
+        onCloseExternalLink();
+      }, totalTimeout);
+
+      setTimeoutIdExternalLink(timeoutId);
+
+      const intervalId = setInterval(() => {
+        const currentTime = Date.now();
+        const elapsedTime = currentTime - startTime;
+
+        setTimeoutProgress(
+          Math.min((elapsedTime / totalTimeout) * 100 + 20, 100)
+        );
+
+        if (elapsedTime >= totalTimeout) clearInterval(intervalId);
+      }, 100);
+
+      setIntervalIdExternalLink(intervalId);
+    },
+    onClose: () => {
+      clearInterval(intervalIdExternalLink);
+      setTimeoutProgress(0);
+      clearTimeout(timeoutIdExternalLink);
+    },
+  });
+
   useEffect(() => {
     let timeoutIdToOpenBookmarkModal: NodeJS.Timeout;
-    if (!coupon) {
+    if (!isLoadingCoupon && !coupon) {
       timeoutIdToOpenBookmarkModal = setTimeout(() => {
         setDisplayBookmarkModal(true);
       }, 3000);
     }
     return () => clearTimeout(timeoutIdToOpenBookmarkModal);
-  }, []);
+  }, [isLoadingCoupon]);
 
   if (isLoadingOffer || isLoadingCoupon || !offer)
     return (
       <OfferHeaderWrapper
         kind="offer"
+        setKind={setKind}
         displayBookmarkModal={false}
         handleBookmarkOfferToUser={handleBookmarkOfferToUser}
       >
@@ -130,9 +193,95 @@ export default function OfferPage() {
       </OfferHeaderWrapper>
     );
 
+  if (kind === "coupon" && coupon) {
+    return (
+      <OfferHeaderWrapper
+        kind="coupon"
+        setKind={setKind}
+        partnerColor={coupon.offer.partner.color}
+        headerComponent={
+          <CouponCard
+            coupon={coupon}
+            handleOpenExternalLink={onOpenExternalLink}
+          />
+        }
+      >
+        <Flex flexDir="column">
+          <Flex
+            align="center"
+            borderRadius="2xl"
+            color="white"
+            py={1}
+            px={2}
+            mt={3}
+          >
+            <Icon as={HiOutlineClock} w={4} h={4} mr={2} />
+            <Text fontSize={14} fontWeight={700}>
+              {expiryText}
+            </Text>
+          </Flex>
+          {coupon.offer.kind.startsWith("voucher") && (
+            <Box mt={4}>
+              <InStoreSection offer={offer} withoutBackground />
+            </Box>
+          )}
+          <BaseModal
+            pb={1}
+            heightModalContent="100%"
+            isOpen={isOpenExternalLink}
+            onClose={onCloseExternalLink}
+          >
+            <Flex
+              flexDir="column"
+              justifyContent="space-around"
+              alignItems="center"
+              h="full"
+            >
+              <CircularProgress
+                value={timeoutProgress}
+                color="blackLight"
+                sx={{
+                  "& > div:first-child": {
+                    transitionProperty: "width",
+                  },
+                }}
+              />
+              <Text fontWeight={800} fontSize={38} textAlign="center" mb={16}>
+                On vous emmène
+                <br />
+                sur le site de
+                <br />
+                <Flex alignItems="center" justifyContent="center" mt={4} mb={1}>
+                  <Box bgColor="white" p={1} borderRadius="2.5xl">
+                    <Image
+                      src={coupon.offer.partner.icon.url as string}
+                      alt={coupon.offer.partner.icon.alt as string}
+                      width={12}
+                      height={12}
+                    />
+                  </Box>
+                  <Text ml={3} fontSize={24}>
+                    {coupon.offer.partner.name}
+                  </Text>
+                </Flex>
+                en toute sécurité
+              </Text>
+              <Text fontSize={12} fontWeight={700} textAlign="center" px={16}>
+                🍪 N’oubliez pas d’accepter les cookies si on vous le demande.
+                <Divider borderWidth={0} my={2} />
+                Sinon la réduction peut ne pas fonctionner 😬
+              </Text>
+            </Flex>
+          </BaseModal>
+        </Flex>
+      </OfferHeaderWrapper>
+    );
+  }
+
   return (
     <OfferHeaderWrapper
       kind="offer"
+      setKind={setKind}
       partnerColor={offer.partner.color}
       headerComponent={<OfferCard offer={offer} variant="minimal" />}
       displayBookmarkModal={displayBookmarkModal}

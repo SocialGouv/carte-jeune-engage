@@ -34,11 +34,9 @@ export const couponRouter = createTRPCRouter({
     }),
 
   assignToUser: userProtectedProcedure
-    .input(
-      z.object({ offer_id: z.number(), isBookmarked: z.boolean().optional() })
-    )
+    .input(z.object({ offer_id: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      const { offer_id, isBookmarked } = input;
+      const { offer_id } = input;
 
       const currentOffer = await ctx.payload.findByID({
         collection: "offers",
@@ -113,7 +111,7 @@ export const couponRouter = createTRPCRouter({
       const updatedCoupon = await ctx.payload.update({
         collection: "coupons",
         id: couponData.id,
-        data: { user: ctx.session.id, bookmarked: isBookmarked ?? false },
+        data: { user: ctx.session.id },
       });
 
       return { data: updatedCoupon };
@@ -145,7 +143,7 @@ export const couponRouter = createTRPCRouter({
       const updatedCoupon = await ctx.payload.update({
         collection: "coupons",
         id: coupon_id,
-        data: { user: null, bookmarked: false },
+        data: { user: null },
       });
 
       return { data: updatedCoupon };

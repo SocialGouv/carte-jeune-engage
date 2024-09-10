@@ -53,7 +53,7 @@ const OfferCard = ({
     isAssignedToUser: boolean
   ) => {
     if (!isAssignedToUser) {
-      await mutateAsyncCouponToUser({ offer_id: offerId, isBookmarked: true });
+      await mutateAsyncCouponToUser({ offer_id: offerId });
     } else {
       const currentUserCoupon = offer.userCoupon;
       if (!currentUserCoupon) return;

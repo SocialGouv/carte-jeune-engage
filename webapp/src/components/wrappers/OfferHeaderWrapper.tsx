@@ -21,6 +21,7 @@ import BookmarkOfferModal from "../modals/BookmarkOfferModal";
 type OfferHeaderWrapperProps = {
   children: ReactNode;
   kind: "offer" | "coupon";
+  setKind: (kind: "offer" | "coupon") => void;
   partnerColor?: string;
   headerComponent?: ReactNode;
   displayBookmarkModal?: boolean;
@@ -34,6 +35,7 @@ const OfferHeaderWrapper = ({
   headerComponent,
   displayBookmarkModal,
   handleBookmarkOfferToUser,
+  setKind,
 }: OfferHeaderWrapperProps) => {
   const router = useRouter();
 
@@ -49,10 +51,10 @@ const OfferHeaderWrapper = ({
   });
 
   const handleBackButton = () => {
-    if (window.history?.length > 1) {
-      router.back();
+    if (kind === "coupon") {
+      setKind("offer");
     } else {
-      router.push("/dashboard");
+      router.back();
     }
   };
 
@@ -98,7 +100,7 @@ const OfferHeaderWrapper = ({
             mb={6}
             onClick={() => {
               push(["trackEvent", "Retour"]);
-              if (displayBookmarkModal) {
+              if (displayBookmarkModal && kind === "offer") {
                 onOpen();
               } else {
                 handleBackButton();
