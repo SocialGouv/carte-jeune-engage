@@ -18,7 +18,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiArrowRight } from "react-icons/hi";
-import { HiMiniEye, HiOutlineClock } from "react-icons/hi2";
+import {
+  HiBookmark,
+  HiMiniEye,
+  HiOutlineBookmark,
+  HiOutlineClock,
+} from "react-icons/hi2";
 import CouponCard from "~/components/cards/CouponCard";
 import OfferCard from "~/components/cards/OfferCard";
 import LoadingLoader from "~/components/LoadingLoader";
@@ -376,6 +381,49 @@ export default function OfferPage() {
         w="full"
       />
       <Box h="200px" w="full" bgColor={offer?.partner.color} />
+      <Flex
+        position="fixed"
+        zIndex={10}
+        alignItems="center"
+        bottom={0}
+        insetX={0}
+        bg="white"
+        borderTopColor="cje-gray.300"
+        borderTopWidth={1}
+        py={4}
+        px={4}
+        gap={4}
+      >
+        <Button
+          colorScheme="whiteBtn"
+          w="40%"
+          fontSize={16}
+          variant="outline"
+          color="blackLight"
+          borderColor="cje-gray.300"
+          leftIcon={
+            <Icon as={coupon ? HiBookmark : HiOutlineBookmark} w={5} h={5} />
+          }
+        >
+          Enregistrer
+        </Button>
+        <Button
+          w="60%"
+          fontSize={16}
+          colorScheme="blackBtn"
+          leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
+          onClick={() => {
+            push([
+              "trackEvent",
+              "Inactive",
+              "J'active mon offre - Bas de page",
+            ]);
+            handleValidateOffer(offer.id);
+          }}
+        >
+          Voir mon code
+        </Button>
+      </Flex>
     </Flex>
   );
 

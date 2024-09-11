@@ -1,19 +1,9 @@
 import { ReactNode, useState } from "react";
 import Head from "next/head";
-import {
-  Button,
-  Fade,
-  Flex,
-  Icon,
-  IconButton,
-  useDisclosure,
-  useTheme,
-} from "@chakra-ui/react";
+import { Flex, IconButton, useDisclosure, useTheme } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { push } from "@socialgouv/matomo-next";
-import { HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
-import { useIntersectionObserver } from "usehooks-ts";
 import { TinyColor } from "@ctrl/tinycolor";
 import { Coupon } from "~/payload/payload-types";
 import BookmarkOfferModal from "../modals/BookmarkOfferModal";
@@ -24,8 +14,8 @@ type OfferHeaderWrapperProps = {
   setKind: (kind: "offer" | "coupon") => void;
   partnerColor?: string;
   headerComponent?: ReactNode;
-  displayBookmarkModal?: boolean;
-  handleBookmarkOfferToUser?: () => Promise<{ data: Coupon }>;
+  displayBookmarkModal: boolean;
+  handleBookmarkOfferToUser: () => Promise<{ data: Coupon }>;
 };
 
 const OfferHeaderWrapper = ({
@@ -45,10 +35,6 @@ const OfferHeaderWrapper = ({
       ? new TinyColor(partnerColor).darken(20).toHexString()
       : partnerColor
     : theme.colors.white;
-
-  const { isIntersecting, ref: intersectionRef } = useIntersectionObserver({
-    threshold: 0.2,
-  });
 
   const handleBackButton = () => {
     if (kind === "coupon") {
@@ -83,14 +69,7 @@ const OfferHeaderWrapper = ({
         <meta name="theme-color" content={backgroundColor} />
       </Head>
       <Flex flexDir="column" h="full">
-        <Flex
-          flexDir="column"
-          bgColor={backgroundColor}
-          flex={1}
-          px={8}
-          py={6}
-          ref={intersectionRef}
-        >
+        <Flex flexDir="column" bgColor={backgroundColor} flex={1} px={8} py={6}>
           <IconButton
             alignSelf="start"
             shadow="default"
@@ -114,43 +93,6 @@ const OfferHeaderWrapper = ({
           {kind === "coupon" && children}
         </Flex>
         {kind === "offer" && children}
-        {kind === "offer" && (
-          <Fade in={!isIntersecting} style={{ zIndex: 10 }}>
-            <Flex
-              position="fixed"
-              zIndex={10}
-              alignItems="center"
-              bottom={0}
-              insetX={0}
-              bg="white"
-              borderTopColor="cje-gray.300"
-              borderTopWidth={1}
-              py={4}
-              px={4}
-              gap={4}
-            >
-              <Button
-                colorScheme="whiteBtn"
-                w="40%"
-                fontSize={16}
-                variant="outline"
-                color="blackLight"
-                borderColor="cje-gray.300"
-                leftIcon={<Icon as={HiOutlineBookmark} w={5} h={5} />}
-              >
-                Enregistrer
-              </Button>
-              <Button
-                w="60%"
-                fontSize={16}
-                colorScheme="blackBtn"
-                leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
-              >
-                Voir mon code
-              </Button>
-            </Flex>
-          </Fade>
-        )}
       </Flex>
       <BookmarkOfferModal
         isOpen={isOpen}
