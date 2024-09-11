@@ -1,4 +1,11 @@
 app:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1024Mi
+    requests:
+      cpu: 50m
+      memory: 768Mi
   envFrom:
     - secretRef:
         name: pg-app
