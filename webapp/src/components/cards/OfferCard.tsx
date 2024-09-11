@@ -171,8 +171,14 @@ const OfferCard = ({
             align="center"
             borderRadius="2xl"
             color={variant === "default" ? "white" : "black"}
-            bgColor={variant === "default" ? "bgRed" : "inherit"}
-            py={1}
+            bgColor={
+              variant === "default"
+                ? differenceInDays <= 10
+                  ? "bgRed"
+                  : "black"
+                : "inherit"
+            }
+            py={0.5}
             px={2}
           >
             <Icon
