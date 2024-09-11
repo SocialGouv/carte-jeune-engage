@@ -23,26 +23,26 @@ const InStoreSection = (props: InStoreSectionProps) => {
       p={!withoutBackground ? 4 : 0}
     >
       {offer.imageOfEligibleStores?.url && offer.linkOfEligibleStores && (
-        <Link
-          as={NextLink}
-          href={offer.linkOfEligibleStores}
-          w="full"
-          target="_blank"
-        >
-          <Image
-            as={NextImage}
-            src={offer.imageOfEligibleStores.url}
-            alt={offer.imageOfEligibleStores.alt as string}
-            width={335}
-            height={142}
-          />
-        </Link>
+        <Image
+          as={NextImage}
+          src={offer.imageOfEligibleStores.url}
+          alt={offer.imageOfEligibleStores.alt as string}
+          width={335}
+          height={142}
+        />
       )}
-      <Flex alignItems="center" borderRadius="2.5xl" bgColor="white" p={6}>
-        <Icon as={HiBuildingStorefront} w={5} h={5} mr={4} />
-        <Text fontWeight={500}>Magasins participants</Text>
-        <Icon as={HiArrowRight} w={4} h={4} ml="auto" />
-      </Flex>
+      <Link
+        as={NextLink}
+        href={offer.linkOfEligibleStores ?? ""}
+        target="_blank"
+        _hover={{ textDecoration: "none" }}
+      >
+        <Flex alignItems="center" borderRadius="2.5xl" bgColor="white" p={6}>
+          <Icon as={HiBuildingStorefront} w={5} h={5} mr={4} />
+          <Text fontWeight={500}>Magasins participants</Text>
+          <Icon as={HiArrowRight} w={4} h={4} ml="auto" />
+        </Flex>
+      </Link>
       <Flex alignItems="center" borderRadius="2.5xl" bgColor="white" p={6}>
         <Icon as={HiShoppingCart} w={5} h={5} mr={4} />
         <Text fontWeight={500}>Vérifier les produits inclus</Text>

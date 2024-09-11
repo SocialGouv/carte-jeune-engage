@@ -63,7 +63,6 @@ const CouponCodeCard = ({
               alt="Logo CJE"
               width={40}
               height={20}
-              // center absolute element
               style={{
                 position: "absolute",
                 right: "50%",
@@ -71,13 +70,13 @@ const CouponCodeCard = ({
               }}
             />
             <Text textAlign="end">
-              {new Date(coupon.offer.validityTo).toLocaleDateString("fr-FR", {
+              {new Date().toLocaleDateString("fr-FR", {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
               })}
               <br />
-              {new Date(coupon.offer.validityTo).toLocaleTimeString("fr-FR")}
+              {new Date().toLocaleTimeString("fr-FR")}
             </Text>
           </Flex>
         </Flex>
@@ -115,6 +114,7 @@ const CouponCard = ({ coupon, handleOpenExternalLink }: CouponCardProps) => {
       bg="white"
       borderRadius="2.5xl"
       shadow="default"
+      h="430px"
     >
       <Flex
         bgColor={coupon.offer.partner.color}
