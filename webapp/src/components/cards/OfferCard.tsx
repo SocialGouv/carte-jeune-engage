@@ -5,7 +5,7 @@ import { push } from "@socialgouv/matomo-next";
 import { HiBookmark, HiOutlineBookmark, HiOutlineClock } from "react-icons/hi2";
 import { HiClock } from "react-icons/hi2";
 import { api } from "~/utils/api";
-import { ConditionalLink } from "~/utils/tools";
+import ConditionalLink from "../ConditionalLink";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;

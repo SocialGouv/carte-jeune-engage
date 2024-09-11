@@ -170,23 +170,3 @@ export function paginateArray<T>(array: T[], itemsPerPage: number): T[][] {
     return acc;
   }, []);
 }
-
-export function ConditionalLink({
-  children,
-  condition,
-  to,
-  props,
-}: {
-  children: React.ReactNode;
-  condition: boolean;
-  to: string;
-  props: ChakraProps & LinkProps;
-}) {
-  return !!condition && to ? (
-    <Link as={NextLink} href={to} passHref {...props}>
-      {children}
-    </Link>
-  ) : (
-    <>{children}</>
-  );
-}
