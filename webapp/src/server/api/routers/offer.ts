@@ -13,6 +13,7 @@ import { ZGetListParams } from "~/server/types";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
 
 export interface OfferIncluded extends Offer {
+  image: Media;
   partner: Partner & { icon: Media };
   category: Category & { icon: Media };
   tags: (Tag & { icon: Media })[];

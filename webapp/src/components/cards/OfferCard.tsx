@@ -1,4 +1,4 @@
-import { Flex, Text, Icon, Image, Box } from "@chakra-ui/react";
+import { Flex, Text, Icon, Box } from "@chakra-ui/react";
 import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { push } from "@socialgouv/matomo-next";
@@ -6,6 +6,7 @@ import { HiBookmark, HiOutlineBookmark, HiOutlineClock } from "react-icons/hi2";
 import { HiClock } from "react-icons/hi2";
 import { api } from "~/utils/api";
 import ConditionalLink from "../ConditionalLink";
+import Image from "next/image";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
@@ -91,12 +92,13 @@ const OfferCard = ({
           sx={{ ...dottedPattern("#ffffff") }}
         >
           <Image
-            src="/images/landing/mobile-showcase.png"
-            alt="image-test"
+            src={offer.image?.url ?? "/images/landing/mobile-showcase.png"}
+            alt={offer.image?.alt ?? "Image par défaut de l'offre"}
+            fetchPriority="high"
+            loading="eager"
             objectFit="cover"
             objectPosition="center"
-            width="100%"
-            height="100%"
+            layout="fill"
           />
           <Box
             position="absolute"
@@ -109,8 +111,7 @@ const OfferCard = ({
           />
           <Flex
             position="absolute"
-            top={0}
-            w="100%"
+            w="full"
             justifyContent={variant === "default" ? "space-between" : "center"}
             alignItems="center"
             p={variant === "default" ? 5 : 2}
@@ -119,16 +120,16 @@ const OfferCard = ({
             <Flex align="center" gap={3}>
               <Flex
                 alignItems="center"
-                borderRadius="18px"
+                borderRadius="2.25xl"
                 p={1}
                 bgColor="white"
               >
                 <Image
                   src={offer.partner.icon.url ?? ""}
                   alt={offer.partner.icon.alt ?? ""}
-                  width={10}
-                  height={10}
-                  borderRadius="18px"
+                  width={40}
+                  height={40}
+                  style={{ borderRadius: "1.125rem" }}
                 />
               </Flex>
               <Text fontSize="xl" fontWeight="bold" color="white">
@@ -139,7 +140,7 @@ const OfferCard = ({
               <Flex
                 alignItems="center"
                 justify="center"
-                borderRadius="18px"
+                borderRadius="2.25xl"
                 py={3}
                 px={3.5}
                 bgColor="white"

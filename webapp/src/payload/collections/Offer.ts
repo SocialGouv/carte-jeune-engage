@@ -203,6 +203,15 @@ export const Offers: CollectionConfig = {
       defaultValue: 0,
       // hidden: true
     },
+    {
+      name: "image",
+      type: "upload",
+      label: "Image",
+      relationTo: "media",
+      admin: {
+        position: "sidebar",
+      },
+    },
   ],
   hooks: {
     afterDelete: [

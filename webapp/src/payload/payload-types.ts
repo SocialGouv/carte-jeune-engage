@@ -209,6 +209,7 @@ export interface Offer {
       }[]
     | null;
   nbSeen?: number | null;
+  image?: number | Media | null;
   updatedAt: string;
   createdAt: string;
 }
