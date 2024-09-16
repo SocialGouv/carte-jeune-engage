@@ -1,61 +1,45 @@
-import {
-  Box,
-  Heading,
-  Icon,
-  Tab,
-  TabList,
-  TabPanels,
-  Tabs,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { BsCart2 } from "react-icons/bs";
-import { FiMousePointer } from "react-icons/fi";
+import { PassIcon } from "../icons/pass";
 
 type WalletWrapperProps = {
   children: ReactNode;
-  tabIndex: number;
-  handleTabsChange: (index: number) => void;
 };
 
-const WalletWrapper = ({
-  children,
-  tabIndex,
-  handleTabsChange,
-}: WalletWrapperProps) => {
+const WalletWrapper = ({ children }: WalletWrapperProps) => {
   return (
-    <Box pt={12} px={8} h="full">
-      <Heading as="h2" textAlign="center">
-        Mes Réductions
-      </Heading>
-      <Tabs
-        index={tabIndex}
-        onChange={handleTabsChange}
-        isFitted
-        variant="solid-rounded"
+    <Flex flexDir="column" pt={14} h="full" bgColor="bgGray">
+      <Button
         colorScheme="whiteBtn"
-        mt={6}
-        h="full"
+        color="black"
+        alignSelf="start"
+        leftIcon={<PassIcon w={6} h={6} />}
+        ml={8}
+        mb={4}
+        py={5}
+        px={3}
+        fontWeight={500}
+        borderRadius="2.5xl"
+        size="xs"
       >
-        <TabList bgColor="cje-gray.500" p={1} borderRadius="3xl">
-          <Tab color="black" alignItems="end" gap={2} py={2.5}>
-            <Icon as={BsCart2} w={6} h={6} />
-            <Text as="span" fontSize="sm">
-              En magasin
-            </Text>
-          </Tab>
-          <Tab color="black" alignItems="end" gap={2} py={2.5}>
-            <Icon as={FiMousePointer} w={6} h={6} />
-            <Text as="span" fontSize="sm">
-              En ligne
-            </Text>
-          </Tab>
-        </TabList>
-        <TabPanels mt={8} pb={32}>
+        Ma carte
+      </Button>
+      <Flex
+        flexDir="column"
+        h="full"
+        bgColor="white"
+        borderTopRadius="2.5xl"
+        pt={5}
+        px={8}
+      >
+        <Heading as="h2" fontWeight={800}>
+          Mes Réductions
+        </Heading>
+        <Box flex={1} mt={8} pb={28}>
           {children}
-        </TabPanels>
-      </Tabs>
-    </Box>
+        </Box>
+      </Flex>
+    </Flex>
   );
 };
 

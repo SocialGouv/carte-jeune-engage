@@ -86,10 +86,15 @@ const CouponCodeCard = ({
 
 type CouponCardProps = {
   coupon: CouponIncluded;
-  handleOpenExternalLink: () => void;
+  mode: "default" | "wallet";
+  handleOpenExternalLink?: () => void;
 };
 
-const CouponCard = ({ coupon, handleOpenExternalLink }: CouponCardProps) => {
+const CouponCard = ({
+  coupon,
+  mode = "default",
+  handleOpenExternalLink,
+}: CouponCardProps) => {
   const toast = useToast();
 
   const handleCopyToClipboard = (text: string) => {
@@ -108,13 +113,14 @@ const CouponCard = ({ coupon, handleOpenExternalLink }: CouponCardProps) => {
   return (
     <Flex
       flexDir="column"
-      pt={2}
-      px={3}
-      pb={12}
+      pt={mode === "default" ? 2 : 1}
+      px={mode === "default" ? 3 : 1}
+      pb={mode === "default" ? 12 : 0}
       bg="white"
       borderRadius="2.5xl"
-      shadow="default"
-      h="430px"
+      shadow={mode === "default" ? "default" : "default-wallet"}
+      h={mode === "default" ? "430px" : "245px"}
+      overflow="hidden"
     >
       <Flex
         bgColor={coupon.offer.partner.color}
@@ -138,7 +144,13 @@ const CouponCard = ({ coupon, handleOpenExternalLink }: CouponCardProps) => {
           {coupon.offer.partner.name}
         </Text>
       </Flex>
-      <Flex flexDir="column" mt={4} bgColor="white" gap={2}>
+      <Flex
+        flexDir="column"
+        mt={4}
+        bgColor="white"
+        gap={2}
+        px={mode === "default" ? 0 : 2}
+      >
         <Text fontWeight={500} h="66px">
           {coupon.offer.title}
         </Text>
@@ -152,6 +164,7 @@ const CouponCard = ({ coupon, handleOpenExternalLink }: CouponCardProps) => {
           textAlign="center"
           px={4}
           py={6}
+          filter={mode === "default" ? "none" : "blur(5px)"}
           onClick={() => {
             if (coupon.offer.kind === "code") {
               push([
@@ -169,34 +182,36 @@ const CouponCard = ({ coupon, handleOpenExternalLink }: CouponCardProps) => {
             barCodeFormat={coupon.offer.barcodeFormat}
           />
         </Flex>
-        {coupon.offer.kind === "code" && coupon.offer.partner.url && (
-          <Flex
-            flexDir="column"
-            alignItems="start"
-            gap={2}
-            bg="blackLight"
-            color="white"
-            borderRadius="2.5xl"
-            mt={1}
-            p={5}
-            onClick={handleOpenExternalLink}
-          >
-            <Text fontWeight={500} fontSize={12} mt={1}>
-              uniquement sur internet
-            </Text>
+        {mode == "default" &&
+          coupon.offer.kind === "code" &&
+          coupon.offer.partner.url && (
             <Flex
-              alignItems="center"
-              justifyContent="space-between"
-              w="full"
-              gap={1}
+              flexDir="column"
+              alignItems="start"
+              gap={2}
+              bg="blackLight"
+              color="white"
+              borderRadius="2.5xl"
+              mt={1}
+              p={5}
+              onClick={handleOpenExternalLink}
             >
-              <Text fontWeight={800} fontSize={20} noOfLines={1}>
-                {coupon.offer.partner.url.replace(/(^\w+:|^)\/\//, "")}
+              <Text fontWeight={500} fontSize={12} mt={1}>
+                uniquement sur internet
               </Text>
-              <Icon as={PiArrowUpRightBold} w={6} h={6} mt={1} />
+              <Flex
+                alignItems="center"
+                justifyContent="space-between"
+                w="full"
+                gap={1}
+              >
+                <Text fontWeight={800} fontSize={20} noOfLines={1}>
+                  {coupon.offer.partner.url.replace(/(^\w+:|^)\/\//, "")}
+                </Text>
+                <Icon as={PiArrowUpRightBold} w={6} h={6} mt={1} />
+              </Flex>
             </Flex>
-          </Flex>
-        )}
+          )}
       </Flex>
     </Flex>
   );

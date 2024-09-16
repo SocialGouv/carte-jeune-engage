@@ -33,6 +33,24 @@ export const couponRouter = createTRPCRouter({
       return { data: coupons.docs[0] as CouponIncluded };
     }),
 
+  getList: userProtectedProcedure.query(async ({ ctx }) => {
+    const coupons = await ctx.payload.find({
+      collection: "coupons",
+      depth: 3,
+      where: {
+        and: [
+          { user: { equals: ctx.session.id } },
+          {
+            ...payloadWhereOfferIsValid("offer"),
+          },
+          { used: { equals: false } },
+        ],
+      },
+    });
+
+    return { data: coupons.docs as CouponIncluded[] };
+  }),
+
   assignToUser: userProtectedProcedure
     .input(z.object({ offer_id: z.number() }))
     .mutation(async ({ ctx, input }) => {

@@ -137,7 +137,7 @@ export const theme = extendTheme({
       },
       body: {
         height: "100%",
-        bg: "bgWhite",
+        bg: "white",
       },
       main: {
         height: "100%",
@@ -213,6 +213,8 @@ export const theme = extendTheme({
       "0px 4px 9.9px 0px rgba(177, 177, 177, 0.25)",
     "landing-qr-code-desktop": "0px 0px 24.2px 0px rgba(145, 145, 145, 0.25)",
     default: "0px 24px 24px -10px #00000040",
+    "default-wallet":
+      "0px 24px 24px -10px #00000040, 0px -6px 24px -10px #00000040",
   },
   radii: {
     "2lg": "0.625rem",

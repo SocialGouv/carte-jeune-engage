@@ -273,7 +273,7 @@ const OfferContent = (props: OfferContentProps) => {
           w="40%"
           fontSize={16}
           borderWidth={1}
-          borderColor="cje-gray.300"
+          borderColor="cje-gray.100"
           color={hasCoupon ? "white" : "blackLight"}
           colorScheme={hasCoupon ? "blue" : "inherit"}
           isLoading={!hasCoupon && isLoadingValidateOffer}

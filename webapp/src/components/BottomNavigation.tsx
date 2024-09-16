@@ -61,7 +61,8 @@ const BottomNavigation = () => {
       id="cje-bottom-navigation"
       zIndex={100}
       columns={navigationItems.length}
-      borderTopRadius={24}
+      borderTopWidth={1}
+      borderTopColor="cje-gray.100"
       bgColor="white"
       position="fixed"
       bottom={0}
