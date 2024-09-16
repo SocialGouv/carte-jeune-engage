@@ -1,4 +1,4 @@
-import { Flex, Text, Icon, Box } from "@chakra-ui/react";
+import { Flex, Text, Icon, Box, IconButton } from "@chakra-ui/react";
 import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { push } from "@socialgouv/matomo-next";
@@ -42,14 +42,18 @@ const OfferCard = ({
       ? `Fin dans ${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
       : "Offre expirée";
 
-  const { mutateAsync: mutateAsyncCouponToUser } =
-    api.coupon.assignToUser.useMutation({
-      onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
-    });
-  const { mutateAsync: mutateAsyncRemoveCouponFromUser } =
-    api.coupon.unassignFromUser.useMutation({
-      onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
-    });
+  const {
+    mutateAsync: mutateAsyncCouponToUser,
+    isLoading: isLoadingCouponToUser,
+  } = api.coupon.assignToUser.useMutation({
+    onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
+  });
+  const {
+    mutateAsync: mutateAsyncRemoveCouponFromUser,
+    isLoading: isLoadingRemoveCouponFromUser,
+  } = api.coupon.unassignFromUser.useMutation({
+    onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
+  });
 
   const handleBookmarkOffer = async (
     offerId: number,
@@ -137,24 +141,28 @@ const OfferCard = ({
               </Text>
             </Flex>
             {variant === "default" && (
-              <Flex
+              <IconButton
+                aria-label="Enregistrer l'offre"
                 alignItems="center"
-                justify="center"
                 borderRadius="2.25xl"
-                py={3}
-                px={3.5}
-                bgColor="white"
+                isLoading={
+                  isLoadingCouponToUser || isLoadingRemoveCouponFromUser
+                }
+                colorScheme="whiteBtn"
+                _loading={{ opacity: 1, color: "black" }}
                 onClick={(e) => {
                   e.preventDefault();
                   handleBookmarkOffer(offer.id, isBookmarked);
                 }}
-              >
-                <Icon
-                  as={isBookmarked ? HiBookmark : HiOutlineBookmark}
-                  h={6}
-                  w={6}
-                />
-              </Flex>
+                icon={
+                  <Icon
+                    color="black"
+                    as={isBookmarked ? HiBookmark : HiOutlineBookmark}
+                    h={6}
+                    w={6}
+                  />
+                }
+              />
             )}
           </Flex>
         </Flex>
