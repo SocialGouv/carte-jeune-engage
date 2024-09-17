@@ -1,4 +1,4 @@
-import { Flex, Icon, Text, useToast } from "@chakra-ui/react";
+import { Box, Center, Flex, Icon, Text, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { CouponIncluded } from "~/server/api/routers/coupon";
@@ -85,7 +85,7 @@ const CouponCodeCard = ({
 };
 
 type CouponCardProps = {
-  coupon: CouponIncluded;
+  coupon?: CouponIncluded;
   mode?: "default" | "wallet";
   handleOpenExternalLink?: () => void;
 };
@@ -118,12 +118,17 @@ const CouponCard = ({
       pb={mode === "default" ? 12 : 0}
       bg="white"
       borderRadius="2.5xl"
-      shadow={mode === "default" ? "default" : "default-wallet"}
+      shadow={
+        coupon ? (mode === "default" ? "default" : "default-wallet") : "none"
+      }
+      borderWidth={coupon ? 0 : 2}
+      borderStyle={coupon ? "none" : "dashed"}
+      borderColor="cje-gray.400"
       h={mode === "default" ? "430px" : "245px"}
       overflow="hidden"
     >
       <Flex
-        bgColor={coupon.offer.partner.color}
+        bgColor={coupon ? coupon.offer.partner.color : "bgGray"}
         p={3}
         pb={5}
         gap={3}
@@ -133,16 +138,24 @@ const CouponCard = ({
         sx={{ ...dottedPattern("#ffffff") }}
       >
         <Flex alignItems="center" borderRadius="2.5xl" p={1} bgColor="white">
-          <Image
-            src={coupon.offer.partner.icon.url ?? ""}
-            alt={coupon.offer.partner.icon.alt ?? ""}
-            width={42}
-            height={42}
-          />
+          {coupon ? (
+            <Image
+              src={coupon.offer.partner.icon.url ?? ""}
+              alt={coupon.offer.partner.icon.alt ?? ""}
+              width={42}
+              height={42}
+            />
+          ) : (
+            <Box w={8} h={8} bgColor="white" borderRadius="2.5xl" />
+          )}
         </Flex>
-        <Text color="white" fontSize={20} fontWeight={700}>
-          {coupon.offer.partner.name}
-        </Text>
+        {coupon ? (
+          <Text color="white" fontSize={20} fontWeight={700}>
+            {coupon.offer.partner.name}
+          </Text>
+        ) : (
+          <Box w={20} h={3} bgColor="white" borderRadius="2.5xl" />
+        )}
       </Flex>
       <Flex
         flexDir="column"
@@ -151,38 +164,54 @@ const CouponCard = ({
         gap={2}
         px={mode === "default" ? 0 : 2}
       >
-        <Text fontWeight={500} h="66px">
-          {coupon.offer.title}
-        </Text>
-        <Flex
-          flexDir="column"
-          position="relative"
-          gap={5}
-          borderRadius="2xl"
-          w="full"
-          bgColor="bgGray"
-          textAlign="center"
-          px={4}
-          py={6}
-          filter={mode === "default" ? "none" : "blur(5px)"}
-          onClick={() => {
-            if (coupon.offer.kind === "code") {
-              push([
-                "trackEvent",
-                "Offre",
-                `${coupon.offer.partner.name} - ${coupon.offer.title} - Active - Aller sur le site`,
-              ]);
-              handleCopyToClipboard(coupon.code);
-            }
-          }}
-        >
-          <CouponCodeCard
-            coupon={coupon}
-            offerKind={coupon.offer.kind}
-            barCodeFormat={coupon.offer.barcodeFormat}
-          />
-        </Flex>
-        {mode == "default" &&
+        {coupon ? (
+          <Text fontWeight={500} h="66px">
+            {coupon.offer.title}
+          </Text>
+        ) : (
+          <>
+            <Box w="full" h={2} bgColor="bgGray" borderRadius="2.5xl" />
+            <Box w="60%" h={2} bgColor="bgGray" borderRadius="2.5xl" mt={1} />
+          </>
+        )}
+        {coupon ? (
+          <Flex
+            flexDir="column"
+            position="relative"
+            gap={5}
+            borderRadius="2xl"
+            w="full"
+            bgColor="bgGray"
+            textAlign="center"
+            px={4}
+            py={6}
+            filter={mode === "default" ? "none" : "blur(5px)"}
+            onClick={() => {
+              if (coupon.offer.kind === "code") {
+                push([
+                  "trackEvent",
+                  "Offre",
+                  `${coupon.offer.partner.name} - ${coupon.offer.title} - Active - Aller sur le site`,
+                ]);
+                handleCopyToClipboard(coupon.code);
+              }
+            }}
+          >
+            <CouponCodeCard
+              coupon={coupon}
+              offerKind={coupon.offer.kind}
+              barCodeFormat={coupon.offer.barcodeFormat}
+            />
+          </Flex>
+        ) : (
+          <Center mt={6} textAlign="center" px={12}>
+            <Text color="disabled" fontWeight={500}>
+              Vous n’avez pas encore enregistré de réductions.
+            </Text>
+          </Center>
+        )}
+        {coupon &&
+          mode == "default" &&
           coupon.offer.kind === "code" &&
           coupon.offer.partner.url && (
             <Flex

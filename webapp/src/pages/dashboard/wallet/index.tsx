@@ -55,38 +55,41 @@ export default function Wallet() {
   return (
     <WalletWrapper>
       {currentUserCoupons && currentUserCoupons.length > 0 ? (
-        <Flex flexDir="column" gap={6}>
-          {currentUserCoupons.map((coupon) => (
-            <CouponCard key={coupon.id} coupon={coupon} mode="wallet" />
-          ))}
-        </Flex>
-      ) : (
-        <WalletNoData />
-      )}
-      <Divider mt={16} borderColor="cje-gray.100" />
-      <Link
-        as={NextLink}
-        href="/dashboard/account/history"
-        _hover={{ textDecoration: "none" }}
-        passHref
-      >
-        <Flex alignItems="center" justifyContent="space-between" py={5}>
-          <Flex alignItems="center" gap={4}>
-            <Icon
-              as={HiReceiptRefund}
-              w={5}
-              h={5}
-              mt={0.5}
-              color="blackLight"
-            />
-            <Text fontWeight={500}>Historique des réductions</Text>
+        <>
+          <Flex flexDir="column" gap={6}>
+            {currentUserCoupons.map((coupon) => (
+              <CouponCard key={coupon.id} coupon={coupon} mode="wallet" />
+            ))}
           </Flex>
-          <Icon as={HiChevronRight} w={6} h={6} />
-        </Flex>
-      </Link>
-      <Divider borderColor="cje-gray.100" mb={4} />
+          <Divider mt={16} borderColor="cje-gray.100" />
+          <Link
+            as={NextLink}
+            href="/dashboard/account/history"
+            _hover={{ textDecoration: "none" }}
+            passHref
+          >
+            <Flex alignItems="center" justifyContent="space-between" py={5}>
+              <Flex alignItems="center" gap={4}>
+                <Icon
+                  as={HiReceiptRefund}
+                  w={5}
+                  h={5}
+                  mt={0.5}
+                  color="blackLight"
+                />
+                <Text fontWeight={500}>Historique des réductions</Text>
+              </Flex>
+              <Icon as={HiChevronRight} w={6} h={6} />
+            </Flex>
+          </Link>
+          <Divider borderColor="cje-gray.100" />
+        </>
+      ) : (
+        <CouponCard mode="wallet" />
+      )}
       <Center
         flexDir="column"
+        mt={4}
         p={8}
         bgColor="bgGray"
         borderRadius="3xl"
