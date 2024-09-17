@@ -5,9 +5,11 @@ import { useRouter } from "next/router";
 
 type SearchWrapperProps = {
   children: React.ReactNode;
+  search: string;
+  setSearch: (search: string) => void;
 };
 
-const SearchWrapper = ({ children }: SearchWrapperProps) => {
+const SearchWrapper = ({ children, search, setSearch }: SearchWrapperProps) => {
   const router = useRouter();
 
   return (
@@ -28,7 +30,7 @@ const SearchWrapper = ({ children }: SearchWrapperProps) => {
           aria-label="Retour à l'accueil"
           onClick={() => router.push("/dashboard")}
         />
-        <SearchBar />
+        <SearchBar search={search} setSearch={setSearch} />
       </Flex>
       {children}
     </Box>

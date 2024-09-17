@@ -37,6 +37,7 @@ export const offerRouter = createTRPCRouter({
             .optional(),
           isCurrentUser: z.boolean().optional(),
           matchPreferences: z.boolean().optional(),
+          searchOnPartner: z.string().optional(),
         })
       )
     )
@@ -51,6 +52,7 @@ export const offerRouter = createTRPCRouter({
         matchPreferences,
         kinds,
         tagIds,
+        searchOnPartner,
       } = input;
 
       let where = {
@@ -93,6 +95,12 @@ export const offerRouter = createTRPCRouter({
       if (kinds && kinds.length) {
         where.kind = {
           in: kinds,
+        };
+      }
+
+      if (searchOnPartner) {
+        where["partner.name"] = {
+          like: searchOnPartner,
         };
       }
 

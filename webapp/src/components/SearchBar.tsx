@@ -2,7 +2,12 @@ import React from "react";
 import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 import { CgSearch } from "react-icons/cg";
 
-export default function SearchBar() {
+type SearchBarProps = {
+  search: string;
+  setSearch: (search: string) => void;
+};
+
+export default function SearchBar({ search, setSearch }: SearchBarProps) {
   return (
     <InputGroup
       background={"cje-gray.500"}
@@ -20,7 +25,13 @@ export default function SearchBar() {
       >
         <CgSearch size={20} />
       </InputLeftElement>
-      <Input variant="unstyled" ml={1} placeholder="Rechercher une marque" />
+      <Input
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        variant="unstyled"
+        ml={1}
+        placeholder="Rechercher une marque"
+      />
     </InputGroup>
   );
 }

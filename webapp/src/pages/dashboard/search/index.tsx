@@ -20,22 +20,40 @@ import NextLink from "next/link";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import ChakraNextImage from "~/components/ChakraNextImage";
+import { useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
+import { HiArrowRight } from "react-icons/hi";
 
 export default function DashboardSearch() {
-  const { data: resultTags, isLoading: isLoadingTags } =
-    api.globals.tagsListOrdered.useQuery();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounceValue(search, 500);
+  const isSearchDebounced = debouncedSearch !== search;
 
-  const { data: resultPartners, isLoading: isLoadingPartners } =
-    api.partner.getList.useQuery({ page: 1, perPage: 8 });
+  const { data: resultTags, isLoading: isLoadingTags } =
+    api.globals.tagsListOrdered.useQuery({
+      search: debouncedSearch,
+    });
+
+  const { data: resultOffers, isLoading: isLoadingOffers } =
+    api.offer.getListOfAvailables.useQuery({
+      page: 1,
+      perPage: 8,
+      searchOnPartner: debouncedSearch,
+    });
 
   const { data: tags } = resultTags || { data: [] };
-  const { data: partners } = resultPartners || { data: [] };
+  const { data: offers } = resultOffers || { data: [] };
+
+  const partners = offers.map((offer) => ({
+    ...offer.partner,
+    link: `/dashboard/offer/${offer.id}`,
+  }));
 
   const paginatedTags = paginateArray(tags, 6);
 
-  if (isLoadingTags || isLoadingPartners)
+  if (isLoadingTags || isLoadingOffers || isSearchDebounced)
     return (
-      <SearchWrapper>
+      <SearchWrapper search={search} setSearch={setSearch}>
         <Center h="full" w="full">
           <LoadingLoader />
         </Center>
@@ -43,13 +61,15 @@ export default function DashboardSearch() {
     );
 
   return (
-    <SearchWrapper>
+    <SearchWrapper search={search} setSearch={setSearch}>
       <>
         {tags.length > 0 && (
           <Box mt={6}>
-            <Text fontWeight={800} px={8}>
-              Quelque choses en particulier ?
-            </Text>
+            {!debouncedSearch && (
+              <Text fontWeight={800} px={8}>
+                Quelque choses en particulier ?
+              </Text>
+            )}
             <Flex
               overflowX="auto"
               whiteSpace="nowrap"
@@ -112,27 +132,61 @@ export default function DashboardSearch() {
         )}
         {partners.length > 0 && (
           <Box mt={8} px={8}>
-            <Text fontWeight={800} mb={4}>
-              Les marques les plus populaires
-            </Text>
+            {!debouncedSearch && (
+              <Text fontWeight={800} mb={4}>
+                Les marques les plus populaires
+              </Text>
+            )}
             {partners.map((partner, index) => (
               <>
-                {index !== 0 && <Divider my={1.5} borderColor="cje-gray.300" />}
-                <Flex key={partner.id} alignItems="center" gap={3}>
-                  <ChakraNextImage
-                    src={partner.icon.url as string}
-                    alt={partner.icon.alt as string}
-                    width={12}
-                    height={12}
-                    borderRadius="2.5xl"
-                    mt={1}
-                  />
-                  <Text fontWeight={500} fontSize={18} color="blackLight">
-                    {partner.name}
-                  </Text>
-                </Flex>
+                <Link
+                  as={NextLink}
+                  href={partner.link}
+                  _hover={{ textDecoration: "none" }}
+                  passHref
+                >
+                  <Flex key={partner.id} alignItems="center" gap={3}>
+                    <ChakraNextImage
+                      src={partner.icon.url as string}
+                      alt={partner.icon.alt as string}
+                      width={12}
+                      height={12}
+                      borderRadius="2.5xl"
+                      mt={1}
+                    />
+                    <Text fontWeight={500} fontSize={18} color="blackLight">
+                      {partner.name}
+                    </Text>
+                  </Flex>
+                </Link>
+                {partners.length !== index && (
+                  <Divider my={1.5} borderColor="cje-gray.300" />
+                )}
               </>
             ))}
+          </Box>
+        )}
+        {!!debouncedSearch && (
+          <Box mt={32} px={20}>
+            <Text color="disabled" textAlign="center" fontSize={18}>
+              Nous n'avons pas
+              <br />
+              <Text fontWeight={800}>"{debouncedSearch}"</Text>
+              pour l'instant
+            </Text>
+            <Center
+              mt={4}
+              borderBottomWidth={2}
+              borderBottomColor="black"
+              color="black"
+              w="fit-content"
+              mx="auto"
+            >
+              <Text fontWeight={800} fontSize={14}>
+                Demander : "{debouncedSearch}"
+              </Text>
+              <Icon as={HiArrowRight} w={3.5} h={3.5} ml={0.5} />
+            </Center>
           </Box>
         )}
       </>
