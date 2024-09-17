@@ -3,9 +3,6 @@ app:
     oblik.socialgouv.io/min-request-cpu: "300m"
     oblik.socialgouv.io/min-request-memory: "768Mi"
   resources:
-    limits:
-      cpu: 450m
-      memory: 768Mi
     requests:
       cpu: 300m
       memory: 768Mi
