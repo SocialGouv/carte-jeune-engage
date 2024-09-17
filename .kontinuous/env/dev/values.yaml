@@ -2,10 +2,8 @@ app:
   annotations:
     oblik.socialgouv.io/min-request-cpu: "300m"
     oblik.socialgouv.io/min-request-memory: "768Mi"
-  resources:
-    requests:
-      cpu: 300m
-      memory: 768Mi
+    oblik.socialgouv.io/min-limit-cpu: "450m"
+    oblik.socialgouv.io/min-limit-memory: "768Mi"
   envFrom:
     - secretRef:
         name: pg-app
