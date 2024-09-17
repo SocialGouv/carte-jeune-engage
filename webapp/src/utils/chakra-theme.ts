@@ -207,6 +207,7 @@ export const theme = extendTheme({
     secondaryText: "#5C5C70",
     borderGray: "#B5BBBD",
     blackLight: "#20202C",
+    bgBlue: "#1698FC",
   },
   shadows: {
     "landing-phone-number-component":

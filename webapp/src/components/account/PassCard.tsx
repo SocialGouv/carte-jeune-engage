@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Icon,
   Text,
@@ -16,6 +17,7 @@ import Image from "next/image";
 import LoadingLoader from "../LoadingLoader";
 import { push } from "@socialgouv/matomo-next";
 import { OfferIncluded } from "~/server/api/routers/offer";
+import _ from "lodash";
 
 type PropsPassCard = {
   isPage: boolean;
@@ -35,8 +37,8 @@ const PassCard = ({ isPage, offer }: PropsPassCard) => {
     return user?.status_image === "pending" && user.image
       ? "pending"
       : !user?.image
-      ? "missing"
-      : undefined;
+        ? "missing"
+        : undefined;
   }, [user]);
 
   if (!user)
@@ -49,7 +51,7 @@ const PassCard = ({ isPage, offer }: PropsPassCard) => {
   return (
     <>
       <Flex flexDir={isPage ? "column" : "column-reverse"}>
-        {passCJEStatus && (
+        {/* {passCJEStatus && (
           <Center
             display="flex"
             flexDir="column"
@@ -94,7 +96,7 @@ const PassCard = ({ isPage, offer }: PropsPassCard) => {
               </Button>
             )}
           </Center>
-        )}
+        )} */}
         <Link
           href="/dashboard/account/card"
           onClick={() => {
@@ -116,12 +118,11 @@ const PassCard = ({ isPage, offer }: PropsPassCard) => {
             alignItems="center"
             bgColor="white"
             borderRadius="1.5xl"
-            pt={isPage ? 12 : 6}
-            pb={6}
+            pt={isPage ? 12 : 20}
             mt={passCJEStatus ? 6 : isPage ? 10 : 0}
-            gap={8}
+            shadow="default"
           >
-            <Box borderRadius="full" overflow="hidden">
+            {/* <Box borderRadius="full" overflow="hidden">
               {user.image ? (
                 <Image
                   src={user.image.url as string}
@@ -142,42 +143,49 @@ const PassCard = ({ isPage, offer }: PropsPassCard) => {
                   alignItems="center"
                 />
               )}
-            </Box>
-            <Flex flexDir="column" gap={4}>
-              <Flex flexDir="column" alignItems="center">
-                <Text fontWeight="medium" fontSize="xs" color="disabled">
-                  Nom
-                </Text>
-                <Text fontSize="2xl" fontWeight="extrabold">
-                  {user.firstName} {user.lastName}
-                </Text>
-              </Flex>
-              <Flex flexDir="column" alignItems="center">
-                <Text fontWeight="medium" fontSize="xs" color="disabled">
-                  ID
-                </Text>
-                <Text fontSize="xl" fontWeight="extrabold">
-                  {user.id}
-                </Text>
-              </Flex>
+            </Box> */}
+            <Text fontSize="2xl" fontWeight="extrabold" textAlign="center">
+              {_.capitalize(user.firstName as string)}
+              <br />
+              {_.capitalize(user.lastName as string)}
+            </Text>
+            <Divider w="90%" mx="auto" mt={12} />
+            <Flex
+              mt={2.5}
+              alignItems="center"
+              color="disabled"
+              fontWeight={500}
+              fontSize={12}
+              gap={1}
+            >
+              {new Date().toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+              <Box w={1} h={1} bgColor="disabled" rounded="full" mt={0.5} />
+              {new Date().toLocaleTimeString("fr-FR")}
             </Flex>
-            <Flex flexDir="column" alignItems="center" gap={3}>
+            <Flex flexDir="column" alignItems="center" gap={3} mt={2.5}>
               <Image
                 src="/images/government-banner.png"
                 alt="Bandeau du gouvernement français"
                 width={82}
                 height={49}
               />
-              <Text
-                fontSize="xs"
-                fontWeight="medium"
-                color="disabled"
-                textAlign="center"
-              >
-                Carte membre beta testeur 2024
-                <br />
-                Projet carte "jeunes engagés"
+              <Text fontSize={12} fontWeight={500} textAlign="center">
+                Carte “jeune engagé” officielle
               </Text>
+            </Flex>
+            <Flex justifyContent="center" mt={5}>
+              <Box bgColor="bgBlue" px={9} pt={6} pb={3} borderTopRadius="full">
+                <Image
+                  src="/images/cje-logo-white-blue.svg"
+                  alt="Logo CJE"
+                  width={60}
+                  height={32}
+                />
+              </Box>
             </Flex>
           </Flex>
         </Link>
