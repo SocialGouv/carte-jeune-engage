@@ -1,18 +1,5 @@
-import {
-  Box,
-  Center,
-  Divider,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  Link,
-  Text,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
+import { Box, Center, Divider, Flex, Icon, Link, Text } from "@chakra-ui/react";
 import LoadingLoader from "~/components/LoadingLoader";
-import SearchBar from "~/components/SearchBar";
 import SearchWrapper from "~/components/wrappers/SearchWrapper";
 import { api } from "~/utils/api";
 import { paginateArray } from "~/utils/tools";
