@@ -33,14 +33,14 @@ const TagsSection = (props: TagsSectionProps) => {
           },
         }}
         mt={6}
-        px={10}
+        px={8}
         gap={8}
       >
         {paginatedTags.map((tagsPage) => (
           <Flex
             key={tagsPage.map((tagPage) => tagPage.slug).join("-")}
             flexDir="column"
-            minW="90%"
+            minW={paginatedTags.length > 1 ? "90%" : "full"}
             gap={6}
           >
             {tagsPage.map((tag) => (
@@ -61,7 +61,12 @@ const TagsSection = (props: TagsSectionProps) => {
                       width={40}
                       height={40}
                     />
-                    <Text fontWeight={500} color="blackLight" ml={4}>
+                    <Text
+                      fontWeight={500}
+                      color="blackLight"
+                      ml={4}
+                      noOfLines={1}
+                    >
                       {tag.label}
                     </Text>
                   </Flex>

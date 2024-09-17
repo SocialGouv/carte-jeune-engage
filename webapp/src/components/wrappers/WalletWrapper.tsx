@@ -1,12 +1,15 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { PassIcon } from "../icons/pass";
+import { useRouter } from "next/router";
 
 type WalletWrapperProps = {
   children: ReactNode;
 };
 
 const WalletWrapper = ({ children }: WalletWrapperProps) => {
+  const router = useRouter();
+
   return (
     <Flex flexDir="column" pt={14} h="full" bgColor="bgGray">
       <Button
@@ -21,6 +24,7 @@ const WalletWrapper = ({ children }: WalletWrapperProps) => {
         fontWeight={500}
         borderRadius="2.5xl"
         size="xs"
+        onClick={() => router.push("/dashboard/account/card")}
       >
         Ma carte
       </Button>
