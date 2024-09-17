@@ -86,7 +86,7 @@ const CouponCodeCard = ({
 
 type CouponCardProps = {
   coupon: CouponIncluded;
-  mode: "default" | "wallet";
+  mode?: "default" | "wallet";
   handleOpenExternalLink?: () => void;
 };
 
