@@ -14,12 +14,13 @@ export default function SearchBar() {
         display="flex"
         alignItems="center"
         justifyContent="center"
-        height="100%"
-        paddingLeft="20px"
+        height="full"
+        pl={5}
+        mt={0.5}
       >
-        <CgSearch size="2rem" />
+        <CgSearch size={20} />
       </InputLeftElement>
-      <Input variant="unstyled" placeholder="Rechercher une marque" />
+      <Input variant="unstyled" ml={1} placeholder="Rechercher une marque" />
     </InputGroup>
   );
 }

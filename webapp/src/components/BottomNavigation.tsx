@@ -51,7 +51,7 @@ const BottomNavigation = () => {
       label: "Rechercher",
       icon: CgSearch,
       activeIcon: CgSearch,
-      href: "/dashboard/categories",
+      href: "/dashboard/search",
       matomoEvent: ["Navigation", "Rechercher"],
     },
   ];

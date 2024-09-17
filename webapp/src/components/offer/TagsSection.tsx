@@ -51,6 +51,7 @@ const TagsSection = (props: TagsSectionProps) => {
                 onClick={() => {
                   push(["trackEvent", "Accueil", "Tags - " + tag.label]);
                 }}
+                _hover={{ textDecoration: "none" }}
                 passHref
               >
                 <Flex alignItems="center" justifyContent="space-between">
