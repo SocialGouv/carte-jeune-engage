@@ -9,6 +9,7 @@ import { Offer } from "~/payload/payload-types";
 import { PiArrowUpRightBold } from "react-icons/pi";
 import { push } from "@socialgouv/matomo-next";
 import _ from "lodash";
+import ExpiryTag from "../offer/ExpiryTag";
 
 const CouponCodeCard = ({
   coupon,
@@ -155,6 +156,18 @@ const CouponCard = ({
           </Text>
         ) : (
           <Box w={20} h={3} bgColor="white" borderRadius="2.5xl" />
+        )}
+        {mode === "wallet" && (
+          <Box ml="auto">
+            {coupon ? (
+              <ExpiryTag
+                expiryDate={coupon?.offer.validityTo as string}
+                expiryTextMode="short"
+              />
+            ) : (
+              <Box w={16} h={5} bgColor="white" borderRadius="2.5xl" />
+            )}
+          </Box>
         )}
       </Flex>
       <Flex

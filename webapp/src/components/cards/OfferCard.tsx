@@ -7,6 +7,7 @@ import { HiClock } from "react-icons/hi2";
 import { api } from "~/utils/api";
 import ConditionalLink from "../ConditionalLink";
 import Image from "next/image";
+import ExpiryTag from "../offer/ExpiryTag";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
@@ -29,18 +30,7 @@ const OfferCard = ({
     ? [match[0], offer.title.replace(match[0], "").trim()]
     : [null, offer.title];
 
-  const differenceInDays = Math.floor(
-    (new Date(offer.validityTo).setHours(0, 0, 0, 0) -
-      new Date().setHours(0, 0, 0, 0)) /
-      (1000 * 3600 * 24)
-  );
-
   const isBookmarked = !!offer.userCoupon;
-
-  const expiryText =
-    differenceInDays > 0
-      ? `Fin dans ${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
-      : "Offre expirée";
 
   const {
     mutateAsync: mutateAsyncCouponToUser,
@@ -174,35 +164,7 @@ const OfferCard = ({
           gap={2}
           shadow="default"
         >
-          <Flex
-            alignSelf="center"
-            align="center"
-            borderRadius="2xl"
-            color={variant === "default" ? "white" : "black"}
-            bgColor={
-              variant === "default"
-                ? differenceInDays <= 10
-                  ? "bgRed"
-                  : "black"
-                : "inherit"
-            }
-            py={0.5}
-            px={2}
-          >
-            <Icon
-              as={variant === "default" ? HiClock : HiOutlineClock}
-              w={4}
-              h={4}
-              mr={1}
-            />
-            <Text
-              fontSize={variant === "default" ? 12 : 14}
-              fontWeight={700}
-              mb={0.5}
-            >
-              {expiryText}
-            </Text>
-          </Flex>
+          <ExpiryTag expiryDate={offer.validityTo} variant={variant} />
           <Flex
             flexDir="column"
             alignItems="center"

@@ -12,6 +12,7 @@ import BaseModal from "~/components/modals/BaseModal";
 import Image from "next/image";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { CouponIncluded } from "~/server/api/routers/coupon";
+import { getExpiryObject } from "../ExpiryTag";
 
 type CouponContentProps = {
   offer: OfferIncluded;
@@ -30,16 +31,7 @@ const CouponContent = (props: CouponContentProps) => {
     timeoutProgress,
   } = props;
 
-  const differenceInDays = Math.floor(
-    (new Date(coupon?.offer.validityTo as string).setHours(0, 0, 0, 0) -
-      new Date().setHours(0, 0, 0, 0)) /
-      (1000 * 3600 * 24)
-  );
-
-  const expiryText =
-    differenceInDays > 0
-      ? `Fin dans ${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
-      : "Offre expirée";
+  const { expiryText } = getExpiryObject(coupon.offer.validityTo);
 
   return (
     <Flex flexDir="column">
