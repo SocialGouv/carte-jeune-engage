@@ -65,7 +65,7 @@ const PhoneUnAuthorized = () => {
             la carte jeune engagé
           </Heading>
           <Flex
-            color="primary.500"
+            color="primary"
             fontWeight={"bold"}
             fontSize={"sm"}
             alignItems={"center"}

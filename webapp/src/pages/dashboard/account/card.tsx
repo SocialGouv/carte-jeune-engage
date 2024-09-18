@@ -47,7 +47,7 @@ export default function AccountCard() {
   const router = useRouter();
 
   return (
-    <Box pt={12} pb={36} px={8} bgColor="bgBlue" h="full">
+    <Box pt={12} pb={36} px={8} bgColor="primary" h="full">
       <Flex justifyContent="space-between">
         <IconButton
           variant="unstyled"

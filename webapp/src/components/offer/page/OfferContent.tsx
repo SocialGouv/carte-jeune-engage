@@ -273,9 +273,9 @@ const OfferContent = (props: OfferContentProps) => {
           w="40%"
           fontSize={16}
           borderWidth={1}
-          borderColor="cje-gray.100"
+          borderColor={hasCoupon ? "transparent" : "cje-gray.100"}
           color={hasCoupon ? "white" : "blackLight"}
-          colorScheme={hasCoupon ? "blue" : "inherit"}
+          colorScheme={hasCoupon ? "primaryShades" : "inherit"}
           isLoading={!hasCoupon && isLoadingValidateOffer}
           onClick={() => {
             if (hasCoupon) {

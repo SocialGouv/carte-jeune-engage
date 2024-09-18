@@ -178,7 +178,13 @@ const PassCard = ({ isPage, offer }: PropsPassCard) => {
               </Text>
             </Flex>
             <Flex justifyContent="center" mt={5}>
-              <Box bgColor="bgBlue" px={9} pt={6} pb={3} borderTopRadius="full">
+              <Box
+                bgColor="primary"
+                px={9}
+                pt={6}
+                pb={3}
+                borderTopRadius="full"
+              >
                 <Image
                   src="/images/cje-logo-white-blue.svg"
                   alt="Logo CJE"

@@ -148,17 +148,19 @@ export const theme = extendTheme({
     }),
   },
   colors: {
-    primary: {
-      "50": "#dee8ff",
-      "100": "#c3d3ff",
-      "200": "#9fb5ff",
-      "300": "#788dff",
-      "400": "#5965fb",
-      "500": "#4141f1",
-      "700": "#302dd5",
-      "800": "#2928ab",
-      "900": "#282a87",
-      "950": "#18184e",
+    primary: "#1698FC",
+    primaryShades: {
+      "50": "#edf8ff",
+      "100": "#d6f0fe",
+      "200": "#b5e3fe",
+      "300": "#83d4fd",
+      "400": "#47bcfd",
+      "500": "#1698fc",
+      "600": "#067bf6",
+      "700": "#0f64d2",
+      "800": "#1351aa",
+      "900": "#154685",
+      "950": "#122b51",
     },
     whiteBtn: {
       "50": "#FFFFFF",
@@ -207,7 +209,6 @@ export const theme = extendTheme({
     secondaryText: "#5C5C70",
     borderGray: "#B5BBBD",
     blackLight: "#20202C",
-    bgBlue: "#1698FC",
   },
   shadows: {
     "landing-phone-number-component":
