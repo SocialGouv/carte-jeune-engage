@@ -75,7 +75,9 @@ export default function AccountHistory() {
                 : userSaving.assignUserAt) as string
             );
             const previousCouponUsedAt = new Date(
-              userSavings[index - 1]?.usedAt as string
+              (userSavings[index - 1]?.usedAt
+                ? userSavings[index - 1].usedAt
+                : userSavings[index - 1]?.assignUserAt) as string
             );
 
             const currentMonth = currentCouponUsedAt.toLocaleString("fr-FR", {
