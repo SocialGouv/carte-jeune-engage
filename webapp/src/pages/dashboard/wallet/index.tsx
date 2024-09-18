@@ -89,7 +89,9 @@ export default function Wallet() {
           </Box>
         </>
       ) : (
-        <CouponCard mode="wallet" />
+        <Box px={8}>
+          <CouponCard mode="wallet" />
+        </Box>
       )}
       <Box px={8}>
         <Center
