@@ -1,10 +1,9 @@
-import { Icon, Link, Text, Flex } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/next-js";
+import { Icon, Link, Text, Flex, Box } from "@chakra-ui/react";
 import { HiBuildingStorefront, HiShoppingCart } from "react-icons/hi2";
 import { HiArrowRight } from "react-icons/hi";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import NextLink from "next/link";
-import NextImage from "next/image";
+import Image from "next/image";
 
 type InStoreSectionProps = {
   offer: OfferIncluded;
@@ -22,15 +21,27 @@ const InStoreSection = (props: InStoreSectionProps) => {
       bg={!withoutBackground ? "bgGray" : "inherit"}
       p={!withoutBackground ? 4 : 0}
     >
-      {offer.imageOfEligibleStores?.url && offer.linkOfEligibleStores && (
+      <Box position="relative">
         <Image
-          as={NextImage}
-          src={offer.imageOfEligibleStores.url}
-          alt={offer.imageOfEligibleStores.alt as string}
-          width={335}
-          height={142}
+          src="/images/map-magasin.png"
+          alt="Map du magasin avec le logo du partenaire"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: "100%", height: "142px" }}
         />
-      )}
+        <Image
+          src={offer.partner.icon.url as string}
+          alt={offer.partner.icon.alt as string}
+          width={46}
+          height={46}
+          style={{
+            position: "absolute",
+            top: "35%",
+            left: "43%",
+          }}
+        />
+      </Box>
       <Link
         as={NextLink}
         href={offer.linkOfEligibleStores ?? ""}
