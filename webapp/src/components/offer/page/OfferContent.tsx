@@ -188,7 +188,9 @@ const OfferContent = (props: OfferContentProps) => {
               <OrderedList fontWeight={500} pl={3}>
                 {itemsTermsOfUse.map((termOfUse) => (
                   <ListItem key={termOfUse.text} mb={2}>
-                    <TextWithLinks text={termOfUse.text} />
+                    <Text
+                      dangerouslySetInnerHTML={{ __html: termOfUse.text }}
+                    />
                   </ListItem>
                 ))}
               </OrderedList>

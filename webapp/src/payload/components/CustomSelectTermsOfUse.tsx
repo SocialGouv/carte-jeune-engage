@@ -8,30 +8,26 @@ export const getItemsTermsOfUse = (offerKind: Offer["kind"]) => {
   if (offerKind.startsWith("code")) {
     const defaultCodeItems = [
       {
-        text: "Je vais sur le site de l’offre ",
+        text: 'Cliquez sur "Voir le code"',
         slug: "use-link",
         icon: "HiLink",
       },
       {
-        text: "J’accepte les cookies sur le site du partenaire ",
+        text: "On vous emmène sur le bon site",
         slug: "accept-cookies",
         icon: "HiCheckBadge",
       },
     ];
 
     if (offerKind === "code") {
-      items.push(
-        { text: "Je copie mon code promo", slug: "copy-code", icon: "FiCopy" },
-        ...defaultCodeItems,
-        {
-          text: "Je colle mon code sur le site du partenaire dès qu'on me le demande",
-          slug: "paste-code",
-          icon: "FiCopy",
-        }
-      );
+      items.push(...defaultCodeItems, {
+        text: "Dès qu’il faut mettre le code carte <strong>“jeune engagé”</strong> on vous prévient 🙂",
+        slug: "paste-code",
+        icon: "FiCopy",
+      });
     } else if (offerKind === "code_space") {
       items.push(...defaultCodeItems, {
-        text: "Aucun code promo permet de débloquer cette offre",
+        text: "Vous n’avez plus qu’à acheter ce qu’il vous faut",
         slug: "no-code",
         icon: "HiLockClosed",
       });
@@ -39,22 +35,22 @@ export const getItemsTermsOfUse = (offerKind: Offer["kind"]) => {
   } else {
     const defaultVoucherItems = [
       {
-        text: "Je vais dans un magasin participant",
+        text: "Cliquez sur “Voir le code”",
         slug: "go-to-store",
         icon: "MdOutlineDirectionsWalk",
       },
       {
-        text: "J’achète les articles concernés par l’offre",
+        text: "Rendez-vous dans un des magasins participants",
         slug: "buy-items",
         icon: "HiShoppingCart",
       },
       {
-        text: "Je scanne mon code barre en caisse",
+        text: "Achetez les articles correspondants à la réduction",
         slug: "scan-barcode",
         icon: "HiReceiptPercent",
       },
       {
-        text: "Je présente ma carte CJE en caisse",
+        text: "Au moment de payer, scannez votre code barre en caisse",
         slug: "show-pass",
         icon: "PassIcon",
       },
@@ -64,7 +60,17 @@ export const getItemsTermsOfUse = (offerKind: Offer["kind"]) => {
       items.push(...defaultVoucherItems);
     } else if (offerKind === "voucher_pass") {
       items.push(
-        ...defaultVoucherItems.filter((item) => item.slug !== "scan-barcode")
+        ...defaultVoucherItems.filter((item) => item.slug === "buy-items"),
+        {
+          text: 'Cliquez sur <strong>"présenter ma carte"</strong>',
+          slug: "show-pass",
+          icon: "PassIcon",
+        },
+        {
+          text: "La personne en caisse vous offre la réduction",
+          slug: "offer-reduction",
+          icon: "PassIcon",
+        }
       );
     }
   }
