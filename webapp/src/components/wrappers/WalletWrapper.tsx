@@ -34,9 +34,8 @@ const WalletWrapper = ({ children }: WalletWrapperProps) => {
         bgColor="white"
         borderTopRadius="2.5xl"
         pt={5}
-        px={8}
       >
-        <Heading as="h2" fontWeight={800}>
+        <Heading as="h2" fontWeight={800} px={8}>
           Mes Réductions
         </Heading>
         <Box flex={1} mt={8} pb={28}>

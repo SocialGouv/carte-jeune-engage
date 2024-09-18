@@ -14,10 +14,12 @@ import ConditionalLink from "../ConditionalLink";
 
 const CouponCodeCard = ({
   coupon,
+  mode,
   offerKind,
   barCodeFormat,
 }: {
   coupon: CouponIncluded;
+  mode: "default" | "wallet";
   offerKind: Offer["kind"];
   barCodeFormat: Offer["barcodeFormat"];
 }) => {
@@ -25,7 +27,12 @@ const CouponCodeCard = ({
     case "code":
     case "code_space":
       return (
-        <Text fontSize={24} fontWeight={800} letterSpacing={2}>
+        <Text
+          fontSize={24}
+          fontWeight={800}
+          letterSpacing={2}
+          filter={mode === "default" ? "none" : "blur(5px)"}
+        >
           {offerKind === "code"
             ? coupon.code
             : "Le code est déjà appliqué sur le site 😉"}
@@ -35,7 +42,13 @@ const CouponCodeCard = ({
     case "voucher_pass":
       return (
         <Flex flexDir="column">
-          <Flex w="auto" bgColor="white" borderRadius="2lg" p={2}>
+          <Flex
+            w="auto"
+            bgColor="white"
+            borderRadius="2lg"
+            p={2}
+            filter={mode === "default" ? "none" : "blur(5px)"}
+          >
             <Barcode
               value={coupon.code}
               background="white"
@@ -156,8 +169,8 @@ const CouponCard = ({
               <Image
                 src={coupon.offer.partner.icon.url ?? ""}
                 alt={coupon.offer.partner.icon.alt ?? ""}
-                width={40}
-                height={40}
+                width={34}
+                height={34}
               />
             ) : (
               <Box w={8} h={8} bgColor="white" borderRadius="2.5xl" />
@@ -211,7 +224,6 @@ const CouponCard = ({
               textAlign="center"
               px={4}
               py={6}
-              filter={mode === "default" ? "none" : "blur(5px)"}
               onClick={() => {
                 if (coupon.offer.kind === "code") {
                   push([
@@ -224,6 +236,7 @@ const CouponCard = ({
               }}
             >
               <CouponCodeCard
+                mode={mode}
                 coupon={coupon}
                 offerKind={coupon.offer.kind}
                 barCodeFormat={coupon.offer.barcodeFormat}
