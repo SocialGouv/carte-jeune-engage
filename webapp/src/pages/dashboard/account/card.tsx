@@ -21,7 +21,7 @@ const HeaderButton = ({
   return (
     <Link
       as={NextLink}
-      href="/dashboard/account"
+      href={link}
       _hover={{ textDecoration: "none" }}
       passHref
     >

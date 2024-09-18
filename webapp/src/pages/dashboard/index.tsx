@@ -169,7 +169,7 @@ export default function Dashboard() {
         <Heading as="h2" fontSize="2xl" fontWeight="extrabold" mb={9}>
           Explorer
         </Heading>
-        <SearchBar />
+        <SearchBar search="" setSearch={() => ""} />
       </Box>
       <Flex
         overflowX="auto"
