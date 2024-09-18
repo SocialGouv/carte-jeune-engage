@@ -12,9 +12,10 @@ type OfferHeaderWrapperProps = {
   children: ReactNode;
   kind: "offer" | "coupon";
   setKind: (kind: "offer" | "coupon") => void;
+  hasCoupon?: boolean;
   partnerColor?: string;
   headerComponent?: ReactNode;
-  displayBookmarkModal: boolean;
+  offerPageSessionStartTime?: number;
   handleBookmarkOfferToUser: () => Promise<{ data: Coupon }>;
 };
 
@@ -22,8 +23,9 @@ const OfferHeaderWrapper = ({
   children,
   kind,
   partnerColor,
+  hasCoupon,
   headerComponent,
-  displayBookmarkModal,
+  offerPageSessionStartTime,
   handleBookmarkOfferToUser,
   setKind,
 }: OfferHeaderWrapperProps) => {
@@ -40,14 +42,24 @@ const OfferHeaderWrapper = ({
     if (kind === "coupon") {
       setKind("offer");
     } else {
-      router.back();
+      // push(["trackEvent", "Retour"]);
+      const currentTime = new Date().getTime();
+      if (
+        offerPageSessionStartTime &&
+        currentTime - offerPageSessionStartTime > 3000 &&
+        !hasCoupon
+      ) {
+        onOpen();
+      } else {
+        router.back();
+      }
     }
   };
 
   const [isModalOfferBookmarkSuccess, setIsModalOfferBookmarkSuccess] =
     useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure({
-    onClose: () => handleBackButton(),
+    onClose: () => router.back(),
   });
 
   const handleBookmarkOffer = async () => {
@@ -77,14 +89,7 @@ const OfferHeaderWrapper = ({
             aria-label="Retour"
             colorScheme="whiteBtn"
             mb={6}
-            onClick={() => {
-              push(["trackEvent", "Retour"]);
-              if (displayBookmarkModal && kind === "offer") {
-                onOpen();
-              } else {
-                handleBackButton();
-              }
-            }}
+            onClick={handleBackButton}
             borderRadius="2.25xl"
             size="md"
             icon={<ChevronLeftIcon w={6} h={6} color="black" />}

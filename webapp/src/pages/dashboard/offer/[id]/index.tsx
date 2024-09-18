@@ -52,7 +52,7 @@ export default function OfferPage() {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [kind, setKind] = useState<"offer" | "coupon">("offer");
 
-  const [displayBookmarkModal, setDisplayBookmarkModal] = useState(false);
+  const offerPageSessionStartTime = new Date().getTime();
 
   const handleValidateOffer = async (
     offerId: number,
@@ -123,25 +123,11 @@ export default function OfferPage() {
     }
   }, [isLoadingOffer, isLoadingCoupon, offer]);
 
-  useEffect(() => {
-    let timeoutIdToOpenBookmarkModal: NodeJS.Timeout | undefined;
-    if (!isLoadingCoupon && !coupon) {
-      timeoutIdToOpenBookmarkModal = setTimeout(() => {
-        setDisplayBookmarkModal(true);
-      }, 3000);
-    } else {
-      setDisplayBookmarkModal(false);
-      clearTimeout(timeoutIdToOpenBookmarkModal);
-    }
-    return () => clearTimeout(timeoutIdToOpenBookmarkModal);
-  }, [isLoadingCoupon]);
-
   if (isLoadingOffer || isLoadingCoupon || !offer)
     return (
       <OfferHeaderWrapper
         kind="offer"
         setKind={setKind}
-        displayBookmarkModal={false}
         handleBookmarkOfferToUser={handleBookmarkOfferToUser}
       >
         <Center h="full">
@@ -155,6 +141,7 @@ export default function OfferPage() {
       kind={kind}
       setKind={setKind}
       partnerColor={offer.partner.color}
+      hasCoupon={!!coupon}
       headerComponent={
         <AnimatePresence mode="wait">
           <motion.div
@@ -186,7 +173,7 @@ export default function OfferPage() {
           </motion.div>
         </AnimatePresence>
       }
-      displayBookmarkModal={displayBookmarkModal}
+      offerPageSessionStartTime={offerPageSessionStartTime}
       handleBookmarkOfferToUser={handleBookmarkOfferToUser}
     >
       {kind === "offer" ? (
