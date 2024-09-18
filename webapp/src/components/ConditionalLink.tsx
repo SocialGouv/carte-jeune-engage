@@ -10,7 +10,7 @@ export default function ConditionalLink({
   children: React.ReactNode;
   condition: boolean;
   to: string;
-  props: ChakraProps & LinkProps;
+  props?: ChakraProps & LinkProps;
 }) {
   return !!condition && to ? (
     <Link as={NextLink} href={to} passHref {...props}>

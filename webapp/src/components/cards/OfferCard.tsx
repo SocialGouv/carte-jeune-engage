@@ -91,7 +91,6 @@ const OfferCard = ({
           <Image
             src={offer.image?.url ?? "/images/landing/mobile-showcase.png"}
             alt={offer.image?.alt ?? "Image par défaut de l'offre"}
-            fetchPriority="high"
             loading="eager"
             objectFit="cover"
             objectPosition="center"

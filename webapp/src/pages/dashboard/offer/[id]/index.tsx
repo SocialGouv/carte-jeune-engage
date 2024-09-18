@@ -118,12 +118,26 @@ export default function OfferPage() {
   });
 
   useEffect(() => {
-    if (!isLoadingOffer && !isLoadingCoupon && offer) {
+    if (
+      !isLoadingOffer &&
+      !isLoadingCoupon &&
+      offer &&
+      router.isReady &&
+      !("offerKind" in router.query)
+    ) {
       setIsFirstLoad(false);
     }
-  }, [isLoadingOffer, isLoadingCoupon, offer]);
+  }, [isLoadingOffer, isLoadingCoupon, offer, router.isReady, router.query]);
 
-  if (isLoadingOffer || isLoadingCoupon || !offer)
+  useEffect(() => {
+    const { offerKind } = router.query;
+    if (offerKind === "coupon" && router.isReady && coupon) {
+      setKind("coupon");
+      router.replace(`/dashboard/offer/${id}`);
+    }
+  }, [router.isReady, isLoadingCoupon]);
+
+  if (isLoadingOffer || isLoadingCoupon || !offer || !router.isReady)
     return (
       <OfferHeaderWrapper
         kind="offer"
@@ -146,9 +160,9 @@ export default function OfferPage() {
         <AnimatePresence mode="wait">
           <motion.div
             key={kind === "offer" || !coupon ? "offer" : "coupon"}
-            initial={isFirstLoad ? false : "hidden"}
-            animate="visible"
-            exit="exit"
+            initial={isFirstLoad ? undefined : "hidden"}
+            animate={isFirstLoad ? undefined : "visible"}
+            exit={isFirstLoad ? undefined : "exit"}
             variants={flipVariants}
             transition={{ duration: 0.4 }}
             style={{ perspective: 1000 }}

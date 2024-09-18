@@ -18,19 +18,6 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import TagsSection from "~/components/offer/TagsSection";
 
-const WalletNoData = () => {
-  return (
-    <Box textAlign="center" mt={40} px={8} minH="max-content">
-      <Heading size="md" mt={1} mb={2}>
-        Commencez à activer des offres pour les retrouver ici !
-      </Heading>
-      <Text color="gray.500">
-        Vous n’avez pas encore enregistré de réductions.
-      </Text>
-    </Box>
-  );
-};
-
 export default function Wallet() {
   const router = useRouter();
 
@@ -58,7 +45,12 @@ export default function Wallet() {
         <>
           <Flex flexDir="column" gap={6}>
             {currentUserCoupons.map((coupon) => (
-              <CouponCard key={coupon.id} coupon={coupon} mode="wallet" />
+              <CouponCard
+                key={coupon.id}
+                coupon={coupon}
+                link={`/dashboard/offer/${coupon.offer.id}?offerKind=coupon`}
+                mode="wallet"
+              />
             ))}
           </Flex>
           <Divider mt={16} borderColor="cje-gray.100" />
