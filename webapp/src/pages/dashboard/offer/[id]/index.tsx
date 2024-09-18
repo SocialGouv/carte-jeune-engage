@@ -172,7 +172,7 @@ export default function OfferPage() {
                 <OfferCard
                   offer={offer}
                   variant="minimal"
-                  onClick={() => setKind("coupon")}
+                  handleValidateOffer={handleValidateOffer}
                 />
               </motion.div>
             ) : (

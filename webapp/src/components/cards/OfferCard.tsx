@@ -13,14 +13,14 @@ type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
   variant?: "default" | "minimal";
   matomoEvent?: string[];
-  onClick?: () => void;
+  handleValidateOffer?: (offerId: number) => void;
 };
 
 const OfferCard = ({
   offer,
   variant = "default",
   matomoEvent = [],
-  onClick,
+  handleValidateOffer,
 }: OfferCardProps) => {
   const utils = api.useUtils();
 
@@ -74,7 +74,10 @@ const OfferCard = ({
       <Flex
         flexDir="column"
         pb={variant === "default" ? 8 : 0}
-        onClick={() => onClick && onClick()}
+        onClick={() => {
+          if (variant === "minimal" && handleValidateOffer)
+            handleValidateOffer(offer.id);
+        }}
       >
         <Flex
           borderTopRadius={20}
