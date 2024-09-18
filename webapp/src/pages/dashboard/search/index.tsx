@@ -6,7 +6,6 @@ import { paginateArray } from "~/utils/tools";
 import NextLink from "next/link";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
-import ChakraNextImage from "~/components/ChakraNextImage";
 import { useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { HiArrowRight } from "react-icons/hi";
@@ -75,7 +74,8 @@ export default function DashboardSearch() {
               {paginatedTags.map((tagsPage) => (
                 <Flex
                   key={tagsPage.map((tagPage) => tagPage.slug).join("-")}
-                  gap={6}
+                  flexDir={debouncedSearch ? "column" : "row"}
+                  gap={debouncedSearch ? 3 : 6}
                 >
                   {tagsPage.map((tag, tagIndex) => (
                     <Link
@@ -133,13 +133,12 @@ export default function DashboardSearch() {
                   passHref
                 >
                   <Flex key={partner.id} alignItems="center" gap={3}>
-                    <ChakraNextImage
+                    <Image
                       src={partner.icon.url as string}
                       alt={partner.icon.alt as string}
-                      width={12}
-                      height={12}
-                      borderRadius="2.5xl"
-                      mt={1}
+                      width={42}
+                      height={42}
+                      style={{ borderRadius: "20px", marginTop: "4px" }}
                     />
                     <Text fontWeight={500} fontSize={18} color="blackLight">
                       {partner.name}

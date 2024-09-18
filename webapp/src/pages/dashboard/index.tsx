@@ -194,12 +194,12 @@ export default function Dashboard() {
             À utiliser en ligne
           </Heading>
           <Grid
-            templateColumns="repeat(auto-fit, minmax(285px, 1fr))"
+            templateColumns="repeat(auto-fit, 100%)"
             gridAutoFlow="column"
-            gridAutoColumns="minmax(285px, 1fr)"
+            gridAutoColumns="100%"
             mt={6}
             px={8}
-            gap={4}
+            gap={2}
             pb={2}
             overflowX="auto"
             sx={{
@@ -228,12 +228,12 @@ export default function Dashboard() {
             À utiliser en magasin
           </Heading>
           <Grid
-            templateColumns="repeat(auto-fit, minmax(285px, 1fr))"
+            templateColumns="repeat(auto-fit, 100%)"
             gridAutoFlow="column"
-            gridAutoColumns="minmax(285px, 1fr)"
+            gridAutoColumns="100%"
             mt={4}
             px={8}
-            gap={4}
+            gap={3}
             pb={2}
             overflowX="auto"
             sx={{

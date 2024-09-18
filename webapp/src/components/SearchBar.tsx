@@ -1,6 +1,13 @@
 import React from "react";
-import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
+import {
+  InputGroup,
+  InputLeftElement,
+  Input,
+  InputRightElement,
+  Icon,
+} from "@chakra-ui/react";
 import { CgSearch } from "react-icons/cg";
+import { HiMiniXCircle } from "react-icons/hi2";
 
 type SearchBarProps = {
   search: string;
@@ -10,6 +17,7 @@ type SearchBarProps = {
 export default function SearchBar({ search, setSearch }: SearchBarProps) {
   return (
     <InputGroup
+      alignItems="center"
       background={"cje-gray.500"}
       borderRadius={"1.125rem"}
       padding={"1rem 0.5rem"}
@@ -32,6 +40,16 @@ export default function SearchBar({ search, setSearch }: SearchBarProps) {
         ml={1}
         placeholder="Rechercher une marque"
       />
+      {search && (
+        <Icon
+          as={HiMiniXCircle}
+          w={5}
+          h={5}
+          mt={1}
+          mr={2}
+          onClick={() => setSearch("")}
+        />
+      )}
     </InputGroup>
   );
 }
