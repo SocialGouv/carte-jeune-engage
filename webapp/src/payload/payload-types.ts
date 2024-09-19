@@ -20,6 +20,7 @@ export interface Config {
     savings: Saving;
     notifications: Notification;
     tags: Tag;
+    search_requests: SearchRequest;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -272,6 +273,17 @@ export interface Notification {
     | boolean
     | null;
   appVersion?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search_requests".
+ */
+export interface SearchRequest {
+  id: number;
+  name: string;
+  count: number;
   updatedAt: string;
   createdAt: string;
 }

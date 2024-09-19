@@ -198,7 +198,7 @@ export const theme = extendTheme({
       "800": "#ffffff",
       "900": "#ffffff",
     },
-    success: "#459F00",
+    success: "#73D700",
     successLight: "#E9F6DF",
     error: "#FF5959",
     bgRed: "#F13C22",
@@ -230,5 +230,8 @@ export const theme = extendTheme({
   },
   fontSizes: {
     xss: "0.7rem",
+  },
+  space: {
+    "5.5": "1.375rem",
   },
 });

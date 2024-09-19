@@ -9,6 +9,7 @@ import { globalsRouter } from "./routers/globals";
 import { savingRouter } from "./routers/saving";
 import { permissionRouter } from "./routers/permission";
 import { tagRouter } from "./routers/tag";
+import { searchRequestRouter } from "./routers/searchRequest";
 
 /**
  * This is the primary router for your server.
@@ -25,6 +26,7 @@ export const appRouter = createTRPCRouter({
   saving: savingRouter,
   permission: permissionRouter,
   tag: tagRouter,
+  searchRequest: searchRequestRouter,
 });
 
 // export type definition of API

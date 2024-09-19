@@ -25,6 +25,7 @@ import { Supervisors } from "./collections/Supervisor";
 import { Permissions } from "./collections/Permission";
 import { Notifications } from "./collections/Notification";
 import { Tags } from "./collections/Tag";
+import { SearchRequests } from "./collections/SearchRequest";
 
 const adapter = s3Adapter({
   config: {
@@ -78,6 +79,7 @@ export default buildConfig({
     Savings,
     Notifications,
     Tags,
+    SearchRequests,
   ],
   localization: {
     locales: ["fr"],
