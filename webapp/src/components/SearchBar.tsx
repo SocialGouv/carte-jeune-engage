@@ -3,8 +3,9 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
-  InputRightElement,
   Icon,
+  ChakraProps,
+  InputProps,
 } from "@chakra-ui/react";
 import { CgSearch } from "react-icons/cg";
 import { HiMiniXCircle } from "react-icons/hi2";
@@ -12,9 +13,14 @@ import { HiMiniXCircle } from "react-icons/hi2";
 type SearchBarProps = {
   search: string;
   setSearch: (search: string) => void;
+  inputProps?: ChakraProps & InputProps;
 };
 
-export default function SearchBar({ search, setSearch }: SearchBarProps) {
+export default function SearchBar({
+  search,
+  setSearch,
+  inputProps,
+}: SearchBarProps) {
   return (
     <InputGroup
       alignItems="center"
@@ -34,6 +40,7 @@ export default function SearchBar({ search, setSearch }: SearchBarProps) {
         <CgSearch size={20} />
       </InputLeftElement>
       <Input
+        {...inputProps}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         variant="unstyled"

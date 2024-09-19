@@ -30,7 +30,11 @@ const SearchWrapper = ({ children, search, setSearch }: SearchWrapperProps) => {
           aria-label="Retour à l'accueil"
           onClick={() => router.push("/dashboard")}
         />
-        <SearchBar search={search} setSearch={setSearch} />
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          inputProps={{ autoFocus: true }}
+        />
       </Flex>
       {children}
     </Box>

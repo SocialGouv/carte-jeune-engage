@@ -6,11 +6,11 @@ import {
   Grid,
   Heading,
   Text,
+  Link,
 } from "@chakra-ui/react";
 import { mostReadable } from "@ctrl/tinycolor";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
-import Link from "next/link";
 import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
 import SearchBar from "~/components/SearchBar";
@@ -20,6 +20,7 @@ import { CategoryIncluded } from "~/server/api/routers/category";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { api } from "~/utils/api";
 import { paginateArray } from "~/utils/tools";
+import NextLink from "next/link";
 
 type CategoryWithOffers = CategoryIncluded & { offers: OfferIncluded[] };
 
@@ -77,6 +78,7 @@ export default function Dashboard() {
 
     return (
       <Link
+        as={NextLink}
         key={category.id}
         href={`/dashboard/category/${category.slug}`}
         onClick={() => {
@@ -169,7 +171,14 @@ export default function Dashboard() {
         <Heading as="h2" fontSize="2xl" fontWeight="extrabold" mb={9}>
           Explorer
         </Heading>
-        <SearchBar search="" setSearch={() => ""} />
+        <Link
+          as={NextLink}
+          href="/dashboard/search"
+          _hover={{ textDecoration: "none" }}
+          passHref
+        >
+          <SearchBar search="" setSearch={() => ""} />
+        </Link>
       </Box>
       <Flex
         overflowX="auto"
