@@ -21,7 +21,7 @@ import { useGSAP } from "@gsap/react";
 import { setCookie } from "cookies-next";
 import { isValidMotionProp, motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type SubmitHandler, ErrorOption } from "react-hook-form";
 import {
   HiCalendarDays,
@@ -48,6 +48,7 @@ import QRCodeWrapper from "~/components/landing/QRCode";
 import NotEligibleForm from "~/components/landing/NotEligibleForm";
 import { useAuth } from "~/providers/Auth";
 import OtpInput from "react-otp-input";
+import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedImages";
 
 const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
@@ -122,6 +123,8 @@ export default function Home() {
     name: ComponentPhoneNumberKeys;
     error: ErrorOption;
   } | null>(null);
+
+  const firstSectionRef = useRef<HTMLDivElement>(null);
 
   const resetTimer = () => {
     if (intervalId) clearInterval(intervalId);
@@ -226,14 +229,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (!isOtpGenerated) return;
     const id = setInterval(() => {
       setTimeToResend((prevTime) => prevTime - 1);
     }, 1000);
-
     setIntervalId(id);
-
     return () => clearInterval(id);
-  }, []);
+  }, [isOtpGenerated]);
 
   if (isLoadingLogin || forceLoader || isLoadingLogoPartners || isLoadingFAQ)
     return <BigLoader />;
@@ -340,10 +342,86 @@ export default function Home() {
     );
   }
 
+  const ellipseImages = useBreakpointValue({
+    base: [
+      "/images/seeds/tags/sport_equipment.png",
+      "/images/seeds/tags/computer.png",
+      "/images/seeds/tags/grocery.png",
+      "/images/seeds/tags/license.png",
+      "/images/seeds/tags/culture.png",
+      "/images/seeds/tags/clothes.png",
+    ],
+    lg: [
+      "/images/seeds/tags/sport_equipment.png",
+      "/images/seeds/tags/books.png",
+      "/images/seeds/tags/bike.png",
+      "/images/seeds/tags/culture.png",
+      "/images/seeds/tags/computer.png",
+      "/images/seeds/tags/grocery.png",
+      "/images/seeds/tags/washing_machine.png",
+      "/images/seeds/tags/desk_equipment.png",
+      "/images/seeds/tags/license.png",
+      "/images/seeds/tags/clothes.png",
+    ],
+  });
+
   return (
     <>
-      <Flex flexDir="column" h="full">
+      <Flex
+        flexDir="column"
+        h="full"
+        overflow={{ base: "hidden", lg: "visible" }}
+      >
         <Flex
+          flexDir="column"
+          justify={"center"}
+          align={"center"}
+          textAlign="center"
+          gap={8}
+          mt={{ base: 28, lg: 44 }}
+          mb={{ base: 24, lg: 36 }}
+          pos={"relative"}
+          ref={firstSectionRef}
+        >
+          <Image
+            src="/images/cje-logo.png"
+            alt="Logo de l'application Carte Jeune Engagé"
+            width={{ base: "116px", lg: "176px" }}
+            height={{ base: "64px", lg: "94px" }}
+          />
+          <Box w={{ base: "80%", lg: "full" }}>
+            <Heading
+              fontSize={{ base: "2xl", lg: "56px" }}
+              fontWeight="extrabold"
+              px={{ base: 2, lg: 0 }}
+            >
+              Des avantages pour les jeunes
+              <Box as="br" display={{ base: "none", lg: "block" }} /> qui
+              s’engagent pour leur avenir
+            </Heading>
+            <Text
+              fontSize={{ base: "xs", lg: "sm" }}
+              fontWeight="medium"
+              color="disabled"
+              mt={8}
+            >
+              Dispositif en cours d’expérimentation
+            </Text>
+          </Box>
+
+          {firstSectionRef.current && (
+            <EllipsePositionnedImages
+              images={ellipseImages || []}
+              radiusX={
+                firstSectionRef.current.getBoundingClientRect().width / 2
+              }
+              radiusY={
+                firstSectionRef.current.getBoundingClientRect().height / 1.3
+              }
+            />
+          )}
+        </Flex>
+        {/* <Flex
           id="login-form"
           alignItems="center"
           px={8}
@@ -384,7 +462,7 @@ export default function Home() {
             display={{ base: "none", lg: "block" }}
             src="/images/landing/main.png"
           />
-        </Flex>
+        </Flex> */}
         <Flex flexDir="column" textAlign="center" gap={8}>
           <Heading fontSize="3xl" fontWeight="extrabold">
             Ils vous offrent{" "}
