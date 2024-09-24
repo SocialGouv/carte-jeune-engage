@@ -41,7 +41,7 @@ const FAQSectionAccordionItem = ({
   return (
     <AccordionItem borderTopWidth={index == 0 ? 0 : 1}>
       {({ isExpanded }) => (
-        <Box pb={{ base: isExpanded ? 2 : 0, lg: 8 }}>
+        <Box pb={isExpanded ? 2 : 0}>
           <AccordionButton
             _hover={{
               background: "none",

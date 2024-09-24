@@ -86,6 +86,15 @@ const referentItems: { name: string; image: string; link: string }[] = [
   { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png", link: "#" },
 ];
 
+const offersList = [
+  {
+    title_particle: "un cinéma",
+    card_img: "/images/landing/offers/cinema-card.png",
+    tag_img: "/images/seeds/tags/culture.png",
+    tagRotationAngle: -11,
+  },
+];
+
 export default function Home() {
   const router = useRouter();
 
@@ -676,6 +685,97 @@ export default function Home() {
             </Flex>
           </Flex>
         </Flex>
+        <Flex
+          flexDir={{ base: "column", lg: "row-reverse" }}
+          bg={"blackLight"}
+          w={{ base: "95%", lg: "full" }}
+          mx={"auto"}
+          rounded={"2.5rem"}
+          mt={20}
+          gap={{ base: 7, lg: 12 }}
+          p={{ base: 8, lg: 20 }}
+          pl={{ lg: 44 }}
+          pr={{ lg: 8 }}
+          py={12}
+        >
+          <Flex flex={1}>
+            <Flex flex={1} alignSelf={"start"}>
+              <Image src="/images/landing/auchan-card.gif" fit={"contain"} />
+            </Flex>
+            <Flex flex={1} mt={16}>
+              <Image src="/images/landing/flixbus-card.gif" fit={"contain"} />
+            </Flex>
+          </Flex>
+          <Flex flex={1} flexDir={"column"} color={"white"} gap={4}>
+            <Heading
+              fontSize={{ base: "2xl", lg: "5xl" }}
+              fontWeight="extrabold"
+            >
+              Avec des réductions à utiliser en ligne ou en magasin
+            </Heading>
+            <Text>
+              Des réductions pour les courses, pour du matériel informatique et
+              pro, pour des vêtements, des loisirs, de la musique et du sport
+              entre autres
+            </Text>
+            <Link
+              textDecor={"underline"}
+              fontWeight={{ base: "bold", lg: "extrabold" }}
+              fontSize={{ lg: "lg" }}
+              onClick={() => {}}
+            >
+              Voir si je suis éligible →
+            </Link>
+          </Flex>
+        </Flex>
+        <Flex
+          flexDir={{ base: "column", lg: "row-reverse" }}
+          bg={"bgGray"}
+          w={{ base: "95%", lg: "full" }}
+          mx={"auto"}
+          rounded={"2.5rem"}
+          mt={20}
+          gap={{ base: 7, lg: 12 }}
+          p={{ base: 8, lg: 20 }}
+          pl={{ lg: 44 }}
+          pr={{ lg: 8 }}
+          py={12}
+        >
+          <Flex flex={1} justify="center" align="center">
+            <Box pos="relative" w="50%">
+              <Image
+                src="/images/seeds/tags/culture.png"
+                fit="contain"
+                pos="absolute"
+                left={-12}
+                top={50}
+                transform="rotate(-11deg)"
+              />
+              <Image src="/images/landing/offers/cinema-card.png" />
+            </Box>
+          </Flex>
+          <Flex flex={1} flexDir="column" gap={4}>
+            <Heading
+              fontSize={{ base: "2xl", lg: "5xl" }}
+              fontWeight="extrabold"
+            >
+              Des réductions utiles, pour un cinéma
+            </Heading>
+            <Text>
+              Des réductions pour les courses, pour du matériel informatique et
+              pro, pour des vêtements, des loisirs, de la musique et du sport
+              entre autres
+            </Text>
+            <Link
+              textDecor={"underline"}
+              fontWeight={{ base: "bold", lg: "extrabold" }}
+              fontSize={{ lg: "lg" }}
+              onClick={() => {}}
+            >
+              Voir toutes les entreprises engagées →
+            </Link>
+          </Flex>
+        </Flex>
         <Box px={{ base: 10, lg: 44 }} mt={10}>
           <Center
             bgColor="primary"
@@ -756,16 +856,21 @@ export default function Home() {
             ))}
           </Flex>
         </Box>
-        <Box px={2} mt={20}>
+        <Box px={{ base: 2, lg: 44 }} mt={20}>
           <Box
             id="faq-section"
             bgColor="blackLight"
             color="white"
-            p={{ base: 8, lg: 20 }}
+            py={8}
+            px={{ base: 8, lg: "25%" }}
             borderRadius="5xl"
             textAlign={{ base: "start", lg: "center" }}
           >
-            <Heading size={{ base: "xl", lg: "2xl" }} fontWeight="extrabold">
+            <Heading
+              size={{ base: "xl", lg: "2xl" }}
+              lineHeight="short!important"
+              fontWeight="extrabold"
+            >
               On répond à vos questions
             </Heading>
             <Accordion mt={4} mb={8} allowToggle>
@@ -785,7 +890,7 @@ export default function Home() {
           <Flex
             flexDir="column"
             mt={20}
-            px={8}
+            px={{ base: 8, lg: 28 }}
             py={14}
             bgColor="primary"
             color="white"
