@@ -51,20 +51,15 @@ const Footer = () => {
             justifyContent={{ base: "start", lg: "space-between" }}
             textAlign="start"
           >
-            <Box flex={1}>
-              <Text
-                align="start"
-                color="secondaryText"
-                fontSize="sm"
-                cursor="pointer"
-                onClick={handleIsEligibleClick}
-              >
-                Vérifier mon éligibilité
-              </Text>
-            </Box>
             {menuItems.map((item) => (
-              <Box key={item.slug} flex={1}>
-                <Link href={`/#${item.slug}-section`}>
+              <Box key={item.link} flex={1}>
+                <Link
+                  href={
+                    item.link.includes("#")
+                      ? `/#${item.link}-section`
+                      : item.link
+                  }
+                >
                   <Text
                     key={item.title}
                     align="start"
@@ -96,7 +91,7 @@ const Footer = () => {
                 <Image
                   src="/images/landing/ministere-travail.png"
                   alt="Logo marianne du gouvernement français"
-                  width="215px"
+                  width="130px"
                   height="130px"
                   mr={4}
                 />

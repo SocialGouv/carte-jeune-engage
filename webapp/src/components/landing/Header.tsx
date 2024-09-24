@@ -19,6 +19,7 @@ import NextLink from "next/link";
 import { useRef } from "react";
 import useActiveSection from "~/hooks/useActiveSection";
 import { useOnClickOutside } from "usehooks-ts";
+import NextImage from "next/image";
 
 export const menuItems: { title: string; link: string }[] = [
   { title: "Les entreprises engagées", link: "/partners" },
@@ -58,38 +59,54 @@ const Header = () => {
   };
 
   return (
-    <Box ref={headerRef} position="sticky" top={0} zIndex={10}>
+    <Box
+      ref={headerRef}
+      position="sticky"
+      top={0}
+      bgColor="white"
+      zIndex={10}
+      borderBottomWidth={1}
+      borderBottomColor="borderGray"
+    >
       <Container maxWidth="container.xl" px={0} h="full">
         <Flex
           id="login-gov-image"
-          py={6}
-          pb={4}
-          bgColor="white"
+          py={{ base: 0, lg: 2 }}
           justifyContent="space-between"
           alignItems="center"
           pl={4}
           pr={6}
         >
-          <Link href="/">
-            <Flex id="login-gov-image" alignItems="center" h="full">
-              <ChakraNextImage
-                src="/images/marianne.svg"
-                alt="Logo marianne du gouvernement français"
-                width={74}
-                height={49}
-                pr={2}
-                mr={3}
-              />
-              {isDesktop && (
+          <Flex id="login-gov-image" alignItems="center" h="full">
+            <NextImage
+              src="/images/landing/ministere-travail.png"
+              alt="Logo marianne du gouvernement français"
+              width={100}
+              height={100}
+              style={{ marginRight: 35 }}
+            />
+            {isDesktop && (
+              <Link
+                display="flex"
+                alignItems="center"
+                as={NextLink}
+                href="/"
+                passHref
+                _hover={{ textDecor: "none" }}
+              >
                 <ChakraNextImage
                   src="/images/cje-logo.png"
                   alt="Logo de l'application Carte Jeune Engagé"
                   width={69}
                   height={38}
+                  mr={3}
                 />
-              )}
-            </Flex>
-          </Link>
+                <Text fontWeight={700} fontSize={18}>
+                  Carte jeune engagé
+                </Text>
+              </Link>
+            )}
+          </Flex>
           <Flex alignItems="center" ml="auto">
             <ButtonGroup spacing={4} position="relative" ref={buttonRef}>
               <Button
@@ -136,9 +153,9 @@ const Header = () => {
                   className={isOpen ? "open" : "closed"}
                   flexDir="column"
                   position="absolute"
-                  top={{ base: 0, lg: -4 }}
+                  top={{ base: 0, lg: -6 }}
                   right={{ base: 0, lg: -4 }}
-                  left={{ base: 0, lg: -44 }}
+                  left={{ base: 0, lg: -48 }}
                   borderRadius={{ base: "none", lg: "5xl" }}
                   pt={20}
                   pb={12}
@@ -150,7 +167,11 @@ const Header = () => {
                       <Link
                         key={link}
                         as={NextLink}
-                        href={`/${link}-section` ?? "#"}
+                        href={
+                          link.includes("#")
+                            ? (`/${link}-section` ?? "#")
+                            : link
+                        }
                         onClick={onToggle}
                         justifyContent="space-between"
                         alignItems="center"
