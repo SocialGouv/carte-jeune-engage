@@ -21,8 +21,8 @@ const QRCodeWrapper = ({ size, wrapperProps }: QRCodeProps) => {
       <Image
         src={qrCodeImageSrc()}
         alt="QR Code production"
-        h="200px"
-        w="200px"
+        h="120px"
+        w="120px"
       />
       {/* REMOVE FOR NOW , ISSUES ON IPHONE
 			<QRCode
