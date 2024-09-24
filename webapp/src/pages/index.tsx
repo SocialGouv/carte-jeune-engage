@@ -23,7 +23,7 @@ import { useGSAP } from "@gsap/react";
 import { setCookie } from "cookies-next";
 import { isValidMotionProp, motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { type SubmitHandler, ErrorOption } from "react-hook-form";
 import {
   HiCalendarDays,
