@@ -3,19 +3,28 @@ import React from "react";
 
 const EllipsePositionnedImages = ({
   images,
-  radiusX,
-  radiusY,
+  parentRef,
 }: {
   images: string[];
-  radiusX: number;
-  radiusY: number;
+  parentRef: React.RefObject<HTMLDivElement>;
 }) => {
   const imageSize = 100; // Image size
   const totalImages = images.length;
+  const degreeOffset = useBreakpointValue({ base: 75, lg: 120 }) || 75;
+
+  if (!parentRef.current) {
+    return null;
+  }
+
+  // get radiusX and radiusY from parentRef
+  const parentWidth = parentRef.current.clientWidth || 0;
+  const parentHeight = parentRef.current.clientHeight || 0;
+  const radiusX = parentWidth / 2;
+  const radiusY = parentHeight / 1.25;
 
   // Image position for each index
   const calculatePosition = (index: number) => {
-    const offsetAngle = -(120 * Math.PI) / 180; // Décalage de 75°
+    const offsetAngle = -(degreeOffset * Math.PI) / 180; // Décalage de 75°
     const angle = (index / totalImages) * 2 * Math.PI + offsetAngle;
     const x = radiusX * Math.cos(angle);
     const y = radiusY * Math.sin(angle);

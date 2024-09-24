@@ -211,6 +211,30 @@ export default function Home() {
     lg: undefined,
   });
 
+  const ellipseImages =
+    useBreakpointValue({
+      base: [
+        "/images/seeds/tags/sport_equipment.png",
+        "/images/seeds/tags/computer.png",
+        "/images/seeds/tags/grocery.png",
+        "/images/seeds/tags/license.png",
+        "/images/seeds/tags/culture.png",
+        "/images/seeds/tags/clothes.png",
+      ],
+      lg: [
+        "/images/seeds/tags/sport_equipment.png",
+        "/images/seeds/tags/books.png",
+        "/images/seeds/tags/bike.png",
+        "/images/seeds/tags/culture.png",
+        "/images/seeds/tags/computer.png",
+        "/images/seeds/tags/grocery.png",
+        "/images/seeds/tags/washing_machine.png",
+        "/images/seeds/tags/desk_equipment.png",
+        "/images/seeds/tags/license.png",
+        "/images/seeds/tags/clothes.png",
+      ],
+    }) || [];
+
   const handleGenerateOtp: SubmitHandler<LoginForm> = async (values) => {
     setCurrentPhoneNumber(values.phone_number);
     generateOtp({ phone_number: values.phone_number, is_desktop: isDesktop });
@@ -342,28 +366,46 @@ export default function Home() {
     );
   }
 
-  const ellipseImages = useBreakpointValue({
-    base: [
-      "/images/seeds/tags/sport_equipment.png",
-      "/images/seeds/tags/computer.png",
-      "/images/seeds/tags/grocery.png",
-      "/images/seeds/tags/license.png",
-      "/images/seeds/tags/culture.png",
-      "/images/seeds/tags/clothes.png",
-    ],
-    lg: [
-      "/images/seeds/tags/sport_equipment.png",
-      "/images/seeds/tags/books.png",
-      "/images/seeds/tags/bike.png",
-      "/images/seeds/tags/culture.png",
-      "/images/seeds/tags/computer.png",
-      "/images/seeds/tags/grocery.png",
-      "/images/seeds/tags/washing_machine.png",
-      "/images/seeds/tags/desk_equipment.png",
-      "/images/seeds/tags/license.png",
-      "/images/seeds/tags/clothes.png",
-    ],
-  });
+  const partnersList = [
+    {
+      name: "Auchan",
+      img: "/images/seeds/partners/auchan.svg",
+      promo_label: "-110€",
+    },
+    {
+      name: "Flixbus",
+      img: "/images/seeds/partners/flixbus.svg",
+      promo_label: "-10%",
+    },
+  ];
+
+  const forWhoList = [
+    {
+      img: "/images/referent/service-civique.png",
+      name: "France travail",
+      rotationAngle: -4,
+    },
+    {
+      img: "/images/referent/epide.png",
+      name: "France travail",
+      rotationAngle: -3,
+    },
+    {
+      img: "/images/referent/mission-locale.png",
+      name: "France travail",
+      rotationAngle: 6.5,
+    },
+    {
+      img: "/images/referent/france-travail.png",
+      name: "France travail",
+      rotationAngle: -1,
+    },
+    {
+      img: "/images/referent/e2c.png",
+      name: "France travail",
+      rotationAngle: 4,
+    },
+  ];
 
   return (
     <>
@@ -389,11 +431,10 @@ export default function Home() {
             width={{ base: "116px", lg: "176px" }}
             height={{ base: "64px", lg: "94px" }}
           />
-          <Box w={{ base: "80%", lg: "full" }}>
+          <Box w={"80%"}>
             <Heading
-              fontSize={{ base: "2xl", lg: "56px" }}
+              fontSize={{ base: "2xl", lg: "5xl" }}
               fontWeight="extrabold"
-              px={{ base: 2, lg: 0 }}
             >
               Des avantages pour les jeunes
               <Box as="br" display={{ base: "none", lg: "block" }} /> qui
@@ -409,17 +450,235 @@ export default function Home() {
             </Text>
           </Box>
 
-          {firstSectionRef.current && (
-            <EllipsePositionnedImages
-              images={ellipseImages || []}
-              radiusX={
-                firstSectionRef.current.getBoundingClientRect().width / 2
-              }
-              radiusY={
-                firstSectionRef.current.getBoundingClientRect().height / 1.3
-              }
-            />
-          )}
+          <EllipsePositionnedImages
+            images={ellipseImages}
+            parentRef={firstSectionRef}
+          />
+        </Flex>
+        <Flex
+          flexDir={{ base: "column", lg: "row" }}
+          bg={"primary"}
+          w={{ base: "95%", lg: "full" }}
+          mx={"auto"}
+          rounded={"2.5rem"}
+          color={"white"}
+        >
+          <Flex
+            flex={1}
+            flexDir="column"
+            p={{ base: 8, lg: 44 }}
+            pr={{ lg: 8 }}
+            pt={12}
+          >
+            <Heading
+              fontSize={{ base: "2xl", lg: "5xl" }}
+              fontWeight="extrabold"
+            >
+              Une appli utile avec des réductions de grandes marques
+            </Heading>
+            <Link
+              mt={6}
+              textDecor={"underline"}
+              fontWeight={"bold"}
+              fontSize={{ lg: "lg" }}
+              onClick={() => {}}
+            >
+              Voir toutes les entreprises
+              <Box as="br" display={{ base: "block", lg: "none" }} /> engagées →
+            </Link>
+          </Flex>
+          <Flex
+            flex={1}
+            flexDir="column"
+            justify={"center"}
+            p={{ base: 8, lg: 44 }}
+            px={{ lg: 8 }}
+            pt={0}
+          >
+            {partnersList.map((partner, index) => (
+              <Flex
+                key={`partner-${index}`}
+                justify={"center"}
+                gap={8}
+                mb={4}
+                h={{ base: 10, lg: 14 }}
+              >
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  bg={"white"}
+                  rounded={"full"}
+                  p={4}
+                >
+                  <Image src={partner.img} alt={`Logo de ${partner.name}`} />
+                </Flex>
+                <Flex
+                  as={Text}
+                  align={"center"}
+                  bg={"black"}
+                  fontWeight={"extrabold"}
+                  rounded={"full"}
+                  fontSize={"xl"}
+                  p={4}
+                >
+                  {partner.promo_label}
+                </Flex>
+              </Flex>
+            ))}
+          </Flex>
+        </Flex>
+        <Flex
+          flexDir={"column"}
+          bg={"bgGray"}
+          w={{ base: "95%", lg: "full" }}
+          mx={"auto"}
+          rounded={"2.5rem"}
+          mt={20}
+          p={{ base: 8, lg: 20 }}
+          px={{ lg: 44 }}
+          pt={12}
+        >
+          <Flex>
+            <Flex flex={1}>
+              <Heading
+                fontSize={{ base: "2xl", lg: "5xl" }}
+                fontWeight="extrabold"
+              >
+                Comme une carte étudiant, même si on est pas étudiant.
+              </Heading>
+            </Flex>
+            <Flex
+              flex={1}
+              justify={"end"}
+              align={"center"}
+              display={{ base: "none", lg: "flex" }}
+            >
+              <Link
+                mt={6}
+                textDecor={"underline"}
+                fontWeight={{ base: "bold", lg: "extrabold" }}
+                fontSize={{ lg: "lg" }}
+                onClick={() => {}}
+              >
+                Je suis éligible, je crée mon compte →
+              </Link>
+            </Flex>
+          </Flex>
+          <Flex
+            flexDir={{ base: "column", lg: "row-reverse" }}
+            mt={{ base: 5, lg: 6 }}
+            gap={{ base: 3, lg: 5 }}
+          >
+            <Flex
+              flexDir={{ base: "row", lg: "column-reverse" }}
+              flex={2}
+              gap={{ base: 3, lg: 5 }}
+            >
+              <Flex
+                flex={1}
+                flexDir={"column"}
+                alignSelf={{ base: "end", lg: "start" }}
+                bg={"white"}
+                rounded={"1.25rem"}
+                p={{ base: 4, lg: 6 }}
+                fontSize={{ lg: "2xl" }}
+                fontWeight={{ base: "medium" }}
+              >
+                <Text>Pour les</Text>
+                <Text fontWeight={{ lg: "extrabold" }}>16-25 ans</Text>
+              </Flex>
+              <Flex
+                flex={1}
+                flexDir={"column"}
+                bg={"white"}
+                rounded={"1.25rem"}
+                p={{ base: 4, lg: 8 }}
+              >
+                <Image
+                  src="/images/landing/location.png"
+                  fit={"none"}
+                  boxSize={"min-content"}
+                />
+                <Text
+                  fontWeight={{ base: "medium", lg: "extrabold" }}
+                  fontSize={{ lg: "2xl" }}
+                  mt={2}
+                >
+                  En Val d'Oise
+                </Text>
+                <Text fontSize={{ base: "xs", lg: "md" }}>
+                  uniquement pour la phase d’expérimentation
+                </Text>
+              </Flex>
+            </Flex>
+            <Flex
+              flex={3}
+              flexDir={"column"}
+              alignSelf={{ lg: "start" }}
+              bg={"white"}
+              rounded={"1.25rem"}
+              p={{ base: 4, lg: 8 }}
+            >
+              <Flex
+                h={{ base: 16, lg: 28 }}
+                mb={4}
+                justify={{ base: "center", lg: "start" }}
+              >
+                {forWhoList.map((item, index) => {
+                  return (
+                    <Flex
+                      justify={"center"}
+                      align={"center"}
+                      alignSelf={index % 2 === 0 ? "start" : "end"}
+                      bg={"white"}
+                      w={{ base: 14, lg: 24 }}
+                      h={{ base: 14, lg: 24 }}
+                      p={2}
+                      mr={{ base: -1, lg: -4 }}
+                      zIndex={index % 2 === 0 ? 1 : 2}
+                      rounded={{ base: "2xl", lg: "3xl" }}
+                      boxShadow={"0px 14px 10px -5px #F2F2F8"}
+                      transform={`rotate(${item.rotationAngle}deg)`}
+                    >
+                      <Image src={item.img} alt={`Logo de ${item.name}`} />
+                    </Flex>
+                  );
+                })}
+              </Flex>
+              <Text fontWeight={{ base: "medium" }} fontSize={{ lg: "2xl" }}>
+                inscrit à France travail
+                <Text as="br" display={{ base: "inline-block", lg: "none" }} />
+                <Text display={{ base: "none", lg: "inline-block" }}>
+                  ,&nbsp;
+                </Text>
+                en Mission locale
+                <Text as="br" display={{ base: "inline-block", lg: "none" }} />
+                <Text
+                  as={"span"}
+                  display={{ base: "none", lg: "inline-block" }}
+                >
+                  ,&nbsp;
+                </Text>
+                en Service civique
+                <Text as="br" display={{ base: "inline-block", lg: "none" }} />
+                <Text
+                  as={"span"}
+                  display={{ base: "none", lg: "inline-block" }}
+                >
+                  ,&nbsp;
+                </Text>
+                en EPIDE
+                <Text as="br" display={{ base: "inline-block", lg: "none" }} />
+                <Text
+                  as={"span"}
+                  display={{ base: "none", lg: "inline-block" }}
+                >
+                  ,&nbsp;
+                </Text>
+                en École de la 2nde chance
+              </Text>
+            </Flex>
+          </Flex>
         </Flex>
         {/* <Flex
           id="login-form"
@@ -463,7 +722,7 @@ export default function Home() {
             src="/images/landing/main.png"
           />
         </Flex> */}
-        <Flex flexDir="column" textAlign="center" gap={8}>
+        {/* <Flex flexDir="column" textAlign="center" gap={8}>
           <Heading fontSize="3xl" fontWeight="extrabold">
             Ils vous offrent{" "}
             <Box as="br" display={{ base: "block", lg: "none" }} />
@@ -506,8 +765,8 @@ export default function Home() {
           <Text fontWeight="bold" fontSize="2xl">
             Et encore plein d’autres...
           </Text>
-        </Flex>
-        <Flex
+        </Flex> */}
+        {/* <Flex
           id="what-is-it-section"
           flexDir="column"
           px={8}
@@ -518,8 +777,8 @@ export default function Home() {
           {sectionItems.map((section, index) => (
             <SectionContent key={`section-${index}`} {...section} />
           ))}
-        </Flex>
-        <Box
+        </Flex> */}
+        {/* <Box
           id="who-can-benefit-section"
           pt={{ base: 20, lg: 28 }}
           mt={{ base: 0, lg: 12 }}
@@ -572,7 +831,7 @@ export default function Home() {
               />
             </Flex>
           </Flex>
-        </Box>
+        </Box> */}
         <Box px={8}>
           <Box
             id="how-does-it-work-section"
