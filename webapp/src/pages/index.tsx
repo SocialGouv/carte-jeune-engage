@@ -2,6 +2,8 @@ import {
   Accordion,
   AspectRatio,
   Box,
+  Center,
+  Divider,
   Flex,
   HStack,
   Heading,
@@ -27,6 +29,8 @@ import {
   HiCalendarDays,
   HiChevronLeft,
   HiMapPin,
+  HiMiniArrowTopRightOnSquare,
+  HiMiniChevronRight,
   HiMiniClipboardDocumentCheck,
 } from "react-icons/hi2";
 import BigLoader from "~/components/BigLoader";
@@ -49,6 +53,7 @@ import NotEligibleForm from "~/components/landing/NotEligibleForm";
 import { useAuth } from "~/providers/Auth";
 import OtpInput from "react-otp-input";
 import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedImages";
+import NextLink from "next/link";
 
 const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
@@ -57,33 +62,28 @@ const ChakraBox = chakra(motion.div, {
 
 const defaultTimeToResend = 30;
 
-const sectionItems = [
+const referentItems: { name: string; image: string; link: string }[] = [
   {
-    title:
-      "Bénéficiez d’un statut privilégié qui vous offre des remises avantageuses",
-    description:
-      "Vous êtes inscrit en Mission locale, à France Travail ou vous êtes en Service civique vous bénéficiez d’un statut de jeune engagé, avec la carte “jeune engagé”, vous accédez à toutes les réductions disponibles pour vous !",
-    image: "/images/landing/section-1.png",
+    name: "Je suis à France Travail",
+    image: "/images/referent/france-travail.png",
+    link: "#",
   },
   {
-    title:
-      "Tout ce qu’il faut pour bien démarrer dans la vie active, à prix réduit grâce aux partenaires",
-    description:
-      "La carte “jeune engagé” vous fait économiser pour tout grâce aux nombreux partenaires participants. Bénéficiez de prix instantanément réduits pour faire vos courses, pour équiper votre logement, pour le matériel informatique mais aussi pour vos assurances et vos abonnements. ",
-    image: "/images/landing/section-2.png",
+    name: "Je suis à la Mission locale",
+    image: "/images/referent/mission-locale.png",
+    link: "#",
   },
   {
-    title: "Des réductions à utiliser en ligne ou en magasin",
-    description:
-      "Profitez d’une flexibilité totale avec la carte “jeune engagé” ! L’application vous offre des réductions à utiliser en ligne mais aussi directement en magasin : plus pratique pour faire vos courses par exemple. ",
-    image: "/images/landing/section-3.png",
+    name: "Je suis en Service civique",
+    image: "/images/referent/service-civique.png",
+    link: "#",
   },
   {
-    title: "Suivez toutes vos économies",
-    description:
-      "Gardez un œil sur vos économies grâce à notre fonction de suivi intégrée. Consultez facilement l'historique de vos économies et suivez les au fil du temps. ",
-    image: "/images/landing/section-4.png",
+    name: "Je suis en école de la 2nde chance",
+    image: "/images/referent/e2c.png",
+    link: "#",
   },
+  { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png", link: "#" },
 ];
 
 export default function Home() {
@@ -247,10 +247,6 @@ export default function Home() {
       otp,
     });
   };
-
-  useGSAP(() => {
-    // loginAnimation();
-  }, []);
 
   useEffect(() => {
     if (!isOtpGenerated) return;
@@ -460,7 +456,7 @@ export default function Home() {
           bg={"primary"}
           w={{ base: "95%", lg: "full" }}
           mx={"auto"}
-          rounded={"2.5rem"}
+          rounded="5xl"
           color={"white"}
         >
           <Flex
@@ -532,7 +528,7 @@ export default function Home() {
           bg={"bgGray"}
           w={{ base: "95%", lg: "full" }}
           mx={"auto"}
-          rounded={"2.5rem"}
+          rounded="5xl"
           mt={20}
           p={{ base: 8, lg: 20 }}
           px={{ lg: 44 }}
@@ -680,205 +676,99 @@ export default function Home() {
             </Flex>
           </Flex>
         </Flex>
-        {/* <Flex
-          id="login-form"
-          alignItems="center"
-          px={8}
-          mt={10}
-          mb={24}
-          justifyContent={{ base: "center", lg: "space-between" }}
-          textAlign={{ base: "center", lg: "left" }}
-        >
-          <Box w={{ base: "full", lg: "65%" }}>
-            <Heading
-              fontSize={{ base: "2xl", lg: "56px" }}
-              fontWeight="extrabold"
-              px={{ base: 2, lg: 0 }}
-            >
-              Des remises exclusives pour les jeunes qui vont commencer la vie
-              active. Avec la carte “jeune engagé”
-            </Heading>
-            <Text
-              fontSize={{ base: "lg", lg: "28px" }}
-              fontWeight="medium"
-              color="secondaryText"
-              mt={8}
-            >
-              Les économies pensées pour bien démarrer dans la vie&nbsp;
-              <Box as="br" display={{ base: "none", lg: "block" }} />
-              et pour toutes ses dépenses quotidiennes.
-            </Text>
-            <PhoneNumberCTA
-              isLoadingOtp={isLoadingOtp}
-              onSubmit={handleGenerateOtp}
-              currentKey="phone-number-cta"
-              error={phoneNumberError}
-              setCurrentPhoneNumberKey={setCurrentPhoneNumberKey}
+        <Box px={{ base: 10, lg: 44 }} mt={10}>
+          <Center
+            bgColor="primary"
+            borderRadius="2.5xl"
+            w="full"
+            mt={{ base: 16, lg: 32 }}
+          >
+            <Image
+              src="/images/landing/app-pass-cje.png"
+              w="50%"
+              mt={{ base: -16, lg: -32 }}
             />
-          </Box>
-          <Image
-            h="600px"
-            display={{ base: "none", lg: "block" }}
-            src="/images/landing/main.png"
-          />
-        </Flex> */}
-        {/* <Flex flexDir="column" textAlign="center" gap={8}>
-          <Heading fontSize="3xl" fontWeight="extrabold">
-            Ils vous offrent{" "}
-            <Box as="br" display={{ base: "block", lg: "none" }} />
-            des remises
-          </Heading>
-          <Flex overflowX="hidden" whiteSpace="nowrap">
-            <ChakraBox
-              display="flex"
-              justifyContent={{ base: "normal", lg: "space-around" }}
-              w="full"
-              animate={logoAnimationBreakpoint}
-              ml={{ base: 8, lg: 0 }}
-              mx={{ base: 0, lg: "auto" }}
-              gap={8}
-            >
-              {logoPartners.map((logo, index) => (
-                <ChakraNextImage
-                  key={`logo-${index}`}
-                  display="inline-block"
-                  src={logo.url as string}
-                  alt={logo.alt as string}
-                  width={57}
-                  height={57}
-                  filter="grayscale(100%)"
-                />
-              ))}
-              {logoPartners.map((logo, index) => (
-                <ChakraNextImage
-                  key={`logo-duplicate-${index}`}
-                  display={{ base: "inline-block", lg: "none" }}
-                  src={logo.url as string}
-                  alt={logo.alt as string}
-                  width={57}
-                  height={57}
-                  filter="grayscale(100%)"
-                />
-              ))}
-            </ChakraBox>
-          </Flex>
-          <Text fontWeight="bold" fontSize="2xl">
-            Et encore plein d’autres...
-          </Text>
-        </Flex> */}
-        {/* <Flex
-          id="what-is-it-section"
-          flexDir="column"
-          px={8}
-          pt={{ base: 10, lg: 24 }}
-          mt={{ base: 0, lg: 16 }}
-          gap={{ base: 9, lg: 40 }}
-        >
-          {sectionItems.map((section, index) => (
-            <SectionContent key={`section-${index}`} {...section} />
-          ))}
-        </Flex> */}
-        {/* <Box
-          id="who-can-benefit-section"
-          pt={{ base: 20, lg: 28 }}
-          mt={{ base: 0, lg: 12 }}
-          zIndex={10}
-        >
-          <Heading
-            size={{ base: "xl", lg: "2xl" }}
-            fontWeight="extrabold"
-            textAlign="center"
-          >
-            Qui peut en profiter ?
-          </Heading>
+          </Center>
           <Flex
-            position="relative"
-            flexDirection={{ base: "column", lg: "row-reverse" }}
-            alignItems="center"
-            mt={{ base: 8, lg: 16 }}
+            flexDir="column"
+            mt={6}
+            gap={4}
+            px={{ base: 0, lg: "21.5%" }}
+            textAlign={{ base: "start", lg: "center" }}
           >
-            <AspectRatio
-              w="full"
-              position={{ base: "relative", lg: "absolute" }}
-              zIndex={-1}
-              pt={4}
-              mb={-10}
-              overflow="hidden"
+            <Heading
+              fontSize={{ base: "2xl", lg: "5xl" }}
+              fontWeight="extrabold"
             >
-              <Image
-                src={`/images/landing/map${!isDesktop ? "-mobile" : ""}.png`}
-                transform="rotate(-4.5deg)"
-              />
-            </AspectRatio>
+              Comment avoir ma carte “jeune engagé” ?
+            </Heading>
+            <Text fontWeight={500}>
+              La création de votre carte “jeune engagé” dépend de votre
+              situation. On vous explique tout ici.
+            </Text>
+            <Text mt={2} fontWeight={500}>
+              Choisissez la situation qui vous correspond le mieux
+            </Text>
             <Flex
               flexDir="column"
-              px={8}
-              gap={8}
-              w={{ base: "auto", lg: "42%" }}
-              mr="auto"
+              p={4}
+              borderRadius="2.5xl"
+              gap={2}
+              bgColor="bgGray"
+              textAlign="start"
             >
-              <MapSectionCard
-                text="Disponible uniquement dans le département du Val d’Oise"
-                icon={HiMapPin}
-              />
-              <MapSectionCard
-                text="Réservé aux jeunes inscrits à la Mission locale, à France travail ou engagé en Service civique"
-                icon={HiMiniClipboardDocumentCheck}
-              />
-              <MapSectionCard
-                text="Réservé aux jeunes ni en emploi, ni en formation, âgés entre 18 et 25 ans."
-                icon={HiCalendarDays}
-              />
+              <Image src="/images/landing/location.png" boxSize="min-content" />
+              <Text fontWeight={500}>
+                En Val d’Oise uniquement pour la phase d’expérimentation
+              </Text>
             </Flex>
+            {referentItems.map(({ name, image, link }, index) => (
+              <Flex flexDir="column">
+                <Flex
+                  key={`referent-${name}`}
+                  mt={index === 0 ? 2.5 : 0}
+                  alignItems="center"
+                  borderRadius="2.5xl"
+                  textAlign="start"
+                >
+                  <Image src={image} w="40px" h="20px" mr={4} />
+                  <Text fontWeight={500} noOfLines={1}>
+                    {name}
+                  </Text>
+                  <Icon as={HiMiniChevronRight} w={6} h={6} ml="auto" />
+                </Flex>
+                <Divider mt={5} />
+                {index === referentItems.length - 1 && (
+                  <Flex
+                    key="referent-none"
+                    mt={5}
+                    alignItems="center"
+                    borderRadius="2.5xl"
+                    textAlign="start"
+                  >
+                    <Text fontWeight={500} noOfLines={1}>
+                      Aucune de ces situations
+                    </Text>
+                    <Icon as={HiMiniChevronRight} w={6} h={6} ml="auto" />
+                  </Flex>
+                )}
+              </Flex>
+            ))}
           </Flex>
-        </Box> */}
-        <Box px={8}>
-          <Box
-            id="how-does-it-work-section"
-            pt={{ base: 24, lg: 28 }}
-            mt={{ base: 0, lg: 12 }}
-            textAlign="center"
-          >
-            <Heading fontWeight="extrabold" size={{ base: "xl", lg: "2xl" }}>
-              Comment ça marche ?
-            </Heading>
-            <Text
-              fontWeight="medium"
-              fontSize="sm"
-              color="secondaryText"
-              mt={8}
-            >
-              Rappel : vous devez être à France Travail ou à la Mission locale,
-              ou engagé en Service civique.
-            </Text>
-            <Flex flexDir={{ base: "column", lg: "row" }} gap={8} mt={9}>
-              <HowItWorksSectionCard
-                title="Votre conseiller vous inscrit"
-                description="Vous avez été inscrit par votre Service civique, conseiller Mission locale ou France travail et vous recevez le SMS d’invitation"
-                number={1}
-              />
-              <HowItWorksSectionCard
-                title="Créez votre compte sur l’application"
-                description="Téléchargez l’application et créez votre compte pour accéder aux offres et aux réductions."
-                number={2}
-              />
-              <HowItWorksSectionCard
-                title="Bénéficiez de vos réductions"
-                description="Dès qu’une réduction vous intéresse, activez-la et profitez-en en ligne ou en magasin."
-                number={3}
-              />
-            </Flex>
-          </Box>
+        </Box>
+        <Box px={2} mt={20}>
           <Box
             id="faq-section"
-            pt={{ base: 24, lg: 28 }}
-            mt={{ base: 0, lg: 12 }}
-            textAlign="center"
+            bgColor="blackLight"
+            color="white"
+            p={{ base: 8, lg: 20 }}
+            borderRadius="5xl"
+            textAlign={{ base: "start", lg: "center" }}
           >
             <Heading size={{ base: "xl", lg: "2xl" }} fontWeight="extrabold">
-              Questions fréquentes
+              On répond à vos questions
             </Heading>
-            <Accordion my={10} allowToggle>
+            <Accordion mt={4} mb={8} allowToggle>
               {landingFAQ.map(({ title, content }, index) => (
                 <FAQSectionAccordionItem
                   key={`faq-item-${index}`}
@@ -894,35 +784,33 @@ export default function Home() {
           </Box>
           <Flex
             flexDir="column"
-            mt={{ base: 16, lg: 48 }}
-            mb={{ base: 8, lg: 24 }}
-            textAlign="center"
+            mt={20}
+            px={8}
+            py={14}
+            bgColor="primary"
+            color="white"
+            borderRadius="5xl"
           >
-            <Heading size={{ base: "xl", lg: "2xl" }} fontWeight="extrabold">
-              Je profite des réductions{" "}
-              <Box as="br" display={{ base: "block", lg: "none" }} />
-              dès maintenant
-            </Heading>
-            <Text
-              fontWeight="medium"
-              color="secondaryText"
-              w={{ base: "full", lg: "60%" }}
-              alignSelf={{ lg: "center" }}
-              fontSize={{ base: "md", lg: "2xl" }}
-              mt={{ base: 6, lg: 12 }}
-            >
-              Accédez aux réductions et aux offres des entreprises qui aident
-              les jeunes à se lancer dans la vie active.
+            <Image src="/images/cje-logo-white-blue.svg" w="75px" h="40px" />
+            <Text fontWeight={800} fontSize={18} mt={4}>
+              Vous voulez en savoir plus sur la création du dispositif carte
+              “jeune engagé” ?
             </Text>
-            <Box w={{ base: "full", lg: "60%" }} alignSelf={{ lg: "center" }}>
-              <PhoneNumberCTA
-                isLoadingOtp={isLoadingOtp}
-                onSubmit={handleGenerateOtp}
-                currentKey="phone-number-footer"
-                error={phoneNumberError}
-                setCurrentPhoneNumberKey={setCurrentPhoneNumberKey}
-              />
-            </Box>
+            <Link
+              as={NextLink}
+              href="https://beta.gouv.fr/startups/pass.engagement.jeune.html"
+              target="_blank"
+              mt={6}
+              passHref
+              _hover={{ textDecoration: "none" }}
+            >
+              <Flex alignItems="center" borderBottomWidth={1} pb={4}>
+                <Text fontWeight={500}>
+                  Voir la page beta.gouv de l’application carte “jeune engagé”
+                </Text>
+                <Icon as={HiMiniArrowTopRightOnSquare} w={6} h={6} ml={2} />
+              </Flex>
+            </Link>
           </Flex>
         </Box>
       </Flex>

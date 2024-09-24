@@ -1,5 +1,6 @@
 import {
   AccordionButton,
+  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Box,
@@ -8,7 +9,12 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { HiPlus, HiXMark } from "react-icons/hi2";
+import {
+  HiMiniChevronRight,
+  HiMiniMinus,
+  HiPlus,
+  HiXMark,
+} from "react-icons/hi2";
 
 type FAQSectionAccordionItemProps = {
   title: string;
@@ -33,66 +39,31 @@ const FAQSectionAccordionItem = ({
   });
 
   return (
-    <AccordionItem border="none">
+    <AccordionItem borderTopWidth={index == 0 ? 0 : 1}>
       {({ isExpanded }) => (
-        <Box
-          bgColor={isExpanded ? "bgWhite" : "none"}
-          borderRadius={isExpanded ? "3xl" : "none"}
-          borderBottom={index !== total - 1 ? "1px solid" : "none"}
-          borderColor={
-            isExpanded || (currentIndex && currentIndex - 1 == index)
-              ? "transparent"
-              : "gray.200"
-          }
-          pb={{ base: isExpanded ? 2 : 0, lg: 8 }}
-        >
+        <Box pb={{ base: isExpanded ? 2 : 0, lg: 8 }}>
           <AccordionButton
             _hover={{
               background: "none",
             }}
             onClick={() => setCurrentIndex(!isExpanded ? index : null)}
-            pt={{ base: 2, lg: 8 }}
-            px={{ base: 4, lg: 8 }}
+            py={4}
+            px={0}
           >
-            <Text
-              as="span"
-              flex="1"
-              textAlign="left"
-              fontWeight="bold"
-              fontSize={{ base: "lg", lg: "3xl" }}
-              mr={8}
-            >
+            <Text as="span" flex="1" textAlign="left" fontWeight={500} mr={8}>
               {title}
             </Text>
-            {!isExpanded ? (
-              <IconButton
-                as="div"
-                icon={<Icon as={HiPlus} />}
-                onClick={() => setCurrentIndex(index)}
-                colorScheme="gray"
-                px={{ lg: 0 }}
-                size={accordionBtnSize}
-                borderRadius="full"
-                aria-label="Ouvrir l'accordéon"
-              />
+            {isExpanded ? (
+              <Icon as={HiMiniMinus} boxSize={6} />
             ) : (
-              <IconButton
-                as="div"
-                icon={<Icon as={HiXMark} />}
-                onClick={() => setCurrentIndex(null)}
-                px={{ lg: 0 }}
-                size={accordionBtnSize}
-                borderRadius="full"
-                aria-label="Fermer l'accordéon"
-              />
+              <Icon as={HiMiniChevronRight} boxSize={6} />
             )}
           </AccordionButton>
-          <AccordionPanel px={{ base: 4, lg: 8 }} w="85%">
+          <AccordionPanel px={0}>
             <Text
               textAlign="left"
               fontWeight="medium"
               fontSize={{ base: "md", lg: "xl" }}
-              color="secondaryText"
             >
               {content}
             </Text>

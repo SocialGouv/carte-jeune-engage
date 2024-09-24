@@ -223,6 +223,8 @@ export const theme = extendTheme({
     "1.5xl": "0.875rem",
     "2.25xl": "1.125rem",
     "2.5xl": "1.25rem",
+    "4xl": "2rem",
+    "5xl": "2.5rem",
   },
   fonts: {
     heading: Marianne.style.fontFamily,
