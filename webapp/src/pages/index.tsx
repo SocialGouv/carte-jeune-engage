@@ -28,6 +28,7 @@ import { type SubmitHandler, ErrorOption } from "react-hook-form";
 import {
   HiCalendarDays,
   HiChevronLeft,
+  HiInformationCircle,
   HiMapPin,
   HiMiniArrowTopRightOnSquare,
   HiMiniChevronRight,
@@ -974,20 +975,49 @@ export default function Home() {
       </BaseModal>
       {isDesktop && (
         <Flex
-          zIndex={10}
-          bgColor="white"
           flexDir="column"
-          position="fixed"
+          gap={4}
+          zIndex={10}
           right={8}
           bottom={8}
-          p={4}
-          borderRadius="2xl"
-          shadow="landing-qr-code-desktop"
+          position="fixed"
         >
-          <Text fontWeight="extrabold" mb={1} mx="auto">
-            Accéder à l’application
-          </Text>
-          <QRCodeWrapper size={181} />
+          <Center
+            bgColor="primary"
+            flexDir="column"
+            p={5}
+            gap={2}
+            borderRadius="2.5xl"
+            color="white"
+            shadow="landing-qr-code-desktop"
+            textAlign="center"
+          >
+            <Text fontWeight={800} fontSize={14} mb={1} w="min-content">
+              Accédez à l’application
+            </Text>
+            <Box p={1} borderRadius="2lg" bgColor="white" w="fit-content">
+              <QRCodeWrapper />
+            </Box>
+            <Text fontSize={12} fontWeight={500}>
+              Disponible
+              <br />
+              uniquement sur
+              <br />
+              smartphone 📱
+            </Text>
+          </Center>
+          <Flex flexDir="column" bgColor="bgGray" borderRadius="2.5xl" p={4}>
+            <Icon as={HiInformationCircle} w={6} h={6} color="primary" />
+            <Text fontSize={14} fontWeight={500} mt={2}>
+              Dispotif disponible
+              <br />
+              uniquement dans le
+              <br />
+              département du Val
+              <br />
+              d'Oise (95)
+            </Text>
+          </Flex>
         </Flex>
       )}
     </>
