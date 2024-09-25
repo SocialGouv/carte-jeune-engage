@@ -39,7 +39,7 @@ export const menuItems: { title: string; link: string }[] = [
 const Header = () => {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
   const headerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
@@ -77,36 +77,38 @@ const Header = () => {
           pl={4}
           pr={6}
         >
-          <Flex id="login-gov-image" alignItems="center" h="full">
-            <NextImage
-              src="/images/landing/ministere-travail.png"
-              alt="Logo marianne du gouvernement français"
-              width={100}
-              height={100}
-              style={{ marginRight: 35 }}
-            />
-            {isDesktop && (
-              <Link
-                display="flex"
-                alignItems="center"
-                as={NextLink}
-                href="/"
-                passHref
-                _hover={{ textDecor: "none" }}
-              >
-                <ChakraNextImage
-                  src="/images/cje-logo.png"
-                  alt="Logo de l'application Carte Jeune Engagé"
-                  width={69}
-                  height={38}
-                  mr={3}
-                />
-                <Text fontWeight={700} fontSize={18}>
-                  Carte jeune engagé
-                </Text>
-              </Link>
-            )}
-          </Flex>
+          <Link
+            display="flex"
+            alignItems="center"
+            as={NextLink}
+            href="/"
+            passHref
+            _hover={{ textDecor: "none" }}
+          >
+            <Flex id="login-gov-image" alignItems="center" h="full">
+              <NextImage
+                src="/images/landing/ministere-travail.png"
+                alt="Logo marianne du gouvernement français"
+                width={100}
+                height={100}
+                style={{ marginRight: 35 }}
+              />
+              {isDesktop && (
+                <>
+                  <ChakraNextImage
+                    src="/images/cje-logo.png"
+                    alt="Logo de l'application Carte Jeune Engagé"
+                    width={69}
+                    height={38}
+                    mr={3}
+                  />
+                  <Text fontWeight={700} fontSize={18}>
+                    Carte jeune engagé
+                  </Text>
+                </>
+              )}
+            </Flex>
+          </Link>
           <Flex alignItems="center" ml="auto">
             <ButtonGroup spacing={4} position="relative" ref={buttonRef}>
               <Button
@@ -172,7 +174,7 @@ const Header = () => {
                             ? (`/${link}-section` ?? "#")
                             : link
                         }
-                        onClick={onToggle}
+                        onClick={onClose}
                         justifyContent="space-between"
                         alignItems="center"
                         _hover={{

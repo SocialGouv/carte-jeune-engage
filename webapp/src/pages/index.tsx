@@ -560,10 +560,11 @@ export default function Home() {
           </Flex>
         </Flex>
         <Flex
-          flexDir={"column"}
-          bg={"bgGray"}
+          id="who-can-benefit-section"
+          flexDir="column"
+          bg="bgGray"
           w={{ base: "95%", lg: "full" }}
-          mx={"auto"}
+          mx="auto"
           rounded="5xl"
           mt={20}
           p={{ base: 8, lg: 20 }}
@@ -581,13 +582,13 @@ export default function Home() {
             </Flex>
             <Flex
               flex={1}
-              justify={"end"}
-              align={"center"}
+              justify="end"
+              align="center"
               display={{ base: "none", lg: "flex" }}
             >
               <Link
                 mt={6}
-                textDecor={"underline"}
+                textDecor="underline"
                 fontWeight={{ base: "bold", lg: "extrabold" }}
                 fontSize={{ lg: "lg" }}
                 onClick={() => {}}
@@ -608,10 +609,10 @@ export default function Home() {
             >
               <Flex
                 flex={1}
-                flexDir={"column"}
+                flexDir="column"
                 alignSelf={{ base: "end", lg: "start" }}
-                bg={"white"}
-                rounded={"1.25rem"}
+                bg="white"
+                rounded="2.5xl"
                 p={{ base: 4, lg: 6 }}
                 fontSize={{ lg: "2xl" }}
                 fontWeight={{ base: "medium" }}
@@ -621,9 +622,9 @@ export default function Home() {
               </Flex>
               <Flex
                 flex={1}
-                flexDir={"column"}
-                bg={"white"}
-                rounded={"1.25rem"}
+                flexDir="column"
+                bg="white"
+                rounded="2.5xl"
                 p={{ base: 4, lg: 8 }}
               >
                 <Image
@@ -645,10 +646,10 @@ export default function Home() {
             </Flex>
             <Flex
               flex={3}
-              flexDir={"column"}
+              flexDir="column"
               alignSelf={{ lg: "start" }}
-              bg={"white"}
-              rounded={"1.25rem"}
+              bg="white"
+              rounded="2.5xl"
               p={{ base: 4, lg: 8 }}
             >
               <Flex
@@ -659,17 +660,17 @@ export default function Home() {
                 {forWhoList.map((item, index) => {
                   return (
                     <Flex
-                      justify={"center"}
-                      align={"center"}
+                      justify="center"
+                      align="center"
                       alignSelf={index % 2 === 0 ? "start" : "end"}
-                      bg={"white"}
+                      bg="white"
                       w={{ base: 14, lg: 24 }}
                       h={{ base: 14, lg: 24 }}
                       p={2}
                       mr={{ base: -1, lg: -4 }}
                       zIndex={index % 2 === 0 ? 1 : 2}
                       rounded={{ base: "2xl", lg: "3xl" }}
-                      boxShadow={"0px 14px 10px -5px #F2F2F8"}
+                      boxShadow="0px 14px 10px -5px #F2F2F8"
                       transform={`rotate(${item.rotationAngle}deg)`}
                     >
                       <Image src={item.img} alt={`Logo de ${item.name}`} />
@@ -713,11 +714,12 @@ export default function Home() {
           </Flex>
         </Flex>
         <Flex
+          id="how-does-it-work-section"
           flexDir={{ base: "column", lg: "row-reverse" }}
-          bg={"blackLight"}
+          bg="blackLight"
           w={{ base: "95%", lg: "full" }}
           mx={"auto"}
-          rounded={"2.5rem"}
+          rounded="2.5xl"
           mt={20}
           gap={{ base: 7, lg: 12 }}
           p={{ base: 8, lg: 20 }}
@@ -726,14 +728,14 @@ export default function Home() {
           py={12}
         >
           <Flex flex={1}>
-            <Flex flex={1} alignSelf={"start"}>
-              <Image src="/images/landing/auchan-card.gif" fit={"contain"} />
+            <Flex flex={1} alignSelf="start">
+              <Image src="/images/landing/auchan-card.gif" fit="contain" />
             </Flex>
             <Flex flex={1} mt={16}>
-              <Image src="/images/landing/flixbus-card.gif" fit={"contain"} />
+              <Image src="/images/landing/flixbus-card.gif" fit="contain" />
             </Flex>
           </Flex>
-          <Flex flex={1} flexDir={"column"} color={"white"} gap={4}>
+          <Flex flex={1} flexDir="column" color="white" gap={4}>
             <Heading
               fontSize={{ base: "2xl", lg: "5xl" }}
               fontWeight="extrabold"
@@ -746,7 +748,7 @@ export default function Home() {
               entre autres
             </Text>
             <Link
-              textDecor={"underline"}
+              textDecor="underline"
               fontWeight={{ base: "bold", lg: "extrabold" }}
               fontSize={{ lg: "lg" }}
               onClick={() => {}}
@@ -819,6 +821,7 @@ export default function Home() {
             />
           </Center>
           <Flex
+            id="how-to-access-it-section"
             flexDir="column"
             mt={6}
             gap={4}
@@ -885,9 +888,8 @@ export default function Home() {
             ))}
           </Flex>
         </Box>
-        <Box px={{ base: 2, lg: 44 }} mt={20}>
+        <Box px={{ base: 2, lg: 44 }} pt={20} id="faq-section">
           <Box
-            id="faq-section"
             bgColor="blackLight"
             color="white"
             py={8}
@@ -916,7 +918,7 @@ export default function Home() {
               ))}
             </Accordion>
           </Box>
-          <Box mt={20}>
+          <Box id="why-section" mt={20}>
             <RedirectionSectionBlock />
           </Box>
         </Box>
