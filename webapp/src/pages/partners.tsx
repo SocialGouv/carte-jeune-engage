@@ -30,48 +30,51 @@ const HomePartners = () => {
   );
 
   return (
-    <Box px={{ base: 10, lg: "15%" }} mt={16}>
-      <Heading as="h2" fontSize="3xl" mb={4}>
-        Les entreprises engagées
-      </Heading>
-      <Text fontWeight={500}>
-        Les tarifs réduits disponibles sont négociés auprès de chaque
-        entreprise. Les utilisateurs peuvent donner leur avis sur les réductions
-        et demander à de nouvelles marques d’être ajoutées dans l’application.
-      </Text>
-      {Object.keys(groupedPartners).map((letter) => (
-        <>
-          <Divider mt={8} mb={2} />
-          <Box key={letter}>
-            <Heading as="h3" fontSize="3xl" fontWeight={800} mb={3}>
-              {letter}
-            </Heading>
-            <Flex flexDir="column" flexWrap="wrap">
-              {groupedPartners[letter].map((partner) => (
-                <Flex
-                  key={partner.id}
-                  alignItems="center"
-                  justifyContent="start"
-                  mb={4}
-                  gap={2}
-                  w="full"
-                >
-                  <Image
-                    src={partner.icon.url || ""}
-                    alt={partner.name}
-                    width={48}
-                    height={48}
-                  />
-                  <Heading as="h4" fontSize="xl">
-                    {partner.name}
-                  </Heading>
-                </Flex>
-              ))}
-            </Flex>
-          </Box>
-        </>
-      ))}
-      <Box mt={20}>
+    <Box px={{ base: 0, lg: "15%" }}>
+      <Box mt={16} px={{ base: 10, lg: 0 }}>
+        <Heading as="h2" fontSize="3xl" mb={4}>
+          Les entreprises engagées
+        </Heading>
+        <Text fontWeight={500}>
+          Les tarifs réduits disponibles sont négociés auprès de chaque
+          entreprise. Les utilisateurs peuvent donner leur avis sur les
+          réductions et demander à de nouvelles marques d’être ajoutées dans
+          l’application.
+        </Text>
+        {Object.keys(groupedPartners).map((letter) => (
+          <>
+            <Divider mt={8} mb={2} />
+            <Box key={letter}>
+              <Heading as="h3" fontSize="3xl" fontWeight={800} mb={3}>
+                {letter}
+              </Heading>
+              <Flex flexDir="column" flexWrap="wrap">
+                {groupedPartners[letter].map((partner) => (
+                  <Flex
+                    key={partner.id}
+                    alignItems="center"
+                    justifyContent="start"
+                    mb={4}
+                    gap={2}
+                    w="full"
+                  >
+                    <Image
+                      src={partner.icon.url || ""}
+                      alt={partner.name}
+                      width={48}
+                      height={48}
+                    />
+                    <Heading as="h4" fontSize="xl">
+                      {partner.name}
+                    </Heading>
+                  </Flex>
+                ))}
+              </Flex>
+            </Box>
+          </>
+        ))}
+      </Box>
+      <Box mt={20} px={{ base: 2, lg: 0 }}>
         <RedirectionSectionBlock />
       </Box>
     </Box>

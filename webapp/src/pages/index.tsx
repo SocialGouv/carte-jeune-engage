@@ -1,6 +1,5 @@
 import {
   Accordion,
-  AspectRatio,
   Box,
   Center,
   Divider,
@@ -11,38 +10,25 @@ import {
   Image,
   Input,
   Link,
-  PinInput,
-  PinInputField,
   Text,
   chakra,
   shouldForwardProp,
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useGSAP } from "@gsap/react";
 import { setCookie } from "cookies-next";
-import { isValidMotionProp, motion } from "framer-motion";
+import { isValidMotionProp, motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { type SubmitHandler, ErrorOption } from "react-hook-form";
 import {
-  HiCalendarDays,
   HiChevronLeft,
   HiInformationCircle,
-  HiMapPin,
-  HiMiniArrowTopRightOnSquare,
   HiMiniChevronRight,
-  HiMiniClipboardDocumentCheck,
 } from "react-icons/hi2";
 import BigLoader from "~/components/BigLoader";
-import ChakraNextImage from "~/components/ChakraNextImage";
-import Header from "~/components/landing/Header";
-import { loginAnimation } from "~/utils/animations";
 import { api } from "~/utils/api";
 import { addSpaceToTwoCharacters } from "~/utils/tools";
-import SectionContent from "~/components/landing/SimpleSection";
-import MapSectionCard from "~/components/landing/MapSectionCard";
-import HowItWorksSectionCard from "~/components/landing/HowItWorkSectionCard";
 import FAQSectionAccordionItem from "~/components/landing/FAQSectionAccordionItem";
 import BaseModal from "~/components/modals/BaseModal";
 import PhoneNumberCTA, {
@@ -160,6 +146,7 @@ export default function Home() {
   } | null>(null);
 
   const firstSectionRef = useRef<HTMLDivElement>(null);
+  const parentPartnersRef = useRef<HTMLDivElement>(null);
 
   const resetTimer = () => {
     if (intervalId) clearInterval(intervalId);
@@ -408,6 +395,11 @@ export default function Home() {
       img: "/images/seeds/partners/flixbus.svg",
       promo_label: "-10%",
     },
+    {
+      name: "Cora",
+      img: "/images/seeds/partners/cora.svg",
+      promo_label: "Gratuit",
+    },
   ];
 
   const forWhoList = [
@@ -520,37 +512,41 @@ export default function Home() {
             </Link>
           </Flex>
           <Flex
+            ref={parentPartnersRef}
             flex={1}
             flexDir="column"
             justify={"center"}
             p={{ base: 8, lg: 44 }}
             px={{ lg: 8 }}
             pt={0}
+            position="relative"
+            overflow="hidden"
           >
             {partnersList.map((partner, index) => (
               <Flex
                 key={`partner-${index}`}
-                justify={"center"}
-                gap={8}
+                flexDir={index % 2 === 0 ? "row" : "row-reverse"}
+                justifyContent={{ base: "start", lg: "center" }}
                 mb={4}
-                h={{ base: 10, lg: 14 }}
+                gap={2}
+                h={{ base: 14, lg: 14 }}
               >
                 <Flex
                   alignItems="center"
                   justifyContent="center"
-                  bg={"white"}
-                  rounded={"full"}
+                  bg="white"
+                  rounded="full"
                   p={4}
                 >
                   <Image src={partner.img} alt={`Logo de ${partner.name}`} />
                 </Flex>
                 <Flex
                   as={Text}
-                  align={"center"}
-                  bg={"black"}
-                  fontWeight={"extrabold"}
-                  rounded={"full"}
-                  fontSize={"xl"}
+                  align="center"
+                  bg="black"
+                  fontWeight="extrabold"
+                  rounded="full"
+                  fontSize="xl"
                   p={4}
                 >
                   {partner.promo_label}
