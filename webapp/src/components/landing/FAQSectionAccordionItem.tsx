@@ -60,11 +60,7 @@ const FAQSectionAccordionItem = ({
             )}
           </AccordionButton>
           <AccordionPanel px={0}>
-            <Text
-              textAlign="left"
-              fontWeight="medium"
-              fontSize={{ base: "md", lg: "xl" }}
-            >
+            <Text textAlign="left" fontWeight="medium">
               {content}
             </Text>
           </AccordionPanel>

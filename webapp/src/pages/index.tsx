@@ -55,6 +55,7 @@ import { useAuth } from "~/providers/Auth";
 import OtpInput from "react-otp-input";
 import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedImages";
 import NextLink from "next/link";
+import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
 
 const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
@@ -506,11 +507,13 @@ export default function Home() {
               Une appli utile avec des réductions de grandes marques
             </Heading>
             <Link
+              as={NextLink}
+              href="/partners"
               mt={6}
               textDecor={"underline"}
               fontWeight={"bold"}
               fontSize={{ lg: "lg" }}
-              onClick={() => {}}
+              passHref
             >
               Voir toutes les entreprises
               <Box as="br" display={{ base: "block", lg: "none" }} /> engagées →
@@ -913,36 +916,9 @@ export default function Home() {
               ))}
             </Accordion>
           </Box>
-          <Flex
-            flexDir="column"
-            mt={20}
-            px={{ base: 8, lg: 28 }}
-            py={14}
-            bgColor="primary"
-            color="white"
-            borderRadius="5xl"
-          >
-            <Image src="/images/cje-logo-white-blue.svg" w="75px" h="40px" />
-            <Text fontWeight={800} fontSize={18} mt={4}>
-              Vous voulez en savoir plus sur la création du dispositif carte
-              “jeune engagé” ?
-            </Text>
-            <Link
-              as={NextLink}
-              href="https://beta.gouv.fr/startups/pass.engagement.jeune.html"
-              target="_blank"
-              mt={6}
-              passHref
-              _hover={{ textDecoration: "none" }}
-            >
-              <Flex alignItems="center" borderBottomWidth={1} pb={4}>
-                <Text fontWeight={500}>
-                  Voir la page beta.gouv de l’application carte “jeune engagé”
-                </Text>
-                <Icon as={HiMiniArrowTopRightOnSquare} w={6} h={6} ml={2} />
-              </Flex>
-            </Link>
-          </Flex>
+          <Box mt={20}>
+            <RedirectionSectionBlock />
+          </Box>
         </Box>
       </Flex>
       <BaseModal

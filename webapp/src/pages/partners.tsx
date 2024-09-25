@@ -1,5 +1,6 @@
 import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
 import { PartnerIncluded } from "~/server/api/routers/partner";
 import { api } from "~/utils/api";
 
@@ -29,7 +30,7 @@ const HomePartners = () => {
   );
 
   return (
-    <Box px="25%" mt={16}>
+    <Box px={{ base: 10, lg: "15%" }} mt={16}>
       <Heading as="h2" fontSize="3xl" mb={4}>
         Les entreprises engagées
       </Heading>
@@ -70,6 +71,9 @@ const HomePartners = () => {
           </Box>
         </>
       ))}
+      <Box mt={20}>
+        <RedirectionSectionBlock />
+      </Box>
     </Box>
   );
 };
