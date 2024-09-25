@@ -94,6 +94,30 @@ const offersList = [
     tag_img: "/images/seeds/tags/culture.png",
     tagRotationAngle: -11,
   },
+  {
+    title_particle: "les courses",
+    card_img: "/images/landing/offers/cinema-card.png",
+    tag_img: "/images/seeds/tags/culture.png",
+    tagRotationAngle: -11,
+  },
+  {
+    title_particle: "s'habiller",
+    card_img: "/images/landing/offers/cinema-card.png",
+    tag_img: "/images/seeds/tags/culture.png",
+    tagRotationAngle: -11,
+  },
+  {
+    title_particle: "bouger",
+    card_img: "/images/landing/offers/cinema-card.png",
+    tag_img: "/images/seeds/tags/culture.png",
+    tagRotationAngle: -11,
+  },
+  {
+    title_particle: "rester connecté",
+    card_img: "/images/landing/offers/cinema-card.png",
+    tag_img: "/images/seeds/tags/culture.png",
+    tagRotationAngle: -11,
+  },
 ];
 
 export default function Home() {
@@ -455,7 +479,6 @@ export default function Home() {
               Dispositif en cours d’expérimentation
             </Text>
           </Box>
-
           <EllipsePositionnedImages
             images={ellipseImages}
             parentRef={firstSectionRef}
@@ -757,8 +780,10 @@ export default function Home() {
           </Flex>
           <Flex flex={1} flexDir="column" gap={4}>
             <Heading
+              as="span"
               fontSize={{ base: "2xl", lg: "5xl" }}
               fontWeight="extrabold"
+              mr={1.5}
             >
               Des réductions utiles, pour un cinéma
             </Heading>

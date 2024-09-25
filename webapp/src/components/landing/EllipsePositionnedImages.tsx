@@ -1,5 +1,6 @@
 import { Image, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
+import { motion } from "framer-motion";
 
 const EllipsePositionnedImages = ({
   images,
@@ -40,14 +41,23 @@ const EllipsePositionnedImages = ({
   return images.map((src, index) => {
     const { x, y } = calculatePosition(index);
     return (
-      <Image
+      <motion.div
         key={src}
-        src={src}
-        boxSize={`${imageSize}px`}
-        position="absolute"
-        left={`calc(50% + ${x}px - ${imageSize / 2}px)`}
-        top={`calc(50% + ${y}px - ${imageSize / 2}px)`}
-      />
+        initial={{ opacity: 0, x: -imageSize / 2, y: -imageSize / 2 }}
+        animate={{ opacity: 1, x: x - imageSize / 2, y: y - imageSize / 2 }}
+        transition={{ duration: 0.7, ease: "easeInOut", delay: 0.2 }}
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: `translate(-50%, -50%)`,
+        }}
+      >
+        <Image
+          src={src}
+          boxSize={`${imageSize}px`} // Use the provided image size
+        />
+      </motion.div>
     );
   });
 };
