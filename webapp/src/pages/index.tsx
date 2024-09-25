@@ -917,6 +917,15 @@ export default function Home() {
           <Box id="why-section" mt={20}>
             <RedirectionSectionBlock />
           </Box>
+          <Box mt={20}>
+            <PhoneNumberCTA
+              currentKey="phone-number-cta"
+              setCurrentPhoneNumberKey={setCurrentPhoneNumberKey}
+              error={phoneNumberError}
+              isLoadingOtp={isLoadingOtp}
+              onSubmit={handleGenerateOtp}
+            />
+          </Box>
         </Box>
       </Flex>
       <BaseModal
