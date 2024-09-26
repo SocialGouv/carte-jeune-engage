@@ -116,7 +116,7 @@ export default function Dashboard() {
           >
             {category.label}
           </Text>
-          <Grid templateColumns="repeat(3, 1fr)" gridColumnGap={2}>
+          <Grid templateColumns="repeat(3, 1fr)" gap={2}>
             {category.offers?.map((offer) => (
               <Box
                 key={offer.id}
