@@ -97,9 +97,11 @@ const CouponCodeCard = ({
     case "code_space":
       return (
         <Text
-          fontSize={24}
+          py={4}
+          fontSize={offerKind === "code" ? 24 : 16}
           fontWeight={800}
           letterSpacing={2}
+          color={offerKind === "code" ? "black" : "disabled"}
           filter={mode === "default" ? "none" : "blur(5px)"}
         >
           {offerKind === "code"
@@ -108,6 +110,7 @@ const CouponCodeCard = ({
         </Text>
       );
     case "voucher":
+    case mode === "wallet" && "voucher_pass":
       return (
         <Flex flexDir="column">
           <Flex
@@ -126,42 +129,44 @@ const CouponCodeCard = ({
               height={70}
             />
           </Flex>
-          <Flex
-            position="relative"
-            justifyContent="space-between"
-            alignItems="center"
-            w="full"
-            mt={2}
-            fontWeight={500}
-            fontSize={12}
-            color="blackLight"
-          >
-            <Text textAlign="start">
-              {_.capitalize(coupon.user.firstName as string)}
-              <br />
-              {_.capitalize(coupon.user.lastName as string)}
-            </Text>
-            <Image
-              src="/images/cje-logo.png"
-              alt="Logo CJE"
-              width={40}
-              height={20}
-              style={{
-                position: "absolute",
-                right: "50%",
-                transform: "translateX(50%)",
-              }}
-            />
-            <Text textAlign="end">
-              {new Date().toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-              <br />
-              {new Date().toLocaleTimeString("fr-FR")}
-            </Text>
-          </Flex>
+          {mode === "default" && (
+            <Flex
+              position="relative"
+              justifyContent="space-between"
+              alignItems="center"
+              w="full"
+              mt={2}
+              fontWeight={500}
+              fontSize={12}
+              color="blackLight"
+            >
+              <Text textAlign="start">
+                {_.capitalize(coupon.user.firstName as string)}
+                <br />
+                {_.capitalize(coupon.user.lastName as string)}
+              </Text>
+              <Image
+                src="/images/cje-logo.png"
+                alt="Logo CJE"
+                width={40}
+                height={20}
+                style={{
+                  position: "absolute",
+                  right: "50%",
+                  transform: "translateX(50%)",
+                }}
+              />
+              <Text textAlign="end">
+                {new Date().toLocaleDateString("fr-FR", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+                <br />
+                {new Date().toLocaleTimeString("fr-FR")}
+              </Text>
+            </Flex>
+          )}
         </Flex>
       );
     case "voucher_pass":
@@ -272,7 +277,7 @@ const CouponCard = ({
         <Flex
           flexDir="column"
           pt={mode === "default" ? 2 : 1}
-          pb={mode === "default" ? 3 : 0}
+          pb={mode === "default" ? 3 : 1}
           px={mode === "default" ? 3 : 1}
           bg="white"
           borderRadius="2.5xl"
@@ -285,6 +290,7 @@ const CouponCard = ({
           }
           borderWidth={coupon ? 0 : 2}
           borderStyle={coupon ? "none" : "dashed"}
+          h={mode === "default" ? "auto" : "245px"}
           borderColor="cje-gray.400"
           overflow="hidden"
         >
@@ -339,7 +345,6 @@ const CouponCard = ({
             flexDir="column"
             mt={4}
             bgColor="white"
-            gap={2}
             px={mode === "default" ? 0 : 2}
           >
             {coupon ? (
@@ -401,7 +406,7 @@ const CouponCard = ({
               coupon.offer.kind.startsWith("code") &&
               coupon.offer.partner.url &&
               handleOpenExternalLink && (
-                <Box mt={1}>
+                <Box mt={3}>
                   <BasicExternalCard
                     title={coupon.offer.partner.url.replace(
                       /(^\w+:|^)\/\//,
