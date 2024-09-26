@@ -46,12 +46,14 @@ const ExpiryTag = ({
       alignSelf="center"
       align="center"
       borderRadius="2xl"
-      color={variant === "default" ? "white" : "black"}
+      color={
+        variant === "default" && differenceInDays <= 10 ? "white" : "black"
+      }
       bgColor={
         variant === "default"
           ? differenceInDays <= 10
             ? "bgRed"
-            : "black"
+            : "bgGray"
           : "inherit"
       }
       py={0.5}
