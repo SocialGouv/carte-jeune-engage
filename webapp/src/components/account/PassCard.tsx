@@ -21,9 +21,10 @@ import _ from "lodash";
 
 type PropsPassCard = {
   offer?: OfferIncluded;
+  embed?: boolean;
 };
 
-const PassCard = ({ offer }: PropsPassCard) => {
+const PassCard = ({ offer, embed = false }: PropsPassCard) => {
   const { user } = useAuth();
 
   const {
@@ -49,8 +50,8 @@ const PassCard = ({ offer }: PropsPassCard) => {
 
   return (
     <>
-      <Flex flexDir="column" mt={6}>
-        {passCJEStatus && (
+      <Flex flexDir="column">
+        {!embed && passCJEStatus && (
           <Flex flexDir="column" borderRadius="2.5xl" bgColor="white" p={6}>
             <Flex alignItems="center" gap={1}>
               <Box
@@ -97,8 +98,9 @@ const PassCard = ({ offer }: PropsPassCard) => {
           bgColor="white"
           borderRadius="2.5xl"
           pt={10}
-          mt={passCJEStatus ? 4 : 0}
-          shadow="default"
+          mt={!embed && passCJEStatus ? 4 : 0}
+          shadow={!embed ? "default" : "none"}
+          style={{ zoom: embed ? 0.25 : 1 }}
         >
           <Box borderRadius="full" overflow="hidden">
             {user.image && !passCJEStatus ? (

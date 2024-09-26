@@ -75,7 +75,9 @@ export default function AccountCard() {
           />
         </Flex>
       </Flex>
-      <PassCard />
+      <Box mt={6}>
+        <PassCard />
+      </Box>
       <Link
         as={NextLink}
         href="/dashboard/wallet"

@@ -1,4 +1,18 @@
-import { Box, Center, Flex, Icon, Text, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  ChakraProps,
+  Flex,
+  Icon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { CouponIncluded } from "~/server/api/routers/coupon";
@@ -11,18 +25,73 @@ import { push } from "@socialgouv/matomo-next";
 import _ from "lodash";
 import ExpiryTag from "../offer/ExpiryTag";
 import ConditionalLink from "../ConditionalLink";
+import { IconType } from "react-icons/lib";
+import { HiMiniArrowDown, HiMiniArrowsPointingOut } from "react-icons/hi2";
+import PassCard from "../account/PassCard";
+import { useMemo } from "react";
+import { useAuth } from "~/providers/Auth";
+
+const BasicExternalCard = ({
+  title,
+  titleProps,
+  text,
+  onClick,
+  icon,
+}: {
+  title: string;
+  titleProps?: ChakraProps;
+  text: string;
+  onClick: () => void;
+  icon: IconType;
+}) => {
+  return (
+    <Flex
+      flexDir="column"
+      alignItems="start"
+      gap={2}
+      bg="blackLight"
+      color="white"
+      borderRadius="2.5xl"
+      textAlign="start"
+      p={5}
+      onClick={onClick}
+    >
+      <Text fontWeight={500} fontSize={12} mt={1}>
+        {text}
+      </Text>
+      <Flex alignItems="center" justifyContent="space-between" w="full" gap={1}>
+        <Text fontWeight={800} fontSize={20} {...titleProps}>
+          {title}
+        </Text>
+        <Icon as={icon} w={6} h={6} mt={1} />
+      </Flex>
+    </Flex>
+  );
+};
 
 const CouponCodeCard = ({
   coupon,
   mode,
   offerKind,
   barCodeFormat,
+  handleOpenCardModal,
 }: {
   coupon: CouponIncluded;
   mode: "default" | "wallet";
   offerKind: Offer["kind"];
   barCodeFormat: Offer["barcodeFormat"];
+  handleOpenCardModal: () => void;
 }) => {
+  const { user } = useAuth();
+
+  const passCJEStatus = useMemo(() => {
+    return user?.status_image === "pending" && user.image
+      ? "pending"
+      : !user?.image
+        ? "missing"
+        : undefined;
+  }, [user]);
+
   switch (offerKind) {
     case "code":
     case "code_space":
@@ -39,7 +108,6 @@ const CouponCodeCard = ({
         </Text>
       );
     case "voucher":
-    case "voucher_pass":
       return (
         <Flex flexDir="column">
           <Flex
@@ -96,6 +164,67 @@ const CouponCodeCard = ({
           </Flex>
         </Flex>
       );
+    case "voucher_pass":
+      const passCJEColor =
+        passCJEStatus === "missing"
+          ? "bgRed"
+          : passCJEStatus === "pending"
+            ? "primary"
+            : "success";
+      return (
+        <Flex flexDir="column" gap={2.5}>
+          <BasicExternalCard
+            title="Présenter ma carte “jeune engagé”"
+            text="Pour avoir la réduction"
+            onClick={handleOpenCardModal}
+            icon={HiMiniArrowDown}
+          />
+          <Flex
+            alignItems="center"
+            p={4}
+            bgColor="white"
+            borderRadius="2.5xl"
+            gap={6}
+          >
+            <Box flex={1} shadow="default" borderRadius="2.5xl">
+              <PassCard embed />
+            </Box>
+            <Flex flexDir="column">
+              <Flex alignItems="center" gap={1}>
+                <Box
+                  w={1.5}
+                  h={1.5}
+                  bgColor={passCJEColor}
+                  borderRadius="full"
+                />
+                <Text fontSize={12} fontWeight={500} color={passCJEColor}>
+                  {passCJEStatus === "missing"
+                    ? "Photo manquante"
+                    : passCJEStatus === "pending"
+                      ? "Vérification en cours"
+                      : "Carte valide"}
+                </Text>
+              </Flex>
+              <Flex
+                alignItems="center"
+                mt={6}
+                gap={2}
+                onClick={handleOpenCardModal}
+              >
+                <Text
+                  fontSize={14}
+                  fontWeight={500}
+                  textDecoration="underline"
+                  textDecorationThickness="2px"
+                >
+                  Afficher ma carte
+                </Text>
+                <Icon as={HiMiniArrowsPointingOut} w={4} h={4} />
+              </Flex>
+            </Flex>
+          </Flex>
+        </Flex>
+      );
   }
 };
 
@@ -114,6 +243,12 @@ const CouponCard = ({
 }: CouponCardProps) => {
   const toast = useToast();
 
+  const {
+    isOpen: isOpenUserCard,
+    onOpen: onOpenUserCard,
+    onClose: onCloseUserCard,
+  } = useDisclosure();
+
   const handleCopyToClipboard = (text: string) => {
     toast({
       render: () => (
@@ -128,161 +263,185 @@ const CouponCard = ({
   };
 
   return (
-    <ConditionalLink
-      condition={!!link}
-      to={link as string}
-      props={{ _hover: { textDecoration: "none" } }}
-    >
-      <Flex
-        flexDir="column"
-        pt={mode === "default" ? 2 : 1}
-        px={mode === "default" ? 3 : 1}
-        pb={mode === "default" ? 12 : 0}
-        bg="white"
-        borderRadius="2.5xl"
-        shadow={
-          coupon ? (mode === "default" ? "default" : "default-wallet") : "none"
-        }
-        borderWidth={coupon ? 0 : 2}
-        borderStyle={coupon ? "none" : "dashed"}
-        borderColor="cje-gray.400"
-        h={mode === "default" ? "430px" : "245px"}
-        overflow="hidden"
+    <>
+      <ConditionalLink
+        condition={!!link}
+        to={link as string}
+        props={{ _hover: { textDecoration: "none" } }}
       >
         <Flex
-          bgColor={coupon ? coupon.offer.partner.color : "bgGray"}
-          p={3}
-          pb={5}
-          gap={3}
-          alignItems="center"
-          borderTopRadius="1.5xl"
-          position="relative"
-          sx={{ ...dottedPattern("#ffffff") }}
+          flexDir="column"
+          pt={mode === "default" ? 2 : 1}
+          pb={mode === "default" ? 3 : 0}
+          px={mode === "default" ? 3 : 1}
+          bg="white"
+          borderRadius="2.5xl"
+          shadow={
+            coupon
+              ? mode === "default"
+                ? "default"
+                : "default-wallet"
+              : "none"
+          }
+          borderWidth={coupon ? 0 : 2}
+          borderStyle={coupon ? "none" : "dashed"}
+          borderColor="cje-gray.400"
+          overflow="hidden"
         >
           <Flex
+            bgColor={coupon ? coupon.offer.partner.color : "bgGray"}
+            p={3}
+            pb={5}
+            gap={3}
             alignItems="center"
-            borderRadius="2.5xl"
-            p={1.5}
-            bgColor="white"
+            borderTopRadius="1.5xl"
+            position="relative"
+            sx={{ ...dottedPattern("#ffffff") }}
           >
-            {coupon ? (
-              <Image
-                src={coupon.offer.partner.icon.url ?? ""}
-                alt={coupon.offer.partner.icon.alt ?? ""}
-                width={34}
-                height={34}
-              />
-            ) : (
-              <Box w={8} h={8} bgColor="white" borderRadius="2.5xl" />
-            )}
-          </Flex>
-          {coupon ? (
-            <Text color="white" fontSize={20} fontWeight={700}>
-              {coupon.offer.partner.name}
-            </Text>
-          ) : (
-            <Box w={20} h={3} bgColor="white" borderRadius="2.5xl" />
-          )}
-          {mode === "wallet" && (
-            <Box ml="auto">
+            <Flex
+              alignItems="center"
+              borderRadius="2.5xl"
+              p={1.5}
+              bgColor="white"
+            >
               {coupon ? (
-                <ExpiryTag
-                  expiryDate={coupon?.offer.validityTo as string}
-                  expiryTextMode="short"
+                <Image
+                  src={coupon.offer.partner.icon.url ?? ""}
+                  alt={coupon.offer.partner.icon.alt ?? ""}
+                  width={34}
+                  height={34}
                 />
               ) : (
-                <Box w={16} h={5} bgColor="white" borderRadius="2.5xl" />
+                <Box w={8} h={8} bgColor="white" borderRadius="2.5xl" />
               )}
-            </Box>
-          )}
-        </Flex>
-        <Flex
-          flexDir="column"
-          mt={4}
-          bgColor="white"
-          gap={2}
-          px={mode === "default" ? 0 : 2}
-        >
-          {coupon ? (
-            <Text fontWeight={500} h="66px">
-              {coupon.offer.title}
-            </Text>
-          ) : (
-            <>
-              <Box w="full" h={2} bgColor="bgGray" borderRadius="2.5xl" />
-              <Box w="60%" h={2} bgColor="bgGray" borderRadius="2.5xl" mt={1} />
-            </>
-          )}
-          {coupon ? (
-            <Flex
-              flexDir="column"
-              position="relative"
-              gap={5}
-              borderRadius="2xl"
-              w="full"
-              bgColor="bgGray"
-              textAlign="center"
-              px={4}
-              py={6}
-              onClick={() => {
-                if (coupon.offer.kind === "code") {
-                  push([
-                    "trackEvent",
-                    "Offre",
-                    `${coupon.offer.partner.name} - ${coupon.offer.title} - Active - Aller sur le site`,
-                  ]);
-                  handleCopyToClipboard(coupon.code);
-                }
-              }}
-            >
-              <CouponCodeCard
-                mode={mode}
-                coupon={coupon}
-                offerKind={coupon.offer.kind}
-                barCodeFormat={coupon.offer.barcodeFormat}
-              />
             </Flex>
-          ) : (
-            <Center mt={6} textAlign="center" px={12}>
-              <Text color="disabled" fontWeight={500}>
-                Vous n’avez pas encore enregistré de réductions.
+            {coupon ? (
+              <Text color="white" fontSize={20} fontWeight={700}>
+                {coupon.offer.partner.name}
               </Text>
-            </Center>
-          )}
-          {coupon &&
-            mode == "default" &&
-            coupon.offer.kind === "code" &&
-            coupon.offer.partner.url && (
+            ) : (
+              <Box w={20} h={3} bgColor="white" borderRadius="2.5xl" />
+            )}
+            {mode === "wallet" && (
+              <Box ml="auto">
+                {coupon ? (
+                  <ExpiryTag
+                    expiryDate={coupon?.offer.validityTo as string}
+                    expiryTextMode="short"
+                  />
+                ) : (
+                  <Box w={16} h={5} bgColor="white" borderRadius="2.5xl" />
+                )}
+              </Box>
+            )}
+          </Flex>
+          <Flex
+            flexDir="column"
+            mt={4}
+            bgColor="white"
+            gap={2}
+            px={mode === "default" ? 0 : 2}
+          >
+            {coupon ? (
+              <Text fontWeight={500} h="66px">
+                {coupon.offer.title}
+              </Text>
+            ) : (
+              <>
+                <Box w="full" h={2} bgColor="bgGray" borderRadius="2.5xl" />
+                <Box
+                  w="60%"
+                  h={2}
+                  bgColor="bgGray"
+                  borderRadius="2.5xl"
+                  mt={1}
+                />
+              </>
+            )}
+            {coupon ? (
               <Flex
                 flexDir="column"
-                alignItems="start"
-                gap={2}
-                bg="blackLight"
-                color="white"
-                borderRadius="2.5xl"
-                mt={1}
-                p={5}
-                onClick={handleOpenExternalLink}
+                position="relative"
+                gap={5}
+                borderRadius="2xl"
+                w="full"
+                bgColor="bgGray"
+                textAlign="center"
+                px={4}
+                py={2}
+                mt={4}
+                onClick={() => {
+                  if (coupon.offer.kind === "code") {
+                    push([
+                      "trackEvent",
+                      "Offre",
+                      `${coupon.offer.partner.name} - ${coupon.offer.title} - Active - Aller sur le site`,
+                    ]);
+                    handleCopyToClipboard(coupon.code);
+                  }
+                }}
               >
-                <Text fontWeight={500} fontSize={12} mt={1}>
-                  uniquement sur internet
-                </Text>
-                <Flex
-                  alignItems="center"
-                  justifyContent="space-between"
-                  w="full"
-                  gap={1}
-                >
-                  <Text fontWeight={800} fontSize={20} noOfLines={1}>
-                    {coupon.offer.partner.url.replace(/(^\w+:|^)\/\//, "")}
-                  </Text>
-                  <Icon as={PiArrowUpRightBold} w={6} h={6} mt={1} />
-                </Flex>
+                <CouponCodeCard
+                  mode={mode}
+                  coupon={coupon}
+                  offerKind={coupon.offer.kind}
+                  barCodeFormat={coupon.offer.barcodeFormat}
+                  handleOpenCardModal={onOpenUserCard}
+                />
               </Flex>
+            ) : (
+              <Center mt={6} textAlign="center" px={12}>
+                <Text color="disabled" fontWeight={500}>
+                  Vous n’avez pas encore enregistré de réductions.
+                </Text>
+              </Center>
             )}
+            {coupon &&
+              mode == "default" &&
+              coupon.offer.kind.startsWith("code") &&
+              coupon.offer.partner.url &&
+              handleOpenExternalLink && (
+                <Box mt={1}>
+                  <BasicExternalCard
+                    title={coupon.offer.partner.url.replace(
+                      /(^\w+:|^)\/\//,
+                      ""
+                    )}
+                    titleProps={{ noOfLines: 1 }}
+                    text="uniquement sur internet"
+                    onClick={handleOpenExternalLink}
+                    icon={PiArrowUpRightBold}
+                  />
+                </Box>
+              )}
+          </Flex>
         </Flex>
-      </Flex>
-    </ConditionalLink>
+      </ConditionalLink>
+      <Modal isOpen={isOpenUserCard} onClose={onCloseUserCard} size="full">
+        <ModalContent bgColor="primary">
+          <ModalCloseButton
+            position="relative"
+            size="lg"
+            color="white"
+            ml={8}
+            mt={6}
+          />
+          <ModalHeader
+            color="white"
+            px={16}
+            textAlign="center"
+            pb={0}
+            fontSize={24}
+            fontWeight={800}
+          >
+            Ma carte virtuelle “jeune engagé”
+          </ModalHeader>
+          <ModalBody pt={0} pb={8} px={8} mt={6}>
+            <PassCard />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 
