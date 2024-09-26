@@ -68,7 +68,7 @@ const CTAButton = ({
               Ma carte CJE
             </Text>
           </Flex>
-          <PassCard isPage={false} offer={offer} />
+          <PassCard offer={offer} />
         </Flex>
         // <Link
         //   href="/dashboard/account/card"

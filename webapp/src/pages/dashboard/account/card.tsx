@@ -47,7 +47,7 @@ export default function AccountCard() {
   const router = useRouter();
 
   return (
-    <Box pt={12} pb={36} px={8} bgColor="primary" h="full">
+    <Box pt={12} pb={24} px={8} bgColor="primary" h="max-content">
       <Flex justifyContent="space-between">
         <IconButton
           variant="unstyled"
@@ -75,7 +75,7 @@ export default function AccountCard() {
           />
         </Flex>
       </Flex>
-      <PassCard isPage={false} />
+      <PassCard />
       <Link
         as={NextLink}
         href="/dashboard/wallet"
