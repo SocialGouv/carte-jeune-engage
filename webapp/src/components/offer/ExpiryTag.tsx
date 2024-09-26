@@ -23,7 +23,9 @@ export function getExpiryObject(
   return {
     expiryText:
       differenceInDays > 0
-        ? `${expiryTextMode === "verbose" ? "Fin dans " : ""}${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
+        ? expiryTextMode === "verbose"
+          ? `Fin dans ${differenceInDays} jour${differenceInDays > 1 ? "s" : ""}`
+          : `${differenceInDays} j`
         : "Offre expirée",
     differenceInDays,
   };
