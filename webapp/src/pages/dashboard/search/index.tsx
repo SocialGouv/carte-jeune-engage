@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Divider,
+  Fade,
   Flex,
   Icon,
   Link,
@@ -42,6 +43,7 @@ export default function DashboardSearch() {
     mutateAsync: upsertSearchRequest,
     isLoading: isLoadingUpsertSearchRequest,
     isSuccess: isSuccessUpsertSearchRequest,
+    reset: resetUpsertSearchRequest,
   } = api.searchRequest.upsert.useMutation();
 
   const { data: tags } = resultTags || { data: [] };
@@ -61,12 +63,16 @@ export default function DashboardSearch() {
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     if (isSuccessUpsertSearchRequest)
-      timeoutId = setTimeout(() => setDisplayRequestCard(false), 2000);
+      timeoutId = setTimeout(() => {
+        setDisplayRequestCard(false);
+        setTimeout(() => resetUpsertSearchRequest(), 100);
+      }, 2000);
     return () => clearTimeout(timeoutId);
   }, [isSuccessUpsertSearchRequest]);
 
   useEffect(() => {
-    if (debouncedSearch === "") setDisplayRequestCard(true);
+    setDisplayRequestCard(true);
+    resetUpsertSearchRequest();
   }, [debouncedSearch]);
 
   if (isLoadingTags || isLoadingOffers || isSearchDebounced)
@@ -192,7 +198,7 @@ export default function DashboardSearch() {
               <Text fontWeight={800}>"{debouncedSearch}"</Text>
               pour l'instant
             </Text>
-            {displayRequestCard && (
+            <Fade in={displayRequestCard} style={{ zIndex: 10 }}>
               <Box px={8}>
                 <Center
                   flexDir="column"
@@ -261,7 +267,7 @@ export default function DashboardSearch() {
                   )}
                 </Center>
               </Box>
-            )}
+            </Fade>
           </Box>
         )}
       </>
