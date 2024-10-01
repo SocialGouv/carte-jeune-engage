@@ -23,7 +23,6 @@ const OfferCard = ({
   handleValidateOffer,
 }: OfferCardProps) => {
   const utils = api.useUtils();
-
   const match = offer.title.match(/\d+%/);
 
   const [percentage, restOfString] = match
