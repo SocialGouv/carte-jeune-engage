@@ -72,13 +72,15 @@ export default function AccountHistory() {
             const currentCouponUsedAt = new Date(
               (userSaving.usedAt
                 ? userSaving.usedAt
-                : userSaving.assignUserAt) as string
+                : userSaving.offer.validityTo) as string
             );
-            const previousCouponUsedAt = new Date(
-              (userSavings[index - 1]?.usedAt
-                ? userSavings[index - 1].usedAt
-                : userSavings[index - 1]?.assignUserAt) as string
-            );
+            const previousCouponUsedAt = userSavings[index - 1]
+              ? new Date(
+                  (userSavings[index - 1]?.usedAt
+                    ? userSavings[index - 1].usedAt
+                    : userSavings[index - 1]?.offer.validityTo) as string
+                )
+              : new Date();
 
             const currentMonth = currentCouponUsedAt.toLocaleString("fr-FR", {
               month: "long",
@@ -146,7 +148,7 @@ export default function AccountHistory() {
                         {userSaving.offer.title}
                       </Text>
                       <Box mt={1}>
-                        {userSaving.savingAmount === null ? (
+                        {userSaving.used ? (
                           <Flex
                             alignItems="center"
                             fontSize={12}
