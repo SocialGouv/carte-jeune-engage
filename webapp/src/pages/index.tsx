@@ -477,6 +477,17 @@ export default function Home() {
             parentRef={firstSectionRef}
           />
         </Flex>
+        {!isDesktop && (
+          <Box mt={4} px={2}>
+            <PhoneNumberCTA
+              currentKey="phone-number-cta"
+              setCurrentPhoneNumberKey={setCurrentPhoneNumberKey}
+              error={phoneNumberError}
+              isLoadingOtp={isLoadingOtp}
+              onSubmit={handleGenerateOtp}
+            />
+          </Box>
+        )}
         <Flex
           flexDir={{ base: "column", lg: "row" }}
           bg={"primary"}
@@ -484,6 +495,7 @@ export default function Home() {
           mx={"auto"}
           rounded="5xl"
           color={"white"}
+          mt={isDesktop ? 0 : 20}
         >
           <Flex
             flex={1}
@@ -712,7 +724,7 @@ export default function Home() {
         <Flex
           id="how-does-it-work-section"
           flexDir={{ base: "column", lg: "row-reverse" }}
-          bg="blackLight"
+          bg="frontBlack"
           w={{ base: "95%", lg: "full" }}
           mx={"auto"}
           rounded="2.5xl"
@@ -916,15 +928,6 @@ export default function Home() {
           </Box>
           <Box id="why-section" mt={20}>
             <RedirectionSectionBlock />
-          </Box>
-          <Box mt={20}>
-            <PhoneNumberCTA
-              currentKey="phone-number-cta"
-              setCurrentPhoneNumberKey={setCurrentPhoneNumberKey}
-              error={phoneNumberError}
-              isLoadingOtp={isLoadingOtp}
-              onSubmit={handleGenerateOtp}
-            />
           </Box>
         </Box>
       </Flex>
