@@ -16,8 +16,13 @@ export const Offers: CollectionConfig = {
     {
       name: "title",
       type: "text",
-      label: "Titre",
+      label: "Titre (en gras)",
       required: true,
+    },
+    {
+      name: "subtitle",
+      type: "text",
+      label: "Complément de titre",
     },
     {
       name: "partner",
@@ -129,6 +134,33 @@ export const Offers: CollectionConfig = {
         description:
           "Si vide, le code-barres est formaté au format CODE128 par défaut",
       },
+    },
+    {
+      name: "termsOfUse",
+      type: "array",
+      label: "Comment ça marche ?",
+      labels: {
+        singular: "Étape",
+        plural: "Étapes",
+      },
+      defaultValue: [],
+      fields: [
+        {
+          name: "slug",
+          type: "text",
+          label: "Texte",
+          admin: {
+            components: {
+              Field: CustomSelectTermsOfUse,
+            },
+          },
+        },
+        {
+          name: "isHighlighted",
+          type: "checkbox",
+          label: "Mettre en avant ?",
+        },
+      ],
     },
     {
       name: "conditions",

@@ -1,4 +1,4 @@
-import { Flex, Text, Icon, Box, IconButton } from "@chakra-ui/react";
+import { Flex, Text, Icon, Box, IconButton, Center } from "@chakra-ui/react";
 import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
 import { dottedPattern } from "~/utils/chakra-theme";
 import { push } from "@socialgouv/matomo-next";
@@ -23,12 +23,6 @@ const OfferCard = ({
   handleValidateOffer,
 }: OfferCardProps) => {
   const utils = api.useUtils();
-
-  const match = offer.title.match(/\d+%/);
-
-  const [percentage, restOfString] = match
-    ? [match[0], offer.title.replace(match[0], "").trim()]
-    : [null, offer.title];
 
   const isBookmarked = !!offer.userCoupon;
 
@@ -167,19 +161,12 @@ const OfferCard = ({
           shadow="default"
         >
           <ExpiryTag expiryDate={offer.validityTo} variant={variant} />
-          <Flex
-            flexDir="column"
-            alignItems="center"
-            justify="center"
-            textAlign="center"
-          >
-            {percentage && (
-              <Text fontSize="lg" fontWeight={800}>
-                {percentage}
-              </Text>
-            )}
-            <Text minH="80px" fontWeight={500} mt={1}>
-              {restOfString}
+          <Flex flexDir="column" textAlign="center" h="154px">
+            <Text fontSize={18} fontWeight={800} noOfLines={2}>
+              {offer.title}
+            </Text>
+            <Text fontWeight={500} noOfLines={4} mt={1}>
+              {offer.subtitle}
             </Text>
           </Flex>
         </Flex>

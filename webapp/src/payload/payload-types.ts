@@ -179,6 +179,7 @@ export interface Partner {
 export interface Offer {
   id: number;
   title: string;
+  subtitle?: string | null;
   partner: number | Partner;
   category: number | Category;
   tags?: (number | Tag)[] | null;
