@@ -1,6 +1,11 @@
 app:
   ~chart: app
   ~needs: [build-app]
+  annotations:
+    oblik.socialgouv.io/min-request-cpu: "350m"
+    oblik.socialgouv.io/min-request-memory: "1024Mi"
+    oblik.socialgouv.io/min-limit-cpu: "500m"
+    oblik.socialgouv.io/min-limit-memory: "1024Mi"
   imagePackage: app
   probesPath: /api/healthz
 
@@ -22,4 +27,3 @@ jobs:
           sentry_auth_token:
             secretName: app-sealed-secret
             secretKey: SENTRY_AUTH_TOKEN
-
