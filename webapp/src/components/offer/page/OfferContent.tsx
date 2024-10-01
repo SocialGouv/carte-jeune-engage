@@ -72,9 +72,7 @@ const OfferContent = (props: OfferContentProps) => {
 
   const itemsTermsOfUse = useMemo(() => {
     if (!offer) return [];
-    return getItemsTermsOfUse(offer.kind).filter((item) =>
-      offer.termsOfUse?.map((termOfUse) => termOfUse.slug).includes(item.slug)
-    ) as StackItem[];
+    return getItemsTermsOfUse(offer.kind);
   }, [offer]);
 
   const offerConditions = useMemo(() => {
