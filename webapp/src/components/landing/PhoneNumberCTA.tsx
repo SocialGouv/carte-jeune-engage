@@ -1,4 +1,12 @@
-import { Button, Flex, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Icon,
+  Text,
+} from "@chakra-ui/react";
 import { ErrorOption, SubmitHandler, useForm } from "react-hook-form";
 import FormInput from "../forms/FormInput";
 import { frenchPhoneNumber } from "~/utils/tools";
@@ -35,10 +43,13 @@ const PhoneNumberCTA = ({
     handleSubmit,
     register,
     setError,
+    watch,
     formState: { errors },
   } = useForm<LoginForm>({
     mode: "onSubmit",
   });
+
+  const phone_number = watch("phone_number");
 
   if (currentKey === error?.name && errors.phone_number === undefined) {
     setError("phone_number", {
@@ -52,11 +63,8 @@ const PhoneNumberCTA = ({
       key={currentKey}
       as="form"
       flexDir={{ base: "column", lg: "row" }}
-      mr={{ base: 0, lg: currentKey === "phone-number-cta" ? 12 : 0 }}
       alignItems="center"
-      shadow="landing-phone-number-component"
       borderRadius="1.125rem"
-      mt={{ base: 6, lg: 16 }}
       p={2}
       onSubmit={(e: any) => {
         e.preventDefault();
@@ -64,38 +72,45 @@ const PhoneNumberCTA = ({
         handleSubmit(onSubmit)();
       }}
     >
-      <FormInput
-        wrapperProps={{ w: "full" }}
-        inputProps={{
-          className: currentKey,
-          bgColor: { base: "white", lg: "transparent" },
-          fontSize: { base: "md", lg: "xl" },
-        }}
-        field={{
-          name: "phone_number",
-          kind: "tel",
-          placeholder: "Mon numéro de téléphone",
-          prefix: "🇫🇷",
-          rules: {
-            required: "Ce champ est obligatoire",
-            pattern: {
-              value: frenchPhoneNumber,
-              message:
-                "On dirait que ce numéro de téléphone n’est pas valide. Vérifiez votre numéro",
+      <FormControl mt={4}>
+        <FormInput
+          wrapperProps={{ w: "full" }}
+          inputProps={{
+            className: currentKey,
+            bgColor: { base: "white", lg: "transparent" },
+            fontSize: { base: "md", lg: "xl" },
+          }}
+          field={{
+            name: "phone_number",
+            kind: "tel",
+            placeholder: "06 00 00 00 00",
+            label: "Mon n° de téléphone",
+            prefix: "🇫🇷",
+            rules: {
+              required: "Ce champ est obligatoire",
+              pattern: {
+                value: frenchPhoneNumber,
+                message:
+                  "On dirait que ce numéro de téléphone n’est pas valide. Vérifiez votre numéro",
+              },
             },
-          },
-        }}
-        fieldError={errors.phone_number}
-        register={register}
-      />
+          }}
+          fieldError={errors.phone_number}
+          register={register}
+        />
+      </FormControl>
       <Button
+        color={
+          (!phone_number && phone_number === "") || isLoadingOtp
+            ? "#ffffff40"
+            : "white"
+        }
         mt={{ base: 4, lg: 0 }}
         w={{ base: "full", lg: "full" }}
         colorScheme="blackBtn"
         px={0}
         type="submit"
         fontSize={{ base: "md", lg: "2xl" }}
-        py={{ base: "inherit", lg: 9 }}
         isLoading={isLoadingOtp}
         onClick={() => {
           push([
@@ -106,7 +121,7 @@ const PhoneNumberCTA = ({
         }}
         rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
       >
-        Vérifier mon éligibilité
+        Suivant
       </Button>
     </Flex>
   );

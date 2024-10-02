@@ -22,7 +22,8 @@ import OnBoardingStepsWrapper from "~/components/wrappers/OnBoardingStepsWrapper
 import { onBoardingSteps } from "./onboarding";
 import { api } from "~/utils/api";
 import { getCookie, setCookie } from "cookies-next";
-import { useAuth } from "~/providers/Auth";
+import useDebounceValueWithState from "~/hooks/useDebounceCallbackWithPending";
+import FormAutocompleteInput from "~/components/forms/FormAutocompleteInput";
 
 type SignUpForm = {
   hasAcceptedCGU: boolean;
@@ -32,26 +33,22 @@ type SignUpForm = {
   birthDate: string;
   userEmail: string;
   address: string;
+  cejFrom:
+    | "serviceCivique"
+    | "ecole2ndeChance"
+    | "epide"
+    | "franceTravail"
+    | "missionLocale";
+  preferences: string[];
 };
 
 export type SignUpFormStep = {
-  title: string;
+  title: string | JSX.Element;
   description?: string;
   field: FieldProps;
 };
 
 export const signupSteps = [
-  {
-    title: "Bienvenue ! On peut vous appeler comment ?",
-    field: {
-      name: "civility",
-      kind: "text",
-      label: "Civilité",
-      rules: {
-        required: "Ce champ est obligatoire",
-      },
-    },
-  },
   {
     title: "Quel est votre prénom ?",
     field: {
@@ -72,7 +69,28 @@ export const signupSteps = [
     },
   },
   {
-    title: "quel est votre nom de famille ?",
+    title: "Bienvenue ! On peut vous appeler comment ?",
+    field: {
+      name: "civility",
+      kind: "block",
+      label: "Civilité",
+      values: [
+        {
+          value: "man",
+          label: "Monsieur",
+        },
+        {
+          value: "woman",
+          label: "Madame",
+        },
+      ],
+      rules: {
+        required: "Ce champ est obligatoire",
+      },
+    },
+  },
+  {
+    title: "Quel est votre nom de famille ?",
     field: {
       name: "lastName",
       kind: "text",
@@ -86,6 +104,60 @@ export const signupSteps = [
         maxLength: {
           value: 50,
           message: "Votre nom ne peut pas contenir plus de 50 caractères",
+        },
+      },
+    },
+  },
+  {
+    title: "À quel organisme êtes-vous rattaché ?",
+    field: {
+      name: "cejFrom",
+      kind: "block",
+      values: [
+        {
+          value: "serviceCivique",
+          label: "Je suis en Service Civique",
+        },
+        {
+          value: "ecole2ndeChance",
+          label: "Je suis en école de la 2nde chance",
+        },
+        {
+          value: "epide",
+          label: "Je suis en EPIDE",
+        },
+        {
+          value: "franceTravail",
+          label: "Je suis à France travail",
+        },
+        {
+          value: "missionLocale",
+          label: "Je suis à la Mission Locale",
+        },
+      ],
+      label: "Quel établissement",
+    },
+  },
+  {
+    title: (
+      <Text>
+        Quelle est votre adresse email ? <br />
+        <Text as="span" color="bgRed" fontSize="sm">
+          (obligatoire)
+        </Text>
+      </Text>
+    ),
+    description:
+      "Votre adresse email vous servira à récupérer votre compte si il y a un problème avec votre n° de téléphone",
+    field: {
+      name: "userEmail",
+      kind: "email",
+      label: "Email",
+      rules: {
+        required: "Ce champ est obligatoire",
+        pattern: {
+          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          message: "Veuillez saisir une adresse email valide",
         },
       },
     },
@@ -118,41 +190,32 @@ export const signupSteps = [
     },
   },
   {
-    title: "Votre adresse email ?",
-    description:
-      "Votre adresse email vous permettra aussi de vous reconnecter si vous changez de numéro de téléphone par exemple",
+    title: "Votre ville",
+    description: "Pour trouver les promotions proches de chez vous.",
     field: {
-      name: "userEmail",
-      kind: "email",
-      label: "Email",
+      name: "address",
+      kind: "text",
+      label: "Nom de ma ville",
       rules: {
         required: "Ce champ est obligatoire",
-        pattern: {
-          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-          message: "Veuillez saisir une adresse email valide",
-        },
       },
     },
   },
   {
-    title: "Sélectionnez votre ville",
-    description:
-      "En fonction de votre ville on vous donnera les magasins les plus proches. Si vous n’habitez pas dans le Val d’Oise (95), tout en bas de la liste, sélectionnez “Autre ville”. ",
+    title: "Qu’est-ce qui vous intéresse le plus ?",
     field: {
-      name: "address",
-      kind: "text",
-      label: "Adresse",
+      name: "preferences",
+      kind: "block",
+      label: "Préférences",
       rules: {
         required: "Ce champ est obligatoire",
       },
     },
   },
-] as const;
+] as SignUpFormStep[];
 
 export default function Signup() {
   const router = useRouter();
-
-  const { setShowModalInstallApp } = useAuth();
 
   const { signupStep } = router.query as {
     signupStep: keyof Omit<SignUpForm, "hasAcceptedCGU"> | undefined;
@@ -192,7 +255,10 @@ export default function Signup() {
     );
     if (currentStepIndex === signupSteps.length - 1) {
       localStorage.removeItem("cje-signup-form");
-      updateUser(data).then(() => {
+      updateUser({
+        ...data,
+        preferences: data.preferences.filter(Boolean).map(Number),
+      }).then(() => {
         const jwtToken = getCookie(
           process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"
         );
@@ -211,7 +277,7 @@ export default function Signup() {
               data.refreshedToken as string,
               { expires: new Date((data.exp as number) * 1000) }
             );
-            router.push("/onboarding");
+            router.push("/dashboard");
           });
         });
       });
@@ -225,47 +291,40 @@ export default function Signup() {
 
   const formValues = watch();
 
-  const { data: allMunicipalitiesOf95 } = useQuery(
-    ["getMunicipalitiesOf95"],
+  const { data: resultTags } = api.globals.tagsListOrdered.useQuery();
+  const { data: tags } = resultTags || { data: [] };
+
+  const optionsTags = tags.map((tag) => ({
+    value: tag.id,
+    label: tag.label,
+  }));
+
+  const [debouncedAddress, isDebouncePending] = useDebounceValueWithState(
+    formValues.address,
+    500
+  );
+
+  const { data: addressOptions, isLoading: isLoadingAddressOptions } = useQuery(
+    ["getAddressOptions", debouncedAddress],
     async () => {
       const response = await fetch(
-        "https://geo.api.gouv.fr/departements/95/communes"
+        `https://geo.api.gouv.fr/communes?nom=${debouncedAddress}&codeDepartement=95&limit=8`
       );
       const data = await response.json();
-      return data.map((commune: any) => commune.nom) as string[];
+      return data.map((municipality: any) => municipality.nom) as string[];
+    },
+    {
+      enabled: !!debouncedAddress && debouncedAddress.length > 2,
     }
   );
 
-  /* Old Address autocomplete logic */
-
-  // const [debouncedAddress, isDebouncePending] = useDebounceValueWithState(
-  //   formValues.address,
-  //   500
-  // );
-
-  // const { data: addressOptions, isLoading: isLoadingAddressOptions } = useQuery(
-  //   ["getAddressOptions", debouncedAddress],
-  //   async () => {
-  //     const response = await fetch(
-  //       `https://api-adresse.data.gouv.fr/search/?q=${debouncedAddress}&limit=4&autocomplete=1&type=housenumber`
-  //     );
-  //     const data = await response.json();
-  //     return data.features.map((feature: any) =>
-  //       [feature.properties.name, feature.properties.city].join(", ")
-  //     ) as string[];
-  //   },
-  //   {
-  //     enabled: !!debouncedAddress && debouncedAddress.length > 4,
-  //   }
-  // );
-
-  // useEffect(() => {
-  //   const { address, ...tmpFormValues } = formValues;
-  //   localStorage.setItem(
-  //     "cje-signup-form",
-  //     JSON.stringify({ ...tmpFormValues, address: debouncedAddress })
-  //   );
-  // }, [formValues, debouncedAddress]);
+  useEffect(() => {
+    const { address, ...tmpFormValues } = formValues;
+    localStorage.setItem(
+      "cje-signup-form",
+      JSON.stringify({ ...tmpFormValues, address: debouncedAddress })
+    );
+  }, [formValues, debouncedAddress]);
 
   useEffect(() => {
     localStorage.setItem("cje-signup-form", JSON.stringify({ ...formValues }));
@@ -499,24 +558,22 @@ export default function Signup() {
             alignItems={"center"}
             borderTopWidth={1}
             px={8}
-            pt={6}
-            pb={10}
+            pt={3}
+            pb={6}
             position={"fixed"}
             bottom={0}
             backgroundColor={"bgWhite"}
             w="full"
           >
-            <Text color="secondaryText" fontWeight={"medium"}>
+            <Text color="disabled" fontWeight={"medium"} fontSize={14}>
               Vous devez accepter pour continuer
             </Text>
             <Button
               size="lg"
+              rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
               w={"full"}
               mt={4}
-              onClick={() => {
-                setValue("hasAcceptedCGU", true);
-                setShowModalInstallApp(true);
-              }}
+              onClick={() => setValue("hasAcceptedCGU", true)}
             >
               J'accepte
             </Button>
@@ -537,114 +594,125 @@ export default function Signup() {
           signupSteps.findIndex(
             (step) => step.field.name === currentSignupStep.field.name
           ) + 1,
-        total: signupSteps.length + onBoardingSteps.length,
+        total: signupSteps.length + 1,
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ height: "100%" }}>
         <Flex
           display="flex"
           flexDir="column"
-          pt={8}
-          pb={12}
-          px={6}
+          py={12}
+          px={8}
           justifyContent="space-between"
           h="full"
         >
           <Flex flexDir="column" justifyContent="center">
-            <Heading as="h1" size="md" fontWeight="extrabold" mb={4}>
-              {currentSignupStep.field.name !== "lastName"
-                ? currentSignupStep?.title
-                : `${
-                    formValues.firstName.charAt(0).toUpperCase() +
-                    formValues.firstName.slice(1)
-                  }, ${currentSignupStep.title}`}
+            <Heading
+              as="h1"
+              size="lg"
+              fontWeight="extrabold"
+              textAlign="center"
+            >
+              {currentSignupStep.title}
             </Heading>
-            <Text fontSize="sm" fontWeight="medium" color="secondaryText">
+            <Text
+              fontSize="sm"
+              fontWeight="medium"
+              color="secondaryText"
+              mt={4}
+            >
               {currentSignupStep?.description ||
                 "Saisissez la même information que sur vos documents administratifs officiels."}
             </Text>
             <Box mt={6} key={currentSignupStep.field.name}>
-              {currentSignupStep.field.name === "civility" ? (
-                <Flex alignItems="center" w="full" gap={6}>
+              {(currentSignupStep.field.name === "civility" ||
+                currentSignupStep.field.name === "cejFrom") &&
+              currentSignupStep.field.values ? (
+                <Flex
+                  flexDir={
+                    currentSignupStep.field.name === "civility"
+                      ? "row"
+                      : "column"
+                  }
+                  alignItems="center"
+                  w="full"
+                  gap={6}
+                >
                   <Controller
                     control={control}
                     name={currentSignupStep.field.name}
                     render={({ field: { onChange, value } }) => (
                       <>
-                        <FormBlock
-                          value="man"
-                          currentValue={value}
-                          onChange={onChange}
-                        >
-                          Monsieur
-                        </FormBlock>
-                        <FormBlock
-                          value="woman"
-                          currentValue={value}
-                          onChange={onChange}
-                        >
-                          Madame
-                        </FormBlock>
+                        {(currentSignupStep.field.values ?? []).map((block) => (
+                          <FormBlock
+                            key={`${currentSignupStep.field.name}-${block.value}`}
+                            variant={
+                              currentSignupStep.field.name === "cejFrom"
+                                ? "inline"
+                                : "default"
+                            }
+                            value={block.value}
+                            currentValue={value}
+                            onChange={onChange}
+                          >
+                            {block.label}
+                          </FormBlock>
+                        ))}
                       </>
                     )}
                   />
                 </Flex>
-              ) : currentSignupStep.field.name === "address" ? (
-                <>
-                  {/* <FormAutocompleteInput
-										control={control}
-										options={addressOptions}
-										setError={setError}
-										clearErrors={clearErrors}
-										isLoading={isLoadingAddressOptions || isDebouncePending}
-										field={currentSignupStep.field}
-										fieldError={
-											errors[currentSignupStep?.field.name as keyof SignUpForm]
-										}
-										handleSubmit={() => handleSubmit(onSubmit)()}
-									/> */}
-                  <Flex
-                    flexDir="column"
-                    alignItems="center"
-                    w="full"
-                    gap={4}
-                    pb={32}
-                  >
+              ) : currentSignupStep.field.name === "preferences" ? (
+                <Flex flexDir="column" alignItems="center" w="full" gap={2}>
+                  {tags.map((tag, index) => (
                     <Controller
                       control={control}
-                      name={currentSignupStep.field.name}
-                      render={({ field: { onChange, value } }) => (
-                        <>
-                          {allMunicipalitiesOf95?.map((commune) => (
-                            <FormBlock
-                              key={commune}
-                              wrapperProps={{ py: 4 }}
-                              value={commune}
-                              currentValue={value}
-                              onChange={onChange}
-                            >
-                              {commune}
-                            </FormBlock>
-                          ))}
-                          <FormBlock
-                            value="Autre ville"
-                            wrapperProps={{ py: 4 }}
-                            currentValue={value}
-                            onChange={onChange}
-                          >
-                            Autre ville
-                          </FormBlock>
-                        </>
+                      name={`preferences.${index}`}
+                      render={({ field: { onChange } }) => (
+                        <FormBlock
+                          key={`${currentSignupStep.field.name}-${tag.id.toString()}`}
+                          variant="inline"
+                          iconProps={{ width: 48, height: 48 }}
+                          value={tag.id.toString()}
+                          currentValue={formValues.preferences}
+                          iconSrc={tag.icon.url as string}
+                          onChange={onChange}
+                        >
+                          {tag.label}
+                        </FormBlock>
                       )}
                     />
-                  </Flex>
-                </>
+                  ))}
+                </Flex>
+              ) : currentSignupStep.field.name === "address" ? (
+                <FormAutocompleteInput
+                  control={control}
+                  options={addressOptions}
+                  setError={setError}
+                  clearErrors={clearErrors}
+                  isLoading={isLoadingAddressOptions || isDebouncePending}
+                  field={currentSignupStep.field}
+                  fieldError={
+                    errors[
+                      currentSignupStep?.field.name as keyof Omit<
+                        SignUpForm,
+                        "preferences"
+                      >
+                    ]
+                  }
+                  handleSubmit={() => handleSubmit(onSubmit)()}
+                />
               ) : (
                 <FormInput
                   register={register}
                   field={currentSignupStep.field}
                   fieldError={
-                    errors[currentSignupStep?.field.name as keyof SignUpForm]
+                    errors[
+                      currentSignupStep?.field.name as keyof Omit<
+                        SignUpForm,
+                        "preferences"
+                      >
+                    ]
                   }
                 />
               )}
@@ -654,23 +722,20 @@ export default function Signup() {
             colorScheme="blackBtn"
             isDisabled={
               !currentFieldValue ||
+              (currentSignupStep.field.name === "preferences" &&
+                formValues.preferences?.filter(Boolean).length === 0) ||
               errors[currentSignupStep.field.name as keyof SignUpForm]
                 ?.message !== undefined
             }
             type="submit"
-            hidden={
-              currentSignupStep.field.name === "address" && !formValues.address
-            }
-            position={
-              currentSignupStep.field.name === "address" ? "fixed" : "relative"
-            }
-            bottom={currentSignupStep.field.name === "address" ? 8 : undefined}
-            left={currentSignupStep.field.name === "address" ? 8 : undefined}
-            right={currentSignupStep.field.name === "address" ? 8 : undefined}
+            position="fixed"
+            left="50%"
+            transform="translateX(-50%)"
+            bottom={10}
             rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
             isLoading={isLoadingUpdateUser}
           >
-            Continuer
+            Suivant
           </Button>
         </Flex>
       </form>

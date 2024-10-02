@@ -66,7 +66,7 @@ export interface User {
   address?: string | null;
   image?: number | Media | null;
   userEmail?: string | null;
-  cejFrom?: ('franceTravail' | 'missionLocale' | 'serviceCivique') | null;
+  cejFrom?: ('franceTravail' | 'missionLocale' | 'serviceCivique' | 'ecole2ndeChance' | 'epide') | null;
   timeAtCEJ?: ('started' | 'lessThan3Months' | 'moreThan3Months') | null;
   hasAJobIdea?: ('yes' | 'no') | null;
   projectTitle?: string | null;

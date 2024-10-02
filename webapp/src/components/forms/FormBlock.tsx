@@ -1,23 +1,28 @@
 import { type ChakraProps, Flex, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 
 type Props = {
   children: React.ReactNode;
+  variant?: "default" | "inline";
   value: string;
   currentValue: string | string[];
   iconSrc?: string;
   onChange: (value: string | undefined) => void;
   wrapperProps?: ChakraProps;
+  iconProps?: Partial<ImageProps>;
 };
 
 const FormBlock = ({
   children,
+  variant = "default",
   value,
   currentValue,
   onChange,
   iconSrc,
   wrapperProps,
+  iconProps,
 }: Props) => {
+  console.log(currentValue);
   const isSelected =
     typeof currentValue === "string"
       ? currentValue === value
@@ -25,31 +30,37 @@ const FormBlock = ({
 
   return (
     <Flex
-      {...wrapperProps}
       flex={1}
-      flexDir="column"
+      flexDir={variant === "default" ? "column" : "row"}
       w="full"
-      bgColor="cje-gray.500"
       borderRadius="2xl"
-      py={wrapperProps?.py || 6}
+      px={4}
+      minH={16}
       fontWeight="medium"
-      justifyContent="center"
+      justifyContent={variant === "default" ? "center" : "start"}
       alignItems="center"
       onClick={() => {
         typeof currentValue !== "string" && isSelected
           ? onChange(undefined)
           : onChange(value);
       }}
-      border="2px solid"
+      borderWidth={variant === "default" ? 2 : 0}
+      backgroundColor={
+        isSelected && variant === "inline" ? "primary" : "cje-gray.500"
+      }
+      color={isSelected && variant === "inline" ? "white" : "black"}
       borderColor={isSelected ? "blackLight" : "transparent"}
       cursor="pointer"
+      gap={variant === "default" ? 2 : 4}
+      {...wrapperProps}
     >
-      {iconSrc && <Image src={iconSrc} alt="" width={65} height={65} />}
+      {iconSrc && (
+        <Image src={iconSrc} alt="" width={65} height={65} {...iconProps} />
+      )}
       <Text
         fontWeight={isSelected ? "bold" : "medium"}
         textAlign="center"
         noOfLines={1}
-        mt={iconSrc ? 2 : 0}
       >
         {children}
       </Text>

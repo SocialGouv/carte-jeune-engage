@@ -237,4 +237,7 @@ export const theme = extendTheme({
   space: {
     "5.5": "1.375rem",
   },
+  sizes: {
+    "18": "4.5rem",
+  },
 });

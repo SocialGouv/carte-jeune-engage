@@ -43,11 +43,6 @@ import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedIma
 import NextLink from "next/link";
 import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
 
-const ChakraBox = chakra(motion.div, {
-  shouldForwardProp: (prop) =>
-    isValidMotionProp(prop) || shouldForwardProp(prop),
-});
-
 const defaultTimeToResend = 30;
 
 const referentItems: { name: string; image: string; link: string }[] = [
@@ -116,14 +111,6 @@ export default function Home() {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   const {
-    isOpen: isOpenDesktopLoginSuccessful,
-    onOpen: onOpenDesktopLoginSuccessful,
-    onClose: onCloseDesktopLoginSuccessful,
-  } = useDisclosure({
-    onClose: () => setCurrentPhoneNumber(""),
-  });
-
-  const {
     isOpen: isOpenDesktopLoginError,
     onOpen: onOpenDesktopLoginError,
     onClose: onCloseDesktopLoginError,
@@ -170,12 +157,8 @@ export default function Home() {
   const { mutate: generateOtp, isLoading: isLoadingOtp } =
     api.user.generateOTP.useMutation({
       onSuccess: () => {
-        if (isDesktop) {
-          onOpenDesktopLoginSuccessful();
-        } else {
-          setIsOtpGenerated(true);
-          resetTimer();
-        }
+        setIsOtpGenerated(true);
+        resetTimer();
       },
       onError: async ({ data }) => {
         if (data?.httpStatus === 401) {
@@ -285,12 +268,7 @@ export default function Home() {
   if (isOtpGenerated) {
     return (
       <>
-        <Flex
-          position="relative"
-          alignItems="center"
-          justifyContent="center"
-          pt={8}
-        >
+        <Flex position="relative" pt={8} px={7}>
           <Icon
             as={HiChevronLeft}
             w={6}
@@ -300,16 +278,16 @@ export default function Home() {
               setCurrentPhoneNumber("");
             }}
             cursor="pointer"
-            position="absolute"
-            left={6}
           />
-          <Text fontWeight={"extrabold"} fontSize={"sm"}>
-            Connexion
-          </Text>
         </Flex>
         <Flex py={8} px={8} flexDir={"column"}>
-          <Heading fontSize={"2xl"} fontWeight={"extrabold"} mb={6}>
-            Vous avez reçu un code à 4 chiffres par SMS
+          <Heading
+            fontSize={"2xl"}
+            fontWeight={"extrabold"}
+            textAlign="center"
+            mb={6}
+          >
+            Vous avez reçu un code par SMS
           </Heading>
           <Text fontSize={"sm"} fontWeight="medium" color="secondaryText">
             Saisissez le code envoyé au{" "}
@@ -317,7 +295,7 @@ export default function Home() {
             votre compte
           </Text>
           <Box my={8}>
-            <HStack>
+            <HStack justifyContent="center">
               <OtpInput
                 shouldAutoFocus
                 value={otp}
@@ -343,11 +321,12 @@ export default function Home() {
                     size="lg"
                     bg={hasOtpError ? "errorLight" : "cje-gray.500"}
                     textAlign="center"
+                    borderRadius="2.5xl"
                     borderColor="transparent"
                     _hover={{ borderColor: "transparent" }}
                     _focusVisible={{ boxShadow: "none" }}
                     w={12}
-                    h={12}
+                    h={18}
                     px={0}
                     mx={1}
                   />
@@ -370,7 +349,7 @@ export default function Home() {
             mt={6}
             textDecor={"underline"}
             fontWeight={"medium"}
-            color={timeToResend <= 0 ? "initial" : "gray.500"}
+            color={timeToResend <= 0 ? "black" : "gray.500"}
             onClick={() => {
               if (timeToResend <= 0)
                 handleGenerateOtp({ phone_number: currentPhoneNumber });
@@ -478,7 +457,15 @@ export default function Home() {
           />
         </Flex>
         {!isDesktop && (
-          <Box mt={4} px={2}>
+          <Box px={8} mt={6}>
+            <Box mx={4} textAlign="center">
+              <Text fontWeight={800}>
+                Vous avez été inscrit pour avoir la carte “jeune engagé” ?
+              </Text>
+              <Text fontWeight={500} color="disabled" mt={2}>
+                Connectez-vous avec votre n° de téléphone
+              </Text>
+            </Box>
             <PhoneNumberCTA
               currentKey="phone-number-cta"
               setCurrentPhoneNumberKey={setCurrentPhoneNumberKey}
@@ -931,51 +918,6 @@ export default function Home() {
           </Box>
         </Box>
       </Flex>
-      <BaseModal
-        isOpen={isOpenDesktopLoginSuccessful}
-        onClose={onCloseDesktopLoginSuccessful}
-        pt={16}
-        pb={40}
-      >
-        <Flex alignItems="center">
-          <Box w="70%">
-            <Heading fontSize="5xl" fontWeight="extrabold">
-              Vous êtes éligible !
-            </Heading>
-            <Heading fontSize="5xl" fontWeight="extrabold" mt={10}>
-              Téléchargez l’application sur votre téléphone pour continuer.
-            </Heading>
-            <Text
-              fontSize="2xl"
-              fontWeight="medium"
-              color="secondaryText"
-              pr={40}
-              mt={16}
-            >
-              Scannez le QR code avec l’appareil photo de votre téléphone pour
-              accéder à l’application carte “jeune engagé” sur votre mobile.
-            </Text>
-          </Box>
-          <Box w="25%" ml="auto" position="relative">
-            <QRCodeWrapper
-              wrapperProps={{
-                zIndex: 20,
-                position: "absolute",
-                left: "25%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
-              }}
-            />
-            <Image
-              src="/images/landing/mobile-showcase.png"
-              alt="Mobile showcase"
-              h="500px"
-              opacity={0.5}
-              mb={-12}
-            />
-          </Box>
-        </Flex>
-      </BaseModal>
       <BaseModal
         isOpen={isOpenDesktopLoginError}
         onClose={onCloseDesktopLoginError}

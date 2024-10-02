@@ -48,7 +48,10 @@ const FormAutocompleteInput = ({
   const [optionsHistory, setOptionsHistory] = useState<string[]>([]);
 
   return (
-    <FormControl isRequired isInvalid={!!fieldError} variant="floating">
+    <FormControl isRequired isInvalid={!!fieldError}>
+      <FormLabel fontWeight="medium" color="disabled" fontSize={12} mb={1}>
+        {label}
+      </FormLabel>
       <Controller
         control={control}
         name={name}
@@ -76,9 +79,9 @@ const FormAutocompleteInput = ({
                 openOnFocus
                 disableFilter
                 placement="bottom"
-                isLoading={value && value.length > 4 && isLoading}
+                isLoading={value && value.length > 2 && isLoading}
                 emptyState={(e: any) => {
-                  if (e.query.length > 4) {
+                  if (e.query.length > 2) {
                     return (
                       <Center
                         display="flex"
@@ -124,7 +127,7 @@ const FormAutocompleteInput = ({
                       : "errorLight"
                   }
                   px={5}
-                  pt={9}
+                  py={8}
                   autoFocus
                   onChange={(e: any) => {
                     onChange(e.target.value);
@@ -138,7 +141,6 @@ const FormAutocompleteInput = ({
                     }
                   }}
                   value={value}
-                  pb={7}
                   _focusVisible={{
                     borderColor: "transparent",
                     boxShadow: "none",
@@ -191,9 +193,6 @@ const FormAutocompleteInput = ({
           );
         }}
       />
-      <FormLabel fontWeight="medium" color="disabled">
-        {label}
-      </FormLabel>
       <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
     </FormControl>
   );
