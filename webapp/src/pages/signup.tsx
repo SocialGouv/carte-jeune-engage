@@ -19,11 +19,12 @@ import LoadingLoader from "~/components/LoadingLoader";
 import FormBlock from "~/components/forms/FormBlock";
 import { useQuery } from "@tanstack/react-query";
 import OnBoardingStepsWrapper from "~/components/wrappers/OnBoardingStepsWrapper";
-import { onBoardingSteps } from "./onboarding";
 import { api } from "~/utils/api";
 import { getCookie, setCookie } from "cookies-next";
 import useDebounceValueWithState from "~/hooks/useDebounceCallbackWithPending";
 import FormAutocompleteInput from "~/components/forms/FormAutocompleteInput";
+import { useAuth } from "~/providers/Auth";
+import Image from "next/image";
 
 type SignUpForm = {
   hasAcceptedCGU: boolean;
@@ -55,6 +56,7 @@ export const signupSteps = [
       name: "firstName",
       kind: "text",
       label: "Prénom",
+      placeholder: "Votre prénom",
       rules: {
         required: "Ce champ est obligatoire",
         minLength: {
@@ -69,7 +71,7 @@ export const signupSteps = [
     },
   },
   {
-    title: "Bienvenue ! On peut vous appeler comment ?",
+    title: "On peut vous appeler comment ?",
     field: {
       name: "civility",
       kind: "block",
@@ -95,6 +97,7 @@ export const signupSteps = [
       name: "lastName",
       kind: "text",
       label: "Nom de famille",
+      placeholder: "Votre nom de famille",
       rules: {
         required: "Ce champ est obligatoire",
         minLength: {
@@ -153,6 +156,7 @@ export const signupSteps = [
       name: "userEmail",
       kind: "email",
       label: "Email",
+      placeholder: "Votre adresse email",
       rules: {
         required: "Ce champ est obligatoire",
         pattern: {
@@ -165,11 +169,12 @@ export const signupSteps = [
   {
     title: "Votre date de naissance ?",
     description:
-      "Votre date de naissance nous permet de personnaliser votre expérience et de garantir la sécurité de vos données",
+      "L’application est réservé au 16-25 ans la date de naissance ne sera communiquée à personne",
     field: {
       name: "birthDate",
       kind: "date",
       label: "Date de naissance",
+      placeholder: "JJ/MM/AAAA",
       rules: {
         required: "Ce champ est obligatoire",
         // rules to validate from 16 years old to 26 years old
@@ -196,6 +201,7 @@ export const signupSteps = [
       name: "address",
       kind: "text",
       label: "Nom de ma ville",
+      placeholder: "Chercher le nom de votre ville",
       rules: {
         required: "Ce champ est obligatoire",
       },
@@ -217,6 +223,8 @@ export const signupSteps = [
 export default function Signup() {
   const router = useRouter();
 
+  const { user, refetchUser, setShowNotificationModal } = useAuth();
+
   const { signupStep } = router.query as {
     signupStep: keyof Omit<SignUpForm, "hasAcceptedCGU"> | undefined;
   };
@@ -224,6 +232,7 @@ export default function Signup() {
   const { mutateAsync: updateUser, isLoading: isLoadingUpdateUser } =
     api.user.update.useMutation();
 
+  const [finishedOnBoarding, setFinishedOnBoarding] = useState(false);
   const [currentSignupStep, setCurrentSignupStep] =
     useState<SignUpFormStep | null>(null);
 
@@ -242,7 +251,7 @@ export default function Signup() {
     clearErrors,
     watch,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SignUpForm>({
     mode: "onBlur",
     defaultValues,
@@ -277,7 +286,10 @@ export default function Signup() {
               data.refreshedToken as string,
               { expires: new Date((data.exp as number) * 1000) }
             );
-            router.push("/dashboard");
+            refetchUser().then(() => {
+              setFinishedOnBoarding(true);
+              setTimeout(() => router.push("/dashboard"), 1200);
+            });
           });
         });
       });
@@ -294,11 +306,6 @@ export default function Signup() {
   const { data: resultTags } = api.globals.tagsListOrdered.useQuery();
   const { data: tags } = resultTags || { data: [] };
 
-  const optionsTags = tags.map((tag) => ({
-    value: tag.id,
-    label: tag.label,
-  }));
-
   const [debouncedAddress, isDebouncePending] = useDebounceValueWithState(
     formValues.address,
     500
@@ -308,7 +315,7 @@ export default function Signup() {
     ["getAddressOptions", debouncedAddress],
     async () => {
       const response = await fetch(
-        `https://geo.api.gouv.fr/communes?nom=${debouncedAddress}&codeDepartement=95&limit=8`
+        `https://geo.api.gouv.fr/communes?nom=${debouncedAddress}&codeDepartement=95&limit=5`
       );
       const data = await response.json();
       return data.map((municipality: any) => municipality.nom) as string[];
@@ -583,6 +590,35 @@ export default function Signup() {
     );
   }
 
+  if (finishedOnBoarding)
+    return (
+      <Box h="full" bgColor="primary">
+        <Center h="full" px={8}>
+          <Flex
+            flexDir="column"
+            alignItems="center"
+            justifyContent="center"
+            textAlign="center"
+            gap={4}
+            px={6}
+            mb={20}
+          >
+            <Image
+              src="/images/cje-logo-white-blue.svg"
+              alt="Carte Jeune Engagé"
+              width={141}
+              height={75}
+            />
+            <Text fontWeight="extrabold" color="white" mt={20} fontSize={32}>
+              Ca y est {user?.firstName} !
+              <br />
+              Les réductions sont à vous
+            </Text>
+          </Flex>
+        </Center>
+      </Box>
+    );
+
   const currentFieldValue = getValues(
     currentSignupStep.field.name as keyof SignUpForm
   );
@@ -650,6 +686,28 @@ export default function Signup() {
                               currentSignupStep.field.name === "cejFrom"
                                 ? "inline"
                                 : "default"
+                            }
+                            iconSrc={
+                              currentSignupStep.field.name === "cejFrom"
+                                ? `/images/referent/${block.value}.png`
+                                : undefined
+                            }
+                            wrapperIconProps={
+                              currentSignupStep.field.name === "cejFrom"
+                                ? {
+                                    p: 1,
+                                    bgColor:
+                                      value === block.value
+                                        ? "white"
+                                        : "inherit",
+                                    borderRadius: "2lg",
+                                  }
+                                : undefined
+                            }
+                            iconProps={
+                              currentSignupStep.field.name === "cejFrom"
+                                ? { width: 80, height: 40 }
+                                : undefined
                             }
                             value={block.value}
                             currentValue={value}
@@ -728,9 +786,19 @@ export default function Signup() {
                 ?.message !== undefined
             }
             type="submit"
-            position="fixed"
-            left="50%"
-            transform="translateX(-50%)"
+            position={
+              currentSignupStep.field.name === "preferences"
+                ? "fixed"
+                : "relative"
+            }
+            left={
+              currentSignupStep.field.name === "preferences" ? "50%" : "auto"
+            }
+            transform={
+              currentSignupStep.field.name === "preferences"
+                ? "translateX(-50%)"
+                : "none"
+            }
             bottom={10}
             rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
             isLoading={isLoadingUpdateUser}

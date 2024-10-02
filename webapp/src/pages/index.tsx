@@ -48,22 +48,22 @@ const defaultTimeToResend = 30;
 const referentItems: { name: string; image: string; link: string }[] = [
   {
     name: "Je suis à France Travail",
-    image: "/images/referent/france-travail.png",
+    image: "/images/referent/franceTravail.png",
     link: "#",
   },
   {
     name: "Je suis à la Mission locale",
-    image: "/images/referent/mission-locale.png",
+    image: "/images/referent/missionLocale.png",
     link: "#",
   },
   {
     name: "Je suis en Service civique",
-    image: "/images/referent/service-civique.png",
+    image: "/images/referent/serviceCivique.png",
     link: "#",
   },
   {
     name: "Je suis en école de la 2nde chance",
-    image: "/images/referent/e2c.png",
+    image: "/images/referent/ecole2ndeChance.png",
     link: "#",
   },
   { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png", link: "#" },
@@ -383,7 +383,7 @@ export default function Home() {
 
   const forWhoList = [
     {
-      img: "/images/referent/service-civique.png",
+      img: "/images/referent/serviceCivique.png",
       name: "France travail",
       rotationAngle: -4,
     },
@@ -393,17 +393,17 @@ export default function Home() {
       rotationAngle: -3,
     },
     {
-      img: "/images/referent/mission-locale.png",
+      img: "/images/referent/missionLocale.png",
       name: "France travail",
       rotationAngle: 6.5,
     },
     {
-      img: "/images/referent/france-travail.png",
+      img: "/images/referent/franceTravail.png",
       name: "France travail",
       rotationAngle: -1,
     },
     {
-      img: "/images/referent/e2c.png",
+      img: "/images/referent/ecole2ndeChance.png",
       name: "France travail",
       rotationAngle: 4,
     },

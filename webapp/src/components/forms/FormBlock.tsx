@@ -1,4 +1,4 @@
-import { type ChakraProps, Flex, Text } from "@chakra-ui/react";
+import { Box, type ChakraProps, Flex, Text } from "@chakra-ui/react";
 import Image, { ImageProps } from "next/image";
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
   onChange: (value: string | undefined) => void;
   wrapperProps?: ChakraProps;
   iconProps?: Partial<ImageProps>;
+  wrapperIconProps?: ChakraProps;
 };
 
 const FormBlock = ({
@@ -21,6 +22,7 @@ const FormBlock = ({
   iconSrc,
   wrapperProps,
   iconProps,
+  wrapperIconProps,
 }: Props) => {
   console.log(currentValue);
   const isSelected =
@@ -55,11 +57,13 @@ const FormBlock = ({
       {...wrapperProps}
     >
       {iconSrc && (
-        <Image src={iconSrc} alt="" width={65} height={65} {...iconProps} />
+        <Box p={1} {...wrapperIconProps}>
+          <Image src={iconSrc} alt="" width={65} height={65} {...iconProps} />
+        </Box>
       )}
       <Text
         fontWeight={isSelected ? "bold" : "medium"}
-        textAlign="center"
+        textAlign={variant === "default" ? "center" : "start"}
         noOfLines={1}
       >
         {children}

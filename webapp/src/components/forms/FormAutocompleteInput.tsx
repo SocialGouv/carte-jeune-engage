@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -78,6 +79,7 @@ const FormAutocompleteInput = ({
                 defaultIsOpen
                 openOnFocus
                 disableFilter
+                emphasize
                 placement="bottom"
                 isLoading={value && value.length > 2 && isLoading}
                 emptyState={(e: any) => {
@@ -153,39 +155,31 @@ const FormAutocompleteInput = ({
                     boxShadow: "none",
                   }}
                   loadingState={
-                    <Center
-                      bgColor="cje-gray.500"
-                      borderRadius="2xl"
-                      fontWeight="medium"
-                      w="full"
-                      py={8}
-                    >
+                    <Center fontWeight="medium" w="full" py={8}>
                       <Spinner />
                     </Center>
                   }
                   gap={2}
                   mt={-4}
                 >
-                  {options?.map((option) => (
-                    <AutoCompleteItem
-                      key={option}
-                      value={option}
-                      mx={0}
-                      textTransform="capitalize"
-                      bgColor="cje-gray.500"
-                      borderRadius="2xl"
-                      py={3}
-                      px={4}
-                      border="2px solid"
-                      borderColor={
-                        option === value ? "blackLight" : "transparent"
-                      }
-                      _focus={{
-                        borderColor: "blackLight",
-                      }}
-                    >
-                      <Text fontWeight="medium">{option}</Text>
-                    </AutoCompleteItem>
+                  {options?.map((option, index) => (
+                    <>
+                      <AutoCompleteItem
+                        key={option}
+                        value={option}
+                        mx={0}
+                        bgColor="white"
+                        textTransform="capitalize"
+                        _focus={{ bgColor: "transparent" }}
+                      >
+                        <Text fontWeight="medium" fontSize={18}>
+                          {option}
+                        </Text>
+                      </AutoCompleteItem>
+                      {index !== options.length - 1 && (
+                        <Divider borderColor="cje-gray.500" />
+                      )}
+                    </>
                   ))}
                 </AutoCompleteList>
               </AutoComplete>
