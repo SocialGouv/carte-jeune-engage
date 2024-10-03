@@ -74,6 +74,11 @@ const FormAutocompleteInput = ({
               className={
                 value && value !== "" ? "chakra-autocomplete-has-value" : ""
               }
+              sx={{
+                ".chakra-popover__popper": {
+                  minWidth: "100% !important",
+                },
+              }}
             >
               <AutoComplete
                 defaultIsOpen
@@ -81,6 +86,7 @@ const FormAutocompleteInput = ({
                 disableFilter
                 emphasize
                 placement="bottom"
+                matchWidth={false}
                 isLoading={value && value.length > 2 && isLoading}
                 emptyState={(e: any) => {
                   if (e.query.length > 2) {
