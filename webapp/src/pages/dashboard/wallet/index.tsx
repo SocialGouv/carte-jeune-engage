@@ -67,7 +67,7 @@ export default function Wallet() {
             <Divider mt={16} borderColor="cje-gray.100" />
             <Link
               as={NextLink}
-              href="/dashboard/card/history"
+              href="/dashboard/account/history"
               _hover={{ textDecoration: "none" }}
               passHref
             >

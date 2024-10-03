@@ -57,12 +57,12 @@ const PassCard = ({ offer, embed = false }: PropsPassCard) => {
               <Box
                 w={1.5}
                 h={1.5}
-                bgColor={passCJEStatus == "pending" ? "primary" : "bgRed"}
+                bgColor={passCJEStatus == "pending" ? "primary" : "error"}
                 borderRadius="full"
               />
               <Text
                 fontWeight={800}
-                color={passCJEStatus == "pending" ? "primary" : "bgRed"}
+                color={passCJEStatus == "pending" ? "primary" : "error"}
                 fontSize={14}
               >
                 {passCJEStatus === "pending"

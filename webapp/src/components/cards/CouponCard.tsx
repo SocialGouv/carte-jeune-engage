@@ -172,7 +172,7 @@ const CouponCodeCard = ({
     case "voucher_pass":
       const passCJEColor =
         passCJEStatus === "missing"
-          ? "bgRed"
+          ? "error"
           : passCJEStatus === "pending"
             ? "primary"
             : "success";

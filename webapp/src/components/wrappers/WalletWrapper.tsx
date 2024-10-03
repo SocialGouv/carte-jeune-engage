@@ -24,7 +24,7 @@ const WalletWrapper = ({ children }: WalletWrapperProps) => {
         fontWeight={500}
         borderRadius="2.5xl"
         size="xs"
-        onClick={() => router.push("/dashboard/card")}
+        onClick={() => router.push("/dashboard/account")}
       >
         Ma carte
       </Button>

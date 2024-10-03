@@ -61,17 +61,17 @@ export default function AccountCard() {
           <HeaderButton
             icon={HiUser}
             text="Mon profil"
-            link="/dashboard/card/information"
+            link="/dashboard/account/information"
           />
           <HeaderButton
             icon={HiCog6Tooth}
             text="Réglages"
-            link="/dashboard/card/settings"
+            link="/dashboard/account/settings"
           />
           <HeaderButton
             icon={HiQuestionMarkCircle}
             text="Aides"
-            link="/dashboard/card/help"
+            link="/dashboard/account/help"
           />
         </Flex>
       </Flex>

@@ -48,7 +48,6 @@ module.exports = async (phase) => {
     const withSerwist = (await import("@serwist/next")).default({
       swSrc: "worker/index.ts",
       swDest: "public/sw.js",
-      disable: true,
     });
 
     return withPayload(

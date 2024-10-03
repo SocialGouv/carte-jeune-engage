@@ -198,10 +198,9 @@ export const theme = extendTheme({
       "800": "#ffffff",
       "900": "#ffffff",
     },
-    success: "#73D700",
+    success: "#459F00",
     successLight: "#E9F6DF",
-    error: "#FF5959",
-    bgRed: "#F13C22",
+    error: "#F13C22",
     errorLight: "#FFE8E8",
     bgWhite: "#F7F7F7",
     bgGray: "#F2F2F8",
@@ -236,6 +235,7 @@ export const theme = extendTheme({
   },
   space: {
     "5.5": "1.375rem",
+    18: "4.5rem",
   },
   sizes: {
     "18": "4.5rem",

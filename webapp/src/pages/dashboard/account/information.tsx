@@ -34,7 +34,7 @@ export default function AccountInformation() {
 
   return (
     <Flex flexDir="column" pt={12} px={8} h="full">
-      <BackButton onClick={() => router.back()} />
+      <BackButton />
       <Heading as="h2" size="xl" fontWeight="extrabold" mt={6}>
         Mes informations <br />
         personnelles

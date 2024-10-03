@@ -52,7 +52,7 @@ const ExpiryTag = ({
       bgColor={
         variant === "default"
           ? differenceInDays <= 10
-            ? "bgRed"
+            ? "error"
             : "bgGray"
           : "inherit"
       }

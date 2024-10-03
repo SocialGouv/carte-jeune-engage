@@ -127,7 +127,7 @@ export const Coupons: CollectionConfig = {
                     title: "Vos économies sont enregistrées !",
                     message: `Votre réduction ${tmpPartner.name} est ajoutée à vos économies 🎉. Venez voir ce que vous économisez avec la carte “jeune engage” ? 👀`,
                     slug: "coupon-used",
-                    url: `${getBaseUrl()}/dashboard/card/history`,
+                    url: `${getBaseUrl()}/dashboard/account/history`,
                   },
                 });
               }

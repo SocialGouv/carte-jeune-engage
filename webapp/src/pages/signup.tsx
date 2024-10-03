@@ -145,7 +145,7 @@ export const signupSteps = [
     title: (
       <Text>
         Quelle est votre adresse email ? <br />
-        <Text as="span" color="bgRed" fontSize="sm">
+        <Text as="span" color="error" fontSize="sm">
           (obligatoire)
         </Text>
       </Text>

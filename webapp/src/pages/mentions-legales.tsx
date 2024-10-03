@@ -2,6 +2,7 @@ import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { Box, Button, Divider, Heading, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
+import BackButton from "~/components/ui/BackButton";
 import { useAuth } from "~/providers/Auth";
 
 const SubHeading = ({ children }: { children: React.ReactNode }) => (
@@ -24,19 +25,7 @@ export default function LegalMentions() {
       fontWeight="medium"
       color="secondaryText"
     >
-      {!!user && (
-        <Button
-          colorScheme="whiteBtn"
-          onClick={() => {
-            router.back();
-          }}
-          size="md"
-          width={8}
-          iconSpacing={0}
-          px={0}
-          rightIcon={<ChevronLeftIcon w={6} h={6} color="black" />}
-        />
-      )}
+      {!!user && <BackButton />}
       <Heading
         as="h1"
         size={{ base: "xl", lg: "3xl" }}
