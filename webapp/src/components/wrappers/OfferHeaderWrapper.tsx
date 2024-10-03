@@ -1,12 +1,19 @@
 import { ReactNode, useState } from "react";
 import Head from "next/head";
-import { Flex, IconButton, useDisclosure, useTheme } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  IconButton,
+  useDisclosure,
+  useTheme,
+} from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { push } from "@socialgouv/matomo-next";
 import { TinyColor } from "@ctrl/tinycolor";
 import { Coupon } from "~/payload/payload-types";
 import BookmarkOfferModal from "../modals/BookmarkOfferModal";
+import BackButton from "../ui/BackButton";
 
 type OfferHeaderWrapperProps = {
   children: ReactNode;
@@ -82,18 +89,9 @@ const OfferHeaderWrapper = ({
       </Head>
       <Flex flexDir="column" h="full">
         <Flex flexDir="column" bgColor={backgroundColor} flex={1} px={8} py={6}>
-          <IconButton
-            alignSelf="start"
-            shadow="default"
-            flexShrink={0}
-            aria-label="Retour"
-            colorScheme="whiteBtn"
-            mb={6}
-            onClick={handleBackButton}
-            borderRadius="2.25xl"
-            size="md"
-            icon={<ChevronLeftIcon w={6} h={6} color="black" />}
-          />
+          <Box mb={6}>
+            <BackButton onClick={handleBackButton} />
+          </Box>
           {headerComponent}
           {kind === "coupon" && children}
         </Flex>
