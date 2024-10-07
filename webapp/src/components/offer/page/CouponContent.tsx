@@ -1,19 +1,19 @@
 import {
   Box,
-  Button,
   CircularProgress,
   Divider,
   Flex,
   Icon,
   Text,
 } from "@chakra-ui/react";
-import { HiOutlineClock } from "react-icons/hi2";
-import InStoreSection from "../InStoreSection";
-import BaseModal from "~/components/modals/BaseModal";
 import Image from "next/image";
-import { OfferIncluded } from "~/server/api/routers/offer";
+import { HiOutlineClock } from "react-icons/hi2";
+import BaseModal from "~/components/modals/BaseModal";
 import { CouponIncluded } from "~/server/api/routers/coupon";
+import { OfferIncluded } from "~/server/api/routers/offer";
 import { getExpiryObject } from "../ExpiryTag";
+import InStoreSection from "../InStoreSection";
+import CouponUsedBox from "./CouponUsedBox";
 
 type CouponContentProps = {
   offer: OfferIncluded;
@@ -36,42 +36,7 @@ const CouponContent = (props: CouponContentProps) => {
 
   return (
     <Flex flexDir="column">
-      {!coupon.used && (
-        <Flex
-          direction={"column"}
-          gap={4}
-          p={3}
-          bg="white"
-          borderRadius="2.5xl"
-          borderWidth={2}
-          borderColor="cje-gray.400"
-          mt={6}
-        >
-          <Text w="full" textAlign={"center"}>
-            🤔 Vous avez déjà utilisé votre code ?
-          </Text>
-          <Flex gap={2}>
-            <Button
-              fontSize="md"
-              rounded={"1.25rem"}
-              p={3}
-              colorScheme="dangerShades"
-              flexGrow={1}
-            >
-              Non
-            </Button>
-            <Button
-              fontSize="md"
-              rounded={"1.25rem"}
-              p={3}
-              colorScheme="primaryShades"
-              flexGrow={1}
-            >
-              Oui
-            </Button>
-          </Flex>
-        </Flex>
-      )}
+      {!coupon.used && <CouponUsedBox coupon={coupon} />}
       <Flex
         align="center"
         borderRadius="2xl"

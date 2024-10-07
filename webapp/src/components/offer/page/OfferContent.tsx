@@ -25,9 +25,10 @@ import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse"
 import { StackItem } from "../StackItems";
 import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 import ReactIcon from "~/utils/dynamicIcon";
-import BookmarkKeepOfferModal from "~/components/modals/BookmarkKeepOfferModal";
+import BookmarkKeepOfferModal from "~/components/modals/ConfirmModal";
 import { api } from "~/utils/api";
 import { CouponIncluded } from "~/server/api/routers/coupon";
+import ConfirmModal from "~/components/modals/ConfirmModal";
 
 type OfferContentProps = {
   offer: OfferIncluded;
@@ -308,10 +309,16 @@ const OfferContent = (props: OfferContentProps) => {
           Voir mon code
         </Button>
       </Flex>
-      <BookmarkKeepOfferModal
+      <ConfirmModal
+        title={"Vous n’en voulez plus ?"}
+        labels={{
+          primary: "Je n'en veux plus",
+          secondary: "Je la garde",
+        }}
         isOpen={isOpenBookmarkKeepOfferModal}
         onClose={onCloseBookmarkKeepOfferModal}
-        handleRemoveCouponFromUser={handleRemoveCouponFromUser}
+        onConfirm={handleRemoveCouponFromUser}
+        danger
       />
     </Flex>
   );
