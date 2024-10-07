@@ -316,8 +316,9 @@ export default function Signup() {
   const { data: addressOptions, isLoading: isLoadingAddressOptions } = useQuery(
     ["getAddressOptions", debouncedAddress],
     async () => {
+      const formatedDebouncedAddress = debouncedAddress.split(",")[0];
       const response = await fetch(
-        `https://geo.api.gouv.fr/communes?nom=${debouncedAddress}&codeDepartement=95&fields=departement&limit=5`
+        `https://geo.api.gouv.fr/communes?nom=${formatedDebouncedAddress}&codeDepartement=95&fields=departement&limit=5`
       );
       const data = await response.json();
       return data.map(
@@ -750,6 +751,7 @@ export default function Signup() {
                           currentValue={formValues.preferences}
                           iconSrc={tag.icon.url as string}
                           onChange={onChange}
+                          withCheckbox
                         >
                           {tag.label}
                         </FormBlock>

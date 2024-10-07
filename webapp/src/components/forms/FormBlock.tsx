@@ -1,9 +1,10 @@
-import { Box, type ChakraProps, Flex, Text } from "@chakra-ui/react";
+import { Box, type ChakraProps, Checkbox, Flex, Text } from "@chakra-ui/react";
 import Image, { ImageProps } from "next/image";
 
 type Props = {
   children: React.ReactNode;
   variant?: "default" | "inline";
+  withCheckbox?: boolean;
   value: string;
   currentValue: string | string[];
   iconSrc?: string;
@@ -16,6 +17,7 @@ type Props = {
 const FormBlock = ({
   children,
   variant = "default",
+  withCheckbox,
   value,
   currentValue,
   onChange,
@@ -30,43 +32,58 @@ const FormBlock = ({
       : currentValue?.includes(value);
 
   return (
-    <Flex
-      flex={1}
-      flexDir={variant === "default" ? "column" : "row"}
-      w="full"
-      borderRadius="2xl"
-      px={4}
-      minH={16}
-      fontWeight="medium"
-      justifyContent={variant === "default" ? "center" : "start"}
-      alignItems="center"
-      onClick={() => {
-        typeof currentValue !== "string" && isSelected
-          ? onChange(undefined)
-          : onChange(value);
-      }}
-      borderWidth={variant === "default" ? 2 : 0}
-      backgroundColor={
-        isSelected && variant === "inline" ? "primary" : "cje-gray.500"
-      }
-      color={isSelected && variant === "inline" ? "white" : "black"}
-      borderColor={isSelected ? "blackLight" : "transparent"}
-      cursor="pointer"
-      gap={variant === "default" ? 2 : 4}
-      {...wrapperProps}
-    >
-      {iconSrc && (
-        <Box p={1} {...wrapperIconProps}>
-          <Image src={iconSrc} alt="" width={65} height={65} {...iconProps} />
-        </Box>
-      )}
-      <Text
-        fontWeight={isSelected ? "bold" : "medium"}
-        textAlign={variant === "default" ? "center" : "start"}
-        noOfLines={1}
+    <Flex alignItems="center" w="full" gap={6}>
+      <Flex
+        flex={1}
+        flexDir={variant === "default" ? "column" : "row"}
+        w="full"
+        borderRadius="2xl"
+        px={variant === "default" ? 4 : 2}
+        minH={16}
+        fontWeight="medium"
+        justifyContent={variant === "default" ? "center" : "start"}
+        alignItems="center"
+        onClick={() => {
+          typeof currentValue !== "string" && isSelected
+            ? onChange(undefined)
+            : onChange(value);
+        }}
+        borderWidth={variant === "default" ? 2 : 0}
+        backgroundColor={
+          isSelected && variant === "inline" ? "primary" : "cje-gray.500"
+        }
+        color={isSelected && variant === "inline" ? "white" : "black"}
+        borderColor={isSelected ? "blackLight" : "transparent"}
+        cursor="pointer"
+        gap={variant === "default" ? 2 : 4}
+        {...wrapperProps}
       >
-        {children}
-      </Text>
+        {iconSrc && (
+          <Box p={1} {...wrapperIconProps}>
+            <Image src={iconSrc} alt="" width={65} height={65} {...iconProps} />
+          </Box>
+        )}
+        <Text
+          fontWeight={isSelected ? "bold" : "medium"}
+          textAlign={variant === "default" ? "center" : "start"}
+          noOfLines={1}
+        >
+          {children}
+        </Text>
+      </Flex>
+      {withCheckbox && (
+        <Checkbox
+          isChecked={isSelected}
+          onChange={(e) => {
+            e.stopPropagation();
+            onChange(e.target.checked ? value : undefined);
+          }}
+          variant="circular"
+          borderRadius="full"
+          colorScheme="primaryShades"
+          size="lg"
+        />
+      )}
     </Flex>
   );
 };
