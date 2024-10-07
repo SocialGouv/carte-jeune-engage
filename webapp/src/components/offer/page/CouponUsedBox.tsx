@@ -1,15 +1,17 @@
 import { Flex, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 import ConfirmModal from "~/components/modals/ConfirmModal";
+import CouponUsedFeedbackModal from "~/components/modals/CouponUsedFeedbackModal";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { api } from "~/utils/api";
 
 type CouponUsedBoxProps = {
   coupon: CouponIncluded;
+  confirmCouponUsed: () => void;
 };
 
 const CouponUsedBox = (props: CouponUsedBoxProps) => {
-  const { coupon } = props;
+  const { coupon, confirmCouponUsed } = props;
 
   const [showUsedBox, setShowUsedBox] = useState<boolean>(true);
 
@@ -19,12 +21,19 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     onClose: onCloseCouponUsedModal,
   } = useDisclosure();
 
-  const { mutateAsync: confirmCouponUsed } =
-    api.coupon.usedFromUser.useMutation({
+  const {
+    isOpen: isOpenCouponUsedFeedbackModal,
+    onOpen: onOpenCouponUsedFeedbackModal,
+    onClose: onCloseCouponUsedFeedbackModal,
+  } = useDisclosure();
+
+  const { mutateAsync: mutateCouponUsed } = api.coupon.usedFromUser.useMutation(
+    {
       onSuccess: () => {
-        setShowUsedBox(false);
+        onOpenCouponUsedFeedbackModal();
       },
-    });
+    }
+  );
 
   const handleCouponUsed = (used: boolean) => {
     if (!used) {
@@ -82,9 +91,19 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
         isOpen={isOpenCouponUsedModal}
         onClose={onCloseCouponUsedModal}
         onConfirm={() => {
-          confirmCouponUsed({ coupon_id: coupon.id });
+          mutateCouponUsed({ coupon_id: coupon.id });
         }}
         placement="center"
+      />
+      <CouponUsedFeedbackModal
+        isOpen={isOpenCouponUsedFeedbackModal}
+        onClose={() => {
+          confirmCouponUsed();
+          onCloseCouponUsedFeedbackModal();
+        }}
+        onConfirm={() => {
+          confirmCouponUsed();
+        }}
       />
     </Flex>
   );

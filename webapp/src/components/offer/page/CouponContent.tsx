@@ -20,6 +20,7 @@ type CouponContentProps = {
   coupon: CouponIncluded;
   isOpenExternalLink: boolean;
   onCloseExternalLink: () => void;
+  onCouponUsed: () => void;
   timeoutProgress: number;
 };
 
@@ -29,6 +30,7 @@ const CouponContent = (props: CouponContentProps) => {
     coupon,
     isOpenExternalLink,
     onCloseExternalLink,
+    onCouponUsed,
     timeoutProgress,
   } = props;
 
@@ -36,7 +38,9 @@ const CouponContent = (props: CouponContentProps) => {
 
   return (
     <Flex flexDir="column">
-      {!coupon.used && <CouponUsedBox coupon={coupon} />}
+      {!coupon.used && (
+        <CouponUsedBox coupon={coupon} confirmCouponUsed={onCouponUsed} />
+      )}
       <Flex
         align="center"
         borderRadius="2xl"

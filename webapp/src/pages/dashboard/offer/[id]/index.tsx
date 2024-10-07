@@ -74,6 +74,10 @@ export default function OfferPage() {
     useState<NodeJS.Timeout>();
   const [timeoutProgress, setTimeoutProgress] = useState<number>(0);
 
+  const onCouponUsed = () => {
+    refetchCoupon();
+  };
+
   const {
     isOpen: isOpenExternalLink,
     onOpen: onOpenExternalLink,
@@ -204,6 +208,7 @@ export default function OfferPage() {
             coupon={coupon}
             isOpenExternalLink={isOpenExternalLink}
             onCloseExternalLink={onCloseExternalLink}
+            onCouponUsed={onCouponUsed}
             timeoutProgress={timeoutProgress}
           />
         )
