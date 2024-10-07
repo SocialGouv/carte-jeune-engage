@@ -25,20 +25,32 @@ export const getItemsConditionBlocks = (offerKind: Offer["kind"]) => {
       text: "valable tout le temps",
       slug: "all-time",
       icon: "HiOutlineInformationCircle",
-    }
-  ]
+    },
+  ];
 
   if (offerKind.startsWith("code")) {
     items.push(
-      { text: "en ligne uniquement", slug: "use-link", icon: "HiCursorArrowRays" },
-      ...defaultItems,
+      {
+        text: "en ligne uniquement",
+        slug: "use-link",
+        icon: "HiCursorArrowRays",
+      },
+      ...defaultItems
     );
   } else {
     items.push(
-      { text: "en magasin uniquement", slug: "go-to-store", icon: "HiBuildingStorefront" },
-      { text: "uniquement sur certains produits", slug: "specific-products", icon: "HiShoppingCart" },
-      ...defaultItems,
-    )
+      {
+        text: "en magasin uniquement",
+        slug: "go-to-store",
+        icon: "HiBuildingStorefront",
+      },
+      {
+        text: "uniquement sur certains produits",
+        slug: "specific-products",
+        icon: "HiShoppingCart",
+      },
+      ...defaultItems
+    );
   }
 
   return items;
