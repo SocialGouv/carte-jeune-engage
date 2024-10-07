@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   CircularProgress,
   Divider,
   Flex,
@@ -35,6 +36,42 @@ const CouponContent = (props: CouponContentProps) => {
 
   return (
     <Flex flexDir="column">
+      {!coupon.used && (
+        <Flex
+          direction={"column"}
+          gap={4}
+          p={3}
+          bg="white"
+          borderRadius="2.5xl"
+          borderWidth={2}
+          borderColor="cje-gray.400"
+          mt={6}
+        >
+          <Text w="full" textAlign={"center"}>
+            🤔 Vous avez déjà utilisé votre code ?
+          </Text>
+          <Flex gap={2}>
+            <Button
+              fontSize="md"
+              rounded={"1.25rem"}
+              p={3}
+              colorScheme="dangerShades"
+              flexGrow={1}
+            >
+              Non
+            </Button>
+            <Button
+              fontSize="md"
+              rounded={"1.25rem"}
+              p={3}
+              colorScheme="primaryShades"
+              flexGrow={1}
+            >
+              Oui
+            </Button>
+          </Flex>
+        </Flex>
+      )}
       <Flex
         align="center"
         borderRadius="2xl"
