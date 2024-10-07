@@ -24,7 +24,6 @@ const FormBlock = ({
   iconProps,
   wrapperIconProps,
 }: Props) => {
-  console.log(currentValue);
   const isSelected =
     typeof currentValue === "string"
       ? currentValue === value

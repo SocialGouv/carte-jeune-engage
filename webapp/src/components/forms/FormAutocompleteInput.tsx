@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Divider,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -48,6 +49,29 @@ const FormAutocompleteInput = ({
   const { label, name } = field;
   const [optionsHistory, setOptionsHistory] = useState<string[]>([]);
 
+  const [currentValue, setCurrentValue] = useState<string | undefined>(
+    undefined
+  );
+
+  if (currentValue) {
+    return (
+      <Flex flexDir="column" textAlign="center" gap={20}>
+        <Text fontWeight={800} fontSize={24} mt={10}>
+          {currentValue}
+        </Text>
+        <Text
+          fontWeight={800}
+          textDecoration="underline"
+          textDecorationThickness="2px"
+          textUnderlineOffset={2}
+          onClick={() => setCurrentValue(undefined)}
+        >
+          Modifier
+        </Text>
+      </Flex>
+    );
+  }
+
   return (
     <FormControl isRequired isInvalid={!!fieldError}>
       <FormLabel fontWeight="medium" color="disabled" fontSize={12} mb={1}>
@@ -84,7 +108,6 @@ const FormAutocompleteInput = ({
                 defaultIsOpen
                 openOnFocus
                 disableFilter
-                emphasize
                 placement="bottom"
                 matchWidth={false}
                 isLoading={value && value.length > 2 && isLoading}
@@ -100,7 +123,7 @@ const FormAutocompleteInput = ({
                         py={8}
                       >
                         <Text>Pas de résultats</Text>
-                        <Text
+                        {/* <Text
                           fontWeight="bold"
                           mt={2}
                           borderBottom="1px solid"
@@ -111,7 +134,7 @@ const FormAutocompleteInput = ({
                           }}
                         >
                           Valider quand même cette adresse
-                        </Text>
+                        </Text> */}
                       </Center>
                     );
                   }
@@ -120,10 +143,11 @@ const FormAutocompleteInput = ({
                   clearErrors(name);
                   setOptionsHistory([...optionsHistory, item.value]);
                   onChange(item.value);
+                  setCurrentValue(item.value);
                 }}
               >
                 <AutoCompleteInput
-                  placeholder=""
+                  placeholder={field.placeholder || ""}
                   borderRadius="2xl"
                   border="none"
                   loadingIcon={<></>}
@@ -131,7 +155,7 @@ const FormAutocompleteInput = ({
                   autoComplete="off"
                   backgroundColor={
                     !fieldError || fieldError.type === "autocompleteValue"
-                      ? "cje-gray.500"
+                      ? "bgGray"
                       : "errorLight"
                   }
                   px={5}
@@ -168,25 +192,30 @@ const FormAutocompleteInput = ({
                   gap={2}
                   mt={-4}
                 >
-                  {options?.map((option, index) => (
-                    <>
-                      <AutoCompleteItem
-                        key={option}
-                        value={option}
-                        mx={0}
-                        bgColor="white"
-                        textTransform="capitalize"
-                        _focus={{ bgColor: "transparent" }}
-                      >
-                        <Text fontWeight="medium" fontSize={18}>
-                          {option}
-                        </Text>
-                      </AutoCompleteItem>
-                      {index !== options.length - 1 && (
-                        <Divider borderColor="cje-gray.500" />
-                      )}
-                    </>
-                  ))}
+                  {options?.map((option, index) => {
+                    const highlightedText = option.slice(0, value.length);
+                    const restOfText = option.slice(value.length);
+                    return (
+                      <>
+                        <AutoCompleteItem
+                          key={option}
+                          value={option}
+                          mx={0}
+                          _focus={{ bgColor: "transparent" }}
+                        >
+                          <Text fontWeight={800} fontSize={18}>
+                            {highlightedText}
+                            <Text as="span" fontWeight={500}>
+                              {restOfText}
+                            </Text>
+                          </Text>
+                        </AutoCompleteItem>
+                        {index !== options.length - 1 && (
+                          <Divider borderColor="cje-gray.500" />
+                        )}
+                      </>
+                    );
+                  })}
                 </AutoCompleteList>
               </AutoComplete>
             </Box>

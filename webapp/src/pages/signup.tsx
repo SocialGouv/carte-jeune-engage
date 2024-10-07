@@ -46,6 +46,7 @@ type SignUpForm = {
 export type SignUpFormStep = {
   title: string | JSX.Element;
   description?: string;
+  imageUrl?: string;
   field: FieldProps;
 };
 
@@ -197,6 +198,7 @@ export const signupSteps = [
   {
     title: "Votre ville",
     description: "Pour trouver les promotions proches de chez vous.",
+    imageUrl: "/images/onboarding/map-pin.png",
     field: {
       name: "address",
       kind: "text",
@@ -315,10 +317,13 @@ export default function Signup() {
     ["getAddressOptions", debouncedAddress],
     async () => {
       const response = await fetch(
-        `https://geo.api.gouv.fr/communes?nom=${debouncedAddress}&codeDepartement=95&limit=5`
+        `https://geo.api.gouv.fr/communes?nom=${debouncedAddress}&codeDepartement=95&fields=departement&limit=5`
       );
       const data = await response.json();
-      return data.map((municipality: any) => municipality.nom) as string[];
+      return data.map(
+        (municipality: any) =>
+          `${municipality.nom}, ${municipality.departement.nom}`
+      ) as string[];
     },
     {
       enabled: !!debouncedAddress && debouncedAddress.length > 2,
@@ -660,6 +665,16 @@ export default function Signup() {
               {currentSignupStep?.description ||
                 "Saisissez la même information que sur vos documents administratifs officiels."}
             </Text>
+            {currentSignupStep.imageUrl && (
+              <Center mt={2}>
+                <Image
+                  src={currentSignupStep.imageUrl}
+                  alt={currentSignupStep.title as string}
+                  width={126}
+                  height={0}
+                />
+              </Center>
+            )}
             <Box mt={6} key={currentSignupStep.field.name}>
               {(currentSignupStep.field.name === "civility" ||
                 currentSignupStep.field.name === "cejFrom") &&
