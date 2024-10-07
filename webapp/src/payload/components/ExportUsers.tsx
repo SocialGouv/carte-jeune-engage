@@ -106,8 +106,8 @@ const ExportUsers = ({ data }: Props) => {
               doc.cejFrom === "franceTravail"
                 ? "France travail"
                 : doc.cejFrom === "missionLocale"
-                ? "Mission locale"
-                : "Service civique",
+                  ? "Mission locale"
+                  : "Service civique",
             couponsNumber: userCouponsNumber,
           };
         })

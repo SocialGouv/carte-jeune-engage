@@ -76,8 +76,8 @@ const ExportPermissions = ({ data }: Props) => {
               permission.supervisorKind === "ML"
                 ? "Mission Locale"
                 : permission.supervisorKind === "FT"
-                ? "France Travail"
-                : "Service Civique",
+                  ? "France Travail"
+                  : "Service Civique",
           };
         })
       );

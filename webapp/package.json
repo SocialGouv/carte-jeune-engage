@@ -10,6 +10,7 @@
     "seed:prod": "tsx ./src/payload/seed/index.ts",
     "cron-job": "tsx ./src/notifications/index.ts",
     "payload": "PAYLOAD_CONFIG_PATH=./src/payload/payload.config.ts payload",
+    "format": "prettier --write .",
     "lint": "next lint"
   },
   "dependencies": {
@@ -70,6 +71,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/web-push": "^3",
+    "prettier": "^3.1.1",
     "serwist": "^9.0.2",
     "typescript": "5.4.5",
     "webpack": "^5.89.0"

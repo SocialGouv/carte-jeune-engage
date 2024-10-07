@@ -21,8 +21,8 @@ export interface Config {
     notifications: Notification;
     tags: Tag;
     search_requests: SearchRequest;
-    'payload-preferences': PayloadPreference;
-    'payload-migrations': PayloadMigration;
+    "payload-preferences": PayloadPreference;
+    "payload-migrations": PayloadMigration;
   };
   globals: {
     quickAccess: QuickAccess;
@@ -59,21 +59,29 @@ export interface Admin {
 export interface User {
   id: number;
   phone_number: string;
-  civility?: ('man' | 'woman') | null;
+  civility?: ("man" | "woman") | null;
   birthDate?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   address?: string | null;
   image?: number | Media | null;
   userEmail?: string | null;
-  cejFrom?: ('franceTravail' | 'missionLocale' | 'serviceCivique' | 'ecole2ndeChance' | 'epide') | null;
-  timeAtCEJ?: ('started' | 'lessThan3Months' | 'moreThan3Months') | null;
-  hasAJobIdea?: ('yes' | 'no') | null;
+  cejFrom?:
+    | (
+        | "franceTravail"
+        | "missionLocale"
+        | "serviceCivique"
+        | "ecole2ndeChance"
+        | "epide"
+      )
+    | null;
+  timeAtCEJ?: ("started" | "lessThan3Months" | "moreThan3Months") | null;
+  hasAJobIdea?: ("yes" | "no") | null;
   projectTitle?: string | null;
   projectDescription?: string | null;
-  status_image?: ('pending' | 'approved') | null;
+  status_image?: ("pending" | "approved") | null;
   preferences?: (number | Category)[] | null;
-  notification_status?: ('enabled' | 'disabled') | null;
+  notification_status?: ("enabled" | "disabled") | null;
   notification_subscription?:
     | {
         [k: string]: unknown;
@@ -133,7 +141,7 @@ export interface Category {
 export interface Supervisor {
   id: number;
   cgu?: boolean | null;
-  kind?: ('ML' | 'SC' | 'FT') | null;
+  kind?: ("ML" | "SC" | "FT") | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -153,7 +161,7 @@ export interface Permission {
   id: number;
   phone_number: string;
   createdBy?: (number | null) | Supervisor;
-  supervisorKind?: ('ML' | 'SC' | 'FT') | null;
+  supervisorKind?: ("ML" | "SC" | "FT") | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -185,12 +193,14 @@ export interface Offer {
   tags?: (number | Tag)[] | null;
   validityFrom?: string | null;
   validityTo: string;
-  kind: 'voucher' | 'voucher_pass' | 'code' | 'code_space';
+  kind: "voucher" | "voucher_pass" | "code" | "code_space";
   url?: string | null;
   nbOfEligibleStores?: number | null;
   imageOfEligibleStores?: number | Media | null;
   linkOfEligibleStores?: string | null;
-  barcodeFormat?: ('CODE39' | 'EAN13' | 'ITF14' | 'MSI' | 'pharmacode' | 'codabar' | 'upc') | null;
+  barcodeFormat?:
+    | ("CODE39" | "EAN13" | "ITF14" | "MSI" | "pharmacode" | "codabar" | "upc")
+    | null;
   termsOfUse?:
     | {
         slug?: string | null;
@@ -296,15 +306,15 @@ export interface PayloadPreference {
   id: number;
   user:
     | {
-        relationTo: 'admins';
+        relationTo: "admins";
         value: number | Admin;
       }
     | {
-        relationTo: 'users';
+        relationTo: "users";
         value: number | User;
       }
     | {
-        relationTo: 'supervisors';
+        relationTo: "supervisors";
         value: number | Supervisor;
       };
   key?: string | null;
@@ -426,7 +436,6 @@ export interface TagsList {
   createdAt?: string | null;
 }
 
-
-declare module 'payload' {
+declare module "payload" {
   export interface GeneratedTypes extends Config {}
 }
