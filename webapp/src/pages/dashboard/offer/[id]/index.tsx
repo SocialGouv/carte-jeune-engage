@@ -155,8 +155,6 @@ export default function OfferPage() {
       </OfferHeaderWrapper>
     );
 
-  console.log(coupon);
-
   return (
     <OfferHeaderWrapper
       kind={kind}
