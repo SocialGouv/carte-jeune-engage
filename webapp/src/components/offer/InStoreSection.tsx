@@ -8,10 +8,11 @@ import Image from "next/image";
 type InStoreSectionProps = {
   offer: OfferIncluded;
   withoutBackground?: boolean;
+  disabled?: boolean;
 };
 
 const InStoreSection = (props: InStoreSectionProps) => {
-  const { offer, withoutBackground } = props;
+  const { offer, withoutBackground, disabled } = props;
 
   return (
     <Flex
@@ -20,6 +21,7 @@ const InStoreSection = (props: InStoreSectionProps) => {
       borderRadius="2.5xl"
       bg={!withoutBackground ? "bgGray" : "inherit"}
       p={!withoutBackground ? 4 : 0}
+      opacity={disabled ? 0.6 : 1}
     >
       <Box position="relative">
         <Image
@@ -47,6 +49,9 @@ const InStoreSection = (props: InStoreSectionProps) => {
         href={offer.linkOfEligibleStores ?? ""}
         target="_blank"
         _hover={{ textDecoration: "none" }}
+        onClick={(e) => {
+          if (disabled) e.preventDefault();
+        }}
       >
         <Flex alignItems="center" borderRadius="2.5xl" bgColor="white" p={6}>
           <Icon as={HiBuildingStorefront} w={5} h={5} mr={4} />

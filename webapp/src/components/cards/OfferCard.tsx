@@ -1,12 +1,12 @@
-import { Flex, Text, Icon, Box, IconButton, Center } from "@chakra-ui/react";
-import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
-import { dottedPattern } from "~/utils/chakra-theme";
+import { Box, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
-import { HiBookmark, HiOutlineBookmark, HiOutlineClock } from "react-icons/hi2";
-import { HiClock } from "react-icons/hi2";
-import { api } from "~/utils/api";
-import ConditionalLink from "../ConditionalLink";
 import Image from "next/image";
+import { HiBookmark, HiOutlineBookmark } from "react-icons/hi2";
+import { TbCircleCheckFilled } from "react-icons/tb";
+import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
+import { api } from "~/utils/api";
+import { dottedPattern } from "~/utils/chakra-theme";
+import ConditionalLink from "../ConditionalLink";
 import ExpiryTag from "../offer/ExpiryTag";
 
 type OfferCardProps = {
@@ -14,6 +14,7 @@ type OfferCardProps = {
   variant?: "default" | "minimal";
   matomoEvent?: string[];
   handleValidateOffer?: (offerId: number) => void;
+  disabled?: boolean;
 };
 
 const OfferCard = ({
@@ -21,6 +22,7 @@ const OfferCard = ({
   variant = "default",
   matomoEvent = [],
   handleValidateOffer,
+  disabled,
 }: OfferCardProps) => {
   const utils = api.useUtils();
 
@@ -72,6 +74,8 @@ const OfferCard = ({
           if (variant === "minimal" && handleValidateOffer)
             handleValidateOffer(offer.id);
         }}
+        bg="white"
+        borderRadius={20}
       >
         <Flex
           borderTopRadius={20}
@@ -82,14 +86,16 @@ const OfferCard = ({
           height="256px"
           sx={{ ...dottedPattern("#ffffff") }}
         >
-          <Image
-            src={offer.image?.url ?? "/images/landing/mobile-showcase.png"}
-            alt={offer.image?.alt ?? "Image par défaut de l'offre"}
-            loading="eager"
-            objectFit="cover"
-            objectPosition="center"
-            layout="fill"
-          />
+          <Flex opacity={disabled ? 0.6 : 1}>
+            <Image
+              src={offer.image?.url ?? "/images/landing/mobile-showcase.png"}
+              alt={offer.image?.alt ?? "Image par défaut de l'offre"}
+              loading="eager"
+              objectFit="cover"
+              objectPosition="center"
+              layout="fill"
+            />
+          </Flex>
           <Box
             position="absolute"
             top="0"
@@ -160,8 +166,31 @@ const OfferCard = ({
           gap={2}
           shadow="default"
         >
-          <ExpiryTag expiryDate={offer.validityTo} variant={variant} />
-          <Flex flexDir="column" textAlign="center" h="154px">
+          {disabled ? (
+            <Box
+              color="success"
+              bg="successLight"
+              fontSize="sm"
+              rounded={"2xl"}
+              px={10}
+              py={1.5}
+              mx={"auto"}
+              fontWeight="bold"
+              display="inline-block"
+            >
+              <Flex alignItems={"center"} gap={1}>
+                Offre déjà utilisée <TbCircleCheckFilled size={"1.2rem"} />
+              </Flex>
+            </Box>
+          ) : (
+            <ExpiryTag expiryDate={offer.validityTo} variant={variant} />
+          )}
+          <Flex
+            flexDir="column"
+            textAlign="center"
+            h="154px"
+            opacity={disabled ? 0.6 : 1}
+          >
             <Text fontSize={18} fontWeight={800} noOfLines={2}>
               {offer.title}
             </Text>

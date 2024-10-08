@@ -25,7 +25,6 @@ export const couponRouter = createTRPCRouter({
             {
               ...payloadWhereOfferIsValid("offer"),
             },
-            { used: { equals: false } },
           ],
         },
       });
@@ -162,6 +161,38 @@ export const couponRouter = createTRPCRouter({
         collection: "coupons",
         id: coupon_id,
         data: { user: null },
+      });
+
+      return { data: updatedCoupon };
+    }),
+
+  usedFromUser: userProtectedProcedure
+    .input(z.object({ coupon_id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const { coupon_id } = input;
+
+      const coupon = await ctx.payload.findByID({
+        collection: "coupons",
+        id: coupon_id,
+        depth: 0,
+      });
+
+      if (!coupon)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Coupon not found",
+        });
+
+      if (coupon.user !== ctx.session.id)
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Coupon not assigned to user",
+        });
+
+      const updatedCoupon = await ctx.payload.update({
+        collection: "coupons",
+        id: coupon_id,
+        data: { used: true },
       });
 
       return { data: updatedCoupon };

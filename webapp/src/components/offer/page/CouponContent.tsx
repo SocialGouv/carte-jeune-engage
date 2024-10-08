@@ -6,19 +6,21 @@ import {
   Icon,
   Text,
 } from "@chakra-ui/react";
-import { HiOutlineClock } from "react-icons/hi2";
-import InStoreSection from "../InStoreSection";
-import BaseModal from "~/components/modals/BaseModal";
 import Image from "next/image";
-import { OfferIncluded } from "~/server/api/routers/offer";
+import { HiOutlineClock } from "react-icons/hi2";
+import BaseModal from "~/components/modals/BaseModal";
 import { CouponIncluded } from "~/server/api/routers/coupon";
+import { OfferIncluded } from "~/server/api/routers/offer";
 import { getExpiryObject } from "../ExpiryTag";
+import InStoreSection from "../InStoreSection";
+import CouponUsedBox from "./CouponUsedBox";
 
 type CouponContentProps = {
   offer: OfferIncluded;
   coupon: CouponIncluded;
   isOpenExternalLink: boolean;
   onCloseExternalLink: () => void;
+  onCouponUsed: () => void;
   timeoutProgress: number;
 };
 
@@ -28,6 +30,7 @@ const CouponContent = (props: CouponContentProps) => {
     coupon,
     isOpenExternalLink,
     onCloseExternalLink,
+    onCouponUsed,
     timeoutProgress,
   } = props;
 
@@ -35,6 +38,9 @@ const CouponContent = (props: CouponContentProps) => {
 
   return (
     <Flex flexDir="column">
+      {!coupon.used && (
+        <CouponUsedBox coupon={coupon} confirmCouponUsed={onCouponUsed} />
+      )}
       <Flex
         align="center"
         borderRadius="2xl"

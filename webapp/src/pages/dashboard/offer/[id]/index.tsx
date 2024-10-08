@@ -59,7 +59,8 @@ export default function OfferPage() {
     displayCoupon: boolean = true
   ) => {
     if (!coupon) await mutateAsyncCouponToUser({ offer_id: offerId });
-    if (displayCoupon) setKind("coupon");
+    else if (coupon && coupon.used) return;
+    else if (displayCoupon) setKind("coupon");
   };
 
   const handleBookmarkOfferToUser = async () => {
@@ -73,6 +74,11 @@ export default function OfferPage() {
   const [intervalIdExternalLink, setIntervalIdExternalLink] =
     useState<NodeJS.Timeout>();
   const [timeoutProgress, setTimeoutProgress] = useState<number>(0);
+
+  const onCouponUsed = () => {
+    refetchCoupon();
+    setKind("offer");
+  };
 
   const {
     isOpen: isOpenExternalLink,
@@ -174,6 +180,7 @@ export default function OfferPage() {
                   offer={offer}
                   variant="minimal"
                   handleValidateOffer={handleValidateOffer}
+                  disabled={(coupon && coupon.used) || false}
                 />
               </motion.div>
             ) : (
@@ -204,6 +211,7 @@ export default function OfferPage() {
             coupon={coupon}
             isOpenExternalLink={isOpenExternalLink}
             onCloseExternalLink={onCloseExternalLink}
+            onCouponUsed={onCouponUsed}
             timeoutProgress={timeoutProgress}
           />
         )
