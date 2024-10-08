@@ -21,11 +21,16 @@ export const emailAuthTokenRouter = createTRPCRouter({
         collection: "email_auth_tokens",
         where: { token: { equals: token } },
         depth: 2,
+        sort: "-createdAt",
       });
 
       const emailAuthToken = emailAuthTokens.docs[0] as EmailAuthTokenWithUser;
 
-      if (!emailAuthToken)
+      if (
+        !emailAuthToken ||
+        new Date(emailAuthToken.expiration as string).getTime() <
+          new Date().getTime()
+      )
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Token not found",

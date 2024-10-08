@@ -27,7 +27,11 @@ export const EmailAuthTokens: CollectionConfig = {
       name: "expiration",
       type: "date",
       label: "Expiration",
-      defaultValue: () => Date.now() + 3600000,
+      admin: {
+        date: {
+          pickerAppearance: "dayAndTime",
+        },
+      },
     },
   ],
 };
