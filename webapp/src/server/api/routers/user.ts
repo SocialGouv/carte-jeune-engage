@@ -12,6 +12,7 @@ import {
 import { getHtmlLoginByEmail } from "~/utils/emailHtml";
 import {
   generateRandomPassword,
+  maskEmail,
   payloadOrPhoneNumberCheck,
 } from "~/utils/tools";
 
@@ -482,5 +483,35 @@ export const userRouter = createTRPCRouter({
         subject: "Demande d'accès à l'application",
         text: `Nouvelle demande d'accès faite sur la landing par ${firstName} ${lastName} (${email} - ${phone_number}).`,
       });
+    }),
+
+  getSecretEmailFromPhoneNumber: publicProcedure
+    .input(
+      z.object({
+        phone_number: z.string(),
+      })
+    )
+    .query(async ({ ctx, input: { phone_number } }) => {
+      const userQuery = await ctx.payload.find({
+        collection: "users",
+        where: {
+          phone_number: { equals: phone_number },
+        },
+      });
+
+      const user = userQuery.docs[0];
+
+      if (!user) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Unknown user",
+        });
+      }
+
+      return {
+        data: {
+          email: maskEmail(user.email),
+        },
+      };
     }),
 });

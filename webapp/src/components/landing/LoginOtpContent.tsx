@@ -32,6 +32,12 @@ const LoginOtpContent = (props: LoginOtpContentProps) => {
   const [hasOtpError, setHasOtpError] = useState(false);
   const [hasOtpExpired, setHasOtpExpired] = useState(false);
 
+  const { data: resultSecretEmail } =
+    api.user.getSecretEmailFromPhoneNumber.useQuery({
+      phone_number: currentPhoneNumber,
+    });
+  const secretEmail = resultSecretEmail?.data.email;
+
   const { mutate: loginUser, isLoading: isLoadingLogin } =
     api.user.loginUser.useMutation({
       onSuccess: async ({ data }) => {
@@ -86,7 +92,7 @@ const LoginOtpContent = (props: LoginOtpContentProps) => {
           <ListItem>
             On vous a envoyé un mail à cette adresse :
             <br />
-            <strong>{currentPhoneNumber}</strong>
+            <strong>{secretEmail}</strong>
           </ListItem>
           <ListItem mt={6}>Cliquez sur le lien dans le mail</ListItem>
           <ListItem>Et voilà vous serez connecté !</ListItem>
