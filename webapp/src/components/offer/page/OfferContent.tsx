@@ -8,6 +8,7 @@ import {
   Icon,
   ListItem,
   OrderedList,
+  Tag,
   Text,
   UnorderedList,
   useDisclosure,
@@ -81,22 +82,38 @@ const OfferContent = (props: OfferContentProps) => {
     return offer.conditions ?? [];
   }, [offer, isConditionsOpen]);
 
+  const disabled = coupon && !!coupon.used;
+
   return (
     <Flex flexDir="column">
       <Box mt={6} px={4} w="full">
-        <Button
-          fontSize={14}
-          w="full"
-          size="md"
-          isLoading={isLoadingValidateOffer}
-          onClick={() => {
-            push(["trackEvent", "Inactive", "J'active mon offre"]);
-            handleValidateOffer(offer.id);
-          }}
-          leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
-        >
-          Voir mon code
-        </Button>
+        {coupon && coupon.used ? (
+          <Box
+            w="full"
+            color="success"
+            bg="successLight"
+            rounded={"2xl"}
+            py={6}
+            textAlign={"center"}
+            fontWeight="bold"
+          >
+            Offre déjà utilisée
+          </Box>
+        ) : (
+          <Button
+            fontSize={14}
+            w="full"
+            size="md"
+            isLoading={isLoadingValidateOffer}
+            onClick={() => {
+              push(["trackEvent", "Inactive", "J'active mon offre"]);
+              handleValidateOffer(offer.id);
+            }}
+            leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
+          >
+            Voir mon code
+          </Button>
+        )}
       </Box>
       {offerConditionBlocks.length > 0 && (
         <Flex
@@ -173,10 +190,10 @@ const OfferContent = (props: OfferContentProps) => {
       )}
       {offer.kind.startsWith("voucher") && (
         <Box mt={8} px={4} w="full">
-          <InStoreSection offer={offer} />
+          <InStoreSection offer={offer} disabled={disabled} />
         </Box>
       )}
-      <Flex flexDir="column" px={4}>
+      <Flex flexDir="column" px={4} opacity={disabled ? 0.6 : 1}>
         {itemsTermsOfUse.length > 0 && (
           <HStack spacing={4}>
             <Flex flexDir="column" gap={3} mt={8}>
@@ -256,58 +273,64 @@ const OfferContent = (props: OfferContentProps) => {
         w="full"
       />
       <Box h="200px" w="full" bgColor={offer?.partner.color} />
-      <Flex
-        position="fixed"
-        zIndex={10}
-        alignItems="center"
-        bottom={0}
-        insetX={0}
-        bg="white"
-        borderTopColor="cje-gray.300"
-        borderTopWidth={1}
-        py={4}
-        px={4}
-        gap={4}
-      >
-        <Button
-          w="40%"
-          fontSize={16}
-          borderWidth={1}
-          borderColor={hasCoupon ? "transparent" : "cje-gray.100"}
-          color={hasCoupon ? "white" : "blackLight"}
-          colorScheme={hasCoupon ? "primaryShades" : "inherit"}
-          isLoading={!hasCoupon && isLoadingValidateOffer}
-          onClick={() => {
-            if (hasCoupon) {
-              onOpenBookmarkKeepOfferModal();
-            } else {
-              handleValidateOffer(offer.id, false);
+      {!disabled && (
+        <Flex
+          position="fixed"
+          zIndex={10}
+          alignItems="center"
+          bottom={0}
+          insetX={0}
+          bg="white"
+          borderTopColor="cje-gray.300"
+          borderTopWidth={1}
+          py={4}
+          px={4}
+          gap={4}
+        >
+          <Button
+            w="40%"
+            fontSize={16}
+            borderWidth={1}
+            borderColor={hasCoupon ? "transparent" : "cje-gray.100"}
+            color={hasCoupon ? "white" : "blackLight"}
+            colorScheme={hasCoupon ? "primaryShades" : "inherit"}
+            isLoading={!hasCoupon && isLoadingValidateOffer}
+            onClick={() => {
+              if (hasCoupon) {
+                onOpenBookmarkKeepOfferModal();
+              } else {
+                handleValidateOffer(offer.id, false);
+              }
+            }}
+            leftIcon={
+              <Icon
+                as={hasCoupon ? HiBookmark : HiOutlineBookmark}
+                w={5}
+                h={5}
+              />
             }
-          }}
-          leftIcon={
-            <Icon as={hasCoupon ? HiBookmark : HiOutlineBookmark} w={5} h={5} />
-          }
-        >
-          {hasCoupon ? "Enregistré" : "Enregistrer"}
-        </Button>
-        <Button
-          w="60%"
-          fontSize={16}
-          colorScheme="blackBtn"
-          leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
-          isLoading={isLoadingValidateOffer}
-          onClick={() => {
-            push([
-              "trackEvent",
-              "Inactive",
-              "J'active mon offre - Bas de page",
-            ]);
-            handleValidateOffer(offer.id);
-          }}
-        >
-          Voir mon code
-        </Button>
-      </Flex>
+          >
+            {hasCoupon ? "Enregistré" : "Enregistrer"}
+          </Button>
+          <Button
+            w="60%"
+            fontSize={16}
+            colorScheme="blackBtn"
+            leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
+            isLoading={isLoadingValidateOffer}
+            onClick={() => {
+              push([
+                "trackEvent",
+                "Inactive",
+                "J'active mon offre - Bas de page",
+              ]);
+              handleValidateOffer(offer.id);
+            }}
+          >
+            Voir mon code
+          </Button>
+        </Flex>
+      )}
       <ConfirmModal
         title={"Vous n’en voulez plus ?"}
         labels={{

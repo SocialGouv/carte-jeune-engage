@@ -59,7 +59,8 @@ export default function OfferPage() {
     displayCoupon: boolean = true
   ) => {
     if (!coupon) await mutateAsyncCouponToUser({ offer_id: offerId });
-    if (displayCoupon) setKind("coupon");
+    else if (coupon && coupon.used) return;
+    else if (displayCoupon) setKind("coupon");
   };
 
   const handleBookmarkOfferToUser = async () => {
@@ -154,6 +155,8 @@ export default function OfferPage() {
       </OfferHeaderWrapper>
     );
 
+  console.log(coupon);
+
   return (
     <OfferHeaderWrapper
       kind={kind}
@@ -178,6 +181,7 @@ export default function OfferPage() {
                   offer={offer}
                   variant="minimal"
                   handleValidateOffer={handleValidateOffer}
+                  disabled={(coupon && coupon.used) || false}
                 />
               </motion.div>
             ) : (

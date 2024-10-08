@@ -25,7 +25,6 @@ export const couponRouter = createTRPCRouter({
             {
               ...payloadWhereOfferIsValid("offer"),
             },
-            { used: { equals: false } },
           ],
         },
       });
