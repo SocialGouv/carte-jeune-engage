@@ -139,7 +139,6 @@ export default function OfferPage() {
     const { offerKind } = router.query;
     if (offerKind === "coupon" && router.isReady && coupon) {
       setKind("coupon");
-      router.replace(`/dashboard/offer/${id}`);
     }
   }, [router.isReady, isLoadingCoupon]);
 

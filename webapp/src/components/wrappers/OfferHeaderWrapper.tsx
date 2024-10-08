@@ -38,6 +38,8 @@ const OfferHeaderWrapper = ({
 }: OfferHeaderWrapperProps) => {
   const router = useRouter();
 
+  const { offerKind } = router.query;
+
   const theme = useTheme();
   const backgroundColor = partnerColor
     ? kind === "coupon"
@@ -46,7 +48,7 @@ const OfferHeaderWrapper = ({
     : theme.colors.white;
 
   const handleBackButton = () => {
-    if (kind === "coupon") {
+    if (kind === "coupon" && offerKind !== "coupon") {
       setKind("offer");
     } else {
       // push(["trackEvent", "Retour"]);
