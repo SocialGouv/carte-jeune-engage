@@ -43,6 +43,15 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     }
   };
 
+  const closeFeedbackModal = () => {
+    confirmCouponUsed();
+    window.open(
+      "https://surveys.hotjar.com/8d25a606-6e24-4437-97be-75fcdb4c3e35",
+      "_blank"
+    );
+    onCloseCouponUsedFeedbackModal();
+  };
+
   if (!showUsedBox) return;
 
   return (
@@ -97,13 +106,8 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
       />
       <CouponUsedFeedbackModal
         isOpen={isOpenCouponUsedFeedbackModal}
-        onClose={() => {
-          confirmCouponUsed();
-          onCloseCouponUsedFeedbackModal();
-        }}
-        onConfirm={() => {
-          confirmCouponUsed();
-        }}
+        onClose={closeFeedbackModal}
+        onConfirm={closeFeedbackModal}
       />
     </Flex>
   );

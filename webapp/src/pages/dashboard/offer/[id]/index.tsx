@@ -77,6 +77,7 @@ export default function OfferPage() {
 
   const onCouponUsed = () => {
     refetchCoupon();
+    setKind("offer");
   };
 
   const {
