@@ -46,7 +46,7 @@ const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
               Oui! Parfait
             </Button>
             <Button
-              colorScheme="dangerShades"
+              colorScheme="errorShades"
               fontSize={"sm"}
               mx={16}
               fontWeight={800}

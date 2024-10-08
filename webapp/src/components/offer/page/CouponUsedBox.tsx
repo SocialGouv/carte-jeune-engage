@@ -64,7 +64,7 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
           fontSize="md"
           rounded={"1.25rem"}
           p={3}
-          colorScheme="dangerShades"
+          colorScheme="errorShades"
           flexGrow={1}
           onClick={() => handleCouponUsed(false)}
         >

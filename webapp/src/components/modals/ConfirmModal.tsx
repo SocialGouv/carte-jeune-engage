@@ -71,7 +71,7 @@ const ConfirmModal = (props: ConfirmModalProps) => {
             <Button
               fontWeight={800}
               mx={8}
-              colorScheme={danger ? "dangerShades" : "blackBtn"}
+              colorScheme={danger ? "errorShades" : "blackBtn"}
               mt={8}
               onClick={() => {
                 onConfirm();

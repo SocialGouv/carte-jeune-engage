@@ -164,7 +164,7 @@ export const theme = extendTheme({
       "900": "#154685",
       "950": "#122b51",
     },
-    dangerShades: {
+    errorShades: {
       "50": "#fef3f1",
       "100": "#fde2de",
       "200": "#fbc9c2",
