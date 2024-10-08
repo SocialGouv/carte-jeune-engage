@@ -599,7 +599,7 @@ export default function Signup() {
   if (finishedOnBoarding)
     return (
       <Box h="full" bgColor="primary">
-        <Center h="full" px={8}>
+        <Center h="full">
           <Flex
             flexDir="column"
             alignItems="center"

@@ -4,44 +4,32 @@ import {
   Center,
   Divider,
   Flex,
-  HStack,
   Heading,
   Icon,
   Image,
-  Input,
   Link,
   Text,
-  chakra,
-  shouldForwardProp,
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { setCookie } from "cookies-next";
-import { isValidMotionProp, motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type SubmitHandler, ErrorOption } from "react-hook-form";
-import {
-  HiChevronLeft,
-  HiInformationCircle,
-  HiMiniChevronRight,
-} from "react-icons/hi2";
+import { HiInformationCircle, HiMiniChevronRight } from "react-icons/hi2";
 import BigLoader from "~/components/BigLoader";
 import { api } from "~/utils/api";
-import { addSpaceToTwoCharacters } from "~/utils/tools";
 import FAQSectionAccordionItem from "~/components/landing/FAQSectionAccordionItem";
 import BaseModal from "~/components/modals/BaseModal";
 import PhoneNumberCTA, { LoginForm } from "~/components/landing/PhoneNumberCTA";
 import QRCodeWrapper from "~/components/landing/QRCode";
 import NotEligibleForm from "~/components/landing/NotEligibleForm";
 import { useAuth } from "~/providers/Auth";
-import OtpInput from "react-otp-input";
 import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedImages";
 import NextLink from "next/link";
 import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
-import OtpGenerated from "~/components/landing/OtpGenerated";
 import LoginWrapper from "~/components/wrappers/LoginWrapper";
 import ConditionalLink from "~/components/ConditionalLink";
+import LoginOtpContent from "~/components/landing/LoginOtpContent";
 
 const defaultTimeToResend = 30;
 
@@ -158,9 +146,7 @@ export default function Home() {
     onClose: onCloseDesktopLoginError,
   } = useDisclosure();
 
-  const [hasOtpError, setHasOtpError] = useState(false);
-  const [hasOtpExpired, setHasOtpExpired] = useState(false);
-  const [forceLoader, setForceLoader] = useState(false);
+  const [otpKind, setOtpKind] = useState<"otp" | "email">();
 
   const [timeToResend, setTimeToResend] = useState(defaultTimeToResend);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
@@ -193,48 +179,24 @@ export default function Home() {
 
   const { mutate: generateOtp, isLoading: isLoadingOtp } =
     api.user.generateOTP.useMutation({
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsOtpGenerated(true);
+        setOtpKind(data.kind);
         resetTimer();
       },
       onError: async ({ data }) => {
         if (data?.httpStatus === 401) {
-          onOpenDesktopLoginError();
-          // setPhoneNumberError({
-          //   name: currentPhoneNumberKey,
-          //   error: {
-          //     type: "conflict",
-          //     message:
-          //       "Votre numéro de téléphone n'est pas autorisé à accéder à l'application",
-          //   },
-          // });
+          setPhoneNumberError({
+            type: "conflict",
+            message:
+              "Votre numéro de téléphone n'est pas autorisé à accéder à l'application",
+          });
         } else {
           setPhoneNumberError({
             type: "internal",
             message: "Erreur coté serveur, veuillez contacter le support",
           });
         }
-      },
-    });
-
-  const { mutate: loginUser, isLoading: isLoadingLogin } =
-    api.user.loginUser.useMutation({
-      onSuccess: async ({ data }) => {
-        setCookie(
-          process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt",
-          data.token || "",
-          { expires: new Date((data.exp as number) * 1000) }
-        );
-        router.reload();
-        router.push("/dashboard");
-      },
-      onError: async ({ data }) => {
-        if (data?.httpStatus === 401) {
-          setHasOtpError(true);
-        } else if (data?.httpStatus === 408) {
-          setHasOtpExpired(true);
-        }
-        setForceLoader(false);
       },
     });
 
@@ -279,14 +241,6 @@ export default function Home() {
     generateOtp({ phone_number: values.phone_number });
   };
 
-  const handleLoginUser = async (otp: string) => {
-    setForceLoader(true);
-    loginUser({
-      phone_number: currentPhoneNumber,
-      otp,
-    });
-  };
-
   useEffect(() => {
     if (!isOtpGenerated) return;
     const id = setInterval(() => {
@@ -296,30 +250,25 @@ export default function Home() {
     return () => clearInterval(id);
   }, [isOtpGenerated]);
 
-  if (isLoadingLogin || forceLoader || isLoadingLogoPartners || isLoadingFAQ)
-    return <BigLoader />;
+  if (isLoadingLogoPartners || isLoadingFAQ) return <BigLoader />;
 
-  if (isOtpGenerated) {
+  if (isOtpGenerated && otpKind)
     return (
-      <LoginWrapper onBack={() => setIsOtpGenerated(false)}>
-        <Box mt={8}>
-          <OtpGenerated
+      <LoginWrapper
+        onBack={() => {
+          setIsOtpGenerated(false);
+          setOtpKind(undefined);
+        }}
+      >
+        <Box mt={otpKind === "otp" ? 8 : 12}>
+          <LoginOtpContent
+            otpKind={otpKind}
             currentPhoneNumber={currentPhoneNumber}
-            setCurrentPhoneNumber={setCurrentPhoneNumber}
-            otp={otp}
-            setOtp={setOtp}
-            hasOtpError={hasOtpError}
-            setHasOtpError={setHasOtpError}
-            hasOtpExpired={hasOtpExpired}
-            setHasOtpExpired={setHasOtpExpired}
-            timeToResend={timeToResend}
             handleGenerateOtp={handleGenerateOtp}
-            handleLoginUser={handleLoginUser}
           />
         </Box>
       </LoginWrapper>
     );
-  }
 
   return (
     <>

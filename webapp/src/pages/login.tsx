@@ -11,8 +11,7 @@ import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ErrorOption, SubmitHandler } from "react-hook-form";
-import BigLoader from "~/components/BigLoader";
-import OtpGenerated from "~/components/landing/OtpGenerated";
+import LoginOtpContent from "~/components/landing/LoginOtpContent";
 import PhoneNumberCTA, { LoginForm } from "~/components/landing/PhoneNumberCTA";
 import LoginWrapper from "~/components/wrappers/LoginWrapper";
 import { useAuth } from "~/providers/Auth";
@@ -27,38 +26,11 @@ const conditionsItems = [
 ];
 
 export default function HomeLogin() {
-  const router = useRouter();
   const { isOtpGenerated, setIsOtpGenerated } = useAuth();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [otpKind, setOtpKind] = useState<"otp" | "email">();
   const [phoneNumberError, setPhoneNumberError] = useState<ErrorOption>();
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState<string>("");
-
-  const [otp, setOtp] = useState<string>("");
-  const [hasOtpError, setHasOtpError] = useState<boolean>(false);
-  const [hasOtpExpired, setHasOtpExpired] = useState<boolean>(false);
-
-  const { mutate: loginUser, isLoading: isLoadingLogin } =
-    api.user.loginUser.useMutation({
-      onSuccess: async ({ data }) => {
-        setCookie(
-          process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt",
-          data.token || "",
-          { expires: new Date((data.exp as number) * 1000) }
-        );
-        router.reload();
-        router.push("/dashboard");
-      },
-      onError: async ({ data }) => {
-        if (data?.httpStatus === 401) {
-          setHasOtpError(true);
-        } else if (data?.httpStatus === 408) {
-          setHasOtpExpired(true);
-        }
-        setIsLoading(false);
-      },
-    });
 
   const { mutate: generateOtp, isLoading: isLoadingOtp } =
     api.user.generateOTP.useMutation({
@@ -68,6 +40,11 @@ export default function HomeLogin() {
       },
       onError: async ({ data }) => {
         if (data?.httpStatus === 401) {
+          setPhoneNumberError({
+            type: "conflict",
+            message:
+              "Votre numéro de téléphone n'est pas autorisé à accéder à l'application",
+          });
         } else {
           setPhoneNumberError({
             type: "internal",
@@ -82,60 +59,20 @@ export default function HomeLogin() {
     generateOtp({ phone_number: values.phone_number });
   };
 
-  const handleLoginUser = async (otp: string) => {
-    setIsLoading(true);
-    loginUser({
-      phone_number: currentPhoneNumber,
-      otp,
-    });
-  };
-
-  if (isLoading || isLoadingLogin) return <BigLoader />;
-
-  if (isOtpGenerated)
+  if (isOtpGenerated && otpKind)
     return (
-      <LoginWrapper>
-        <Box mt={8}>
-          {otpKind === "otp" ? (
-            <OtpGenerated
-              currentPhoneNumber={currentPhoneNumber}
-              setCurrentPhoneNumber={setCurrentPhoneNumber}
-              otp={otp}
-              setOtp={setOtp}
-              hasOtpError={hasOtpError}
-              setHasOtpError={setHasOtpError}
-              hasOtpExpired={hasOtpExpired}
-              setHasOtpExpired={setHasOtpExpired}
-              timeToResend={30}
-              handleGenerateOtp={handleGenerateOtp}
-              handleLoginUser={handleLoginUser}
-            />
-          ) : (
-            <Box>
-              <Heading
-                size="lg"
-                fontWeight={800}
-                textAlign="center"
-                px={6}
-                mt={8}
-              >
-                Tout est dans notre dernier mail
-              </Heading>
-              <UnorderedList>
-                <ListItem>
-                  On vous a envoyé un mail à cette adresse :
-                  <br />
-                  <strong>{currentPhoneNumber}</strong>
-                </ListItem>
-                <ListItem>Cliquez sur le lien dans le mail</ListItem>
-                <ListItem>Et voilà vous serez connecté !</ListItem>
-              </UnorderedList>
-              <Text color="disabled" fontSize={14}>
-                Pensez à vérifier vos indésirables et spams si vous ne trouvez
-                pas le mail
-              </Text>
-            </Box>
-          )}
+      <LoginWrapper
+        onBack={() => {
+          setIsOtpGenerated(false);
+          setOtpKind(undefined);
+        }}
+      >
+        <Box mt={otpKind === "otp" ? 8 : 12}>
+          <LoginOtpContent
+            otpKind={otpKind}
+            currentPhoneNumber={currentPhoneNumber}
+            handleGenerateOtp={handleGenerateOtp}
+          />
         </Box>
       </LoginWrapper>
     );

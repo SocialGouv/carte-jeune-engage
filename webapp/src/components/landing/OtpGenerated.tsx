@@ -7,13 +7,14 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { HiChevronLeft } from "react-icons/hi2";
 import OtpInput from "react-otp-input";
 import { addSpaceToTwoCharacters } from "~/utils/tools";
-import { useAuth } from "~/providers/Auth";
+
+const defaultTimeToResend = 30;
 
 type OtpGeneratedProps = {
-  setCurrentPhoneNumber: (value: string) => void;
   currentPhoneNumber: string;
   otp: string;
   setOtp: (value: string) => void;
@@ -21,27 +22,36 @@ type OtpGeneratedProps = {
   setHasOtpError: (value: boolean) => void;
   hasOtpExpired: boolean;
   setHasOtpExpired: (value: boolean) => void;
-  timeToResend: number;
   handleGenerateOtp: (data: { phone_number: string }) => void;
   handleLoginUser: (otp: string) => void;
 };
 
 const OtpGenerated = (props: OtpGeneratedProps) => {
-  const { setIsOtpGenerated } = useAuth();
-
   const {
     currentPhoneNumber,
-    setCurrentPhoneNumber,
     otp,
     setOtp,
     hasOtpError,
     setHasOtpError,
     hasOtpExpired,
     setHasOtpExpired,
-    timeToResend,
     handleGenerateOtp,
     handleLoginUser,
   } = props;
+
+  const [timeToResend, setTimeToResend] = useState(defaultTimeToResend);
+
+  const handleResendOtp = () => {
+    handleGenerateOtp({ phone_number: currentPhoneNumber });
+    setTimeToResend(defaultTimeToResend);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (timeToResend > 0) setTimeToResend(timeToResend - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timeToResend]);
 
   return (
     <>
@@ -116,8 +126,7 @@ const OtpGenerated = (props: OtpGeneratedProps) => {
           fontWeight="medium"
           color={timeToResend <= 0 ? "black" : "gray.500"}
           onClick={() => {
-            if (timeToResend <= 0)
-              handleGenerateOtp({ phone_number: currentPhoneNumber });
+            if (timeToResend <= 0) handleResendOtp();
           }}
         >
           Me renvoyer un code par SMS{" "}
