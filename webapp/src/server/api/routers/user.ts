@@ -9,6 +9,7 @@ import {
   publicProcedure,
   userProtectedProcedure,
 } from "~/server/api/trpc";
+import { getHtmlLoginByEmail } from "~/utils/emailHtml";
 import {
   generateRandomPassword,
   payloadOrPhoneNumberCheck,
@@ -18,7 +19,7 @@ export interface UserIncluded extends User {
   image: Media;
 }
 
-const changeUserPassword = async (
+export const changeUserPassword = async (
   payload: Payload,
   id: number,
   password: string,
@@ -342,6 +343,11 @@ export const userRouter = createTRPCRouter({
         phone_number: z.string(),
       })
     )
+    .output(
+      z.object({
+        kind: z.enum(["otp", "email"]),
+      })
+    )
     .mutation(async ({ ctx, input: userInput }) => {
       const { phone_number } = userInput;
 
@@ -371,11 +377,37 @@ export const userRouter = createTRPCRouter({
           });
         } else {
           await generateAndSendOTP(ctx.payload, phone_number, true);
-          return { data: "ok" };
+          return { kind: "otp" };
         }
       } else {
-        // To do : send an email with a link to connect
-        return { data: "ok" };
+        const currentUser = users.docs[0];
+
+        if (currentUser.userEmail) {
+          const token = generateRandomPassword(16);
+
+          await ctx.payload.create({
+            collection: "email_auth_tokens",
+            data: {
+              user: currentUser.id,
+              token: token,
+              expiration: new Date(
+                Date.now() + 1000 * 60 * 60 * 24
+              ).toISOString(),
+            },
+          });
+
+          ctx.payload.sendEmail({
+            from: process.env.SMTP_FROM_ADDRESS,
+            to: currentUser.userEmail,
+            subject: 'Carte "jeune engagé"',
+            html: getHtmlLoginByEmail(currentUser, token),
+          });
+
+          return { kind: "email" };
+        } else {
+          await generateAndSendOTP(ctx.payload, phone_number, false);
+          return { kind: "otp" };
+        }
       }
     }),
 

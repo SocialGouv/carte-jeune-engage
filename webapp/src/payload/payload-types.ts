@@ -21,6 +21,7 @@ export interface Config {
     notifications: Notification;
     tags: Tag;
     search_requests: SearchRequest;
+    email_auth_tokens: EmailAuthToken;
     "payload-preferences": PayloadPreference;
     "payload-migrations": PayloadMigration;
   };
@@ -295,6 +296,18 @@ export interface SearchRequest {
   id: number;
   name: string;
   count: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email_auth_tokens".
+ */
+export interface EmailAuthToken {
+  id: number;
+  user: number | User;
+  token: string;
+  expiration?: string | null;
   updatedAt: string;
   createdAt: string;
 }

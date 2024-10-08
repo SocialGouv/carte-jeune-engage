@@ -4,6 +4,7 @@ import {
   Flex,
   Heading,
   ListItem,
+  Text,
   UnorderedList,
 } from "@chakra-ui/react";
 import { setCookie } from "cookies-next";
@@ -30,6 +31,7 @@ export default function HomeLogin() {
   const { isOtpGenerated, setIsOtpGenerated } = useAuth();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [otpKind, setOtpKind] = useState<"otp" | "email">();
   const [phoneNumberError, setPhoneNumberError] = useState<ErrorOption>();
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState<string>("");
 
@@ -60,8 +62,9 @@ export default function HomeLogin() {
 
   const { mutate: generateOtp, isLoading: isLoadingOtp } =
     api.user.generateOTP.useMutation({
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsOtpGenerated(true);
+        setOtpKind(data.kind);
       },
       onError: async ({ data }) => {
         if (data?.httpStatus === 401) {
@@ -93,19 +96,46 @@ export default function HomeLogin() {
     return (
       <LoginWrapper>
         <Box mt={8}>
-          <OtpGenerated
-            currentPhoneNumber={currentPhoneNumber}
-            setCurrentPhoneNumber={setCurrentPhoneNumber}
-            otp={otp}
-            setOtp={setOtp}
-            hasOtpError={hasOtpError}
-            setHasOtpError={setHasOtpError}
-            hasOtpExpired={hasOtpExpired}
-            setHasOtpExpired={setHasOtpExpired}
-            timeToResend={30}
-            handleGenerateOtp={handleGenerateOtp}
-            handleLoginUser={handleLoginUser}
-          />
+          {otpKind === "otp" ? (
+            <OtpGenerated
+              currentPhoneNumber={currentPhoneNumber}
+              setCurrentPhoneNumber={setCurrentPhoneNumber}
+              otp={otp}
+              setOtp={setOtp}
+              hasOtpError={hasOtpError}
+              setHasOtpError={setHasOtpError}
+              hasOtpExpired={hasOtpExpired}
+              setHasOtpExpired={setHasOtpExpired}
+              timeToResend={30}
+              handleGenerateOtp={handleGenerateOtp}
+              handleLoginUser={handleLoginUser}
+            />
+          ) : (
+            <Box>
+              <Heading
+                size="lg"
+                fontWeight={800}
+                textAlign="center"
+                px={6}
+                mt={8}
+              >
+                Tout est dans notre dernier mail
+              </Heading>
+              <UnorderedList>
+                <ListItem>
+                  On vous a envoyé un mail à cette adresse :
+                  <br />
+                  <strong>{currentPhoneNumber}</strong>
+                </ListItem>
+                <ListItem>Cliquez sur le lien dans le mail</ListItem>
+                <ListItem>Et voilà vous serez connecté !</ListItem>
+              </UnorderedList>
+              <Text color="disabled" fontSize={14}>
+                Pensez à vérifier vos indésirables et spams si vous ne trouvez
+                pas le mail
+              </Text>
+            </Box>
+          )}
         </Box>
       </LoginWrapper>
     );
