@@ -37,7 +37,7 @@ export const Offers: CollectionConfig = {
       type: "relationship",
       label: "Catégorie",
       relationTo: "categories",
-      hasMany: false,
+      hasMany: true,
       required: true,
     },
     {

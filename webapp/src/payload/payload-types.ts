@@ -189,7 +189,7 @@ export interface Offer {
   title: string;
   subtitle?: string | null;
   partner: number | Partner;
-  category: number | Category;
+  category: (number | Category)[];
   tags?: (number | Tag)[] | null;
   validityFrom?: string | null;
   validityTo: string;

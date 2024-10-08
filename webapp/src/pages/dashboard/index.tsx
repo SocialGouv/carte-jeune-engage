@@ -57,10 +57,20 @@ export default function Dashboard() {
 
   const formatedCategories = [] as CategoryWithOffers[];
   (categories || []).forEach((category) => {
-    if (allOffers.some((offer) => offer.category.id === category.id)) {
+    if (
+      allOffers.some((offer) =>
+        offer.category
+          .map((offerCategory) => offerCategory.id)
+          .includes(category.id)
+      )
+    ) {
       formatedCategories.push({
         ...category,
-        offers: allOffers.filter((offer) => offer.category.id === category.id),
+        offers: allOffers.filter((offer) =>
+          offer.category
+            .map((offerCategory) => offerCategory.id)
+            .includes(category.id)
+        ),
       });
     }
   });
