@@ -391,9 +391,7 @@ export const userRouter = createTRPCRouter({
             data: {
               user: currentUser.id,
               token: token,
-              expiration: new Date(
-                Date.now() + 1000 * 60 * 60 * 24
-              ).toISOString(),
+              expiration: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
             },
           });
 
