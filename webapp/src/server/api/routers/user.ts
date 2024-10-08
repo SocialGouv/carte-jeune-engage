@@ -340,11 +340,10 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         phone_number: z.string(),
-        is_desktop: z.boolean().optional(),
       })
     )
     .mutation(async ({ ctx, input: userInput }) => {
-      const { phone_number, is_desktop } = userInput;
+      const { phone_number } = userInput;
 
       const users = await ctx.payload.find({
         collection: "users",
@@ -371,13 +370,11 @@ export const userRouter = createTRPCRouter({
             message: "Phone number does not exists on the database",
           });
         } else {
-          if (!is_desktop)
-            await generateAndSendOTP(ctx.payload, phone_number, true);
+          await generateAndSendOTP(ctx.payload, phone_number, true);
           return { data: "ok" };
         }
       } else {
-        if (!is_desktop)
-          await generateAndSendOTP(ctx.payload, phone_number, false);
+        // To do : send an email with a link to connect
         return { data: "ok" };
       }
     }),
