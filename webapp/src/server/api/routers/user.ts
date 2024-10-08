@@ -400,7 +400,7 @@ export const userRouter = createTRPCRouter({
           ctx.payload.sendEmail({
             from: process.env.SMTP_FROM_ADDRESS,
             to: currentUser.userEmail,
-            subject: 'Carte "jeune engagé"',
+            subject: 'Connexion à "Carte jeune engagé"',
             html: getHtmlLoginByEmail(currentUser, token),
           });
 
@@ -503,14 +503,21 @@ export const userRouter = createTRPCRouter({
 
       if (!user) {
         throw new TRPCError({
-          code: "BAD_REQUEST",
+          code: "NOT_FOUND",
           message: "Unknown user",
+        });
+      }
+
+      if (!user.userEmail) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User email not set",
         });
       }
 
       return {
         data: {
-          email: maskEmail(user.email),
+          email: maskEmail(user.userEmail),
         },
       };
     }),
