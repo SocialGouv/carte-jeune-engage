@@ -14,9 +14,19 @@ export function getExpiryObject(
   differenceInDays: number;
   expiryText: string;
 } {
+  const expiryDateObj = new Date(expiryDate);
+  const isYearEnd =
+    expiryDateObj.getMonth() === 11 && expiryDateObj.getDate() === 31;
+
+  if (isYearEnd) {
+    return {
+      differenceInDays: 365,
+      expiryText: "Toute l'année",
+    };
+  }
+
   const differenceInDays = Math.floor(
-    (new Date(expiryDate).setHours(0, 0, 0, 0) -
-      new Date().setHours(0, 0, 0, 0)) /
+    (expiryDateObj.setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) /
       (1000 * 3600 * 24)
   );
 
