@@ -33,6 +33,8 @@ spec:
                   value: preproduction
                 - name: DATABASE_URL
                   value: "$(DATABASE_URL)"
+                - name: TZ
+                  value: Europe/Paris
               envFrom:
                 - configMapRef:
                     name: app-configmap
@@ -42,10 +44,3 @@ spec:
                     name: app-sealed-secret
                 - secretRef:
                     name: carte-jeune-engage-dev-app-access-key
-              volumeMounts:
-                - name: tz-paris
-                  mountPath: /etc/localtime
-          volumes:
-            - name: tz-paris
-              hostPath:
-                path: /usr/share/zoneinfo/Europe/Paris
