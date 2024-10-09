@@ -26,6 +26,7 @@ import { Permissions } from "./collections/Permission";
 import { Notifications } from "./collections/Notification";
 import { Tags } from "./collections/Tag";
 import { SearchRequests } from "./collections/SearchRequest";
+import { EmailAuthTokens } from "./collections/EmailAuthToken";
 
 const adapter = s3Adapter({
   config: {
@@ -80,6 +81,7 @@ export default buildConfig({
     Notifications,
     Tags,
     SearchRequests,
+    EmailAuthTokens,
   ],
   localization: {
     locales: ["fr"],

@@ -3,17 +3,19 @@ import { useRouter } from "next/router";
 import { TbChevronLeft } from "react-icons/tb";
 
 type BackButtonProps = {
+  variant?: "ghost";
   onClick?: () => void;
 };
 
 const BackButton = (props: BackButtonProps) => {
   const router = useRouter();
-  const { onClick } = props;
+  const { variant, onClick } = props;
 
   return (
     <IconButton
       alignSelf="start"
-      shadow="default"
+      shadow={variant === "ghost" ? "none" : "default"}
+      variant={variant ? variant : "default"}
       flexShrink={0}
       aria-label="Retour"
       colorScheme="whiteBtn"

@@ -170,3 +170,28 @@ export function paginateArray<T>(array: T[], itemsPerPage: number): T[][] {
     return acc;
   }, []);
 }
+
+export function maskEmail(email: string) {
+  if (!email || !email.includes("@")) {
+    return email;
+  }
+
+  const [localPart, domain] = email.split("@");
+  const [domainName, ...topLevelDomains] = domain.split(".");
+  const tld = `.${topLevelDomains.join(".")}`;
+
+  let maskedLocalPart;
+  if (localPart.length <= 2) {
+    maskedLocalPart = localPart;
+  } else {
+    maskedLocalPart =
+      localPart.charAt(0) +
+      "*".repeat(Math.max(0, localPart.length - 2)) +
+      localPart.charAt(localPart.length - 1);
+  }
+
+  const maskedDomainName =
+    domainName.slice(0, 2) + "*".repeat(Math.max(0, domainName.length - 2));
+
+  return `${maskedLocalPart}@${maskedDomainName}${tld}`;
+}

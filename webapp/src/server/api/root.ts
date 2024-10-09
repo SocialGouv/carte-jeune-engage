@@ -10,6 +10,7 @@ import { savingRouter } from "./routers/saving";
 import { permissionRouter } from "./routers/permission";
 import { tagRouter } from "./routers/tag";
 import { searchRequestRouter } from "./routers/searchRequest";
+import { emailAuthTokenRouter } from "./routers/emailAuthToken";
 
 /**
  * This is the primary router for your server.
@@ -27,6 +28,7 @@ export const appRouter = createTRPCRouter({
   permission: permissionRouter,
   tag: tagRouter,
   searchRequest: searchRequestRouter,
+  emailAuthToken: emailAuthTokenRouter,
 });
 
 // export type definition of API

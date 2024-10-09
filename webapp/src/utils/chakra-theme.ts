@@ -249,6 +249,7 @@ export const theme = extendTheme({
     xss: "0.7rem",
   },
   space: {
+    "1.25": "0.3125rem",
     "5.5": "1.375rem",
     18: "4.5rem",
   },

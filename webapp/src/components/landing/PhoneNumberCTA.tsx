@@ -17,26 +17,13 @@ export type LoginForm = {
   phone_number: string;
 };
 
-export type ComponentPhoneNumberKeys =
-  | "phone-number-cta"
-  | "phone-number-footer";
-
 const PhoneNumberCTA = ({
   onSubmit,
-  currentKey,
-  setCurrentPhoneNumberKey,
   error,
   isLoadingOtp,
 }: {
   onSubmit: SubmitHandler<LoginForm>;
-  currentKey: ComponentPhoneNumberKeys;
-  setCurrentPhoneNumberKey: React.Dispatch<
-    React.SetStateAction<ComponentPhoneNumberKeys>
-  >;
-  error: {
-    name: ComponentPhoneNumberKeys;
-    error: ErrorOption;
-  } | null;
+  error?: ErrorOption;
   isLoadingOtp: boolean;
 }) => {
   const {
@@ -51,16 +38,15 @@ const PhoneNumberCTA = ({
 
   const phone_number = watch("phone_number");
 
-  if (currentKey === error?.name && errors.phone_number === undefined) {
+  if (error && errors.phone_number === undefined) {
     setError("phone_number", {
-      type: error.error.type,
-      message: error.error.message,
+      type: error.type,
+      message: error.message,
     });
   }
 
   return (
     <Flex
-      key={currentKey}
       as="form"
       flexDir={{ base: "column", lg: "row" }}
       alignItems="center"
@@ -68,15 +54,13 @@ const PhoneNumberCTA = ({
       p={2}
       onSubmit={(e: any) => {
         e.preventDefault();
-        setCurrentPhoneNumberKey(currentKey);
         handleSubmit(onSubmit)();
       }}
     >
-      <FormControl mt={4}>
+      <FormControl>
         <FormInput
           wrapperProps={{ w: "full" }}
           inputProps={{
-            className: currentKey,
             bgColor: { base: "white", lg: "transparent" },
             fontSize: { base: "md", lg: "xl" },
           }}
@@ -113,11 +97,7 @@ const PhoneNumberCTA = ({
         fontSize={{ base: "md", lg: "2xl" }}
         isLoading={isLoadingOtp}
         onClick={() => {
-          push([
-            "trackEvent",
-            "Landing",
-            `Vérifier mon éligibilité ${currentKey === "phone-number-footer" ? "2" : ""}`,
-          ]);
+          push(["trackEvent", "Landing", `Vérifier mon éligibilité`]);
         }}
         rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
       >

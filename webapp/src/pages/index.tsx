@@ -4,69 +4,53 @@ import {
   Center,
   Divider,
   Flex,
-  HStack,
   Heading,
   Icon,
   Image,
-  Input,
   Link,
   Text,
-  chakra,
-  shouldForwardProp,
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { setCookie } from "cookies-next";
-import { isValidMotionProp, motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type SubmitHandler, ErrorOption } from "react-hook-form";
-import {
-  HiChevronLeft,
-  HiInformationCircle,
-  HiMiniChevronRight,
-} from "react-icons/hi2";
+import { HiInformationCircle, HiMiniChevronRight } from "react-icons/hi2";
 import BigLoader from "~/components/BigLoader";
 import { api } from "~/utils/api";
-import { addSpaceToTwoCharacters } from "~/utils/tools";
 import FAQSectionAccordionItem from "~/components/landing/FAQSectionAccordionItem";
 import BaseModal from "~/components/modals/BaseModal";
-import PhoneNumberCTA, {
-  ComponentPhoneNumberKeys,
-  LoginForm,
-} from "~/components/landing/PhoneNumberCTA";
+import PhoneNumberCTA, { LoginForm } from "~/components/landing/PhoneNumberCTA";
 import QRCodeWrapper from "~/components/landing/QRCode";
 import NotEligibleForm from "~/components/landing/NotEligibleForm";
 import { useAuth } from "~/providers/Auth";
-import OtpInput from "react-otp-input";
 import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedImages";
 import NextLink from "next/link";
 import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
+import LoginWrapper from "~/components/wrappers/LoginWrapper";
+import ConditionalLink from "~/components/ConditionalLink";
+import LoginOtpContent from "~/components/landing/LoginOtpContent";
 
 const defaultTimeToResend = 30;
 
-const referentItems: { name: string; image: string; link: string }[] = [
+const referentItems: { name: string; image: string }[] = [
   {
     name: "Je suis à France Travail",
     image: "/images/referent/franceTravail.png",
-    link: "#",
   },
   {
     name: "Je suis à la Mission locale",
     image: "/images/referent/missionLocale.png",
-    link: "#",
   },
   {
     name: "Je suis en Service civique",
     image: "/images/referent/serviceCivique.png",
-    link: "#",
   },
   {
     name: "Je suis en école de la 2nde chance",
     image: "/images/referent/ecole2ndeChance.png",
-    link: "#",
   },
-  { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png", link: "#" },
+  { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png" },
 ];
 
 const offersList = [
@@ -102,6 +86,52 @@ const offersList = [
   },
 ];
 
+const partnersList = [
+  {
+    name: "Auchan",
+    img: "/images/seeds/partners/auchan.svg",
+    promo_label: "-110€",
+  },
+  {
+    name: "Flixbus",
+    img: "/images/seeds/partners/flixbus.svg",
+    promo_label: "-10%",
+  },
+  {
+    name: "Cora",
+    img: "/images/seeds/partners/cora.svg",
+    promo_label: "Gratuit",
+  },
+];
+
+const forWhoList = [
+  {
+    img: "/images/referent/serviceCivique.png",
+    name: "France travail",
+    rotationAngle: -4,
+  },
+  {
+    img: "/images/referent/epide.png",
+    name: "France travail",
+    rotationAngle: -3,
+  },
+  {
+    img: "/images/referent/missionLocale.png",
+    name: "France travail",
+    rotationAngle: 6.5,
+  },
+  {
+    img: "/images/referent/franceTravail.png",
+    name: "France travail",
+    rotationAngle: -1,
+  },
+  {
+    img: "/images/referent/ecole2ndeChance.png",
+    name: "France travail",
+    rotationAngle: 4,
+  },
+];
+
 export default function Home() {
   const router = useRouter();
 
@@ -116,21 +146,14 @@ export default function Home() {
     onClose: onCloseDesktopLoginError,
   } = useDisclosure();
 
-  const [hasOtpError, setHasOtpError] = useState(false);
-  const [hasOtpExpired, setHasOtpExpired] = useState(false);
-  const [forceLoader, setForceLoader] = useState(false);
+  const [otpKind, setOtpKind] = useState<"otp" | "email">();
 
   const [timeToResend, setTimeToResend] = useState(defaultTimeToResend);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const [faqCurrentIndex, setFaqCurrentIndex] = useState<number | null>(null);
 
-  const [currentPhoneNumberKey, setCurrentPhoneNumberKey] =
-    useState<ComponentPhoneNumberKeys>("phone-number-cta");
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState<string>("");
-  const [phoneNumberError, setPhoneNumberError] = useState<{
-    name: ComponentPhoneNumberKeys;
-    error: ErrorOption;
-  } | null>(null);
+  const [phoneNumberError, setPhoneNumberError] = useState<ErrorOption>();
 
   const firstSectionRef = useRef<HTMLDivElement>(null);
   const parentPartnersRef = useRef<HTMLDivElement>(null);
@@ -156,51 +179,24 @@ export default function Home() {
 
   const { mutate: generateOtp, isLoading: isLoadingOtp } =
     api.user.generateOTP.useMutation({
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsOtpGenerated(true);
+        setOtpKind(data.kind);
         resetTimer();
       },
       onError: async ({ data }) => {
         if (data?.httpStatus === 401) {
-          onOpenDesktopLoginError();
-          // setPhoneNumberError({
-          //   name: currentPhoneNumberKey,
-          //   error: {
-          //     type: "conflict",
-          //     message:
-          //       "Votre numéro de téléphone n'est pas autorisé à accéder à l'application",
-          //   },
-          // });
+          setPhoneNumberError({
+            type: "conflict",
+            message:
+              "Votre numéro de téléphone n'est pas autorisé à accéder à l'application",
+          });
         } else {
           setPhoneNumberError({
-            name: currentPhoneNumberKey,
-            error: {
-              type: "internal",
-              message: "Erreur coté serveur, veuillez contacter le support",
-            },
+            type: "internal",
+            message: "Erreur coté serveur, veuillez contacter le support",
           });
         }
-      },
-    });
-
-  const { mutate: loginUser, isLoading: isLoadingLogin } =
-    api.user.loginUser.useMutation({
-      onSuccess: async ({ data }) => {
-        setCookie(
-          process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt",
-          data.token || "",
-          { expires: new Date((data.exp as number) * 1000) }
-        );
-        router.reload();
-        router.push("/dashboard");
-      },
-      onError: async ({ data }) => {
-        if (data?.httpStatus === 401) {
-          setHasOtpError(true);
-        } else if (data?.httpStatus === 408) {
-          setHasOtpExpired(true);
-        }
-        setForceLoader(false);
       },
     });
 
@@ -242,15 +238,7 @@ export default function Home() {
 
   const handleGenerateOtp: SubmitHandler<LoginForm> = async (values) => {
     setCurrentPhoneNumber(values.phone_number);
-    generateOtp({ phone_number: values.phone_number, is_desktop: isDesktop });
-  };
-
-  const handleLoginUser = async (otp: string) => {
-    setForceLoader(true);
-    loginUser({
-      phone_number: currentPhoneNumber,
-      otp,
-    });
+    generateOtp({ phone_number: values.phone_number });
   };
 
   useEffect(() => {
@@ -262,152 +250,25 @@ export default function Home() {
     return () => clearInterval(id);
   }, [isOtpGenerated]);
 
-  if (isLoadingLogin || forceLoader || isLoadingLogoPartners || isLoadingFAQ)
-    return <BigLoader />;
+  if (isLoadingLogoPartners || isLoadingFAQ) return <BigLoader />;
 
-  if (isOtpGenerated) {
+  if (isOtpGenerated && otpKind)
     return (
-      <>
-        <Flex position="relative" pt={8} px={7}>
-          <Icon
-            as={HiChevronLeft}
-            w={6}
-            h={6}
-            onClick={() => {
-              setIsOtpGenerated(false);
-              setCurrentPhoneNumber("");
-            }}
-            cursor="pointer"
+      <LoginWrapper
+        onBack={() => {
+          setIsOtpGenerated(false);
+          setOtpKind(undefined);
+        }}
+      >
+        <Box mt={otpKind === "otp" ? 8 : 12}>
+          <LoginOtpContent
+            otpKind={otpKind}
+            currentPhoneNumber={currentPhoneNumber}
+            handleGenerateOtp={handleGenerateOtp}
           />
-        </Flex>
-        <Flex py={8} px={8} flexDir={"column"}>
-          <Heading
-            fontSize={"2xl"}
-            fontWeight={"extrabold"}
-            textAlign="center"
-            mb={6}
-          >
-            Vous avez reçu un code par SMS
-          </Heading>
-          <Text fontSize={"sm"} fontWeight="medium" color="secondaryText">
-            Saisissez le code envoyé au{" "}
-            {addSpaceToTwoCharacters(currentPhoneNumber)} pour pouvoir créer
-            votre compte
-          </Text>
-          <Box my={8}>
-            <HStack justifyContent="center">
-              <OtpInput
-                shouldAutoFocus
-                value={otp}
-                onChange={(otp) => {
-                  setOtp(otp);
-                  setHasOtpError(false);
-                  setHasOtpExpired(false);
-                  if (otp.length === 4) handleLoginUser(otp);
-                }}
-                inputType="number"
-                numInputs={4}
-                placeholder={"----"}
-                renderInput={({ style, ...props }) => (
-                  <Input
-                    {...props}
-                    _focus={{
-                      _placeholder: {
-                        color: "transparent",
-                      },
-                      borderColor: "blackLight",
-                      borderWidth: "2px",
-                    }}
-                    size="lg"
-                    bg={hasOtpError ? "errorLight" : "cje-gray.500"}
-                    textAlign="center"
-                    borderRadius="2.5xl"
-                    borderColor="transparent"
-                    _hover={{ borderColor: "transparent" }}
-                    _focusVisible={{ boxShadow: "none" }}
-                    w={12}
-                    h={18}
-                    px={0}
-                    mx={1}
-                  />
-                )}
-              />
-            </HStack>
-            {hasOtpExpired && (
-              <Text color="error" fontSize={"sm"} mt={2}>
-                Le code n'est plus valide, cliquez sur le lien ci-dessous pour
-                recevoir un nouveau SMS
-              </Text>
-            )}
-            {hasOtpError && (
-              <Text color="error" fontSize={"sm"} mt={2}>
-                On dirait que ce code n’est pas le bon
-              </Text>
-            )}
-          </Box>
-          <Link
-            mt={6}
-            textDecor={"underline"}
-            fontWeight={"medium"}
-            color={timeToResend <= 0 ? "black" : "gray.500"}
-            onClick={() => {
-              if (timeToResend <= 0)
-                handleGenerateOtp({ phone_number: currentPhoneNumber });
-            }}
-          >
-            Me renvoyer un code par SMS{" "}
-            {timeToResend <= 0 ? "" : `(${timeToResend}s)`}
-          </Link>
-        </Flex>
-      </>
+        </Box>
+      </LoginWrapper>
     );
-  }
-
-  const partnersList = [
-    {
-      name: "Auchan",
-      img: "/images/seeds/partners/auchan.svg",
-      promo_label: "-110€",
-    },
-    {
-      name: "Flixbus",
-      img: "/images/seeds/partners/flixbus.svg",
-      promo_label: "-10%",
-    },
-    {
-      name: "Cora",
-      img: "/images/seeds/partners/cora.svg",
-      promo_label: "Gratuit",
-    },
-  ];
-
-  const forWhoList = [
-    {
-      img: "/images/referent/serviceCivique.png",
-      name: "France travail",
-      rotationAngle: -4,
-    },
-    {
-      img: "/images/referent/epide.png",
-      name: "France travail",
-      rotationAngle: -3,
-    },
-    {
-      img: "/images/referent/missionLocale.png",
-      name: "France travail",
-      rotationAngle: 6.5,
-    },
-    {
-      img: "/images/referent/franceTravail.png",
-      name: "France travail",
-      rotationAngle: -1,
-    },
-    {
-      img: "/images/referent/ecole2ndeChance.png",
-      name: "France travail",
-      rotationAngle: 4,
-    },
-  ];
 
   return (
     <>
@@ -467,8 +328,6 @@ export default function Home() {
               </Text>
             </Box>
             <PhoneNumberCTA
-              currentKey="phone-number-cta"
-              setCurrentPhoneNumberKey={setCurrentPhoneNumberKey}
               error={phoneNumberError}
               isLoadingOtp={isLoadingOtp}
               onSubmit={handleGenerateOtp}
@@ -849,38 +708,47 @@ export default function Home() {
                 En Val d’Oise uniquement pour la phase d’expérimentation
               </Text>
             </Flex>
-            {referentItems.map(({ name, image, link }, index) => (
-              <Flex flexDir="column">
-                <Flex
-                  key={`referent-${name}`}
-                  mt={index === 0 ? 2.5 : 0}
-                  alignItems="center"
-                  borderRadius="2.5xl"
-                  textAlign="start"
-                >
-                  <Image src={image} w="40px" h="20px" mr={4} />
-                  <Text fontWeight={500} noOfLines={1}>
-                    {name}
-                  </Text>
-                  <Icon as={HiMiniChevronRight} w={6} h={6} ml="auto" />
-                </Flex>
-                <Divider mt={5} />
-                {index === referentItems.length - 1 && (
-                  <Flex
-                    key="referent-none"
-                    mt={5}
-                    alignItems="center"
-                    borderRadius="2.5xl"
-                    textAlign="start"
+            <Flex flexDir="column">
+              {referentItems.map(({ name, image }, index) => (
+                <>
+                  <ConditionalLink
+                    to="/login"
+                    condition={!isDesktop}
+                    props={{ _hover: { textDecor: "none" } }}
                   >
-                    <Text fontWeight={500} noOfLines={1}>
-                      Aucune de ces situations
-                    </Text>
-                    <Icon as={HiMiniChevronRight} w={6} h={6} ml="auto" />
-                  </Flex>
-                )}
-              </Flex>
-            ))}
+                    <Flex
+                      key={`referent-${name}`}
+                      mt={index === 0 ? 2.5 : 0}
+                      py={2}
+                      alignItems="center"
+                      borderRadius="2.5xl"
+                      textAlign="start"
+                    >
+                      <Image src={image} w="40px" h="20px" mr={4} />
+                      <Text fontWeight={500} noOfLines={1}>
+                        {name}
+                      </Text>
+                      <Icon as={HiMiniChevronRight} w={6} h={6} ml="auto" />
+                    </Flex>
+                  </ConditionalLink>
+                  <Divider my={2} />
+                  {index === referentItems.length - 1 && (
+                    <Flex
+                      key="referent-none"
+                      mt={2}
+                      alignItems="center"
+                      borderRadius="2.5xl"
+                      textAlign="start"
+                    >
+                      <Text fontWeight={500} noOfLines={1}>
+                        Aucune de ces situations
+                      </Text>
+                      <Icon as={HiMiniChevronRight} w={6} h={6} ml="auto" />
+                    </Flex>
+                  )}
+                </>
+              ))}
+            </Flex>
           </Flex>
         </Box>
         <Box px={{ base: 2, lg: 44 }} pt={20} id="faq-section">
