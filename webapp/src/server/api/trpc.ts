@@ -13,6 +13,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import getPayloadClient from "~/payload/payloadClient";
 import { jwtDecode } from "jwt-decode";
+import jwt from "jsonwebtoken";
 
 export type PayloadJwtSession = {
   id: number;
@@ -63,6 +64,7 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
     return {
       payload,
       session: null,
+      req: _opts.req,
     };
   }
 
@@ -71,6 +73,7 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
   return {
     payload,
     session,
+    req: _opts.req,
   };
 };
 
@@ -144,6 +147,39 @@ const isAuthedAsUser = t.middleware(async ({ next, ctx }) => {
   });
 });
 
+const hasWidgetToken = t.middleware(async ({ next, ctx }) => {
+  try {
+    const token = ctx.req?.cookies["widget-token"];
+
+    if (!token) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Authentication token is missing",
+      });
+    }
+
+    jwt.verify(token, process.env.WIDGET_SECRET_JWT!);
+
+    return next();
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Invalid token",
+      });
+    }
+
+    if (error instanceof TRPCError) {
+      throw error;
+    }
+
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "An unexpected error occurred",
+    });
+  }
+});
+
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
@@ -172,3 +208,4 @@ export const publicProcedure = t.procedure;
 export const userProtectedProcedure = t.procedure.use(isAuthedAsUser);
 export const supervisorProtectedProcedure =
   t.procedure.use(isAuthedAsSupervisor);
+export const widgetTokenProtectedProcedure = t.procedure.use(hasWidgetToken);

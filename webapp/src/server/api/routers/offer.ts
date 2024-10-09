@@ -1,14 +1,18 @@
-import { Where, WhereField } from "payload/types";
+import { Where } from "payload/types";
 import { z } from "zod";
 import {
   Category,
-  Offer,
+  Coupon,
   Media,
+  Offer,
   Partner,
   Tag,
-  Coupon,
 } from "~/payload/payload-types";
-import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  userProtectedProcedure,
+  widgetTokenProtectedProcedure,
+} from "~/server/api/trpc";
 import { ZGetListParams } from "~/server/types";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
 
@@ -164,6 +168,86 @@ export const offerRouter = createTRPCRouter({
           const coupons = couponCountOfOffers[index];
           return (!!coupons && !!coupons.docs.length) || !!myUnusedOfferCoupon;
         });
+
+      return {
+        data: offersFiltered,
+        metadata: { page, count: offers.docs.length },
+      };
+    }),
+
+  getWidgetListOfAvailables: widgetTokenProtectedProcedure
+    .input(
+      ZGetListParams.merge(
+        z.object({
+          tagIds: z.array(z.number()).optional(),
+          categoryId: z.number().optional(),
+          kinds: z
+            .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
+            .optional(),
+        })
+      )
+    )
+    .query(async ({ ctx, input }) => {
+      const { tagIds, categoryId, kinds, perPage, page, sort } = input;
+
+      let where = {
+        ...payloadWhereOfferIsValid(),
+      } as Where;
+
+      if (categoryId) {
+        where.category = {
+          equals: categoryId,
+        };
+      }
+
+      if (tagIds) {
+        where.tag = {
+          in: tagIds,
+        };
+      }
+
+      if (kinds) {
+        where.kind = {
+          in: kinds,
+        };
+      }
+
+      const offers = await ctx.payload.find({
+        collection: "offers",
+        limit: perPage,
+        page: page,
+        where: where as Where,
+        sort: sort,
+        depth: 3,
+      });
+
+      const couponCountOfOffersPromises = offers.docs.map((offer) =>
+        ctx.payload.find({
+          collection: "coupons",
+          limit: 1,
+          where: {
+            offer: {
+              equals: offer.id,
+            },
+            used: { equals: false },
+            user: { exists: false },
+          },
+        })
+      );
+
+      const couponCountOfOffers = await Promise.all(
+        couponCountOfOffersPromises
+      );
+
+      const offersFiltered = (
+        offers.docs as OfferIncludedWithUserCoupon[]
+      ).filter((offer, index) => {
+        if (offer.kind === "voucher_pass" || offer.kind === "code_space")
+          return true;
+
+        const coupons = couponCountOfOffers[index];
+        return !!coupons && !!coupons.docs.length;
+      });
 
       return {
         data: offersFiltered,
