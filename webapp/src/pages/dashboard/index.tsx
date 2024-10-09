@@ -34,7 +34,7 @@ export default function Dashboard() {
   const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
     api.offer.getListOfAvailables.useQuery({
       page: 1,
-      perPage: 10,
+      perPage: 100,
       sort: "partner.name",
       kinds: ["code", "code_space"],
     });
@@ -42,7 +42,7 @@ export default function Dashboard() {
   const { data: resultOffersInStore, isLoading: isLoadingOffersInStore } =
     api.offer.getListOfAvailables.useQuery({
       page: 1,
-      perPage: 10,
+      perPage: 100,
       sort: "partner.name",
       kinds: ["voucher", "voucher_pass"],
     });
