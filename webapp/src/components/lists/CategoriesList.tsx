@@ -142,14 +142,14 @@ const CategoriesList = (props: CategoriesListProps) => {
     return (
       <Layout>
         <Flex gap={4}>
-          <Skeleton borderRadius="20px" h={56} w={40} />
-          <Skeleton borderRadius="20px" h={56} w={40} />
-          <Skeleton borderRadius="20px" h={56} w={40} />
+          <Skeleton borderRadius="20px" h={48} w={40} />
+          <Skeleton borderRadius="20px" h={48} w={40} />
+          <Skeleton borderRadius="20px" h={48} w={40} />
         </Flex>
         <Flex gap={4}>
-          <Skeleton borderRadius="20px" h={56} w={40} />
-          <Skeleton borderRadius="20px" h={56} w={40} />
-          <Skeleton borderRadius="20px" h={56} w={40} />
+          <Skeleton borderRadius="20px" h={48} w={40} />
+          <Skeleton borderRadius="20px" h={48} w={40} />
+          <Skeleton borderRadius="20px" h={48} w={40} />
         </Flex>
       </Layout>
     );

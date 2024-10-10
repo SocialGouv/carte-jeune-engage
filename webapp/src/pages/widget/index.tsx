@@ -1,4 +1,4 @@
-import { Flex, Grid, Heading } from "@chakra-ui/react";
+import { Box, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Jumbotron from "~/components/landing/Jumbotron";
@@ -8,6 +8,7 @@ import { GetServerSideProps } from "next";
 import jwt from "jsonwebtoken";
 import CategoriesList from "~/components/lists/CategoriesList";
 import OfferCard from "~/components/cards/OfferCard";
+import TagsList from "~/components/lists/TagsList";
 
 type WidgetProps = {
   initialToken: string;
@@ -61,9 +62,11 @@ export default function Widget({ initialToken }: WidgetProps) {
   const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
 
   return (
-    <Flex direction={"column"} gap={4}>
+    <Flex direction={"column"} gap={4} py={10}>
       <Jumbotron />
-      <CategoriesList offers={allOffers} baseLink="/widget/category" />
+      <Box mt={8}>
+        <CategoriesList offers={allOffers} baseLink="/widget/category" />
+      </Box>
       {offersOnline && offersOnline?.length > 0 && (
         <>
           <Heading as="h2" fontSize="2xl" fontWeight={800} mt={8} px={8}>
@@ -134,6 +137,10 @@ export default function Widget({ initialToken }: WidgetProps) {
           </Grid>
         </>
       )}
+      <Box px={8}>
+        <Divider mb={6} borderColor="cje-gray.100" />
+        <TagsList />
+      </Box>
     </Flex>
   );
 }

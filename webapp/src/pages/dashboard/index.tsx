@@ -5,14 +5,10 @@ import LoadingLoader from "~/components/LoadingLoader";
 import SearchBar from "~/components/SearchBar";
 import OfferCard from "~/components/cards/OfferCard";
 import CategoriesList from "~/components/lists/CategoriesList";
-import TagsSection from "~/components/offer/TagsSection";
+import TagsList from "~/components/lists/TagsList";
 import { api } from "~/utils/api";
-import { paginateArray } from "~/utils/tools";
 
 export default function Dashboard() {
-  const { data: resultTags, isLoading: isLoadingTags } =
-    api.globals.tagsListOrdered.useQuery();
-
   const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
     api.offer.getListOfAvailables.useQuery({
       page: 1,
@@ -29,14 +25,12 @@ export default function Dashboard() {
       kinds: ["voucher", "voucher_pass"],
     });
 
-  const { data: tags } = resultTags || {};
   const { data: offersOnline } = resultOffersOnline || {};
   const { data: offersInStore } = resultOffersInStore || {};
 
   const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
-  const paginatedTags = paginateArray(tags ?? [], 6);
 
-  if (isLoadingOffersOnline || isLoadingOffersInStore || isLoadingTags) {
+  if (isLoadingOffersOnline || isLoadingOffersInStore) {
     return (
       <Box pt={12} px={8} h="full">
         <Center h="full" w="full">
@@ -140,12 +134,10 @@ export default function Dashboard() {
           </Grid>
         </>
       )}
-      {tags && tags.length > 0 && (
-        <Box px={8}>
-          <Divider mb={6} borderColor="cje-gray.100" />
-          <TagsSection paginatedTags={paginatedTags} />
-        </Box>
-      )}
+      <Box px={8}>
+        <Divider mb={6} borderColor="cje-gray.100" />
+        <TagsList />
+      </Box>
     </Box>
   );
 }
