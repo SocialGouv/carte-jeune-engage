@@ -1,6 +1,6 @@
 import { type CollectionConfig } from "payload/types";
 import { CustomSelectTermsOfUse } from "../components/CustomSelectTermsOfUse";
-import { QuickAccess } from "../payload-types";
+import { Partner, QuickAccess } from "../payload-types";
 import { CustomSelectConditionBlocks } from "../components/CustomSelectBlocksOfUse";
 
 export const Offers: CollectionConfig = {
@@ -10,7 +10,7 @@ export const Offers: CollectionConfig = {
     plural: "Offres",
   },
   admin: {
-    useAsTitle: "title",
+    useAsTitle: "formatedTitle",
   },
   fields: [
     {
@@ -18,6 +18,27 @@ export const Offers: CollectionConfig = {
       type: "text",
       label: "Titre (en gras)",
       required: true,
+    },
+    {
+      name: "formatedTitle",
+      type: "text",
+      label: "Titre (formaté)",
+      admin: {
+        hidden: true,
+      },
+      hooks: {
+        beforeChange: [
+          async ({ data, req }) => {
+            if (data) {
+              let partner: Partner = await req.payload.findByID({
+                collection: "partners",
+                id: data.partner,
+              });
+              return (data.formatedTitle = `${data.title} ${data.subtitle ?? ""} - (${partner.name})`);
+            }
+          },
+        ],
+      },
     },
     {
       name: "subtitle",
