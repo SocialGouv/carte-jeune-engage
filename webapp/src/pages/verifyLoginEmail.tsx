@@ -1,7 +1,7 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextApiRequest } from "next";
 import getPayloadClient from "~/payload/payloadClient";
-import { createCallerFactory } from "~/server/api/trpc";
 import { appRouter } from "~/server/api/root";
+import { createCallerFactory } from "~/server/api/trpc";
 
 export const getServerSideProps = (async (context) => {
   const payload = await getPayloadClient({ seed: false });
@@ -19,7 +19,11 @@ export const getServerSideProps = (async (context) => {
 
   const createCaller = createCallerFactory(appRouter);
 
-  const caller = createCaller({ payload, session: null });
+  const caller = createCaller({
+    payload,
+    session: null,
+    req: {} as NextApiRequest,
+  });
 
   try {
     const { data: userSession } = await caller.emailAuthToken.verifyToken(

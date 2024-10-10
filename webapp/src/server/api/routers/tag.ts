@@ -1,14 +1,18 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import type { Tag, Media } from "~/payload/payload-types";
-import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  userOrWidgetProtectedProcedure,
+  userProtectedProcedure,
+} from "~/server/api/trpc";
 
 export interface TagIncluded extends Tag {
   icon: Media;
 }
 
 export const tagRouter = createTRPCRouter({
-  getBySlug: userProtectedProcedure
+  getBySlug: userOrWidgetProtectedProcedure
     .input(z.object({ slug: z.string() }))
     .query(async ({ ctx, input }) => {
       const { slug } = input;

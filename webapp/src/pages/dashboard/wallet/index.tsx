@@ -16,21 +16,16 @@ import CouponCard from "~/components/cards/CouponCard";
 import { HiChevronRight, HiReceiptRefund, HiArrowRight } from "react-icons/hi2";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import TagsSection from "~/components/offer/TagsSection";
+import TagsList from "~/components/lists/TagsList";
 
 export default function Wallet() {
   const router = useRouter();
 
   const { data: resultUserCoupons, isLoading: isLoadingUserCoupons } =
     api.coupon.getList.useQuery();
-
-  const { data: resultTags, isLoading: isLoadingTags } =
-    api.globals.tagsListOrdered.useQuery();
-
   const { data: currentUserCoupons } = resultUserCoupons || {};
-  const { data: tags } = resultTags || {};
 
-  if (isLoadingUserCoupons || isLoadingTags)
+  if (isLoadingUserCoupons)
     return (
       <WalletWrapper>
         <Center h="85%" w="full">
@@ -118,7 +113,7 @@ export default function Wallet() {
           </Button>
         </Center>
         <Box mt={4} py={8} bgColor="bgGray" borderRadius="2.5xl">
-          <TagsSection paginatedTags={[tags ?? []]} />
+          <TagsList />
         </Box>
       </Box>
     </WalletWrapper>
