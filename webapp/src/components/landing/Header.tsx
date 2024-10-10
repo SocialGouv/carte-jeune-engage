@@ -29,6 +29,7 @@ import NextImage from "next/image";
 import BaseModal from "../modals/BaseModal";
 import QRCodeWrapper from "./QRCode";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export const menuItems: { title: string; link: string }[] = [
   { title: "Les entreprises engagées", link: "/partners" },
@@ -46,6 +47,7 @@ export const menuItems: { title: string; link: string }[] = [
 ];
 
 const Header = () => {
+  const router = useRouter();
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -64,9 +66,7 @@ const Header = () => {
   });
 
   const handleIsEligibleClick = () => {
-    const element = document.querySelector(".phone-number-cta");
-    if (element) (element as HTMLElement).focus();
-    onToggle();
+    router.push("/login");
   };
 
   return (
@@ -260,11 +260,7 @@ const Header = () => {
                         <Link
                           key={link}
                           as={NextLink}
-                          href={
-                            link.includes("#")
-                              ? (`/${link}-section` ?? "#")
-                              : link
-                          }
+                          href={link.includes("#") ? `/${link}-section` : link}
                           onClick={onClose}
                           justifyContent="space-between"
                           alignItems="center"
