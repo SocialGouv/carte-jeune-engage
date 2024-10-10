@@ -28,7 +28,7 @@ export const getServerSideProps = (async (context) => {
 
     context.res.setHeader(
       "Set-Cookie",
-      `cje-jwt=${userSession.token}; Expires=${new Date(
+      `${process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"}=${userSession.token}; Expires=${new Date(
         (userSession.exp as number) * 1000
       ).toUTCString()}; Path=/; SameSite=Strict`
     );
