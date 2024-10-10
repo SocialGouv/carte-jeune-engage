@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import { HiBookmark, HiOutlineBookmark } from "react-icons/hi2";
@@ -8,6 +8,7 @@ import { api } from "~/utils/api";
 import { dottedPattern } from "~/utils/chakra-theme";
 import ConditionalLink from "../ConditionalLink";
 import ExpiryTag from "../offer/ExpiryTag";
+import { BsEyeFill } from "react-icons/bs";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
@@ -201,6 +202,20 @@ const OfferCard = ({
               {offer.subtitle}
             </Text>
           </Flex>
+          {fromWidget && (
+            <Button
+              alignSelf="center"
+              variant="outline"
+              rounded={"full"}
+              borderColor="borderGray"
+              py={6}
+              fontSize={"md"}
+              fontWeight={900}
+              mb={2}
+            >
+              <Icon as={BsEyeFill} fontSize="xl" mr={2} /> Voir mon code
+            </Button>
+          )}
         </Flex>
       </Flex>
     </ConditionalLink>
