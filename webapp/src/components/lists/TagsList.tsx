@@ -7,9 +7,12 @@ import { HiChevronRight } from "react-icons/hi2";
 import { api } from "~/utils/api";
 import { paginateArray } from "~/utils/tools";
 
-type TagsListProps = {};
+type TagsListProps = {
+  baseLink?: string;
+};
 
 const TagsList = (props: TagsListProps) => {
+  const { baseLink = "/dashboard/tag" } = props;
   const { data: resultTags, isLoading: isLoadingTags } =
     api.globals.tagsListOrdered.useQuery();
   const { data: tags } = resultTags || {};
@@ -72,7 +75,7 @@ const TagsList = (props: TagsListProps) => {
             <Link
               key={tag.id}
               as={NextLink}
-              href={`/dashboard/tag/${tag.slug}`}
+              href={`${baseLink}/${tag.slug}`}
               onClick={() => {
                 push(["trackEvent", "Accueil", "Tags - " + tag.label]);
               }}

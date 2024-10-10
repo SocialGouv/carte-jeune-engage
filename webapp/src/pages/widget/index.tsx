@@ -139,7 +139,7 @@ export default function Widget({ initialToken }: WidgetProps) {
       )}
       <Box px={8}>
         <Divider mb={6} borderColor="cje-gray.100" />
-        <TagsList />
+        <TagsList baseLink="/widget/tag" />
       </Box>
     </Flex>
   );
