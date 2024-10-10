@@ -19,6 +19,7 @@ const BackButton = (props: BackButtonProps) => {
       flexShrink={0}
       aria-label="Retour"
       colorScheme="whiteBtn"
+      bgColor="white"
       onClick={onClick ? onClick : () => router.back()}
       borderRadius="2.25xl"
       size="md"

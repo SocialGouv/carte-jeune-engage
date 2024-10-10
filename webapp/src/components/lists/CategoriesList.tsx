@@ -1,5 +1,6 @@
-import { Flex, Box, Text, Image, Grid, Link, Skeleton } from "@chakra-ui/react";
+import { Flex, Box, Text, Grid, Link, Skeleton } from "@chakra-ui/react";
 import { api } from "~/utils/api";
+import Image from "next/image";
 import NextLink from "next/link";
 import { mostReadable } from "@ctrl/tinycolor";
 import { CategoryIncluded } from "~/server/api/routers/category";

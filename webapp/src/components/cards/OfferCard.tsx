@@ -78,7 +78,6 @@ const OfferCard = ({
     >
       <Flex
         flexDir="column"
-        pb={variant === "default" ? 8 : 0}
         onClick={() => {
           if (variant === "minimal" && handleValidateOffer)
             handleValidateOffer(offer.id);

@@ -78,7 +78,7 @@ export default function Dashboard() {
             mt={6}
             px={8}
             gap={2}
-            pb={2}
+            pb={10}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
@@ -109,10 +109,10 @@ export default function Dashboard() {
             templateColumns="repeat(auto-fit, 100%)"
             gridAutoFlow="column"
             gridAutoColumns="100%"
-            mt={4}
+            mt={6}
             px={8}
-            gap={3}
-            pb={2}
+            gap={2}
+            pb={14}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
@@ -135,7 +135,9 @@ export default function Dashboard() {
         </>
       )}
       <Box px={8}>
-        <Divider mb={6} borderColor="cje-gray.100" />
+        <Divider borderColor="cje-gray.100" />
+      </Box>
+      <Box mt={8}>
         <TagsList />
       </Box>
     </Box>

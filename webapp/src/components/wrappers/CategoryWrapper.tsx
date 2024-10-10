@@ -133,7 +133,7 @@ const CategoryWrapper = ({
             })}
         </Flex>
       )}
-      <Flex flexDir="column" gap={6} mt={8} h="full" pb={12} px={8}>
+      <Flex flexDir="column" gap={6} mt={8} pb={12} px={8}>
         {children}
       </Flex>
     </Flex>
