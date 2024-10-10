@@ -201,7 +201,7 @@ export const offerRouter = createTRPCRouter({
       }
 
       if (tagIds) {
-        where.tag = {
+        where.tags = {
           in: tagIds,
         };
       }

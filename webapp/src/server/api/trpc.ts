@@ -180,6 +180,55 @@ const hasWidgetToken = t.middleware(async ({ next, ctx }) => {
   }
 });
 
+const isAuthedAsUserOrWidgetToken = t.middleware(async ({ next, ctx }) => {
+  try {
+    const user = await ctx.payload.find({
+      collection: "users",
+      where: {
+        email: {
+          equals: ctx.session?.email,
+        },
+      },
+    });
+
+    if (ctx.session?.email && user.docs.length) {
+      return next({
+        ctx: {
+          session: ctx.session,
+        },
+      });
+    }
+
+    const token = ctx.req?.cookies["widget-token"];
+    console.log(ctx.req?.cookies);
+    if (token) {
+      jwt.verify(token, process.env.WIDGET_SECRET_JWT!);
+      return next();
+    }
+
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "User authentication or widget token required",
+    });
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Invalid token",
+      });
+    }
+
+    if (error instanceof TRPCError) {
+      throw error;
+    }
+
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "An unexpected error occurred",
+    });
+  }
+});
+
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
@@ -209,3 +258,6 @@ export const userProtectedProcedure = t.procedure.use(isAuthedAsUser);
 export const supervisorProtectedProcedure =
   t.procedure.use(isAuthedAsSupervisor);
 export const widgetTokenProtectedProcedure = t.procedure.use(hasWidgetToken);
+export const userOrWidgetProtectedProcedure = t.procedure.use(
+  isAuthedAsUserOrWidgetToken
+);
