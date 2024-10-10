@@ -54,15 +54,13 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://trpc.io/docs/context
  */
-type CallerProps = {
+type CustomTRPCContext = {
   payload: Payload;
   session: PayloadJwtSession;
   req?: NextApiRequest;
 };
 
-export const createTRPCContext = async (
-  _opts: CreateNextContextOptions
-): Promise<CallerProps> => {
+export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
   const payload = await getPayloadClient({
     seed: false,
   });
