@@ -9,8 +9,10 @@ import {
   publicProcedure,
   userProtectedProcedure,
 } from "~/server/api/trpc";
+import { getHtmlLoginByEmail } from "~/utils/emailHtml";
 import {
   generateRandomPassword,
+  maskEmail,
   payloadOrPhoneNumberCheck,
 } from "~/utils/tools";
 
@@ -18,7 +20,7 @@ export interface UserIncluded extends User {
   image: Media;
 }
 
-const changeUserPassword = async (
+export const changeUserPassword = async (
   payload: Payload,
   id: number,
   password: string,
@@ -151,7 +153,13 @@ export const userRouter = createTRPCRouter({
         civility: z.enum(["man", "woman"]).optional(),
         birthDate: z.string().optional(),
         cejFrom: z
-          .enum(["franceTravail", "missionLocale", "serviceCivique"])
+          .enum([
+            "franceTravail",
+            "missionLocale",
+            "serviceCivique",
+            "ecole2ndeChance",
+            "epide",
+          ])
           .optional(),
         timeAtCEJ: z
           .enum(["started", "lessThan3Months", "moreThan3Months"])
@@ -334,11 +342,15 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         phone_number: z.string(),
-        is_desktop: z.boolean().optional(),
+      })
+    )
+    .output(
+      z.object({
+        kind: z.enum(["otp", "email"]),
       })
     )
     .mutation(async ({ ctx, input: userInput }) => {
-      const { phone_number, is_desktop } = userInput;
+      const { phone_number } = userInput;
 
       const users = await ctx.payload.find({
         collection: "users",
@@ -365,14 +377,36 @@ export const userRouter = createTRPCRouter({
             message: "Phone number does not exists on the database",
           });
         } else {
-          if (!is_desktop)
-            await generateAndSendOTP(ctx.payload, phone_number, true);
-          return { data: "ok" };
+          await generateAndSendOTP(ctx.payload, phone_number, true);
+          return { kind: "otp" };
         }
       } else {
-        if (!is_desktop)
+        const currentUser = users.docs[0];
+
+        if (currentUser.userEmail) {
+          const token = generateRandomPassword(16);
+
+          await ctx.payload.create({
+            collection: "email_auth_tokens",
+            data: {
+              user: currentUser.id,
+              token: token,
+              expiration: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
+            },
+          });
+
+          ctx.payload.sendEmail({
+            from: process.env.SMTP_FROM_ADDRESS,
+            to: currentUser.userEmail,
+            subject: 'Connexion à "Carte jeune engagé"',
+            html: getHtmlLoginByEmail(currentUser, token),
+          });
+
+          return { kind: "email" };
+        } else {
           await generateAndSendOTP(ctx.payload, phone_number, false);
-        return { data: "ok" };
+          return { kind: "otp" };
+        }
       }
     }),
 
@@ -447,5 +481,42 @@ export const userRouter = createTRPCRouter({
         subject: "Demande d'accès à l'application",
         text: `Nouvelle demande d'accès faite sur la landing par ${firstName} ${lastName} (${email} - ${phone_number}).`,
       });
+    }),
+
+  getSecretEmailFromPhoneNumber: publicProcedure
+    .input(
+      z.object({
+        phone_number: z.string(),
+      })
+    )
+    .query(async ({ ctx, input: { phone_number } }) => {
+      const userQuery = await ctx.payload.find({
+        collection: "users",
+        where: {
+          phone_number: { equals: phone_number },
+        },
+      });
+
+      const user = userQuery.docs[0];
+
+      if (!user) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Unknown user",
+        });
+      }
+
+      if (!user.userEmail) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User email not set",
+        });
+      }
+
+      return {
+        data: {
+          email: maskEmail(user.userEmail),
+        },
+      };
     }),
 });

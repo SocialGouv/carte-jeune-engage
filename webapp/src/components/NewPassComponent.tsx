@@ -3,7 +3,9 @@ import LoadingLoader from "./LoadingLoader";
 import {
   Box,
   Button,
+  ButtonGroup,
   Center,
+  ChakraProps,
   Flex,
   HStack,
   Heading,
@@ -17,7 +19,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { ChangeEvent, ReactNode, useState } from "react";
+import { ChangeEvent, ReactNode, useMemo, useState } from "react";
 import {
   HiLockOpen,
   HiBuildingStorefront,
@@ -29,6 +31,10 @@ import {
   HiCheckCircle,
   HiWrenchScrewdriver,
   HiFaceSmile,
+  HiMiniCamera,
+  HiMiniCheckCircle,
+  HiXMark,
+  HiChevronLeft,
 } from "react-icons/hi2";
 import StepsWrapper from "./wrappers/StepsWrapper";
 import Cropper, { type Area } from "react-easy-crop";
@@ -39,6 +45,7 @@ import { Media } from "~/payload/payload-types";
 import { getCookie } from "cookies-next";
 import { push } from "@socialgouv/matomo-next";
 import StackItems from "./offer/StackItems";
+import _ from "lodash";
 
 const WrappperNewPassComponent = ({
   children,
@@ -53,12 +60,9 @@ const WrappperNewPassComponent = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
-      <ModalOverlay bgColor="bgWhite" />
-      <ModalContent h="full" boxShadow="none">
-        {!hideCloseBtn && <ModalCloseButton left={6} top={8} />}
-        <ModalBody pt={8} h="full" bgColor="bgWhite">
-          {children}
-        </ModalBody>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalBody pt={8}>{children}</ModalBody>
       </ModalContent>
     </Modal>
   );
@@ -67,20 +71,15 @@ const WrappperNewPassComponent = ({
 const UploadImageComponent = ({
   handleImageChange,
   text,
+  textProps,
 }: {
   text: string;
+  textProps?: ChakraProps;
   handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
-    <Center
-      as="label"
-      htmlFor="file-image-pass"
-      pos="absolute"
-      w="full"
-      h="full"
-      mt={8}
-    >
-      <Text fontWeight="bold" fontSize="lg" textDecor="underline">
+    <Center as="label" htmlFor="file-image-pass" w="full" h="full">
+      <Text fontWeight={800} {...textProps}>
         {text}
       </Text>
       <input
@@ -119,7 +118,12 @@ const NewPassComponent = ({
   const [croppedImageFile, setCroppedImageFile] = useState<File | undefined>(
     undefined
   );
-  const [stepNewPass, setStepNewPass] = useState<"completed">();
+
+  const [isNewPassCompleted, setIsNewPassCompleted] = useState(false);
+  const stepNewPass = useMemo(() => {
+    if (isNewPassCompleted) return "completed";
+    else if (croppedImageSrc) return "cropped";
+  }, [croppedImageSrc, isNewPassCompleted]);
 
   const handleCroppedImage = async () => {
     try {
@@ -176,7 +180,7 @@ const NewPassComponent = ({
           status_image: "pending",
         });
         refetchUser();
-        setStepNewPass("completed");
+        setIsNewPassCompleted(true);
       }
     } catch (e) {
       console.error(e);
@@ -186,16 +190,15 @@ const NewPassComponent = ({
 
   const handleOnClose = () => {
     onClose();
-    setStepNewPass(undefined);
+    setIsNewPassCompleted(false);
+    setCroppedImageSrc(undefined);
+    setImageSrc(undefined);
   };
 
   if (!user || isLoading) {
     return (
-      <WrappperNewPassComponent
-        modalOptions={{ isOpen, onClose }}
-        hideCloseBtn={true}
-      >
-        <Center h="full">
+      <WrappperNewPassComponent modalOptions={{ isOpen, onClose }}>
+        <Center h="full" mt={44}>
           <LoadingLoader />
         </Center>
       </WrappperNewPassComponent>
@@ -205,174 +208,221 @@ const NewPassComponent = ({
   if (stepNewPass === "completed") {
     return (
       <WrappperNewPassComponent modalOptions={{ isOpen, onClose }}>
-        <Flex flexDir="column" justifyContent="end" h="full" pb={12}>
-          <Flex alignItems="center" alignSelf="center">
-            <Flex bgColor="blackLight" py={1.5} px={2.5} borderRadius="lg">
-              <PassIcon color="cje-gray.500" />
-            </Flex>
-            <Flex bgColor="cje-gray.500" borderRadius="full" p={2.5} ml={-1}>
-              <Icon as={HiWrenchScrewdriver} w={6} h={6} />
-            </Flex>
-          </Flex>
-          <Heading textAlign="center" fontWeight="extrabold" size="lg" mt={20}>
-            Notre équipe
-            <br />
-            vérifie votre photo {user.firstName}
-          </Heading>
-          <StackItems
-            props={{ mt: 8 }}
-            items={[
-              {
-                icon: HiCheckCircle,
-                text: "Si votre visage est bien visible, c’est validé",
-              },
-              {
-                icon: HiClock,
-                text: "Votre photo est vérifiée en 24h",
-              },
-              {
-                icon: HiBuildingStorefront,
-                text: "Vous pourrez présenter votre carte en caisse pour les offres en magasin",
-              },
-            ]}
+        <Icon
+          as={HiXMark}
+          h={8}
+          w={8}
+          mt={6}
+          ml={2}
+          color="blackLight"
+          onClick={onClose}
+        />
+        <Center flexDir="column" textAlign="center" mt={24} px={16} gap={10}>
+          <Image
+            src={croppedImageSrc}
+            w="118px"
+            h="118px"
+            borderRadius="full"
           />
-          <Button size="lg" mt={16} onClick={handleOnClose}>
+          <Heading textAlign="center" fontWeight="extrabold" size="lg">
+            Merci {_.capitalize(user.firstName as string)} !
+          </Heading>
+          <Text fontWeight={500}>
+            Notre équipe vérifie votre photo et valide votre carte très
+            rapidement.
+          </Text>
+          <Button w="fit-content" px={8} size="lg" onClick={handleOnClose}>
             Ok
           </Button>
-        </Flex>
+        </Center>
       </WrappperNewPassComponent>
     );
   }
 
-  return (
-    <WrappperNewPassComponent
-      modalOptions={{ isOpen, onClose }}
-      hideCloseBtn={true}
-    >
-      <StepsWrapper
-        stepContext={{ current: croppedImageSrc ? 2 : 1, total: 2 }}
-        onBack={() => {
-          setImageSrc(undefined);
-          setCroppedImageSrc(undefined);
-          onClose();
-        }}
-      >
-        <Flex
+  if (stepNewPass === "cropped") {
+    return (
+      <WrappperNewPassComponent modalOptions={{ isOpen, onClose }}>
+        <Icon
+          as={HiChevronLeft}
+          h={8}
+          w={8}
+          mt={6}
+          ml={2}
+          color="blackLight"
+          onClick={() => {
+            setCroppedImageSrc(undefined);
+            setCroppedAreaPixels(undefined);
+          }}
+        />
+        <Center
           flexDir="column"
           position={imageSrc && !croppedImageSrc ? undefined : "relative"}
+          mt={10}
           pb={12}
-          h="full"
+          textAlign="center"
+          px={6}
         >
-          <Heading fontWeight="extrabold" size="lg">
-            Souriez c’est pour vos réductions en magasin !
-          </Heading>
-          <Flex
-            flexDir="column"
-            mt={8}
-            gap={2}
-            justifyContent="center"
-            alignItems="center"
-            w="212px"
-            h="212px"
-            mx="auto"
-            bgColor="#ffffff"
+          <Image
+            src={croppedImageSrc}
+            w="230px"
+            h="230px"
             borderRadius="full"
-            pos={imageSrc && !croppedImageSrc ? undefined : "relative"}
-          >
-            {!imageSrc && !croppedImageSrc ? (
-              <>
-                <Icon as={HiPhoto} w={8} h={8} mb={8} />
-                <UploadImageComponent
-                  text="Ajouter une photo"
-                  handleImageChange={(e) => handleImageChange(e)}
-                />
-              </>
-            ) : !croppedImageSrc ? (
-              <Box zIndex={1000}>
-                <Cropper
-                  style={{
-                    containerStyle: {
-                      backgroundColor: "black",
-                    },
-                  }}
-                  showGrid={false}
-                  cropShape="round"
-                  image={imageSrc}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={1 / 1}
-                  onCropChange={setCrop}
-                  onCropComplete={(_, croppedAreaPixels) =>
-                    setCroppedAreaPixels(croppedAreaPixels)
-                  }
-                  onZoomChange={setZoom}
-                />
-                <Button
-                  size="lg"
-                  position="absolute"
-                  left={8}
-                  bottom={8}
-                  onClick={() => {
-                    setImageSrc(undefined);
-                    setCroppedImageSrc(undefined);
-                  }}
-                >
-                  Annuler
-                </Button>
-                <Button
-                  size="lg"
-                  position="absolute"
-                  right={8}
-                  bottom={8}
-                  onClick={handleCroppedImage}
-                >
-                  Valider
-                </Button>
-              </Box>
-            ) : (
-              <Image
-                src={croppedImageSrc}
-                w="212px"
-                h="212px"
-                borderRadius="full"
-              />
-            )}
-          </Flex>
-          {croppedImageSrc && (
-            <Flex justifyContent="center" pos="relative">
+          />
+          <Box mt={4}>
+            <UploadImageComponent
+              text="Changer de photo"
+              textProps={{
+                fontSize: 14,
+                color: "disabled",
+                textDecoration: "underline",
+                textDecorationThickness: "2px",
+              }}
+              handleImageChange={(e) => {
+                handleImageChange(e);
+                setCroppedImageSrc(undefined);
+              }}
+            />
+          </Box>
+          <Heading size="xl" fontWeight={800} mt={8}>
+            On voit votre visage en entier ?
+          </Heading>
+          <ButtonGroup flexDir="column" mt={12}>
+            <Button
+              size="lg"
+              fontWeight={800}
+              colorScheme="primaryShades"
+              onClick={handleCreatePass}
+            >
+              Oui 👍
+            </Button>
+            <Box mt={5}>
               <UploadImageComponent
-                text="Changer de photo"
+                text="Si non, changer de photo"
+                textProps={{
+                  color: "disabled",
+                  textDecoration: "underline",
+                  textDecorationThickness: "2px",
+                }}
                 handleImageChange={(e) => {
                   handleImageChange(e);
                   setCroppedImageSrc(undefined);
                 }}
               />
-            </Flex>
+            </Box>
+          </ButtonGroup>
+        </Center>
+      </WrappperNewPassComponent>
+    );
+  }
+
+  return (
+    <WrappperNewPassComponent modalOptions={{ isOpen, onClose }}>
+      <Icon
+        as={HiXMark}
+        h={8}
+        w={8}
+        mt={6}
+        ml={2}
+        color="blackLight"
+        onClick={onClose}
+      />
+      <Flex
+        flexDir="column"
+        position={imageSrc && !croppedImageSrc ? undefined : "relative"}
+        mt={8}
+        textAlign="center"
+        px={6}
+      >
+        <Heading fontWeight="extrabold" size="xl">
+          Ajouter ma photo
+        </Heading>
+        <Text fontWeight="medium" mt={2}>
+          Votre photo est obligatoire pour les offres suivantes :
+        </Text>
+        <Flex
+          flexDir="column"
+          mt={8}
+          gap={2}
+          justifyContent="center"
+          alignItems="center"
+          w="200px"
+          h="200px"
+          mx="auto"
+          bgColor="bgGray"
+          borderRadius="full"
+          style={{
+            backgroundImage: `url(
+              "data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='200' ry='200' stroke='%23000000FF' stroke-width='3' stroke-dasharray='8.25%25' stroke-dashoffset='100' stroke-linecap='butt'/%3e%3c/svg%3e"
+            )`,
+          }}
+        >
+          {!imageSrc && !croppedImageSrc ? (
+            <Center flexDir="column" p={12}>
+              <Icon as={HiMiniCamera} w={6} h={6} mb={2} />
+              <UploadImageComponent
+                text="Ajouter ma photo"
+                handleImageChange={(e) => handleImageChange(e)}
+              />
+            </Center>
+          ) : (
+            <Box zIndex={1000}>
+              <Cropper
+                style={{
+                  containerStyle: {
+                    backgroundColor: "black",
+                  },
+                }}
+                showGrid={false}
+                cropShape="round"
+                image={imageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={1 / 1}
+                onCropChange={setCrop}
+                onCropComplete={(_, croppedAreaPixels) =>
+                  setCroppedAreaPixels(croppedAreaPixels)
+                }
+                onZoomChange={setZoom}
+              />
+              <Button
+                size="lg"
+                position="absolute"
+                left={8}
+                bottom={8}
+                onClick={() => {
+                  setImageSrc(undefined);
+                  setCroppedImageSrc(undefined);
+                }}
+              >
+                Annuler
+              </Button>
+              <Button
+                size="lg"
+                position="absolute"
+                right={8}
+                bottom={8}
+                onClick={handleCroppedImage}
+              >
+                Valider
+              </Button>
+            </Box>
           )}
-          <Box mt="auto">
+        </Flex>
+        {!imageSrc && !croppedImageSrc && (
+          <Flex mt={14} justifyContent="center">
             <StackItems
-              props={{ gap: 4 }}
+              props={{ gap: 2 }}
               items={[
-                { icon: HiFaceSmile, text: "Votre visage doit être visible" },
+                { icon: HiMiniCheckCircle, text: "On voit bien votre visage" },
                 {
-                  icon: HiShieldCheck,
-                  text: "Cette photo sert à prouver que vous avez le dorit à la carte CJE, personne ne peut la voir",
+                  icon: HiMiniCheckCircle,
+                  text: "Il n’y a que vous sur la photo",
                 },
               ]}
             />
-            <Button
-              size="lg"
-              w="full"
-              mt={8}
-              py={8}
-              isDisabled={!croppedImageSrc}
-              onClick={handleCreatePass}
-            >
-              Créer ma carte CJE
-            </Button>
-          </Box>
-        </Flex>
-      </StepsWrapper>
+          </Flex>
+        )}
+      </Flex>
     </WrappperNewPassComponent>
   );
 };

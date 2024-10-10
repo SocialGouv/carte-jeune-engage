@@ -617,11 +617,11 @@ var tarteaucitron = {
           '         <div class="tarteaucitronAsk" id="tarteaucitronScrollbarAdjust">';
         html +=
           '            <button type="button" id="tarteaucitronAllAllowed" class="tarteaucitronAllow">';
-        html +=        tarteaucitron.lang.allowAll;
+        html += tarteaucitron.lang.allowAll;
         html += "            </button> ";
         html +=
           '            <button type="button" id="tarteaucitronAllDenied" class="tarteaucitronDeny">';
-        html +=        tarteaucitron.lang.denyAll;
+        html += tarteaucitron.lang.denyAll;
         html += "            </button>";
         html += "         </div>";
         html += "      </div>";
@@ -798,8 +798,7 @@ var tarteaucitron = {
           //html += '   <span class="tarteaucitronAlertBigBtnWrapper">';
           html +=
             '   <button type="button" class="tarteaucitronCTAButton tarteaucitronAllow" id="tarteaucitronPersonalize2">';
-          html +=
-            tarteaucitron.lang.acceptAll;
+          html += tarteaucitron.lang.acceptAll;
           html += "   </button>";
 
           if (tarteaucitron.parameters.DenyAllCta) {
@@ -818,7 +817,7 @@ var tarteaucitron = {
               html +=
                 '   <button type="button" class="tarteaucitronCTAButton tarteaucitronDeny" id="tarteaucitronAllDenied2">';
             }
-            html +=       tarteaucitron.lang.denyAll;
+            html += tarteaucitron.lang.denyAll;
             html += "   </button>";
             //html += '   <br/><br/>';
           }
@@ -1227,9 +1226,8 @@ var tarteaucitron = {
                 tarteaucitronPartnersCat[tarteaucitron.services[id].type] ===
                 undefined
               ) {
-                tarteaucitronPartnersCat[
-                  tarteaucitron.services[id].type
-                ] = true;
+                tarteaucitronPartnersCat[tarteaucitron.services[id].type] =
+                  true;
                 liPartners +=
                   "<li>" +
                   tarteaucitron.lang[tarteaucitron.services[id].type].title +
@@ -1476,8 +1474,8 @@ var tarteaucitron = {
         undefined !== service.defaultState
           ? service.defaultState
           : undefined !== tarteaucitron.parameters.serviceDefaultState
-          ? tarteaucitron.parameters.serviceDefaultState
-          : "wait";
+            ? tarteaucitron.parameters.serviceDefaultState
+            : "wait";
 
     if (tarteaucitron.added[service.key] !== true) {
       tarteaucitron.added[service.key] = true;

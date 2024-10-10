@@ -25,13 +25,6 @@ export function middleware(request: NextRequest) {
           !request.nextUrl.pathname.startsWith("/signup")
         ) {
           return NextResponse.redirect(new URL("/signup", request.url));
-        } else if (
-          decoded.firstName !== null &&
-          decoded.firstName !== "" &&
-          decoded.preferences.length === 0 &&
-          !request.nextUrl.pathname.startsWith("/onboarding")
-        ) {
-          return NextResponse.redirect(new URL("/onboarding", request.url));
         }
         break;
       case "supervisors":
@@ -48,8 +41,7 @@ export function middleware(request: NextRequest) {
   if (
     !jwtCookie &&
     (request.nextUrl.pathname.startsWith("/dashboard") ||
-      request.nextUrl.pathname.startsWith("/signup") ||
-      request.nextUrl.pathname.startsWith("/onboarding"))
+      request.nextUrl.pathname.startsWith("/signup"))
   ) {
     return NextResponse.redirect(new URL("/", request.url));
   }

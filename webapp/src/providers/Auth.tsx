@@ -31,7 +31,7 @@ type AuthContext = {
   setServiceWorkerRegistration: (
     registration: ServiceWorkerRegistration | null
   ) => void;
-  refetchUser: () => void;
+  refetchUser: () => Promise<void>;
 };
 
 const Context = createContext({} as AuthContext);

@@ -122,6 +122,14 @@ export const Users: CollectionConfig = {
           label: "Service civique",
           value: "serviceCivique",
         },
+        {
+          label: "École de la 2nde chance",
+          value: "ecole2ndeChance",
+        },
+        {
+          label: "EPIDE",
+          value: "epide",
+        },
       ],
       admin: {
         position: "sidebar",

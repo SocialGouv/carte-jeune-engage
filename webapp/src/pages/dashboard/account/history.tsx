@@ -1,11 +1,22 @@
-import { Box, Center, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Divider,
+  Flex,
+  Heading,
+  Icon,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useAuth } from "~/providers/Auth";
 import LoadingLoader from "~/components/LoadingLoader";
-import { HiArrowLeft } from "react-icons/hi2";
+import { HiMiniCheckCircle, HiMiniClock } from "react-icons/hi2";
 import { api } from "~/utils/api";
 import { UserIncluded } from "~/server/api/routers/user";
 import Image from "next/image";
+import { ChevronLeftIcon } from "@chakra-ui/icons";
+import { TinyColor } from "@ctrl/tinycolor";
 
 const UserSavingsNoData = () => {
   return (
@@ -38,38 +49,48 @@ export default function AccountHistory() {
 
   return (
     <Box pt={12} pb={36} px={8}>
-      <Icon
-        as={HiArrowLeft}
-        w={6}
-        h={6}
-        onClick={() => router.back()}
-        cursor="pointer"
+      <IconButton
+        alignSelf="start"
+        shadow="default"
+        flexShrink={0}
+        aria-label="Retour"
+        colorScheme="whiteBtn"
+        onClick={() => {
+          router.back();
+        }}
+        borderRadius="2.25xl"
+        size="md"
+        icon={<ChevronLeftIcon w={6} h={6} color="black" />}
       />
-      <Heading
-        as="h2"
-        size="lg"
-        fontWeight="extrabold"
-        mt={4}
-        textAlign="center"
-      >
-        Historique de mes <br />
-        économies
+      <Heading as="h2" size="xl" fontWeight={800} mt={6}>
+        Historique de mes réductions
       </Heading>
-      <Text fontWeight="medium" fontSize="sm" mt={6}>
-        Vos économies peuvent prendre quelques jours pour s’afficher ici
-      </Text>
       {userSavings.length > 0 ? (
         <Flex flexDir="column" mt={8}>
           {userSavings.map((userSaving, index) => {
             const currentDate = new Date();
-            const currentCouponUsedAt = new Date(userSaving.usedAt as string);
-            const previousCouponUsedAt = new Date(
-              userSavings[index - 1]?.usedAt as string
+            const currentCouponUsedAt = new Date(
+              (userSaving.usedAt
+                ? userSaving.usedAt
+                : userSaving.offer.validityTo) as string
             );
+            const previousCouponUsedAt = userSavings[index - 1]
+              ? new Date(
+                  (userSavings[index - 1]?.usedAt
+                    ? userSavings[index - 1].usedAt
+                    : userSavings[index - 1]?.offer.validityTo) as string
+                )
+              : new Date();
 
             const currentMonth = currentCouponUsedAt.toLocaleString("fr-FR", {
               month: "long",
             });
+
+            const darkenPartnerColor = new TinyColor(
+              userSaving.offer.partner.color
+            )
+              .darken(10)
+              .toHexString();
 
             const formatedCurrentMonth =
               index === 0 &&
@@ -91,9 +112,9 @@ export default function AccountHistory() {
                   previousCouponUsedAt.getMonth() && (
                   <Text
                     key={currentCouponUsedAt.getMonth()}
-                    fontWeight="extrabold"
-                    color="primary"
-                    mt={index === 0 ? 0 : 8}
+                    fontWeight={500}
+                    color="disabled"
+                    mt={index === 0 ? 0 : 6}
                   >
                     {formatedCurrentMonth}
                   </Text>
@@ -102,38 +123,68 @@ export default function AccountHistory() {
                   key={userSaving.id}
                   alignItems="center"
                   justifyContent="space-between"
-                  mt={5}
+                  mt={4}
                 >
-                  <Flex alignItems="center" gap={4}>
+                  <Flex alignItems="center" gap={2}>
                     <Box
-                      borderRadius="full"
-                      overflow="hidden"
-                      bgColor="white"
-                      p={1}
+                      borderRadius="2xl"
+                      flexShrink={0}
+                      bgColor={darkenPartnerColor}
+                      p={1.5}
                     >
                       <Image
                         src={userSaving.offer.partner.icon.url as string}
                         alt={userSaving.offer.partner.icon.alt as string}
-                        width={42}
-                        height={42}
-                        objectFit="cover"
-                        objectPosition="center"
-                        style={{ width: "42px", height: "42px" }}
+                        width={36}
+                        height={36}
+                        style={{ borderRadius: "8px" }}
                       />
                     </Box>
-                    <Text fontSize="sm" fontWeight="bold">
-                      {userSaving.offer.partner.name}
-                    </Text>
+                    <Flex flexDir="column" justifyContent="start" w="full">
+                      <Text fontSize={14} fontWeight={500}>
+                        {userSaving.offer.partner.name}
+                      </Text>
+                      <Text fontSize={12} fontWeight={500} noOfLines={1}>
+                        {userSaving.offer.title}
+                      </Text>
+                      <Box mt={1}>
+                        {userSaving.used ? (
+                          <Flex
+                            alignItems="center"
+                            fontSize={12}
+                            px={1}
+                            color="success"
+                            bgColor="successLight"
+                            w="fit-content"
+                            borderRadius="2.5xl"
+                            gap={0.5}
+                            fontWeight={500}
+                          >
+                            <Icon
+                              as={HiMiniCheckCircle}
+                              stroke="white"
+                              w={3}
+                              h={3}
+                            />
+                            Déjà utilisée
+                          </Flex>
+                        ) : (
+                          <Flex alignItems="center" color="disabled" gap={0.5}>
+                            <Icon as={HiMiniClock} w={3} h={3} />
+                            <Text fontWeight={500} fontSize={12}>
+                              Fin{" "}
+                              {currentCouponUsedAt.toLocaleDateString("fr-FR", {
+                                day: "2-digit",
+                                month: "2-digit",
+                              })}
+                            </Text>
+                          </Flex>
+                        )}
+                      </Box>
+                    </Flex>
                   </Flex>
-                  {userSaving.savingAmount === null ? (
-                    <Text fontSize="xs" fontWeight="medium" color="disabled">
-                      Information <br />
-                      manquante
-                    </Text>
-                  ) : (
-                    <Text fontWeight="bold">{userSaving.savingAmount}€</Text>
-                  )}
                 </Flex>
+                <Divider mt={2} />
               </>
             );
           })}

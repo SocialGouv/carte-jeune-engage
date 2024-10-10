@@ -1,4 +1,4 @@
-import { type GetServerSideProps } from "next";
+import { NextApiRequest, type GetServerSideProps } from "next";
 import { appRouter } from "~/server/api/root";
 import getPayloadClient from "~/payload/payloadClient";
 import { PayloadJwtSession, createCallerFactory } from "~/server/api/trpc";
@@ -23,7 +23,7 @@ export const hasAccessToOffer: GetServerSideProps = async (context) => {
 
   const createCaller = createCallerFactory(appRouter);
 
-  const caller = createCaller({ payload, session });
+  const caller = createCaller({ payload, session, req: {} as NextApiRequest });
 
   const { data: offerListAvailables } = await caller.offer.getListOfAvailables({
     offerIds: [parseInt(context.params?.id as string)],

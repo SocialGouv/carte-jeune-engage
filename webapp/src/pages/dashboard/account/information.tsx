@@ -1,7 +1,7 @@
 import {
-  Box,
   Button,
   Center,
+  Divider,
   Flex,
   Heading,
   Icon,
@@ -10,7 +10,16 @@ import {
 import { useRouter } from "next/router";
 import { useAuth } from "~/providers/Auth";
 import LoadingLoader from "~/components/LoadingLoader";
-import { HiArrowLeft } from "react-icons/hi2";
+import BackButton from "~/components/ui/BackButton";
+import { HiPencil, HiTrash } from "react-icons/hi2";
+
+const userInformations = [
+  { label: "Prénom", value: "firstName" },
+  { label: "Nom de famille", value: "lastName" },
+  { label: "Numéro de téléphone", value: "phone_number" },
+  { label: "Adresse email de récupération", value: "userEmail" },
+  { label: "Ma ville", value: "address" },
+] as const;
 
 export default function AccountInformation() {
   const router = useRouter();
@@ -25,57 +34,48 @@ export default function AccountInformation() {
 
   return (
     <Flex flexDir="column" pt={12} px={8} h="full">
-      <Icon
-        as={HiArrowLeft}
-        w={6}
-        h={6}
-        onClick={() => router.back()}
-        cursor="pointer"
-      />
-      <Heading
-        as="h2"
-        size="lg"
-        fontWeight="extrabold"
-        mt={4}
-        textAlign="center"
-      >
+      <BackButton />
+      <Heading as="h2" size="xl" fontWeight="extrabold" mt={6}>
         Mes informations <br />
         personnelles
       </Heading>
-      <Flex flexDir="column" mt={10} gap={6}>
-        <Flex flexDir="column" gap={1}>
-          <Text fontWeight="medium">Prénom</Text>
-          <Text fontWeight="bold">{user.firstName}</Text>
-        </Flex>
-        <Flex flexDir="column" gap={1}>
-          <Text fontWeight="medium">Nom</Text>
-          <Text fontWeight="bold">{user.lastName}</Text>
-        </Flex>
-        <Flex flexDir="column" gap={1}>
-          <Text fontWeight="medium">Adresse email</Text>
-          <Text fontWeight="bold">{user.userEmail}</Text>
-        </Flex>
-        <Flex flexDir="column" gap={1}>
-          <Text fontWeight="medium">Numéro de télephone</Text>
-          <Text fontWeight="bold">{user?.phone_number ?? "-"}</Text>
-        </Flex>
-        <Flex flexDir="column" gap={1}>
-          <Text fontWeight="medium">Adresse</Text>
-          <Text fontWeight="bold">{user?.address ?? "-"}</Text>
-        </Flex>
+      <Flex flexDir="column" mt={8}>
+        {userInformations.map((userInfo) => (
+          <>
+            <Flex flexDir="column" gap={1} key={userInfo.label}>
+              <Text fontWeight={500} color="disabled" fontSize={14}>
+                {userInfo.label}
+              </Text>
+              <Text fontWeight={800}>{user[userInfo.value] ?? "-"}</Text>
+              <Divider my={2} bgColor="disabled" />
+            </Flex>
+          </>
+        ))}
       </Flex>
-      <Flex flexDir="column" mt="auto" gap={4} mb={10}>
-        <Text fontWeight="medium" textAlign="center" px={16}>
-          Vous souhaitez modifier ces informations ?
-        </Text>
-        <Button
-          colorScheme="cje-gray"
-          color="black"
-          fontWeight="bold"
-          variant="solid"
-        >
-          Nous contacter
-        </Button>
+      <Flex flexDir="column" mt="auto" gap={4} mb={20}>
+        <Divider bgColor="disabled" />
+        <Flex alignItems="center" gap={2}>
+          <Icon as={HiPencil} w={5} h={5} mt="1px" />
+          <Text
+            fontWeight={800}
+            textDecoration="underline"
+            textDecorationThickness="2px"
+            textUnderlineOffset={2}
+          >
+            Modifier mes informations
+          </Text>
+        </Flex>
+        <Flex alignItems="center" gap={2} color="disabled" mt={1}>
+          <Icon as={HiTrash} w={5} h={5} mt="1px" />
+          <Text
+            fontWeight={800}
+            textDecoration="underline"
+            textDecorationThickness="2px"
+            textUnderlineOffset={2}
+          >
+            Supprimer mes informations
+          </Text>
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -4,15 +4,19 @@ import { type Payload } from "payload";
 export const categories = [
   {
     slug: "shop",
-    label: "Courses",
+    label: "Courses et restauration",
+  },
+  {
+    slug: "fashion",
+    label: "Mode et vêtements",
   },
   {
     slug: "mobility",
-    label: "Mobilité",
+    label: "Transport et voyage",
   },
   {
     slug: "hobby",
-    label: "Loisirs",
+    label: "Loisirs et sorties",
   },
   {
     slug: "sport",
@@ -20,30 +24,33 @@ export const categories = [
   },
   {
     slug: "hygiene",
-    label: "Hygiène",
+    label: "Hygiène et beauté",
   },
   {
     slug: "equipment",
-    label: "Équipement",
+    label: "High Tech et équipements",
   },
   {
-    slug: "hosting",
-    label: "Hébergement",
+    slug: "culture",
+    label: "Livres, presse et culture",
   },
   {
     slug: "bank",
-    label: "Banque, mutuelle, assurance",
+    label: "Banque et assurance",
   },
   {
     slug: "telephony",
-    label: "Téléphone, internet",
+    label: "Internet et abonnements",
   },
 ] as const;
 
 export async function seedCategories(payload: Payload) {
+  let createdCategorieIds: number[] = [];
+
   for (const category of categories) {
     const newMedia = await payload.create({
       collection: "media",
+      depth: 0,
       filePath: path.join(
         __dirname,
         `../../../public/images/seeds/categories/${category.slug}.png`
@@ -53,12 +60,23 @@ export async function seedCategories(payload: Payload) {
       },
     });
 
-    await payload.create({
+    const createdCategory = await payload.create({
       collection: "categories",
       data: {
-        icon: newMedia.id,
+        icon: newMedia.id as number,
         ...category,
       },
     });
+
+    createdCategorieIds.push(createdCategory.id as number);
   }
+
+  await payload.updateGlobal({
+    slug: "categories_list",
+    data: {
+      items: createdCategorieIds.map((id) => ({
+        category: id,
+      })),
+    },
+  });
 }

@@ -43,7 +43,8 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     (pathname === "/" ||
       pathname === "/cgu" ||
       pathname === "/mentions-legales" ||
-      pathname === "/politique-de-confidentialite") &&
+      pathname === "/politique-de-confidentialite" ||
+      pathname === "/partners") &&
     !isOtpGenerated &&
     !user;
 
@@ -180,7 +181,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         {isLanding && <Footer />}
         {(pathname === "/dashboard" ||
           pathname === "/dashboard/wallet" ||
-          pathname === "/dashboard/categories") && <BottomNavigation />}
+          pathname === "/dashboard/search") && <BottomNavigation />}
       </Box>
     </>
   );

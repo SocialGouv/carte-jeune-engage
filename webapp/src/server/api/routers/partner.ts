@@ -1,7 +1,7 @@
 import { Where } from "payload/types";
 import { z } from "zod";
 import type { Media, Partner } from "~/payload/payload-types";
-import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { ZGetListParams } from "~/server/types";
 
 export interface PartnerIncluded extends Partner {
@@ -9,7 +9,7 @@ export interface PartnerIncluded extends Partner {
 }
 
 export const partnerRouter = createTRPCRouter({
-  getList: userProtectedProcedure
+  getList: publicProcedure
     .input(ZGetListParams.merge(z.object({ stared: z.boolean().optional() })))
     .query(async ({ ctx, input }) => {
       const { perPage, page, sort, stared } = input;

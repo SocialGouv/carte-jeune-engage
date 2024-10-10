@@ -1,8 +1,8 @@
-import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-postgres'
-import { sql } from 'drizzle-orm'
+import { MigrateUpArgs, MigrateDownArgs } from "@payloadcms/db-postgres";
+import { sql } from "drizzle-orm";
 
 export async function up({ payload }: MigrateUpArgs): Promise<void> {
-await payload.db.drizzle.execute(sql`
+  await payload.db.drizzle.execute(sql`
 
 DO $$ BEGIN
  CREATE TYPE "_locales" AS ENUM('fr');
@@ -267,11 +267,10 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 `);
-
-};
+}
 
 export async function down({ payload }: MigrateDownArgs): Promise<void> {
-await payload.db.drizzle.execute(sql`
+  await payload.db.drizzle.execute(sql`
 
 DROP TABLE "admins";
 DROP TABLE "users";
@@ -287,5 +286,4 @@ DROP TABLE "coupons_rels";
 DROP TABLE "payload_preferences";
 DROP TABLE "payload_preferences_rels";
 DROP TABLE "payload_migrations";`);
-
-};
+}

@@ -35,7 +35,7 @@ const UserCustomView = (props: any) => {
               className="doc-header__title render-title"
               title="0640169312@cje.loc"
             >
-              {!props.isLoading ? props.data.email : ""}
+              {!props.isLoading ? (props.data?.email ?? "") : ""}
             </h1>
             <div
               className="doc-header__actions"

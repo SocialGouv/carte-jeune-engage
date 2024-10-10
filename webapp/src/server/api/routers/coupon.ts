@@ -5,7 +5,7 @@ import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
 
 export interface CouponIncluded extends Coupon {
-  offer: Offer & { icon: Media; partner: Partner };
+  offer: Offer & { partner: Partner & { icon: Media } };
   user: User;
 }
 
@@ -15,11 +15,9 @@ export const couponRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { offer_id } = input;
 
-      const nowDate = new Date().toISOString().split("T")[0];
-
       const coupons = await ctx.payload.find({
         collection: "coupons",
-        depth: 2,
+        depth: 3,
         where: {
           and: [
             { offer: { equals: offer_id } },
@@ -27,13 +25,30 @@ export const couponRouter = createTRPCRouter({
             {
               ...payloadWhereOfferIsValid("offer"),
             },
-            { used: { equals: false } },
           ],
         },
       });
 
       return { data: coupons.docs[0] as CouponIncluded };
     }),
+
+  getList: userProtectedProcedure.query(async ({ ctx }) => {
+    const coupons = await ctx.payload.find({
+      collection: "coupons",
+      depth: 3,
+      where: {
+        and: [
+          { user: { equals: ctx.session.id } },
+          {
+            ...payloadWhereOfferIsValid("offer"),
+          },
+          { used: { equals: false } },
+        ],
+      },
+    });
+
+    return { data: coupons.docs as CouponIncluded[] };
+  }),
 
   assignToUser: userProtectedProcedure
     .input(z.object({ offer_id: z.number() }))
@@ -114,6 +129,70 @@ export const couponRouter = createTRPCRouter({
         collection: "coupons",
         id: couponData.id,
         data: { user: ctx.session.id },
+      });
+
+      return { data: updatedCoupon };
+    }),
+
+  unassignFromUser: userProtectedProcedure
+    .input(z.object({ coupon_id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const { coupon_id } = input;
+
+      const coupon = await ctx.payload.findByID({
+        collection: "coupons",
+        id: coupon_id,
+        depth: 0,
+      });
+
+      if (!coupon)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Coupon not found",
+        });
+
+      if (coupon.user !== ctx.session.id)
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Coupon not assigned to user",
+        });
+
+      const updatedCoupon = await ctx.payload.update({
+        collection: "coupons",
+        id: coupon_id,
+        data: { user: null },
+      });
+
+      return { data: updatedCoupon };
+    }),
+
+  usedFromUser: userProtectedProcedure
+    .input(z.object({ coupon_id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const { coupon_id } = input;
+
+      const coupon = await ctx.payload.findByID({
+        collection: "coupons",
+        id: coupon_id,
+        depth: 0,
+      });
+
+      if (!coupon)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Coupon not found",
+        });
+
+      if (coupon.user !== ctx.session.id)
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Coupon not assigned to user",
+        });
+
+      const updatedCoupon = await ctx.payload.update({
+        collection: "coupons",
+        id: coupon_id,
+        data: { used: true },
       });
 
       return { data: updatedCoupon };

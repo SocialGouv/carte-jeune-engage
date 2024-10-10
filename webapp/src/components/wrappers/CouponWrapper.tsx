@@ -1,40 +1,32 @@
 import {
   Box,
   Button,
-  Divider,
   Flex,
   HStack,
-  Heading,
   Icon,
+  Link,
   Text,
   useToast,
 } from "@chakra-ui/react";
-import Link from "next/link";
-import { ReactNode, useMemo } from "react";
+import { ReactNode } from "react";
 import Barcode from "react-barcode";
 import { FiCopy, FiLock, FiUnlock } from "react-icons/fi";
-import {
-  HiBuildingStorefront,
-  HiCursorArrowRays,
-  HiOutlineInformationCircle,
-  HiReceiptPercent,
-} from "react-icons/hi2";
+import { HiMiniEye, HiReceiptPercent } from "react-icons/hi2";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import { getItemsTermsOfUse } from "~/payload/components/CustomSelectField";
-import { useAuth } from "~/providers/Auth";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import ToastComponent from "../ToastComponent";
 import { PassIcon } from "../icons/pass";
 import { push } from "@socialgouv/matomo-next";
 import PassCard from "../account/PassCard";
+import { dottedPattern } from "~/utils/chakra-theme";
+import NextLink from "next/link";
 
 type CouponWrapperProps = {
   children: ReactNode;
   coupon?: CouponIncluded;
   offer: OfferIncluded;
-  handleOpenOtherConditions: () => void;
-  handleActivateOffer: () => void;
+  handleActivateOffer: (offer_id: number) => void;
   handleOpenExternalLink: () => void;
 };
 
@@ -76,7 +68,7 @@ const CTAButton = ({
               Ma carte CJE
             </Text>
           </Flex>
-          <PassCard isPage={false} offer={offer} />
+          <PassCard offer={offer} />
         </Flex>
         // <Link
         //   href="/dashboard/account/card"
@@ -104,7 +96,6 @@ const CouponWrapper = ({
   children,
   coupon,
   offer,
-  handleOpenOtherConditions,
   handleActivateOffer,
   handleOpenExternalLink,
 }: CouponWrapperProps) => {
@@ -123,6 +114,7 @@ const CouponWrapper = ({
     navigator.clipboard.writeText(text);
   };
 
+  // Keep logic for coupon page
   const displayCoupon = () => {
     return (
       <Flex
@@ -169,9 +161,10 @@ const CouponWrapper = ({
               value={coupon?.code ?? "6FHDJFHEIDJF"}
               background={coupon ? "white" : "#edeff3"}
               format={
-                coupon?.code && offer?.barcodeFormat
-                  ? offer?.barcodeFormat
-                  : "CODE128"
+                // coupon?.code && offer?.barcodeFormat
+                //   ? offer?.barcodeFormat
+                //   : "CODE128"
+                "CODE128"
               }
               height={70}
             />
@@ -196,29 +189,6 @@ const CouponWrapper = ({
             pointerEvents="none"
           />
         </Flex>
-        {coupon && (
-          <HStack spacing={2} align="center">
-            <Icon as={HiOutlineInformationCircle} w={6} h={6} mt={0.5} />
-            <Text
-              fontWeight="medium"
-              textDecoration="underline"
-              textUnderlineOffset={3}
-              onClick={() => {
-                push([
-                  "trackEvent",
-                  "Offre",
-                  offer.partner.name,
-                  offer.title,
-                  "Active",
-                  "Conditions 2",
-                ]);
-                handleOpenOtherConditions();
-              }}
-            >
-              Conditions d’utilisation
-            </Text>
-          </HStack>
-        )}
         <Flex
           id="coupon-code-icon"
           position="absolute"
@@ -245,78 +215,7 @@ const CouponWrapper = ({
     );
   };
 
-  const getCouponWrapperContent = () => {
-    const isOfferWithoutCoupon =
-      offer.kind === "voucher_pass" || offer.kind === "code_space";
-
-    return (
-      <>
-        {!isOfferWithoutCoupon && displayCoupon()}
-        <Flex flexDir="column" mt={isOfferWithoutCoupon ? 20 : 6}>
-          {!coupon ? (
-            <Button
-              onClick={() => {
-                push(["trackEvent", "Inactive", "J'active mon offre"]);
-                handleActivateOffer();
-              }}
-            >
-              Obtenir la réduction
-            </Button>
-          ) : (
-            <CTAButton
-              offer={offer}
-              handleOpenExternalLink={handleOpenExternalLink}
-            />
-          )}
-        </Flex>
-        <Divider my={6} />
-      </>
-    );
-  };
-
-  return (
-    <Flex
-      flexDir="column"
-      overflowY="auto"
-      zIndex={1}
-      sx={{
-        "::-webkit-scrollbar": {
-          display: "none",
-        },
-      }}
-      px={8}
-      h="full"
-      pb={12}
-    >
-      <Heading
-        as="h3"
-        fontSize="2xl"
-        fontWeight="extrabold"
-        textAlign="center"
-        mt={6}
-      >
-        {offer.title}
-      </Heading>
-      <Flex alignItems="center" alignSelf="center" gap={2} mt={4}>
-        <Icon
-          as={
-            offer.kind.startsWith("code")
-              ? HiCursorArrowRays
-              : HiBuildingStorefront
-          }
-          w={6}
-          h={6}
-        />
-        <Text fontWeight="medium">
-          {offer.kind.startsWith("code")
-            ? `En ligne sur ${offer.partner.name}`
-            : `dans ${offer.nbOfEligibleStores ?? 1} magasins participants`}
-        </Text>
-      </Flex>
-      {getCouponWrapperContent()}
-      <Flex flexDir="column">{children}</Flex>
-    </Flex>
-  );
+  return <></>;
 };
 
 export default CouponWrapper;

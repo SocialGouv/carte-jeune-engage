@@ -1,8 +1,8 @@
-import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-postgres'
-import { sql } from 'drizzle-orm'
+import { MigrateUpArgs, MigrateDownArgs } from "@payloadcms/db-postgres";
+import { sql } from "drizzle-orm";
 
 export async function up({ payload }: MigrateUpArgs): Promise<void> {
-await payload.db.drizzle.execute(sql`
+  await payload.db.drizzle.execute(sql`
 
 CREATE TABLE IF NOT EXISTS "supervisors" (
 	"id" serial PRIMARY KEY NOT NULL,
@@ -30,11 +30,10 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 `);
-
-};
+}
 
 export async function down({ payload }: MigrateDownArgs): Promise<void> {
-await payload.db.drizzle.execute(sql`
+  await payload.db.drizzle.execute(sql`
 
 DROP TABLE "supervisors";
 ALTER TABLE "payload_preferences_rels" DROP CONSTRAINT "payload_preferences_rels_supervisors_id_supervisors_id_fk";
@@ -44,5 +43,4 @@ ALTER TABLE "users" ALTER COLUMN "phone_number" DROP NOT NULL;
 ALTER TABLE "users" ALTER COLUMN "first_name" SET NOT NULL;
 ALTER TABLE "users" ALTER COLUMN "last_name" SET NOT NULL;
 ALTER TABLE "payload_preferences_rels" DROP COLUMN IF EXISTS "supervisors_id";`);
-
-};
+}
