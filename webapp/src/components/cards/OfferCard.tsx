@@ -15,6 +15,7 @@ type OfferCardProps = {
   matomoEvent?: string[];
   handleValidateOffer?: (offerId: number) => void;
   disabled?: boolean;
+  fromWidget?: boolean;
 };
 
 const OfferCard = ({
@@ -23,6 +24,7 @@ const OfferCard = ({
   matomoEvent = [],
   handleValidateOffer,
   disabled,
+  fromWidget,
 }: OfferCardProps) => {
   const utils = api.useUtils();
 
@@ -58,7 +60,8 @@ const OfferCard = ({
 
   return (
     <ConditionalLink
-      to={`/dashboard/offer/${offer.id}`}
+      to={fromWidget ? `https://google.com/` : `/dashboard/offer/${offer.id}`}
+      target={fromWidget ? "_blank" : "_self"}
       condition={variant === "default"}
       props={{
         onClick: () => {

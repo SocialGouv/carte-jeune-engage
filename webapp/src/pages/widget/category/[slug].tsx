@@ -85,6 +85,7 @@ export default function CategoryOfferList() {
             "Explorer",
             `Catégories - ${category.label} - Offre - ${offer.partner.name} - ${offer.title}`,
           ]}
+          fromWidget
         />
       ))}
     </CategoryWrapper>

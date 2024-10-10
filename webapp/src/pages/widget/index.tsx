@@ -21,8 +21,8 @@ export default function Widget({ initialToken }: WidgetProps) {
       Cookies.set("widget-token", initialToken, {
         expires: 7,
         path: "/",
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
       });
       setIsCookieSet(true);
     }
@@ -80,7 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
-    const decoded = jwt.verify(widgetToken, process.env.WIDGET_SECRET_JWT!);
+    jwt.verify(widgetToken, process.env.WIDGET_SECRET_JWT!);
 
     return {
       props: {
