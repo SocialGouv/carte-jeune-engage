@@ -14,6 +14,8 @@ import { ZodError } from "zod";
 import getPayloadClient from "~/payload/payloadClient";
 import { jwtDecode } from "jwt-decode";
 import jwt from "jsonwebtoken";
+import { Payload } from "payload";
+import { NextApiRequest } from "next";
 
 export type PayloadJwtSession = {
   id: number;
@@ -52,7 +54,15 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
+type CallerProps = {
+  payload: Payload;
+  session: PayloadJwtSession;
+  req?: NextApiRequest;
+};
+
+export const createTRPCContext = async (
+  _opts: CreateNextContextOptions
+): Promise<CallerProps> => {
   const payload = await getPayloadClient({
     seed: false,
   });
