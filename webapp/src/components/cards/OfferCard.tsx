@@ -64,7 +64,7 @@ const OfferCard = ({
     <ConditionalLink
       to={
         fromWidget
-          ? `/?widgetToken=${Cookies.get("widget-token")}`
+          ? `/?widgetToken=${Cookies.get(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!)}`
           : `/dashboard/offer/${offer.id}`
       }
       target={fromWidget ? "_blank" : "_self"}

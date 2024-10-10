@@ -157,7 +157,7 @@ const isAuthedAsUser = t.middleware(async ({ next, ctx }) => {
 
 const hasWidgetToken = t.middleware(async ({ next, ctx }) => {
   try {
-    const token = ctx.req?.cookies["widget-token"];
+    const token = ctx.req?.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
 
     if (!token) {
       throw new TRPCError({
@@ -207,7 +207,7 @@ const isAuthedAsUserOrWidgetToken = t.middleware(async ({ next, ctx }) => {
       });
     }
 
-    const token = ctx.req?.cookies["widget-token"];
+    const token = ctx.req?.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
     if (token) {
       jwt.verify(token, process.env.WIDGET_SECRET_JWT!);
       return next();

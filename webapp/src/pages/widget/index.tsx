@@ -20,7 +20,7 @@ export default function Widget({ initialToken }: WidgetProps) {
 
   useEffect(() => {
     if (initialToken) {
-      Cookies.set("widget-token", initialToken, {
+      Cookies.set(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!, initialToken, {
         expires: 7,
         path: "/",
         secure: true,
@@ -163,7 +163,9 @@ export default function Widget({ initialToken }: WidgetProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     let { widgetToken } = context.query;
-    if (!widgetToken) widgetToken = context.req.cookies["widget-token"];
+    if (!widgetToken)
+      widgetToken =
+        context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
 
     if (!widgetToken || typeof widgetToken !== "string") {
       return {
