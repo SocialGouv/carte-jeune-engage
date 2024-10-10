@@ -99,6 +99,11 @@ export const theme = extendTheme({
             },
           },
         }),
+        outline: (props: StyleFunctionProps) => ({
+          "&:active": {
+            bg: "white",
+          },
+        }),
       },
     },
     Form: {
