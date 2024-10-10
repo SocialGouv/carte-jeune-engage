@@ -34,7 +34,7 @@ export const Offers: CollectionConfig = {
                 collection: "partners",
                 id: data.partner,
               });
-              return (data.formatedTitle = `${data.title} ${data.subtitle ?? ""} - (${partner.name})`);
+              return `${data.title} ${data.subtitle ?? ""} - (${partner.name})`;
             }
           },
         ],
