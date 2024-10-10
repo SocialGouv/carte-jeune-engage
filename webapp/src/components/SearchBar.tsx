@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   InputGroup,
   InputLeftElement,
@@ -14,13 +14,18 @@ type SearchBarProps = {
   search: string;
   setSearch: (search: string) => void;
   inputProps?: ChakraProps & InputProps;
+  blurOnScroll?: boolean;
 };
 
 export default function SearchBar({
   search,
   setSearch,
   inputProps,
+  blurOnScroll = true,
 }: SearchBarProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const onTouchMove = () => inputRef.current?.blur();
+
   return (
     <InputGroup
       alignItems="center"
@@ -41,8 +46,15 @@ export default function SearchBar({
       </InputLeftElement>
       <Input
         {...inputProps}
+        ref={inputRef}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        onFocus={() =>
+          blurOnScroll && document.addEventListener("touchmove", onTouchMove)
+        }
+        onBlur={() =>
+          blurOnScroll && document.removeEventListener("touchmove", onTouchMove)
+        }
         variant="unstyled"
         ml={1}
         placeholder="Rechercher une marque"
@@ -54,7 +66,10 @@ export default function SearchBar({
           h={5}
           mt={1}
           mr={2}
-          onClick={() => setSearch("")}
+          onClick={() => {
+            setSearch("");
+            if (blurOnScroll) inputRef.current?.focus();
+          }}
         />
       )}
     </InputGroup>
