@@ -64,9 +64,8 @@ const FormBlock = ({
           </Box>
         )}
         <Text
-          fontWeight={isSelected ? "bold" : "medium"}
+          fontWeight={isSelected ? "extrabold" : "medium"}
           textAlign={variant === "default" ? "center" : "start"}
-          noOfLines={1}
         >
           {children}
         </Text>

@@ -737,7 +737,13 @@ export default function Signup() {
                   />
                 </Flex>
               ) : currentSignupStep.field.name === "preferences" ? (
-                <Flex flexDir="column" alignItems="center" w="full" gap={2}>
+                <Flex
+                  flexDir="column"
+                  alignItems="center"
+                  w="full"
+                  gap={2}
+                  pb={32}
+                >
                   {tags.map((tag, index) => (
                     <Controller
                       control={control}
