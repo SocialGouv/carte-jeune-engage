@@ -30,6 +30,21 @@ export default function Widget({ initialToken }: WidgetProps) {
     }
   }, [router.query, router]);
 
+  useEffect(() => {
+    if (isCookieSet) {
+      const newQuery = { ...router.query };
+      delete newQuery.widgetToken;
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: newQuery,
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+  }, [isCookieSet]);
+
   const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
     api.offer.getWidgetListOfAvailables.useQuery(
       {
@@ -147,7 +162,8 @@ export default function Widget({ initialToken }: WidgetProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const { widgetToken } = context.query;
+    let { widgetToken } = context.query;
+    if (!widgetToken) widgetToken = context.req.cookies["widget-token"];
 
     if (!widgetToken || typeof widgetToken !== "string") {
       return {
