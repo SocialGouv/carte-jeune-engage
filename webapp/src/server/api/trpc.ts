@@ -200,7 +200,6 @@ const isAuthedAsUserOrWidgetToken = t.middleware(async ({ next, ctx }) => {
     }
 
     const token = ctx.req?.cookies["widget-token"];
-    console.log(ctx.req?.cookies);
     if (token) {
       jwt.verify(token, process.env.WIDGET_SECRET_JWT!);
       return next();
