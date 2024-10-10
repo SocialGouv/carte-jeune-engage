@@ -62,7 +62,7 @@ export default function Widget({ initialToken }: WidgetProps) {
   return (
     <Flex direction={"column"} gap={4}>
       <Jumbotron />
-      <CategoriesList offers={allOffers} />
+      <CategoriesList offers={allOffers} baseLink="/widget/category" />
     </Flex>
   );
 }

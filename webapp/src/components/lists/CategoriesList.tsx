@@ -9,12 +9,13 @@ import { ReactNode } from "react";
 
 type CategoriesListProps = {
   offers: OfferIncluded[];
+  baseLink?: string;
 };
 
 type CategoryWithOffers = CategoryIncluded & { offers: OfferIncluded[] };
 
 const CategoriesList = (props: CategoriesListProps) => {
-  const { offers } = props;
+  const { offers, baseLink = "/dashboard/category" } = props;
 
   const { data: resultCategories, isLoading: isLoadingCategories } =
     api.globals.categoriesListOrdered.useQuery();
@@ -56,7 +57,7 @@ const CategoriesList = (props: CategoriesListProps) => {
       <Link
         as={NextLink}
         key={category.id}
-        href={`/dashboard/category/${category.slug}`}
+        href={`${baseLink}/${category.slug}`}
         onClick={() => {
           push(["trackEvent", "Accueil", "Catégories - " + category.label]);
         }}
