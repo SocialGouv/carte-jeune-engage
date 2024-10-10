@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Grid, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Jumbotron from "~/components/landing/Jumbotron";
@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { GetServerSideProps } from "next";
 import jwt from "jsonwebtoken";
 import CategoriesList from "~/components/lists/CategoriesList";
+import OfferCard from "~/components/cards/OfferCard";
 
 type WidgetProps = {
   initialToken: string;
@@ -63,6 +64,76 @@ export default function Widget({ initialToken }: WidgetProps) {
     <Flex direction={"column"} gap={4}>
       <Jumbotron />
       <CategoriesList offers={allOffers} baseLink="/widget/category" />
+      {offersOnline && offersOnline?.length > 0 && (
+        <>
+          <Heading as="h2" fontSize="2xl" fontWeight={800} mt={8} px={8}>
+            À utiliser en ligne
+          </Heading>
+          <Grid
+            templateColumns="repeat(auto-fit, 100%)"
+            gridAutoFlow="column"
+            gridAutoColumns="100%"
+            mt={6}
+            px={8}
+            gap={2}
+            pb={2}
+            overflowX="auto"
+            sx={{
+              "::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+          >
+            {offersOnline?.map((offer) => (
+              <OfferCard
+                key={offer.id}
+                offer={offer}
+                matomoEvent={[
+                  "Accueil",
+                  "Pour vous",
+                  `Offre - ${offer.partner.name} - ${offer.title} `,
+                ]}
+                fromWidget
+              />
+            ))}
+          </Grid>
+        </>
+      )}
+      {offersInStore && offersInStore?.length > 0 && (
+        <>
+          <Heading as="h2" fontSize="2xl" fontWeight={800} px={8}>
+            À utiliser en magasin
+          </Heading>
+          <Grid
+            templateColumns="repeat(auto-fit, 100%)"
+            gridAutoFlow="column"
+            gridAutoColumns="100%"
+            mt={4}
+            px={8}
+            gap={3}
+            pb={2}
+            overflowX="auto"
+            sx={{
+              "::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+          >
+            {offersInStore?.map((offer) => (
+              <OfferCard
+                key={offer.id}
+                offer={offer}
+                matomoEvent={[
+                  "Accueil",
+                  "Pour vous",
+                  `Offre - ${offer.partner.name} - ${offer.title} `,
+                ]}
+                fromWidget
+              />
+            ))}
+          </Grid>
+        </>
+      )}
     </Flex>
   );
 }
