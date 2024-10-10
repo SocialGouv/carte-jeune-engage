@@ -9,6 +9,7 @@ import { dottedPattern } from "~/utils/chakra-theme";
 import ConditionalLink from "../ConditionalLink";
 import ExpiryTag from "../offer/ExpiryTag";
 import { BsEyeFill } from "react-icons/bs";
+import Cookies from "js-cookie";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
@@ -61,7 +62,11 @@ const OfferCard = ({
 
   return (
     <ConditionalLink
-      to={fromWidget ? `https://google.com/` : `/dashboard/offer/${offer.id}`}
+      to={
+        fromWidget
+          ? `/?widgetToken=${Cookies.get("widget-token")}`
+          : `/dashboard/offer/${offer.id}`
+      }
       target={fromWidget ? "_blank" : "_self"}
       condition={variant === "default"}
       props={{
