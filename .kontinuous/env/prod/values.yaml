@@ -6,6 +6,7 @@ jobs:
         buildArgs:
           PRODUCTION: 1
           NEXT_PUBLIC_ENV_APP: production
+          NEXT_PUBLIC_URL_APP: https://cje.fabrique.social.gouv.fr
           NEXT_PUBLIC_JWT_NAME: cje-jwt-prod
           NEXT_PUBLIC_CRISP_TOKEN: e69a24b5-c98d-4ff2-9400-706f07bf8c55
           NEXT_PUBLIC_MATOMO_TRACKING_ENABLED: "true"

@@ -19,6 +19,7 @@ jobs:
         buildArgs:
           NEXT_PUBLIC_JWT_NAME: cje-jwt-preprod
           NEXT_PUBLIC_ENV_APP: preproduction
+          NEXT_PUBLIC_URL_APP: https://cje-preprod.ovh.fabrique.social.gouv.fr
           NEXT_PUBLIC_CRISP_TOKEN: 53f1b086-7828-49de-abb4-0c6765d9ca13
           NEXT_PUBLIC_MATOMO_TRACKING_ENABLED: "true"
           NEXT_PUBLIC_MATOMO_URL: https://matomo.fabrique.social.gouv.fr/

@@ -26,6 +26,7 @@ jobs:
       with:
         buildArgs:
           NEXT_PUBLIC_JWT_NAME: cje-jwt-dev
+          NEXT_PUBLIC_URL_APP: "https://{{.Values.global.host}}"
           NEXT_PUBLIC_CRISP_TOKEN: 53f1b086-7828-49de-abb4-0c6765d9ca13
           NEXT_PUBLIC_MATOMO_TRACKING_ENABLED: "false"
           NEXT_PUBLIC_MATOMO_URL: https://matomo.fabrique.social.gouv.fr/
