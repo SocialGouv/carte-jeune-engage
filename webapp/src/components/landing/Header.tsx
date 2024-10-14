@@ -30,6 +30,7 @@ import BaseModal from "../modals/BaseModal";
 import QRCodeWrapper from "./QRCode";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useAuth } from "~/providers/Auth";
 
 export const menuItems: { title: string; link: string }[] = [
   { title: "Les entreprises engagées", link: "/partners" },
@@ -48,9 +49,14 @@ export const menuItems: { title: string; link: string }[] = [
 
 const Header = () => {
   const router = useRouter();
+  const { setShowDesktopQRCode } = useAuth();
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenMenu,
+    onToggle: onToggleMenu,
+    onClose: onCloseMenu,
+  } = useDisclosure();
 
   const {
     isOpen: isOpenDesktopEligible,
@@ -62,8 +68,13 @@ const Header = () => {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(buttonRef, () => {
-    if (isOpen) onToggle();
+    if (isOpenMenu) handleOpenMenu();
   });
+
+  const handleOpenMenu = () => {
+    setShowDesktopQRCode(isOpenMenu);
+    onToggleMenu();
+  };
 
   const handleIsEligibleClick = () => {
     router.push("/login");
@@ -152,7 +163,7 @@ const Header = () => {
         position="sticky"
         top={0}
         bgColor="white"
-        zIndex={10}
+        zIndex={100}
         borderBottomWidth={1}
         borderBottomColor="borderGray"
       >
@@ -208,7 +219,7 @@ const Header = () => {
                   py={2.5}
                   px={6}
                   fontWeight={800}
-                  shadow={!isOpen ? "default" : "none"}
+                  shadow={!isOpenMenu ? "default" : "none"}
                   onClick={
                     isDesktop ? onOpenDesktopEligible : handleIsEligibleClick
                   }
@@ -219,7 +230,7 @@ const Header = () => {
                   zIndex={100}
                   leftIcon={
                     <Icon
-                      as={!isOpen ? HiMiniBars3 : HiXMark}
+                      as={!isOpenMenu ? HiMiniBars3 : HiXMark}
                       w={5}
                       h={5}
                       color="black"
@@ -231,68 +242,108 @@ const Header = () => {
                   borderRadius="2.25xl"
                   fontWeight={800}
                   iconSpacing={isDesktop ? 2 : 0}
-                  shadow={!isOpen ? "default" : "none"}
+                  shadow={!isOpenMenu ? "default" : "none"}
                   color="black"
                   minW={isDesktop ? "103px" : "auto"}
-                  onClick={onToggle}
+                  onClick={handleOpenMenu}
                 >
-                  {isDesktop && (!isOpen ? "Menu" : "Fermer")}
+                  {isDesktop && (!isOpenMenu ? "Menu" : "Fermer")}
                 </Button>
               </ButtonGroup>
               <Portal containerRef={!isDesktop ? headerRef : buttonRef}>
-                <Collapse in={isOpen}>
+                <Collapse in={isOpenMenu}>
+                  <Box
+                    position="fixed"
+                    inset={0}
+                    opacity={0.25}
+                    bgColor="blackLight"
+                  />
                   <Flex
                     id="header-menu"
-                    className={isOpen ? "open" : "closed"}
                     flexDir="column"
                     position="absolute"
                     top={{ base: 0, lg: -6 }}
                     right={{ base: 0, lg: -4 }}
-                    left={{ base: 0, lg: -48 }}
+                    left={{ base: 0, lg: -40 }}
                     borderRadius={{ base: "none", lg: "5xl" }}
-                    pt={20}
-                    pb={12}
-                    px={{ base: 10, lg: 16 }}
                     bgColor="primary"
+                    px={{ base: 10, lg: 12 }}
+                    pt={20}
+                    pb={5}
                   >
-                    {menuItems.map(({ link, title }, index) => (
-                      <>
-                        <Link
-                          key={link}
-                          as={NextLink}
-                          href={link.includes("#") ? `/${link}-section` : link}
-                          onClick={onClose}
-                          justifyContent="space-between"
-                          alignItems="center"
-                          _hover={{
-                            textDecoration: "none",
-                          }}
-                          mt={index === 0 ? 2.5 : 0}
-                        >
-                          <Flex
-                            alignItems="center"
+                    <Flex
+                      className={isOpenMenu ? "open" : "closed"}
+                      flexDir="column"
+                    >
+                      {menuItems.map(({ link, title }, index) => (
+                        <>
+                          <Link
+                            key={link}
+                            as={NextLink}
+                            href={
+                              link.includes("#") ? `/${link}-section` : link
+                            }
+                            onClick={onCloseMenu}
                             justifyContent="space-between"
+                            alignItems="center"
+                            _hover={{
+                              textDecoration: "none",
+                            }}
+                            mt={index === 0 ? 2.5 : 0}
                           >
-                            <Text
-                              fontWeight={800}
-                              fontSize={{ base: 18, lg: 20 }}
-                              color="white"
+                            <Flex
+                              alignItems="center"
+                              justifyContent="space-between"
                             >
-                              {title}
-                            </Text>
-                            <Icon
-                              as={HiMiniChevronRight}
-                              w={5}
-                              h={5}
-                              color="white"
-                            />
-                          </Flex>
-                        </Link>
-                        {index !== menuItems.length - 1 && (
-                          <Divider borderColor="bgGray" my={2.5} />
-                        )}
-                      </>
-                    ))}
+                              <Text
+                                fontWeight={800}
+                                fontSize={{ base: 18, lg: 20 }}
+                                color="white"
+                              >
+                                {title}
+                              </Text>
+                              <Icon
+                                as={HiMiniChevronRight}
+                                w={5}
+                                h={5}
+                                color="white"
+                              />
+                            </Flex>
+                          </Link>
+                          {index !== menuItems.length - 1 && (
+                            <Divider borderColor="bgGray" my={2.5} />
+                          )}
+                        </>
+                      ))}
+                    </Flex>
+                    {isDesktop && (
+                      <Center
+                        flexDir="column"
+                        py={6}
+                        mt={10}
+                        textAlign="center"
+                        borderRadius="5xl"
+                        w="full"
+                        bgColor="white"
+                      >
+                        <Text fontWeight={800} fontSize={18} mb={1}>
+                          Accédez à l’application
+                        </Text>
+                        <Box
+                          p={1}
+                          borderRadius="2lg"
+                          bgColor="white"
+                          w="fit-content"
+                        >
+                          <QRCodeWrapper />
+                        </Box>
+                        <Text fontWeight={500} color="disabled">
+                          Disponible uniquement sur
+                          <br />
+                          smartphone 📱
+                        </Text>
+                      </Center>
+                    )}
                   </Flex>
                 </Collapse>
               </Portal>

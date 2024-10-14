@@ -134,10 +134,7 @@ const forWhoList = [
 ];
 
 export default function Home() {
-  const router = useRouter();
-
-  const { isOtpGenerated, setIsOtpGenerated } = useAuth();
-  const [otp, setOtp] = useState<string>("");
+  const { isOtpGenerated, setIsOtpGenerated, showDesktopQRCode } = useAuth();
 
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
@@ -731,7 +728,7 @@ export default function Home() {
       >
         <NotEligibleForm phone_number={currentPhoneNumber} />
       </BaseModal>
-      {isDesktop && (
+      {isDesktop && showDesktopQRCode && (
         <Flex
           flexDir="column"
           gap={4}

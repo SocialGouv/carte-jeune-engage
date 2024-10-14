@@ -25,6 +25,8 @@ type AuthContext = {
   setShowNotificationModal: (showNotificationModal: boolean) => void;
   showModalInstallApp: boolean;
   setShowModalInstallApp: (showModalInstallApp: boolean) => void;
+  showDesktopQRCode: boolean;
+  setShowDesktopQRCode: (showDesktopQRCode: boolean) => void;
   deferredEvent: BeforeInstallPromptEvent | null;
   setDeferredEvent: (event: BeforeInstallPromptEvent | null) => void;
   serviceWorkerRegistration: ServiceWorkerRegistration | null;
@@ -46,6 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     useState<boolean>(false);
   const [showModalInstallApp, setShowModalInstallApp] =
     useState<boolean>(false);
+  const [showDesktopQRCode, setShowDesktopQRCode] = useState<boolean>(true);
 
   const [showing, setShowing] = useState(false);
   const [deferredEvent, setDeferredEvent] =
@@ -99,6 +102,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setShowNotificationModal,
         showModalInstallApp,
         setShowModalInstallApp,
+        showDesktopQRCode,
+        setShowDesktopQRCode,
         serviceWorkerRegistration,
         setServiceWorkerRegistration,
         deferredEvent,
