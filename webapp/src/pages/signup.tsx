@@ -53,6 +53,8 @@ export type SignUpFormStep = {
 export const signupSteps = [
   {
     title: "Quel est votre prénom ?",
+    description:
+      "Saisissez la même information que sur vos documents administratifs officiels.",
     field: {
       name: "firstName",
       kind: "text",
@@ -73,6 +75,8 @@ export const signupSteps = [
   },
   {
     title: "On peut vous appeler comment ?",
+    description:
+      "Saisissez la même information que sur vos documents administratifs officiels.",
     field: {
       name: "civility",
       kind: "block",
@@ -94,6 +98,8 @@ export const signupSteps = [
   },
   {
     title: "Quel est votre nom de famille ?",
+    description:
+      "Saisissez la même information que sur vos documents administratifs officiels.",
     field: {
       name: "lastName",
       kind: "text",
@@ -145,8 +151,8 @@ export const signupSteps = [
   {
     title: (
       <Text>
-        Quelle est votre adresse email ? <br />
-        <Text as="span" color="error" fontSize="sm">
+        Votre adresse email
+        <Text color="error" fontSize="sm">
           (obligatoire)
         </Text>
       </Text>
@@ -168,7 +174,7 @@ export const signupSteps = [
     },
   },
   {
-    title: "Votre date de naissance ?",
+    title: "Votre date de naissance",
     description:
       "L’application est réservé au 16-25 ans la date de naissance ne sera communiquée à personne",
     field: {
@@ -253,11 +259,14 @@ export default function Signup() {
     clearErrors,
     watch,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignUpForm>({
     mode: "onBlur",
     defaultValues,
   });
+
+  const [isAutocompleteInputFocused, setIsAutocompleteInputFocused] =
+    useState(false);
 
   const onSubmit: SubmitHandler<SignUpForm> = (data) => {
     if (!currentSignupStep) return;
@@ -338,10 +347,6 @@ export default function Signup() {
       JSON.stringify({ ...tmpFormValues, address: debouncedAddress })
     );
   }, [formValues, debouncedAddress]);
-
-  useEffect(() => {
-    localStorage.setItem("cje-signup-form", JSON.stringify({ ...formValues }));
-  }, [formValues]);
 
   useEffect(() => {
     if (!signupStep || typeof signupStep !== "string") {
@@ -646,6 +651,7 @@ export default function Signup() {
           py={12}
           px={8}
           justifyContent="space-between"
+          gap={8}
           h="full"
         >
           <Flex flexDir="column" justifyContent="center">
@@ -657,24 +663,27 @@ export default function Signup() {
             >
               {currentSignupStep.title}
             </Heading>
-            <Text
-              fontSize="sm"
-              fontWeight="medium"
-              color="secondaryText"
-              mt={4}
-            >
-              {currentSignupStep?.description ||
-                "Saisissez la même information que sur vos documents administratifs officiels."}
-            </Text>
-            {currentSignupStep.imageUrl && (
-              <Center mt={2}>
-                <Image
-                  src={currentSignupStep.imageUrl}
-                  alt={currentSignupStep.title as string}
-                  width={126}
-                  height={0}
-                />
-              </Center>
+            {!isAutocompleteInputFocused && (
+              <>
+                <Text
+                  fontSize={14}
+                  fontWeight="medium"
+                  color="secondaryText"
+                  mt={4}
+                >
+                  {currentSignupStep.description}
+                </Text>
+                {currentSignupStep.imageUrl && (
+                  <Center mt={2}>
+                    <Image
+                      src={currentSignupStep.imageUrl}
+                      alt={currentSignupStep.title as string}
+                      width={126}
+                      height={0}
+                    />
+                  </Center>
+                )}
+              </>
             )}
             <Box mt={6} key={currentSignupStep.field.name}>
               {(currentSignupStep.field.name === "civility" ||
@@ -688,7 +697,7 @@ export default function Signup() {
                   }
                   alignItems="center"
                   w="full"
-                  gap={6}
+                  gap={2}
                 >
                   <Controller
                     control={control}
@@ -782,6 +791,7 @@ export default function Signup() {
                     ]
                   }
                   handleSubmit={() => handleSubmit(onSubmit)()}
+                  setIsInputFocused={setIsAutocompleteInputFocused}
                 />
               ) : (
                 <FormInput
@@ -822,7 +832,9 @@ export default function Signup() {
                 ? "translateX(-50%)"
                 : "none"
             }
-            bottom={10}
+            bottom={
+              currentSignupStep.field.name === "preferences" ? 10 : "auto"
+            }
             rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
             isLoading={isLoadingUpdateUser}
           >

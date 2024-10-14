@@ -9,6 +9,7 @@ import {
   FormLabel,
   Spinner,
   Text,
+  useOutsideClick,
 } from "@chakra-ui/react";
 import {
   Control,
@@ -23,7 +24,7 @@ import {
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
 import { FieldProps } from "./FormInput";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 interface Props {
   field: FieldProps;
@@ -34,6 +35,7 @@ interface Props {
   control: Control<any>;
   fieldError: FieldError | undefined;
   handleSubmit: () => Promise<void>;
+  setIsInputFocused: Dispatch<SetStateAction<boolean>>;
 }
 
 const FormAutocompleteInput = ({
@@ -45,9 +47,16 @@ const FormAutocompleteInput = ({
   clearErrors,
   isLoading,
   handleSubmit,
+  setIsInputFocused,
 }: Props) => {
   const { label, name } = field;
   const [optionsHistory, setOptionsHistory] = useState<string[]>([]);
+  const autocompleteRef = useRef<HTMLInputElement | null>(null);
+
+  useOutsideClick({
+    ref: autocompleteRef,
+    handler: () => setIsInputFocused(false),
+  });
 
   const [currentValue, setCurrentValue] = useState<string | undefined>(
     undefined
@@ -95,6 +104,7 @@ const FormAutocompleteInput = ({
 
           return (
             <Box
+              ref={autocompleteRef}
               className={
                 value && value !== "" ? "chakra-autocomplete-has-value" : ""
               }
@@ -144,6 +154,7 @@ const FormAutocompleteInput = ({
                   setOptionsHistory([...optionsHistory, item.value]);
                   onChange(item.value);
                   setCurrentValue(item.value);
+                  setIsInputFocused(false);
                 }}
               >
                 <AutoCompleteInput
@@ -172,6 +183,7 @@ const FormAutocompleteInput = ({
                       clearErrors(name);
                     }
                   }}
+                  onFocus={() => setIsInputFocused(true)}
                   value={value}
                   _focusVisible={{
                     borderColor: "transparent",
@@ -179,10 +191,12 @@ const FormAutocompleteInput = ({
                   }}
                 />
                 <AutoCompleteList
+                  position="fixed"
                   style={{
                     backgroundColor: "transparent",
                     border: "0",
                     boxShadow: "none",
+                    minWidth: "100%",
                   }}
                   loadingState={
                     <Center fontWeight="medium" w="full" py={8}>
