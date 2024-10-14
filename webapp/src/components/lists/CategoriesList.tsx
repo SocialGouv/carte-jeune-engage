@@ -34,11 +34,13 @@ const CategoriesList = (props: CategoriesListProps) => {
     ) {
       formatedCategories.push({
         ...category,
-        offers: offers.filter((offer) =>
-          offer.category
-            .map((offerCategory) => offerCategory.id)
-            .includes(category.id)
-        ),
+        offers: offers
+          .filter((offer) =>
+            offer.category
+              .map((offerCategory) => offerCategory.id)
+              .includes(category.id)
+          )
+          .slice(0, 6),
       });
     }
   });
