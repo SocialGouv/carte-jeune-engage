@@ -212,7 +212,7 @@ export const Users: CollectionConfig = {
       saveToJWT: true,
       type: "relationship",
       label: "Préférences",
-      relationTo: "categories",
+      relationTo: "tags",
       hasMany: true,
       admin: {
         position: "sidebar",
