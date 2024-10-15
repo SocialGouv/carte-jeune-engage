@@ -6,7 +6,7 @@ import NextImage from "next/image";
 import NextLink from "next/link";
 import { push } from "@socialgouv/matomo-next";
 
-const SearchPage = () => {
+export default function WidgetSearch() {
   const searchResults = (
     paginatedTags: TagIncluded[][],
     partners: (PartnerIncluded & { link: string })[],
@@ -122,6 +122,4 @@ const SearchPage = () => {
   };
 
   return <SearchWrapper fromWidget>{searchResults}</SearchWrapper>;
-};
-
-export default SearchPage;
+}

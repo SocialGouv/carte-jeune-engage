@@ -7,7 +7,7 @@ import CategoryWrapper from "~/components/wrappers/CategoryWrapper";
 import { TagIncluded } from "~/server/api/routers/tag";
 import { api } from "~/utils/api";
 
-export default function CategoryOfferList() {
+export default function TagOfferList() {
   const router = useRouter();
   const { slug } = router.query;
 
