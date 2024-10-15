@@ -77,7 +77,7 @@ export default function Widget({ initialToken }: WidgetProps) {
   const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
 
   return (
-    <Flex direction={"column"} gap={4} py={10}>
+    <Flex direction={"column"} gap={4} py={10} overflowX={"hidden"}>
       <Jumbotron />
       <Box mt={8}>
         <CategoriesList offers={allOffers} baseLink="/widget/category" />
@@ -94,7 +94,7 @@ export default function Widget({ initialToken }: WidgetProps) {
             mt={6}
             px={8}
             gap={2}
-            pb={2}
+            pb={4}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
