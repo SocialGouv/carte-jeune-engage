@@ -10,6 +10,7 @@ import CategoriesList from "~/components/lists/CategoriesList";
 import TagsList from "~/components/lists/TagsList";
 import SearchBar from "~/components/SearchBar";
 import { api } from "~/utils/api";
+import NextImage from "next/image";
 import NextLink from "next/link";
 
 type WidgetProps = {
@@ -79,16 +80,48 @@ export default function Widget({ initialToken }: WidgetProps) {
   const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
 
   return (
-    <Flex direction={"column"} gap={4} pb={10} overflowX={"hidden"}>
+    <Flex
+      direction={"column"}
+      gap={4}
+      pb={10}
+      pt={[24, 0]}
+      overflowX={"hidden"}
+      position="relative"
+    >
       {" "}
-      <Link
-        as={NextLink}
-        href="/widget/search"
-        _hover={{ textDecoration: "none" }}
-        passHref
+      <Flex
+        gap={6}
+        px={4}
+        py={4}
+        borderBottomWidth={1}
+        borderBottomColor={"bgGray"}
+        position={["fixed", "static"]}
+        top={0}
+        zIndex={99}
+        bg="white"
+        w="full"
       >
-        <SearchBar search="" setSearch={() => ""} />
-      </Link>
+        <NextImage
+          src="/images/cje-logo-blue.svg"
+          alt="Logo CJE"
+          width={48}
+          height={25}
+        />
+        <Link
+          as={NextLink}
+          href="/widget/search"
+          _hover={{ textDecoration: "none" }}
+          passHref
+          flexGrow={1}
+        >
+          <SearchBar
+            search=""
+            setSearch={() => ""}
+            placeholder="Rechercher"
+            small
+          />
+        </Link>
+      </Flex>
       <Jumbotron />
       <Box mt={8}>
         <CategoriesList offers={allOffers} baseLink="/widget/category" />
@@ -163,7 +196,7 @@ export default function Widget({ initialToken }: WidgetProps) {
           </Grid>
         </>
       )}
-      <Box px={8}>
+      <Box>
         <Divider mb={6} borderColor="cje-gray.100" />
         <TagsList baseLink="/widget/tag" />
       </Box>

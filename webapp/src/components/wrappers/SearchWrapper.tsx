@@ -64,7 +64,7 @@ const SearchWrapper = ({
 
   const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
-      <Box pt={12} pb={32} minH="full">
+      <Box pt={8} pb={32} minH="full">
         <Flex
           alignItems="center"
           gap={4}
@@ -91,6 +91,7 @@ const SearchWrapper = ({
             search={search}
             setSearch={setSearch}
             inputProps={{ autoFocus: true }}
+            placeholder={fromWidget ? "Rechercher" : undefined}
           />
         </Flex>
         {children}
