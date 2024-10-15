@@ -1,14 +1,16 @@
-import { Box, Divider, Flex, Grid, Heading } from "@chakra-ui/react";
+import { Box, Divider, Flex, Grid, Heading, Link } from "@chakra-ui/react";
+import Cookies from "js-cookie";
+import jwt from "jsonwebtoken";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Jumbotron from "~/components/landing/Jumbotron";
-import { api } from "~/utils/api";
-import Cookies from "js-cookie";
-import { GetServerSideProps } from "next";
-import jwt from "jsonwebtoken";
-import CategoriesList from "~/components/lists/CategoriesList";
 import OfferCard from "~/components/cards/OfferCard";
+import Jumbotron from "~/components/landing/Jumbotron";
+import CategoriesList from "~/components/lists/CategoriesList";
 import TagsList from "~/components/lists/TagsList";
+import SearchBar from "~/components/SearchBar";
+import { api } from "~/utils/api";
+import NextLink from "next/link";
 
 type WidgetProps = {
   initialToken: string;
@@ -77,7 +79,16 @@ export default function Widget({ initialToken }: WidgetProps) {
   const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
 
   return (
-    <Flex direction={"column"} gap={4} py={10} overflowX={"hidden"}>
+    <Flex direction={"column"} gap={4} pb={10} overflowX={"hidden"}>
+      {" "}
+      <Link
+        as={NextLink}
+        href="/widget/search"
+        _hover={{ textDecoration: "none" }}
+        passHref
+      >
+        <SearchBar search="" setSearch={() => ""} />
+      </Link>
       <Jumbotron />
       <Box mt={8}>
         <CategoriesList offers={allOffers} baseLink="/widget/category" />
