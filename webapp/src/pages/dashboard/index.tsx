@@ -42,10 +42,6 @@ export default function Dashboard() {
 
   return (
     <Box pt={12} pb={32}>
-      <InstallationBanner
-        ignoreUserOutcome={false}
-        matomoEvent={["Accueil", "Obtenir l'application"]}
-      />
       <Box
         px={8}
         pb={4}
@@ -66,6 +62,12 @@ export default function Dashboard() {
         </Link>
       </Box>
       <CategoriesList offers={allOffers} />
+      <Box px={8} mt={6}>
+        <InstallationBanner
+          ignoreUserOutcome={false}
+          matomoEvent={["Accueil", "Obtenir l'application"]}
+        />
+      </Box>
       {offersOnline && offersOnline?.length > 0 && (
         <>
           <Heading as="h2" fontSize="2xl" fontWeight={800} mt={8} px={8}>

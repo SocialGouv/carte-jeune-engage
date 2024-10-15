@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     useState<boolean>(false);
   const [showDesktopQRCode, setShowDesktopQRCode] = useState<boolean>(true);
 
-  const [showing, setShowing] = useState(false);
+  const [showing, setShowing] = useState(true);
   const [deferredEvent, setDeferredEvent] =
     useState<BeforeInstallPromptEvent | null>(null);
 
