@@ -23,7 +23,7 @@ const BottomNavigation = () => {
 
       if (bottomNavigation)
         bottomNavigation.style.paddingBottom =
-          safeAreaInsetBottom !== "0px" ? safeAreaInsetBottom : "20px";
+          safeAreaInsetBottom !== "0px" ? safeAreaInsetBottom : "24px";
     };
 
     updatePadding();
@@ -68,8 +68,8 @@ const BottomNavigation = () => {
       bottom={0}
       left={0}
       right={0}
-      pt={5}
-      px={10}
+      pt={2.5}
+      px={11}
     >
       {navigationItems.map(({ href, label, icon, activeIcon, matomoEvent }) => (
         <Flex
