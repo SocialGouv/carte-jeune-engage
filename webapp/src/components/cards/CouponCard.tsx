@@ -349,7 +349,7 @@ const CouponCard = ({
           >
             {coupon ? (
               <Text fontWeight={500} h="66px">
-                {coupon.offer.title}
+                {`${coupon.offer.title} ${coupon.offer.subtitle ?? ""}`}
               </Text>
             ) : (
               <>
