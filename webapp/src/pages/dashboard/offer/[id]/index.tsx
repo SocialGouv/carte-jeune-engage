@@ -60,7 +60,7 @@ export default function OfferPage() {
   ) => {
     if (!coupon) await mutateAsyncCouponToUser({ offer_id: offerId });
     else if (coupon && coupon.used) return;
-    else if (displayCoupon) setKind("coupon");
+    if (displayCoupon) setKind("coupon");
   };
 
   const handleBookmarkOfferToUser = async () => {

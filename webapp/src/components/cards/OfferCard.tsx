@@ -210,7 +210,7 @@ const OfferCard = ({
             <Button
               alignSelf="center"
               variant="outline"
-              rounded={"full"}
+              rounded="full"
               borderColor="borderGray"
               py={6}
               fontSize={"md"}
