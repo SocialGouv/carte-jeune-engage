@@ -95,7 +95,7 @@ export default function OfferPage() {
         document.body.appendChild(a);
         a.classList.add("hidden");
         a.href = coupon?.offer?.url as string;
-        if (!isIOS()) a.target = "_blank";
+        a.target = "_blank";
         a.click();
         document.body.removeChild(a);
         onCloseExternalLink();
