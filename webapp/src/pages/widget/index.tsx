@@ -94,7 +94,7 @@ export default function Widget({ initialToken }: WidgetProps) {
             mt={6}
             px={8}
             gap={2}
-            pb={4}
+            pb={8}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
@@ -129,7 +129,7 @@ export default function Widget({ initialToken }: WidgetProps) {
             mt={4}
             px={8}
             gap={3}
-            pb={2}
+            pb={8}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
