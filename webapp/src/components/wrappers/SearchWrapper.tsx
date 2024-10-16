@@ -53,7 +53,9 @@ const SearchWrapper = ({
 
   const partners = offers.map((offer) => ({
     ...offer.partner,
-    link: `/dashboard/offer/${offer.id}`,
+    link: fromWidget
+      ? `/widget/offer/${offer.id}`
+      : `/dashboard/offer/${offer.id}`,
   }));
 
   const paginatedTags = paginateArray(tags, 6);

@@ -10,6 +10,7 @@ import {
 } from "~/payload/payload-types";
 import {
   createTRPCRouter,
+  userOrWidgetProtectedProcedure,
   userProtectedProcedure,
   widgetTokenProtectedProcedure,
 } from "~/server/api/trpc";
@@ -270,7 +271,7 @@ export const offerRouter = createTRPCRouter({
       };
     }),
 
-  getById: userProtectedProcedure
+  getById: userOrWidgetProtectedProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       const { id } = input;

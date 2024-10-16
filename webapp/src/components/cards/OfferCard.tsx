@@ -18,6 +18,7 @@ type OfferCardProps = {
   handleValidateOffer?: (offerId: number) => void;
   disabled?: boolean;
   fromWidget?: boolean;
+  light?: boolean;
 };
 
 const OfferCard = ({
@@ -27,6 +28,7 @@ const OfferCard = ({
   handleValidateOffer,
   disabled,
   fromWidget,
+  light,
 }: OfferCardProps) => {
   const utils = api.useUtils();
 
@@ -64,10 +66,9 @@ const OfferCard = ({
     <ConditionalLink
       to={
         fromWidget
-          ? `/?widgetToken=${Cookies.get(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!)}`
+          ? `/widget/offer/${offer.id}`
           : `/dashboard/offer/${offer.id}`
       }
-      target={fromWidget ? "_blank" : "_self"}
       condition={variant === "default"}
       props={{
         onClick: () => {
@@ -140,7 +141,7 @@ const OfferCard = ({
                 {offer.partner.name}
               </Text>
             </Flex>
-            {variant === "default" && (
+            {variant === "default" && !fromWidget && (
               <IconButton
                 aria-label="Enregistrer l'offre"
                 alignItems="center"
@@ -206,7 +207,7 @@ const OfferCard = ({
               {offer.subtitle}
             </Text>
           </Flex>
-          {fromWidget && (
+          {fromWidget && !light && (
             <Button
               alignSelf="center"
               variant="outline"
