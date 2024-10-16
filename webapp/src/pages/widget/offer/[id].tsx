@@ -1,13 +1,14 @@
 import { Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import NextImage from "next/image";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { HiArrowTopRightOnSquare } from "react-icons/hi2";
+import { TbX } from "react-icons/tb";
 import OfferCard from "~/components/cards/OfferCard";
 import { ScrollAnimatedPerspectiveBox } from "~/components/offer/ScrollAnimatedPerspectiveBox";
 import BackButton from "~/components/ui/BackButton";
 import { api } from "~/utils/api";
-import NextLink from "next/link";
-import Cookies from "js-cookie";
 
 export default function WidgetOfferPage() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function WidgetOfferPage() {
       minH="full"
     >
       <Flex w="full" mb={6}>
-        <BackButton close />
+        <BackButton icon={TbX} />
       </Flex>
       <ScrollAnimatedPerspectiveBox>
         <OfferCard
@@ -85,24 +86,17 @@ export default function WidgetOfferPage() {
           as={NextLink}
           href={`/?widgetToken=${Cookies.get(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!)}&offer_id=${id}`}
           target="_blank"
-          variant="solid"
-          bg="white"
-          color="frontBlack"
+          colorScheme="whiteBtn"
+          color="black"
           fontWeight={800}
-          _active={{
-            bg: "white",
-          }}
           w="full"
           mt={10}
         >
           Télécharger l'appli <Icon ml={2} as={HiArrowTopRightOnSquare} />
         </Button>
         <Button
-          variant="ghost"
-          colorScheme="whiteBtn"
-          _active={{
-            bg: "transparent",
-          }}
+          variant="unstyled"
+          color="white"
           w="full"
           mt={2}
           onClick={() => router.back()}

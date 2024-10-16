@@ -1,16 +1,17 @@
 import { Icon, IconButton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { TbChevronLeft, TbX } from "react-icons/tb";
+import { IconType } from "react-icons/lib";
+import { TbChevronLeft } from "react-icons/tb";
 
 type BackButtonProps = {
   variant?: "ghost";
   onClick?: () => void;
-  close?: boolean;
+  icon?: IconType;
 };
 
 const BackButton = (props: BackButtonProps) => {
   const router = useRouter();
-  const { variant, onClick, close } = props;
+  const { variant, onClick, icon } = props;
 
   return (
     <IconButton
@@ -24,7 +25,7 @@ const BackButton = (props: BackButtonProps) => {
       onClick={onClick ? onClick : () => router.back()}
       borderRadius="2.25xl"
       size="md"
-      icon={<Icon as={close ? TbX : TbChevronLeft} w={6} h={6} color="black" />}
+      icon={<Icon as={icon ? icon : TbChevronLeft} w={6} h={6} color="black" />}
     />
   );
 };
