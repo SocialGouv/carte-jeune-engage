@@ -32,3 +32,4 @@ jobs:
           NEXT_PUBLIC_MATOMO_URL: https://matomo.fabrique.social.gouv.fr/
           NEXT_PUBLIC_MATOMO_SITE_ID: 112
           NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY: BEhweKLgZWqV1WJF6rRUaNiN-qjZPd7KlI_i3E9u2Xg_z2oPePiwgiNbIebpSTXx38epVeVxzfEDsr4atZLf4bA
+          NEXT_PUBLIC_WIDGET_TOKEN_NAME: widget-token
