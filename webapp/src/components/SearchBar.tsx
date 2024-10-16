@@ -15,6 +15,8 @@ type SearchBarProps = {
   setSearch: (search: string) => void;
   inputProps?: ChakraProps & InputProps;
   blurOnScroll?: boolean;
+  small?: boolean;
+  placeholder?: string;
 };
 
 export default function SearchBar({
@@ -22,6 +24,8 @@ export default function SearchBar({
   setSearch,
   inputProps,
   blurOnScroll = true,
+  small = false,
+  placeholder,
 }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const onTouchMove = () => inputRef.current?.blur();
@@ -31,7 +35,7 @@ export default function SearchBar({
       alignItems="center"
       background={"cje-gray.500"}
       borderRadius={"1.125rem"}
-      padding={"1rem 0.5rem"}
+      padding={small ? "0.6rem 0.5rem" : "1rem 0.5rem"}
     >
       <InputLeftElement
         pointerEvents="none"
@@ -39,8 +43,8 @@ export default function SearchBar({
         alignItems="center"
         justifyContent="center"
         height="full"
-        pl={5}
-        mt={0.5}
+        pl={small ? 2 : 5}
+        mt={small ? 0 : 0.5}
       >
         <CgSearch size={20} />
       </InputLeftElement>
@@ -57,7 +61,7 @@ export default function SearchBar({
         }
         variant="unstyled"
         ml={1}
-        placeholder="Rechercher une marque"
+        placeholder={placeholder ?? "Rechercher une marque"}
       />
       {search && (
         <Icon

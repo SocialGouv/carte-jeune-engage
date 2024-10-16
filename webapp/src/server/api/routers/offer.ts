@@ -10,6 +10,7 @@ import {
 } from "~/payload/payload-types";
 import {
   createTRPCRouter,
+  userOrWidgetProtectedProcedure,
   userProtectedProcedure,
   widgetTokenProtectedProcedure,
 } from "~/server/api/trpc";
@@ -185,11 +186,20 @@ export const offerRouter = createTRPCRouter({
           kinds: z
             .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
             .optional(),
+          searchOnPartner: z.string().optional(),
         })
       )
     )
     .query(async ({ ctx, input }) => {
-      const { tagIds, categoryId, kinds, perPage, page, sort } = input;
+      const {
+        tagIds,
+        categoryId,
+        kinds,
+        searchOnPartner,
+        perPage,
+        page,
+        sort,
+      } = input;
 
       let where = {
         ...payloadWhereOfferIsValid(),
@@ -210,6 +220,12 @@ export const offerRouter = createTRPCRouter({
       if (kinds) {
         where.kind = {
           in: kinds,
+        };
+      }
+
+      if (searchOnPartner) {
+        where["partner.name"] = {
+          like: searchOnPartner,
         };
       }
 
@@ -256,7 +272,7 @@ export const offerRouter = createTRPCRouter({
       };
     }),
 
-  getById: userProtectedProcedure
+  getById: userOrWidgetProtectedProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       const { id } = input;
