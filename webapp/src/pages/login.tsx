@@ -1,21 +1,23 @@
 import {
   Box,
+  Center,
   Divider,
   Flex,
   Heading,
+  Icon,
   ListItem,
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
-import { setCookie } from "cookies-next";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { ErrorOption, SubmitHandler } from "react-hook-form";
+import { HiLockClosed, HiMiniInformationCircle } from "react-icons/hi2";
 import LoginOtpContent from "~/components/landing/LoginOtpContent";
 import PhoneNumberCTA, { LoginForm } from "~/components/landing/PhoneNumberCTA";
 import LoginWrapper from "~/components/wrappers/LoginWrapper";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
+import { addSpaceToTwoCharacters } from "~/utils/tools";
 
 const conditionsItems = [
   "Être inscrit dans un Service civique, EPIDE, France travail, Mission locale ou Ecole de la seconde chance",
@@ -59,6 +61,10 @@ export default function HomeLogin() {
     generateOtp({ phone_number: values.phone_number });
   };
 
+  const handleResetPhoneNumber = () => {
+    setPhoneNumberError(undefined);
+  };
+
   if (isOtpGenerated && otpKind)
     return (
       <LoginWrapper
@@ -79,17 +85,72 @@ export default function HomeLogin() {
 
   return (
     <LoginWrapper>
-      <Flex flexDir="column">
-        <Heading size="lg" fontWeight={800} textAlign="center" px={6} mt={8}>
-          Connectez-vous avec votre n° de téléphone
-        </Heading>
-        <Box mt={10}>
-          <PhoneNumberCTA
-            error={phoneNumberError}
-            isLoadingOtp={isLoadingOtp}
-            onSubmit={handleGenerateOtp}
-          />
-        </Box>
+      <Flex flexDir="column" mt={8}>
+        {phoneNumberError && phoneNumberError.type === "conflict" ? (
+          <Center flexDir="column" textAlign="center">
+            <Icon as={HiLockClosed} w={6} h={6} color="error" />
+            <Text fontSize={24} fontWeight={800} mt={8} lineHeight="short">
+              Ce numéro n’est pas associé à une carte
+            </Text>
+            <Text fontWeight={800} mt={10}>
+              {addSpaceToTwoCharacters(currentPhoneNumber)}
+            </Text>
+            <Text
+              mt={6}
+              cursor="pointer"
+              fontWeight={700}
+              color="primary"
+              textDecoration="underline"
+              textDecorationThickness="2px"
+              textUnderlineOffset={2}
+              onClick={handleResetPhoneNumber}
+            >
+              Modifier
+            </Text>
+            <Flex
+              mt={10}
+              textAlign="start"
+              borderRadius="2xl"
+              borderWidth={1}
+              borderColor="bgGray"
+              py={2}
+              px={4}
+              gap={1.5}
+            >
+              <Icon
+                as={HiMiniInformationCircle}
+                w={4}
+                h={4}
+                mt={0.5}
+                color="blackLight"
+              />
+              <Text fontSize={14} fontWeight={500}>
+                Vérifiez qu’une personne de l’EPIDE, Service civique, Mission
+                locale ou École de la seconde chance vous a inscrit à la carte
+                “jeune engagé” avec ce numéro
+              </Text>
+            </Flex>
+          </Center>
+        ) : (
+          <>
+            <Heading
+              size="lg"
+              fontWeight={800}
+              textAlign="center"
+              px={6}
+              lineHeight="short"
+            >
+              Connectez-vous avec votre n° de téléphone
+            </Heading>
+            <Box mt={10}>
+              <PhoneNumberCTA
+                onSubmit={handleGenerateOtp}
+                error={phoneNumberError}
+                isLoadingOtp={isLoadingOtp}
+              />
+            </Box>
+          </>
+        )}
         <Divider mt={16} />
         <Flex flexDir="column" justifyContent="center" mt={8}>
           <Heading size="sm" fontWeight={800}>
