@@ -154,7 +154,7 @@ export default function Widget({ initialToken }: WidgetProps) {
       )}
       <Box px={8}>
         <Divider mb={6} borderColor="cje-gray.100" />
-        <TagsList baseLink="/widget/tag" />
+        <TagsList offers={allOffers} baseLink="/widget/tag" />
       </Box>
     </Flex>
   );

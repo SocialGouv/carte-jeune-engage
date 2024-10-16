@@ -21,11 +21,19 @@ import TagsList from "~/components/lists/TagsList";
 export default function Wallet() {
   const router = useRouter();
 
+  const { data: resultOffers, isLoading: isLoadingOffers } =
+    api.offer.getListOfAvailables.useQuery({
+      page: 1,
+      perPage: 1000,
+    });
+
   const { data: resultUserCoupons, isLoading: isLoadingUserCoupons } =
     api.coupon.getList.useQuery();
-  const { data: currentUserCoupons } = resultUserCoupons || {};
 
-  if (isLoadingUserCoupons)
+  const { data: currentUserCoupons } = resultUserCoupons || { data: [] };
+  const { data: offers } = resultOffers || { data: [] };
+
+  if (isLoadingUserCoupons || isLoadingOffers)
     return (
       <WalletWrapper>
         <Center h="85%" w="full">
@@ -113,7 +121,7 @@ export default function Wallet() {
           </Button>
         </Center>
         <Box mt={4} py={8} bgColor="bgGray" borderRadius="2.5xl">
-          <TagsList />
+          <TagsList offers={offers} />
         </Box>
       </Box>
     </WalletWrapper>

@@ -2,21 +2,41 @@ import { Flex, Icon, Link, Skeleton, Text } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import NextLink from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { HiChevronRight } from "react-icons/hi2";
+import { OfferIncluded } from "~/server/api/routers/offer";
+import { TagIncluded } from "~/server/api/routers/tag";
 import { api } from "~/utils/api";
 import { paginateArray } from "~/utils/tools";
 
 type TagsListProps = {
   baseLink?: string;
+  offers: OfferIncluded[];
 };
 
 const TagsList = (props: TagsListProps) => {
-  const { baseLink = "/dashboard/tag" } = props;
+  const { baseLink = "/dashboard/tag", offers } = props;
+
   const { data: resultTags, isLoading: isLoadingTags } =
     api.globals.tagsListOrdered.useQuery();
+
   const { data: tags } = resultTags || {};
-  const paginatedTags = paginateArray(tags ?? [], 6);
+
+  const paginatedTags = useMemo(() => {
+    const formatedTags = [] as TagIncluded[];
+
+    (tags || []).forEach((tag) => {
+      if (
+        offers.some((offer) =>
+          offer.tags.map((offerTag) => offerTag.id).includes(tag.id)
+        )
+      ) {
+        formatedTags.push(tag);
+      }
+    });
+
+    return paginateArray(formatedTags ?? [], 6);
+  }, [tags, offers]);
 
   const Layout = ({ children }: { children: ReactNode }) => {
     return (

@@ -140,7 +140,7 @@ export default function Dashboard() {
         <Divider borderColor="cje-gray.100" />
       </Box>
       <Box mt={8}>
-        <TagsList />
+        <TagsList offers={allOffers} />
       </Box>
     </Box>
   );
