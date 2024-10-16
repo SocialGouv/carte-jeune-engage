@@ -107,6 +107,7 @@ const InstallationBanner: React.FC<Props> = ({
         zIndex={2}
         fontSize={16}
         fontWeight={800}
+        py={7}
         color="black"
         colorScheme="whiteBtn"
         rightIcon={<Icon as={HiMiniArrowDownTray} w={5} h={5} />}

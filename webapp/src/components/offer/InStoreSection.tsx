@@ -4,6 +4,7 @@ import { HiArrowRight } from "react-icons/hi";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import NextLink from "next/link";
 import Image from "next/image";
+import ConditionalLink from "../ConditionalLink";
 
 type InStoreSectionProps = {
   offer: OfferIncluded;
@@ -44,13 +45,15 @@ const InStoreSection = (props: InStoreSectionProps) => {
           }}
         />
       </Box>
-      <Link
-        as={NextLink}
-        href={offer.linkOfEligibleStores ?? ""}
-        target="_blank"
-        _hover={{ textDecoration: "none" }}
-        onClick={(e) => {
-          if (disabled) e.preventDefault();
+      <ConditionalLink
+        to={offer.linkOfEligibleStores ?? ""}
+        condition={!!offer.linkOfEligibleStores}
+        props={{
+          target: "_blank",
+          onClick: (e) => {
+            if (disabled) e.preventDefault();
+          },
+          _hover: { textDecoration: "none" },
         }}
       >
         <Flex alignItems="center" borderRadius="2.5xl" bgColor="white" p={6}>
@@ -58,12 +61,12 @@ const InStoreSection = (props: InStoreSectionProps) => {
           <Text fontWeight={500}>Magasins participants</Text>
           <Icon as={HiArrowRight} w={4} h={4} ml="auto" />
         </Flex>
-      </Link>
-      <Flex alignItems="center" borderRadius="2.5xl" bgColor="white" p={6}>
+      </ConditionalLink>
+      {/* <Flex alignItems="center" borderRadius="2.5xl" bgColor="white" p={6}>
         <Icon as={HiShoppingCart} w={5} h={5} mr={4} />
         <Text fontWeight={500}>Vérifier les produits inclus</Text>
         <Icon as={HiArrowRight} w={4} h={4} ml="auto" />
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };
