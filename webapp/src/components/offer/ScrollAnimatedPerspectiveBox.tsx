@@ -40,6 +40,7 @@ export const ScrollAnimatedPerspectiveBox = ({
       transform={`perspective(800px) rotateX(${rotation}deg)`}
       transformOrigin="50% 100%"
       transition="transform 0.1s ease-out"
+      w="full"
     >
       {children}
     </Box>
