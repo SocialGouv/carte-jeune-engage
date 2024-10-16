@@ -23,10 +23,8 @@ import ChakraNextImage from "../ChakraNextImage";
 import { HiMiniBars3, HiMiniChevronRight, HiXMark } from "react-icons/hi2";
 import NextLink from "next/link";
 import { useRef } from "react";
-import useActiveSection from "~/hooks/useActiveSection";
 import { useOnClickOutside } from "usehooks-ts";
 import NextImage from "next/image";
-import BaseModal from "../modals/BaseModal";
 import QRCodeWrapper from "./QRCode";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -49,7 +47,11 @@ export const menuItems: { title: string; link: string }[] = [
 
 const Header = () => {
   const router = useRouter();
-  const { setShowDesktopQRCode } = useAuth();
+  const {
+    setShowDesktopQRCode,
+    showDesktopEligibleModal,
+    setShowDesktopEligibleModal,
+  } = useAuth();
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   const {
@@ -62,7 +64,11 @@ const Header = () => {
     isOpen: isOpenDesktopEligible,
     onOpen: onOpenDesktopEligible,
     onClose: onCloseDesktopEligible,
-  } = useDisclosure();
+  } = useDisclosure({
+    isOpen: showDesktopEligibleModal,
+    onOpen: () => setShowDesktopEligibleModal(true),
+    onClose: () => setShowDesktopEligibleModal(false),
+  });
 
   const headerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);

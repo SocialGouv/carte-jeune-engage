@@ -134,15 +134,14 @@ const forWhoList = [
 ];
 
 export default function Home() {
-  const { isOtpGenerated, setIsOtpGenerated, showDesktopQRCode } = useAuth();
+  const {
+    isOtpGenerated,
+    setIsOtpGenerated,
+    showDesktopQRCode,
+    setShowDesktopEligibleModal,
+  } = useAuth();
 
   const isDesktop = useBreakpointValue({ base: false, lg: true });
-
-  const {
-    isOpen: isOpenDesktopLoginError,
-    onOpen: onOpenDesktopLoginError,
-    onClose: onCloseDesktopLoginError,
-  } = useDisclosure();
 
   const [otpKind, setOtpKind] = useState<"otp" | "email">();
 
@@ -374,15 +373,16 @@ export default function Home() {
               align="center"
               display={{ base: "none", lg: "flex" }}
             >
-              <Link
+              <Text
                 mt={6}
                 textDecor="underline"
                 fontWeight={{ base: "bold", lg: "extrabold" }}
                 fontSize={{ lg: "lg" }}
-                onClick={() => {}}
+                cursor="pointer"
+                onClick={() => setShowDesktopEligibleModal(true)}
               >
                 Je suis éligible, je crée mon compte →
-              </Link>
+              </Text>
             </Flex>
           </Flex>
           <Flex
@@ -535,14 +535,19 @@ export default function Home() {
               pro, pour des vêtements, des loisirs, de la musique et du sport
               entre autres
             </Text>
-            <Link
-              textDecor="underline"
-              fontWeight={{ base: "bold", lg: "extrabold" }}
-              fontSize={{ lg: "lg" }}
-              onClick={() => {}}
-            >
-              Voir si je suis éligible →
-            </Link>
+            <ConditionalLink to="/login" condition={!isDesktop}>
+              <Text
+                textDecor="underline"
+                fontWeight={{ base: "bold", lg: "extrabold" }}
+                fontSize={{ lg: "lg" }}
+                cursor="pointer"
+                onClick={() =>
+                  isDesktop ? setShowDesktopEligibleModal(true) : undefined
+                }
+              >
+                Voir si je suis éligible →
+              </Text>
+            </ConditionalLink>
           </Flex>
         </Flex>
         <Flex
@@ -586,10 +591,12 @@ export default function Home() {
               entre autres
             </Text>
             <Link
+              as={NextLink}
+              href="/partners"
               textDecor={"underline"}
               fontWeight={{ base: "bold", lg: "extrabold" }}
               fontSize={{ lg: "lg" }}
-              onClick={() => {}}
+              passHref
             >
               Voir toutes les entreprises engagées →
             </Link>
@@ -652,6 +659,12 @@ export default function Home() {
                   >
                     <Flex
                       key={`referent-${name}`}
+                      cursor={isDesktop ? "pointer" : "default"}
+                      onClick={() => {
+                        isDesktop
+                          ? setShowDesktopEligibleModal(true)
+                          : undefined;
+                      }}
                       mt={index === 0 ? 2.5 : 0}
                       py={2}
                       alignItems="center"
@@ -720,14 +733,6 @@ export default function Home() {
           </Box>
         </Box>
       </Flex>
-      <BaseModal
-        isOpen={isOpenDesktopLoginError}
-        onClose={onCloseDesktopLoginError}
-        pt={16}
-        pb={36}
-      >
-        <NotEligibleForm phone_number={currentPhoneNumber} />
-      </BaseModal>
       {isDesktop && showDesktopQRCode && (
         <Flex
           flexDir="column"

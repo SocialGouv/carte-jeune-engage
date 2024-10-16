@@ -51,22 +51,16 @@ const Footer = () => {
             justifyContent={{ base: "start", lg: "space-between" }}
             textAlign="start"
           >
-            {menuItems.map((item) => (
-              <Box key={item.link} flex={1}>
-                <Link
-                  href={
-                    item.link.includes("#")
-                      ? `/#${item.link}-section`
-                      : item.link
-                  }
-                >
+            {menuItems.map(({ link, title }) => (
+              <Box key={link} flex={1}>
+                <Link href={link.includes("#") ? `/${link}-section` : link}>
                   <Text
-                    key={item.title}
+                    key={title}
                     align="start"
                     color="secondaryText"
                     fontSize="sm"
                   >
-                    {item.title}
+                    {title}
                   </Text>
                 </Link>
               </Box>
