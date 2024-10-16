@@ -115,7 +115,7 @@ const InstallationBanner: React.FC<Props> = ({
         Télécharger l'appli
       </Button>
       <Image
-        src="/images/installation-banner-background-phone.png"
+        src="/images/dashboard/installation-banner-background-phone.png"
         alt="Téléphone avec l'appli cje"
         width={0}
         height={0}

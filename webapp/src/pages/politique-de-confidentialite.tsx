@@ -152,10 +152,10 @@ export default function PrivacyPolicy() {
               <Tbody>
                 <Tr>
                   <Td>Données de contact des jeunes</Td>
-                  <Td>Données de contact des conseillers</Td>
+                  <Td>2 ans à compter du dernier contact </Td>
                 </Tr>
                 <Tr>
-                  <Td>2 ans à compter du dernier contact </Td>
+                  <Td>Données de contact des conseillers</Td>
                   <Td>2 ans à compter de la dernière connexion</Td>
                 </Tr>
               </Tbody>

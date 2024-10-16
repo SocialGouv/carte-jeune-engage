@@ -17,6 +17,7 @@ import { HiChevronRight, HiReceiptRefund, HiArrowRight } from "react-icons/hi2";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import TagsList from "~/components/lists/TagsList";
+import Image from "next/image";
 
 export default function Wallet() {
   const router = useRouter();
@@ -100,20 +101,34 @@ export default function Wallet() {
         <Center
           flexDir="column"
           mt={4}
-          p={8}
+          py={8}
+          px={10}
           bgColor="bgGray"
           borderRadius="3xl"
-          gap={6}
         >
-          <Text fontSize={20} fontWeight={800} textAlign="center">
+          <Text fontSize={20} fontWeight={800} textAlign="center" mb={8}>
             {currentUserCoupons && currentUserCoupons.length > 0
               ? "Trouver + de réductions"
               : "Dès qu’une offre vous intéresse, elle sera ici !"}
           </Text>
+          <Image
+            src="/images/dashboard/offer-cards.png"
+            alt="Cartes d'offres"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{
+              width: "100%",
+              height: "111px",
+              marginBottom: "-36px",
+              marginLeft: "10px",
+            }}
+          />
           <Button
             colorScheme="blackBtn"
             fontWeight={800}
             size="lg"
+            fontSize={14}
             rightIcon={<Icon as={HiArrowRight} w={4} h={4} mt={1} />}
             onClick={() => router.push("/dashboard")}
           >
