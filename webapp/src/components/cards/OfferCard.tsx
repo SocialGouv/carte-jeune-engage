@@ -1,8 +1,7 @@
 import { Box, Button, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
-import { HiBookmark, HiOutlineBookmark } from "react-icons/hi2";
-import { TbCircleCheckFilled } from "react-icons/tb";
+import { HiBookmark, HiCheckCircle, HiOutlineBookmark } from "react-icons/hi2";
 import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
 import { api } from "~/utils/api";
 import { dottedPattern } from "~/utils/chakra-theme";
@@ -25,12 +24,12 @@ const OfferCard = ({
   variant = "default",
   matomoEvent = [],
   handleValidateOffer,
-  disabled,
   fromWidget,
 }: OfferCardProps) => {
   const utils = api.useUtils();
 
   const isBookmarked = !!offer.userCoupon;
+  const isDisabled = !!offer.userCoupon?.used;
 
   const {
     mutateAsync: mutateAsyncCouponToUser,
@@ -94,7 +93,7 @@ const OfferCard = ({
           height="256px"
           sx={{ ...dottedPattern("#ffffff") }}
         >
-          <Flex opacity={disabled ? 0.6 : 1}>
+          <Flex opacity={isDisabled ? 0.6 : 1}>
             <Image
               src={offer.image?.url ?? "/images/landing/mobile-showcase.png"}
               alt={offer.image?.alt ?? "Image par défaut de l'offre"}
@@ -142,14 +141,16 @@ const OfferCard = ({
             </Flex>
             {variant === "default" && (
               <IconButton
-                aria-label="Enregistrer l'offre"
-                alignItems="center"
-                borderRadius="2.25xl"
+                isDisabled={isDisabled}
                 isLoading={
                   isLoadingCouponToUser || isLoadingRemoveCouponFromUser
                 }
+                aria-label="Enregistrer l'offre"
+                alignItems="center"
+                borderRadius="2.25xl"
                 colorScheme="whiteBtn"
                 _loading={{ opacity: 1, color: "black" }}
+                _disabled={{ opacity: 0.7 }}
                 onClick={(e) => {
                   e.preventDefault();
                   handleBookmarkOffer(offer.id, isBookmarked);
@@ -174,22 +175,34 @@ const OfferCard = ({
           gap={2}
           shadow="default"
         >
-          {disabled ? (
-            <Box
-              color="success"
+          {isDisabled ? (
+            <Flex
               bg="successLight"
-              fontSize="sm"
-              rounded={"2xl"}
-              px={10}
-              py={1.5}
-              mx={"auto"}
-              fontWeight="bold"
-              display="inline-block"
+              rounded="2xl"
+              px={variant === "default" ? 2 : 10}
+              py={variant === "default" ? 0.5 : 1.5}
+              mx="auto"
+              flexDir={variant === "default" ? "row-reverse" : "row"}
+              alignItems="center"
+              gap={1}
             >
-              <Flex alignItems={"center"} gap={1}>
-                Offre déjà utilisée <TbCircleCheckFilled size={"1.2rem"} />
-              </Flex>
-            </Box>
+              <Text
+                fontSize={variant === "default" ? 12 : 14}
+                color={variant === "default" ? "black" : "success"}
+                fontWeight={700}
+              >
+                {variant === "default"
+                  ? "Déjà utilisée"
+                  : "Offre déjà utilisée"}
+              </Text>
+              <Icon
+                as={HiCheckCircle}
+                color="success"
+                w={variant === "default" ? 3.5 : 5}
+                h={variant === "default" ? 3.5 : 5}
+                mt="1px"
+              />
+            </Flex>
           ) : (
             <ExpiryTag expiryDate={offer.validityTo} variant={variant} />
           )}
@@ -197,7 +210,7 @@ const OfferCard = ({
             flexDir="column"
             textAlign="center"
             h="154px"
-            opacity={disabled ? 0.6 : 1}
+            opacity={isDisabled ? 0.6 : 1}
           >
             <Text fontSize={18} fontWeight={800} noOfLines={2}>
               {offer.title}
@@ -213,7 +226,7 @@ const OfferCard = ({
               rounded="full"
               borderColor="borderGray"
               py={6}
-              fontSize={"md"}
+              fontSize="md"
               fontWeight={900}
               mb={2}
             >

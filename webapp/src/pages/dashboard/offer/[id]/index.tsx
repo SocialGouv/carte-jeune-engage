@@ -6,7 +6,6 @@ import OfferCard from "~/components/cards/OfferCard";
 import LoadingLoader from "~/components/LoadingLoader";
 import OfferHeaderWrapper from "~/components/wrappers/OfferHeaderWrapper";
 import { api } from "~/utils/api";
-import { isIOS } from "~/utils/tools";
 import { motion, AnimatePresence } from "framer-motion";
 import OfferContent from "~/components/offer/page/OfferContent";
 import CouponContent from "~/components/offer/page/CouponContent";
@@ -176,10 +175,9 @@ export default function OfferPage() {
             {kind === "offer" || !coupon ? (
               <motion.div style={{ backfaceVisibility: "hidden" }} layout>
                 <OfferCard
-                  offer={offer}
+                  offer={{ ...offer, userCoupon: coupon }}
                   variant="minimal"
                   handleValidateOffer={handleValidateOffer}
-                  disabled={(coupon && coupon.used) || false}
                 />
               </motion.div>
             ) : (

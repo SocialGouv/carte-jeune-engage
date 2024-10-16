@@ -117,12 +117,11 @@ export const offerRouter = createTRPCRouter({
         depth: 3,
       });
 
-      const myUnusedCoupons = await ctx.payload.find({
+      const currentUserCoupons = await ctx.payload.find({
         collection: "coupons",
         depth: 0,
         limit: 1000,
         where: {
-          used: { equals: false },
           user: { equals: ctx.session.id },
         },
       });
@@ -147,16 +146,18 @@ export const offerRouter = createTRPCRouter({
 
       const offersFiltered = (offers.docs as OfferIncludedWithUserCoupon[])
         .map((offer) => {
-          const myUnusedOfferCoupon = myUnusedCoupons.docs.find(
+          const myOfferCoupon = currentUserCoupons.docs.find(
             (coupon) => coupon.offer === offer.id
           );
           return {
             ...offer,
-            userCoupon: myUnusedOfferCoupon,
+            userCoupon: myOfferCoupon,
           };
         })
         .filter((offer, index) => {
-          const myUnusedOfferCoupon = offer.userCoupon;
+          const myUnusedOfferCoupon = currentUserCoupons.docs
+            .filter((coupon) => !coupon.used)
+            .find((coupon) => coupon.offer === offer.id);
 
           if (
             !isCurrentUser &&
