@@ -12368,7 +12368,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qrcode-generator@npm:^1.4.1":
+"qrcode-generator@npm:^1.4.4":
   version: 1.4.4
   resolution: "qrcode-generator@npm:1.4.4"
   checksum: 10c0/3249fcff98cb9fa17c21329d3dfd895e294a2d6ea48161f7b377010779d41f0cd88668b7fb3478a659725061bb0a770b40a227c2f4853e8c4a6b947a9e8bf17a
@@ -12727,16 +12727,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-qrcode-logo@npm:^2.9.0":
-  version: 2.10.0
-  resolution: "react-qrcode-logo@npm:2.10.0"
+"react-qrcode-logo@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "react-qrcode-logo@npm:3.0.0"
   dependencies:
     lodash.isequal: "npm:^4.5.0"
-    qrcode-generator: "npm:^1.4.1"
+    qrcode-generator: "npm:^1.4.4"
   peerDependencies:
-    react: ">=16.4.1"
-    react-dom: ">=16.4.1"
-  checksum: 10c0/f112403105d4b8c1d2494f920f8acb86874cbfbe772f13b88debf1661f9558aac4ac5ec597747b931b49fe79155c6142f8308d413373e3b901d256f891846e00
+    react: ">=18.0.0"
+    react-dom: ">=18.0.0"
+  checksum: 10c0/5f179762e8354bd8325d4c274cf731466b908a0e297541b7d9a7ebf94ac7cc86872364924402f6dea096d396b4cb70436cd2b496fe6af6bef5d1872d1c07bdd3
   languageName: node
   linkType: hard
 
@@ -14857,7 +14857,7 @@ __metadata:
     react-hook-form: "npm:^7.50.1"
     react-icons: "npm:^5.0.0"
     react-otp-input: "npm:^3.1.1"
-    react-qrcode-logo: "npm:^2.9.0"
+    react-qrcode-logo: "npm:^3.0.0"
     react-toastify: "npm:^10.0.5"
     serwist: "npm:^9.0.2"
     sharp: "npm:^0.33.2"
