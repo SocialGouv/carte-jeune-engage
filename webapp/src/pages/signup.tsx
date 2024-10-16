@@ -19,10 +19,12 @@ import LoadingLoader from "~/components/LoadingLoader";
 import FormBlock from "~/components/forms/FormBlock";
 import { useQuery } from "@tanstack/react-query";
 import OnBoardingStepsWrapper from "~/components/wrappers/OnBoardingStepsWrapper";
-import { onBoardingSteps } from "./onboarding";
 import { api } from "~/utils/api";
 import { getCookie, setCookie } from "cookies-next";
+import useDebounceValueWithState from "~/hooks/useDebounceCallbackWithPending";
+import FormAutocompleteInput from "~/components/forms/FormAutocompleteInput";
 import { useAuth } from "~/providers/Auth";
+import Image from "next/image";
 
 type SignUpForm = {
   hasAcceptedCGU: boolean;
@@ -32,32 +34,32 @@ type SignUpForm = {
   birthDate: string;
   userEmail: string;
   address: string;
+  cejFrom:
+    | "serviceCivique"
+    | "ecole2ndeChance"
+    | "epide"
+    | "franceTravail"
+    | "missionLocale";
+  preferences: string[];
 };
 
 export type SignUpFormStep = {
-  title: string;
+  title: string | JSX.Element;
   description?: string;
+  imageUrl?: string;
   field: FieldProps;
 };
 
 export const signupSteps = [
   {
-    title: "Bienvenue ! On peut vous appeler comment ?",
-    field: {
-      name: "civility",
-      kind: "text",
-      label: "Civilité",
-      rules: {
-        required: "Ce champ est obligatoire",
-      },
-    },
-  },
-  {
     title: "Quel est votre prénom ?",
+    description:
+      "Saisissez la même information que sur vos documents administratifs officiels.",
     field: {
       name: "firstName",
       kind: "text",
       label: "Prénom",
+      placeholder: "Votre prénom",
       rules: {
         required: "Ce champ est obligatoire",
         minLength: {
@@ -72,11 +74,37 @@ export const signupSteps = [
     },
   },
   {
-    title: "quel est votre nom de famille ?",
+    title: "On peut vous appeler comment ?",
+    description:
+      "Saisissez la même information que sur vos documents administratifs officiels.",
+    field: {
+      name: "civility",
+      kind: "block",
+      label: "Civilité",
+      values: [
+        {
+          value: "man",
+          label: "Monsieur",
+        },
+        {
+          value: "woman",
+          label: "Madame",
+        },
+      ],
+      rules: {
+        required: "Ce champ est obligatoire",
+      },
+    },
+  },
+  {
+    title: "Quel est votre nom de famille ?",
+    description:
+      "Saisissez la même information que sur vos documents administratifs officiels.",
     field: {
       name: "lastName",
       kind: "text",
       label: "Nom de famille",
+      placeholder: "Votre nom de famille",
       rules: {
         required: "Ce champ est obligatoire",
         minLength: {
@@ -91,13 +119,69 @@ export const signupSteps = [
     },
   },
   {
-    title: "Votre date de naissance ?",
+    title: "À quel organisme êtes-vous rattaché ?",
+    field: {
+      name: "cejFrom",
+      kind: "block",
+      values: [
+        {
+          value: "serviceCivique",
+          label: "Je suis en Service Civique",
+        },
+        {
+          value: "ecole2ndeChance",
+          label: "Je suis en école de la 2nde chance",
+        },
+        {
+          value: "epide",
+          label: "Je suis en EPIDE",
+        },
+        {
+          value: "franceTravail",
+          label: "Je suis à France travail",
+        },
+        {
+          value: "missionLocale",
+          label: "Je suis à la Mission Locale",
+        },
+      ],
+      label: "Quel établissement",
+    },
+  },
+  {
+    title: (
+      <Text>
+        Votre adresse email
+        <Text color="error" fontSize="sm">
+          (obligatoire)
+        </Text>
+      </Text>
+    ),
     description:
-      "Votre date de naissance nous permet de personnaliser votre expérience et de garantir la sécurité de vos données",
+      "Votre adresse email vous servira à récupérer votre compte si il y a un problème avec votre n° de téléphone",
+    field: {
+      name: "userEmail",
+      kind: "email",
+      label: "Email",
+      placeholder: "Votre adresse email",
+      rules: {
+        required: "Ce champ est obligatoire",
+        pattern: {
+          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          message: "Veuillez saisir une adresse email valide",
+        },
+      },
+    },
+  },
+  {
+    title: "Votre date de naissance",
+    description:
+      "L’application est réservé au 16-25 ans la date de naissance ne sera communiquée à personne",
     field: {
       name: "birthDate",
       kind: "date",
       label: "Date de naissance",
+      placeholder: "JJ/MM/AAAA",
       rules: {
         required: "Ce champ est obligatoire",
         // rules to validate from 16 years old to 26 years old
@@ -118,41 +202,36 @@ export const signupSteps = [
     },
   },
   {
-    title: "Votre adresse email ?",
-    description:
-      "Votre adresse email vous permettra aussi de vous reconnecter si vous changez de numéro de téléphone par exemple",
+    title: "Votre ville",
+    description: "Pour trouver les promotions proches de chez vous.",
+    imageUrl: "/images/onboarding/map-pin.png",
     field: {
-      name: "userEmail",
-      kind: "email",
-      label: "Email",
+      name: "address",
+      kind: "text",
+      label: "Nom de ma ville",
+      placeholder: "Chercher le nom de votre ville",
       rules: {
         required: "Ce champ est obligatoire",
-        pattern: {
-          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-          message: "Veuillez saisir une adresse email valide",
-        },
       },
     },
   },
   {
-    title: "Sélectionnez votre ville",
-    description:
-      "En fonction de votre ville on vous donnera les magasins les plus proches. Si vous n’habitez pas dans le Val d’Oise (95), tout en bas de la liste, sélectionnez “Autre ville”. ",
+    title: "Qu’est-ce qui vous intéresse le plus ?",
     field: {
-      name: "address",
-      kind: "text",
-      label: "Adresse",
+      name: "preferences",
+      kind: "block",
+      label: "Préférences",
       rules: {
         required: "Ce champ est obligatoire",
       },
     },
   },
-] as const;
+] as SignUpFormStep[];
 
 export default function Signup() {
   const router = useRouter();
 
-  const { setShowModalInstallApp } = useAuth();
+  const { user, refetchUser, setShowNotificationModal } = useAuth();
 
   const { signupStep } = router.query as {
     signupStep: keyof Omit<SignUpForm, "hasAcceptedCGU"> | undefined;
@@ -161,6 +240,7 @@ export default function Signup() {
   const { mutateAsync: updateUser, isLoading: isLoadingUpdateUser } =
     api.user.update.useMutation();
 
+  const [finishedOnBoarding, setFinishedOnBoarding] = useState(false);
   const [currentSignupStep, setCurrentSignupStep] =
     useState<SignUpFormStep | null>(null);
 
@@ -185,6 +265,9 @@ export default function Signup() {
     defaultValues,
   });
 
+  const [isAutocompleteInputFocused, setIsAutocompleteInputFocused] =
+    useState(false);
+
   const onSubmit: SubmitHandler<SignUpForm> = (data) => {
     if (!currentSignupStep) return;
     const currentStepIndex = signupSteps.findIndex(
@@ -192,7 +275,10 @@ export default function Signup() {
     );
     if (currentStepIndex === signupSteps.length - 1) {
       localStorage.removeItem("cje-signup-form");
-      updateUser(data).then(() => {
+      updateUser({
+        ...data,
+        preferences: data.preferences.filter(Boolean).map(Number),
+      }).then(() => {
         const jwtToken = getCookie(
           process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"
         );
@@ -211,7 +297,10 @@ export default function Signup() {
               data.refreshedToken as string,
               { expires: new Date((data.exp as number) * 1000) }
             );
-            router.push("/onboarding");
+            refetchUser().then(() => {
+              setFinishedOnBoarding(true);
+              setTimeout(() => router.push("/dashboard"), 1200);
+            });
           });
         });
       });
@@ -225,51 +314,39 @@ export default function Signup() {
 
   const formValues = watch();
 
-  const { data: allMunicipalitiesOf95 } = useQuery(
-    ["getMunicipalitiesOf95"],
+  const { data: resultTags } = api.globals.tagsListOrdered.useQuery();
+  const { data: tags } = resultTags || { data: [] };
+
+  const [debouncedAddress, isDebouncePending] = useDebounceValueWithState(
+    formValues.address,
+    500
+  );
+
+  const { data: addressOptions, isLoading: isLoadingAddressOptions } = useQuery(
+    ["getAddressOptions", debouncedAddress],
     async () => {
+      const formatedDebouncedAddress = debouncedAddress.split(",")[0];
       const response = await fetch(
-        "https://geo.api.gouv.fr/departements/95/communes"
+        `https://geo.api.gouv.fr/communes?nom=${formatedDebouncedAddress}&codeDepartement=95&fields=departement&limit=5`
       );
       const data = await response.json();
-      return data.map((commune: any) => commune.nom) as string[];
+      return data.map(
+        (municipality: any) =>
+          `${municipality.nom}, ${municipality.departement.nom}`
+      ) as string[];
+    },
+    {
+      enabled: !!debouncedAddress && debouncedAddress.length > 2,
     }
   );
 
-  /* Old Address autocomplete logic */
-
-  // const [debouncedAddress, isDebouncePending] = useDebounceValueWithState(
-  //   formValues.address,
-  //   500
-  // );
-
-  // const { data: addressOptions, isLoading: isLoadingAddressOptions } = useQuery(
-  //   ["getAddressOptions", debouncedAddress],
-  //   async () => {
-  //     const response = await fetch(
-  //       `https://api-adresse.data.gouv.fr/search/?q=${debouncedAddress}&limit=4&autocomplete=1&type=housenumber`
-  //     );
-  //     const data = await response.json();
-  //     return data.features.map((feature: any) =>
-  //       [feature.properties.name, feature.properties.city].join(", ")
-  //     ) as string[];
-  //   },
-  //   {
-  //     enabled: !!debouncedAddress && debouncedAddress.length > 4,
-  //   }
-  // );
-
-  // useEffect(() => {
-  //   const { address, ...tmpFormValues } = formValues;
-  //   localStorage.setItem(
-  //     "cje-signup-form",
-  //     JSON.stringify({ ...tmpFormValues, address: debouncedAddress })
-  //   );
-  // }, [formValues, debouncedAddress]);
-
   useEffect(() => {
-    localStorage.setItem("cje-signup-form", JSON.stringify({ ...formValues }));
-  }, [formValues]);
+    const { address, ...tmpFormValues } = formValues;
+    localStorage.setItem(
+      "cje-signup-form",
+      JSON.stringify({ ...tmpFormValues, address: debouncedAddress })
+    );
+  }, [formValues, debouncedAddress]);
 
   useEffect(() => {
     if (!signupStep || typeof signupStep !== "string") {
@@ -499,24 +576,22 @@ export default function Signup() {
             alignItems={"center"}
             borderTopWidth={1}
             px={8}
-            pt={6}
-            pb={10}
+            pt={3}
+            pb={6}
             position={"fixed"}
             bottom={0}
             backgroundColor={"bgWhite"}
             w="full"
           >
-            <Text color="secondaryText" fontWeight={"medium"}>
+            <Text color="disabled" fontWeight={"medium"} fontSize={14}>
               Vous devez accepter pour continuer
             </Text>
             <Button
               size="lg"
+              rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
               w={"full"}
               mt={4}
-              onClick={() => {
-                setValue("hasAcceptedCGU", true);
-                setShowModalInstallApp(true);
-              }}
+              onClick={() => setValue("hasAcceptedCGU", true)}
             >
               J'accepte
             </Button>
@@ -525,6 +600,35 @@ export default function Signup() {
       </Flex>
     );
   }
+
+  if (finishedOnBoarding)
+    return (
+      <Box h="full" bgColor="primary">
+        <Center h="full">
+          <Flex
+            flexDir="column"
+            alignItems="center"
+            justifyContent="center"
+            textAlign="center"
+            gap={4}
+            px={6}
+            mb={20}
+          >
+            <Image
+              src="/images/cje-logo-white-blue.svg"
+              alt="Carte Jeune Engagé"
+              width={141}
+              height={75}
+            />
+            <Text fontWeight="extrabold" color="white" mt={20} fontSize={32}>
+              Ca y est {user?.firstName} !
+              <br />
+              Les réductions sont à vous
+            </Text>
+          </Flex>
+        </Center>
+      </Box>
+    );
 
   const currentFieldValue = getValues(
     currentSignupStep.field.name as keyof SignUpForm
@@ -537,114 +641,169 @@ export default function Signup() {
           signupSteps.findIndex(
             (step) => step.field.name === currentSignupStep.field.name
           ) + 1,
-        total: signupSteps.length + onBoardingSteps.length,
+        total: signupSteps.length + 1,
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ height: "100%" }}>
         <Flex
           display="flex"
           flexDir="column"
-          pt={8}
-          pb={12}
-          px={6}
+          py={12}
+          px={8}
           justifyContent="space-between"
+          gap={8}
           h="full"
         >
           <Flex flexDir="column" justifyContent="center">
-            <Heading as="h1" size="md" fontWeight="extrabold" mb={4}>
-              {currentSignupStep.field.name !== "lastName"
-                ? currentSignupStep?.title
-                : `${
-                    formValues.firstName.charAt(0).toUpperCase() +
-                    formValues.firstName.slice(1)
-                  }, ${currentSignupStep.title}`}
+            <Heading
+              as="h1"
+              size="lg"
+              fontWeight="extrabold"
+              textAlign="center"
+            >
+              {currentSignupStep.title}
             </Heading>
-            <Text fontSize="sm" fontWeight="medium" color="secondaryText">
-              {currentSignupStep?.description ||
-                "Saisissez la même information que sur vos documents administratifs officiels."}
-            </Text>
+            {!isAutocompleteInputFocused && (
+              <>
+                <Text
+                  fontSize={14}
+                  fontWeight="medium"
+                  color="secondaryText"
+                  mt={4}
+                >
+                  {currentSignupStep.description}
+                </Text>
+                {currentSignupStep.imageUrl && (
+                  <Center mt={2}>
+                    <Image
+                      src={currentSignupStep.imageUrl}
+                      alt={currentSignupStep.title as string}
+                      width={126}
+                      height={0}
+                    />
+                  </Center>
+                )}
+              </>
+            )}
             <Box mt={6} key={currentSignupStep.field.name}>
-              {currentSignupStep.field.name === "civility" ? (
-                <Flex alignItems="center" w="full" gap={6}>
+              {(currentSignupStep.field.name === "civility" ||
+                currentSignupStep.field.name === "cejFrom") &&
+              currentSignupStep.field.values ? (
+                <Flex
+                  flexDir={
+                    currentSignupStep.field.name === "civility"
+                      ? "row"
+                      : "column"
+                  }
+                  alignItems="center"
+                  w="full"
+                  gap={2}
+                >
                   <Controller
                     control={control}
                     name={currentSignupStep.field.name}
                     render={({ field: { onChange, value } }) => (
                       <>
-                        <FormBlock
-                          value="man"
-                          currentValue={value}
-                          onChange={onChange}
-                        >
-                          Monsieur
-                        </FormBlock>
-                        <FormBlock
-                          value="woman"
-                          currentValue={value}
-                          onChange={onChange}
-                        >
-                          Madame
-                        </FormBlock>
+                        {(currentSignupStep.field.values ?? []).map((block) => (
+                          <FormBlock
+                            key={`${currentSignupStep.field.name}-${block.value}`}
+                            variant={
+                              currentSignupStep.field.name === "cejFrom"
+                                ? "inline"
+                                : "default"
+                            }
+                            iconSrc={
+                              currentSignupStep.field.name === "cejFrom"
+                                ? `/images/referent/${block.value}.png`
+                                : undefined
+                            }
+                            wrapperIconProps={
+                              currentSignupStep.field.name === "cejFrom"
+                                ? {
+                                    p: 1,
+                                    bgColor:
+                                      value === block.value
+                                        ? "white"
+                                        : "inherit",
+                                    borderRadius: "2lg",
+                                  }
+                                : undefined
+                            }
+                            iconProps={
+                              currentSignupStep.field.name === "cejFrom"
+                                ? { width: 80, height: 40 }
+                                : undefined
+                            }
+                            value={block.value}
+                            currentValue={value}
+                            onChange={onChange}
+                          >
+                            {block.label}
+                          </FormBlock>
+                        ))}
                       </>
                     )}
                   />
                 </Flex>
-              ) : currentSignupStep.field.name === "address" ? (
-                <>
-                  {/* <FormAutocompleteInput
-										control={control}
-										options={addressOptions}
-										setError={setError}
-										clearErrors={clearErrors}
-										isLoading={isLoadingAddressOptions || isDebouncePending}
-										field={currentSignupStep.field}
-										fieldError={
-											errors[currentSignupStep?.field.name as keyof SignUpForm]
-										}
-										handleSubmit={() => handleSubmit(onSubmit)()}
-									/> */}
-                  <Flex
-                    flexDir="column"
-                    alignItems="center"
-                    w="full"
-                    gap={4}
-                    pb={32}
-                  >
+              ) : currentSignupStep.field.name === "preferences" ? (
+                <Flex
+                  flexDir="column"
+                  alignItems="center"
+                  w="full"
+                  gap={2}
+                  pb={32}
+                >
+                  {tags.map((tag, index) => (
                     <Controller
                       control={control}
-                      name={currentSignupStep.field.name}
-                      render={({ field: { onChange, value } }) => (
-                        <>
-                          {allMunicipalitiesOf95?.map((commune) => (
-                            <FormBlock
-                              key={commune}
-                              wrapperProps={{ py: 4 }}
-                              value={commune}
-                              currentValue={value}
-                              onChange={onChange}
-                            >
-                              {commune}
-                            </FormBlock>
-                          ))}
-                          <FormBlock
-                            value="Autre ville"
-                            wrapperProps={{ py: 4 }}
-                            currentValue={value}
-                            onChange={onChange}
-                          >
-                            Autre ville
-                          </FormBlock>
-                        </>
+                      name={`preferences.${index}`}
+                      render={({ field: { onChange } }) => (
+                        <FormBlock
+                          key={`${currentSignupStep.field.name}-${tag.id.toString()}`}
+                          variant="inline"
+                          iconProps={{ width: 48, height: 48 }}
+                          value={tag.id.toString()}
+                          currentValue={formValues.preferences}
+                          iconSrc={tag.icon.url as string}
+                          onChange={onChange}
+                          withCheckbox
+                        >
+                          {tag.label}
+                        </FormBlock>
                       )}
                     />
-                  </Flex>
-                </>
+                  ))}
+                </Flex>
+              ) : currentSignupStep.field.name === "address" ? (
+                <FormAutocompleteInput
+                  control={control}
+                  options={addressOptions}
+                  setError={setError}
+                  clearErrors={clearErrors}
+                  isLoading={isLoadingAddressOptions || isDebouncePending}
+                  field={currentSignupStep.field}
+                  fieldError={
+                    errors[
+                      currentSignupStep?.field.name as keyof Omit<
+                        SignUpForm,
+                        "preferences"
+                      >
+                    ]
+                  }
+                  handleSubmit={() => handleSubmit(onSubmit)()}
+                  setIsInputFocused={setIsAutocompleteInputFocused}
+                />
               ) : (
                 <FormInput
                   register={register}
                   field={currentSignupStep.field}
                   fieldError={
-                    errors[currentSignupStep?.field.name as keyof SignUpForm]
+                    errors[
+                      currentSignupStep?.field.name as keyof Omit<
+                        SignUpForm,
+                        "preferences"
+                      >
+                    ]
                   }
                 />
               )}
@@ -654,23 +813,32 @@ export default function Signup() {
             colorScheme="blackBtn"
             isDisabled={
               !currentFieldValue ||
+              (currentSignupStep.field.name === "preferences" &&
+                formValues.preferences?.filter(Boolean).length === 0) ||
               errors[currentSignupStep.field.name as keyof SignUpForm]
                 ?.message !== undefined
             }
             type="submit"
-            hidden={
-              currentSignupStep.field.name === "address" && !formValues.address
-            }
             position={
-              currentSignupStep.field.name === "address" ? "fixed" : "relative"
+              currentSignupStep.field.name === "preferences"
+                ? "fixed"
+                : "relative"
             }
-            bottom={currentSignupStep.field.name === "address" ? 8 : undefined}
-            left={currentSignupStep.field.name === "address" ? 8 : undefined}
-            right={currentSignupStep.field.name === "address" ? 8 : undefined}
+            left={
+              currentSignupStep.field.name === "preferences" ? "50%" : "auto"
+            }
+            transform={
+              currentSignupStep.field.name === "preferences"
+                ? "translateX(-50%)"
+                : "none"
+            }
+            bottom={
+              currentSignupStep.field.name === "preferences" ? 10 : "auto"
+            }
             rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
             isLoading={isLoadingUpdateUser}
           >
-            Continuer
+            Suivant
           </Button>
         </Flex>
       </form>

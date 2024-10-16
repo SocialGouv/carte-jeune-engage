@@ -24,6 +24,11 @@ export const Categories: CollectionConfig = {
       required: true,
     },
     {
+      name: "color",
+      type: "text",
+      label: "Couleur",
+    },
+    {
       name: "icon",
       type: "upload",
       label: "Icône",

@@ -1,8 +1,8 @@
-import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-postgres'
-import { sql } from 'drizzle-orm'
+import { MigrateUpArgs, MigrateDownArgs } from "@payloadcms/db-postgres";
+import { sql } from "drizzle-orm";
 
 export async function up({ payload }: MigrateUpArgs): Promise<void> {
-await payload.db.drizzle.execute(sql`
+  await payload.db.drizzle.execute(sql`
 
 DO $$ BEGIN
  CREATE TYPE "enum_users_status_image" AS ENUM('pending', 'approved', 'rejected');
@@ -34,13 +34,11 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 `);
-
-};
+}
 
 export async function down({ payload }: MigrateDownArgs): Promise<void> {
-await payload.db.drizzle.execute(sql`
+  await payload.db.drizzle.execute(sql`
 
 DROP TABLE "users_rels";
 ALTER TABLE "users" DROP COLUMN IF EXISTS "status_image";`);
-
-};
+}

@@ -1,14 +1,32 @@
-import { Where, WhereField } from "payload/types";
+import { Where } from "payload/types";
 import { z } from "zod";
-import { Category, Offer, Media, Partner } from "~/payload/payload-types";
-import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
+import {
+  Category,
+  Coupon,
+  Media,
+  Offer,
+  Partner,
+  Tag,
+} from "~/payload/payload-types";
+import {
+  createTRPCRouter,
+  userOrWidgetProtectedProcedure,
+  userProtectedProcedure,
+  widgetTokenProtectedProcedure,
+} from "~/server/api/trpc";
 import { ZGetListParams } from "~/server/types";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
 
 export interface OfferIncluded extends Offer {
+  image: Media;
   partner: Partner & { icon: Media };
-  category: Category & { icon: Media };
+  category: (Category & { icon: Media })[];
+  tags: (Tag & { icon: Media })[];
   imageOfEligibleStores: Media;
+}
+
+export interface OfferIncludedWithUserCoupon extends OfferIncluded {
+  userCoupon?: Coupon;
 }
 
 export const offerRouter = createTRPCRouter({
@@ -17,9 +35,14 @@ export const offerRouter = createTRPCRouter({
       ZGetListParams.merge(
         z.object({
           offerIds: z.array(z.number()).optional(),
+          tagIds: z.array(z.number()).optional(),
           categoryId: z.number().optional(),
+          kinds: z
+            .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
+            .optional(),
           isCurrentUser: z.boolean().optional(),
           matchPreferences: z.boolean().optional(),
+          searchOnPartner: z.string().optional(),
         })
       )
     )
@@ -32,6 +55,9 @@ export const offerRouter = createTRPCRouter({
         offerIds,
         isCurrentUser,
         matchPreferences,
+        kinds,
+        tagIds,
+        searchOnPartner,
       } = input;
 
       let where = {
@@ -61,7 +87,25 @@ export const offerRouter = createTRPCRouter({
 
       if (offerIds) {
         where.id = {
-          in: offerIds || [],
+          in: offerIds,
+        };
+      }
+
+      if (tagIds) {
+        where.tags = {
+          in: tagIds,
+        };
+      }
+
+      if (kinds && kinds.length) {
+        where.kind = {
+          in: kinds,
+        };
+      }
+
+      if (searchOnPartner) {
+        where["partner.name"] = {
+          like: searchOnPartner,
         };
       }
 
@@ -71,14 +115,14 @@ export const offerRouter = createTRPCRouter({
         page: page,
         where: where as Where,
         sort: sort,
+        depth: 3,
       });
 
-      const myUnusedCoupons = await ctx.payload.find({
+      const currentUserCoupons = await ctx.payload.find({
         collection: "coupons",
         depth: 0,
         limit: 1000,
         where: {
-          used: { equals: false },
           user: { equals: ctx.session.id },
         },
       });
@@ -101,29 +145,134 @@ export const offerRouter = createTRPCRouter({
         couponCountOfOffersPromises
       );
 
-      const offersFiltered = offers.docs.filter((offer, index) => {
-        const myUnusedOfferCoupons = myUnusedCoupons.docs.find(
-          (coupon) => coupon.offer === offer.id
-        );
+      const offersFiltered = (offers.docs as OfferIncludedWithUserCoupon[])
+        .map((offer) => {
+          const myOfferCoupon = currentUserCoupons.docs.find(
+            (coupon) => coupon.offer === offer.id
+          );
+          return {
+            ...offer,
+            userCoupon: myOfferCoupon,
+          };
+        })
+        .filter((offer, index) => {
+          const myUnusedOfferCoupon = currentUserCoupons.docs
+            .filter((coupon) => !coupon.used)
+            .find((coupon) => coupon.offer === offer.id);
 
-        if (
-          !isCurrentUser &&
-          (offer.kind === "voucher_pass" || offer.kind === "code_space")
-        )
-          return true;
-        else if (isCurrentUser) return !!myUnusedOfferCoupons;
+          if (
+            !isCurrentUser &&
+            (offer.kind === "voucher_pass" || offer.kind === "code_space")
+          )
+            return true;
+          else if (isCurrentUser) return !!myUnusedOfferCoupon;
 
-        const coupons = couponCountOfOffers[index];
-        return (!!coupons && !!coupons.docs.length) || !!myUnusedOfferCoupons;
-      });
+          const coupons = couponCountOfOffers[index];
+          return (!!coupons && !!coupons.docs.length) || !!myUnusedOfferCoupon;
+        });
 
       return {
-        data: offersFiltered as OfferIncluded[],
+        data: offersFiltered,
         metadata: { page, count: offers.docs.length },
       };
     }),
 
-  getById: userProtectedProcedure
+  getWidgetListOfAvailables: widgetTokenProtectedProcedure
+    .input(
+      ZGetListParams.merge(
+        z.object({
+          tagIds: z.array(z.number()).optional(),
+          categoryId: z.number().optional(),
+          kinds: z
+            .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
+            .optional(),
+          searchOnPartner: z.string().optional(),
+        })
+      )
+    )
+    .query(async ({ ctx, input }) => {
+      const {
+        tagIds,
+        categoryId,
+        kinds,
+        searchOnPartner,
+        perPage,
+        page,
+        sort,
+      } = input;
+
+      let where = {
+        ...payloadWhereOfferIsValid(),
+      } as Where;
+
+      if (categoryId) {
+        where.category = {
+          equals: categoryId,
+        };
+      }
+
+      if (tagIds) {
+        where.tags = {
+          in: tagIds,
+        };
+      }
+
+      if (kinds) {
+        where.kind = {
+          in: kinds,
+        };
+      }
+
+      if (searchOnPartner) {
+        where["partner.name"] = {
+          like: searchOnPartner,
+        };
+      }
+
+      const offers = await ctx.payload.find({
+        collection: "offers",
+        limit: perPage,
+        page: page,
+        where: where as Where,
+        sort: sort,
+        depth: 3,
+      });
+
+      const couponCountOfOffersPromises = offers.docs.map((offer) =>
+        ctx.payload.find({
+          collection: "coupons",
+          limit: 1,
+          where: {
+            offer: {
+              equals: offer.id,
+            },
+            used: { equals: false },
+            user: { exists: false },
+          },
+        })
+      );
+
+      const couponCountOfOffers = await Promise.all(
+        couponCountOfOffersPromises
+      );
+
+      const offersFiltered = (
+        offers.docs as OfferIncludedWithUserCoupon[]
+      ).filter((offer, index) => {
+        if (offer.kind === "voucher_pass" || offer.kind === "code_space")
+          return true;
+
+        const coupons = couponCountOfOffers[index];
+        return !!coupons && !!coupons.docs.length;
+      });
+
+      return {
+        data: offersFiltered,
+        metadata: { page, count: offers.docs.length },
+      };
+    }),
+
+  getById: userOrWidgetProtectedProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       const { id } = input;

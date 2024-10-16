@@ -1,98 +1,139 @@
 import React from "react";
-import { Button, Flex, Icon, Text, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Icon,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { useAuth } from "~/providers/Auth";
 import { useLocalStorage } from "usehooks-ts";
 import { FiX } from "react-icons/fi";
 import { push } from "@socialgouv/matomo-next";
+import { HiMiniArrowDownTray } from "react-icons/hi2";
+import Image from "next/image";
 
 type Props = {
-	ignoreUserOutcome: boolean;
-	theme?: "light" | "dark";
-	matomoEvent?: string[];
+  ignoreUserOutcome: boolean;
+  matomoEvent?: string[];
 };
 
 const InstallationBanner: React.FC<Props> = ({
-	ignoreUserOutcome,
-	theme = "light",
-	matomoEvent = []
+  ignoreUserOutcome,
+  matomoEvent = [],
 }) => {
-	// overlay show state
-	const toast = useToast();
-	const { user } = useAuth();
-	const [userOutcome, setUserOutcome] = useLocalStorage<
-		"accepted" | "dismissed" | null
-	>("cje-pwa-user-outcome", null);
+  // overlay show state
+  const toast = useToast();
+  const { user } = useAuth();
+  const [userOutcome, setUserOutcome] = useLocalStorage<
+    "accepted" | "dismissed" | null
+  >("cje-pwa-user-outcome", null);
 
-	const { showing, deferredEvent, setShowing, setDeferredEvent } = useAuth();
+  const { showing, deferredEvent, setShowing, setDeferredEvent } = useAuth();
 
-	async function handleInstallClick() {
-		if (!!matomoEvent.length)
-			push(['trackEvent', ...matomoEvent])
+  async function handleInstallClick() {
+    if (!!matomoEvent.length) push(["trackEvent", ...matomoEvent]);
 
-		if (deferredEvent) {
-			await deferredEvent.prompt();
-			const { outcome } = await deferredEvent.userChoice;
-			setUserOutcome(outcome);
-			setDeferredEvent(null);
-		} else {
-			toast({
-				title: "Installation failed, please try again later!",
-				status: "error",
-			});
-		}
+    if (deferredEvent) {
+      await deferredEvent.prompt();
+      const { outcome } = await deferredEvent.userChoice;
+      setUserOutcome(outcome);
+      setDeferredEvent(null);
+    } else {
+      toast({
+        title: "Installation failed, please try again later!",
+        status: "error",
+      });
+    }
 
-		setShowing(false);
-	}
+    setShowing(false);
+  }
 
-	if (
-		!showing ||
-		user === null ||
-		(!ignoreUserOutcome && userOutcome === "dismissed")
-	)
-		return null;
+  if (
+    !showing ||
+    user === null ||
+    (!ignoreUserOutcome && userOutcome === "dismissed")
+  )
+    return null;
 
-	return (
-		<Flex
-			flexDir="column"
-			mb={4}
-			p={4}
-			gap={3}
-			borderRadius="1.5xl"
-			bgColor={theme === "light" ? "cje-gray.500" : "blackLight"}
-			color={theme === "light" ? "black" : "white"}
-		>
-			<Flex alignItems="flex-start">
-				<Text fontSize="lg" fontWeight="bold" w="85%">
-					Ajouter l’application sur votre téléphone
-				</Text>
-				{!ignoreUserOutcome && (
-					<Icon
-						as={FiX}
-						ml="auto"
-						h={7}
-						w={7}
-						onClick={() => setUserOutcome("dismissed")}
-					/>
-				)}
-			</Flex>
-			<Text fontSize="sm" fontWeight="medium">
-				Créer un raccourci sur votre téléphone pour pouvoir accéder à toutes vos
-				promotions simplement et rapidement.
-			</Text>
-			<Button
-				size="lg"
-				mt={3}
-				py={3}
-				fontSize="md"
-				fontWeight="bold"
-				color="black"
-				colorScheme="whiteBtn"
-				onClick={handleInstallClick}
-			>
-				Ajouter l’application sur l’accueil
-			</Button>
-		</Flex>
-	);
+  return (
+    <Center
+      flexDir="column"
+      mb={4}
+      p={4}
+      borderRadius="2.5xl"
+      bgColor="primary"
+      color="white"
+      textAlign="center"
+      position="relative"
+    >
+      {!ignoreUserOutcome && (
+        <Icon
+          as={FiX}
+          ml="auto"
+          h={6}
+          w={6}
+          onClick={() => setUserOutcome("dismissed")}
+        />
+      )}
+      <Text fontSize={18} fontWeight={800} mt={4}>
+        Téléchargez l’appli,
+        <br />
+        elle est plus agréable
+      </Text>
+      <Box
+        mt={11}
+        mb={24}
+        shadow="installation-banner-icon"
+        borderRadius="2.5xl"
+        zIndex={2}
+      >
+        <Image
+          src="/pwa/appIcon/maskable_icon_x192.png"
+          alt="Logo de l'appli cje"
+          width={72}
+          height={72}
+          style={{
+            borderRadius: "20px",
+            position: "relative",
+          }}
+        />
+      </Box>
+      <Button
+        size="lg"
+        mb={5}
+        zIndex={2}
+        fontSize={16}
+        fontWeight={800}
+        py={7}
+        color="black"
+        colorScheme="whiteBtn"
+        rightIcon={<Icon as={HiMiniArrowDownTray} w={5} h={5} />}
+        onClick={handleInstallClick}
+      >
+        Télécharger l'appli
+      </Button>
+      <Image
+        src="/images/dashboard/installation-banner-background-phone.png"
+        alt="Téléphone avec l'appli cje"
+        width={0}
+        height={0}
+        sizes="100vw"
+        style={{
+          width: "100%",
+          height: "160px",
+          position: "absolute",
+          zIndex: 1,
+          objectFit: "none",
+          top: "60%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      />
+    </Center>
+  );
 };
 
 export default InstallationBanner;

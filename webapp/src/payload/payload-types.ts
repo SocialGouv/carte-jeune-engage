@@ -19,14 +19,19 @@ export interface Config {
     coupons: Coupon;
     savings: Saving;
     notifications: Notification;
-    'payload-preferences': PayloadPreference;
-    'payload-migrations': PayloadMigration;
+    tags: Tag;
+    search_requests: SearchRequest;
+    email_auth_tokens: EmailAuthToken;
+    "payload-preferences": PayloadPreference;
+    "payload-migrations": PayloadMigration;
   };
   globals: {
     quickAccess: QuickAccess;
     landingPartners: LandingPartner;
     landingFAQ: LandingFAQ;
     newCategory: NewCategory;
+    categories_list: CategoriesList;
+    tags_list: TagsList;
   };
 }
 /**
@@ -55,21 +60,29 @@ export interface Admin {
 export interface User {
   id: number;
   phone_number: string;
-  civility?: ('man' | 'woman') | null;
+  civility?: ("man" | "woman") | null;
   birthDate?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   address?: string | null;
   image?: number | Media | null;
   userEmail?: string | null;
-  cejFrom?: ('franceTravail' | 'missionLocale' | 'serviceCivique') | null;
-  timeAtCEJ?: ('started' | 'lessThan3Months' | 'moreThan3Months') | null;
-  hasAJobIdea?: ('yes' | 'no') | null;
+  cejFrom?:
+    | (
+        | "franceTravail"
+        | "missionLocale"
+        | "serviceCivique"
+        | "ecole2ndeChance"
+        | "epide"
+      )
+    | null;
+  timeAtCEJ?: ("started" | "lessThan3Months" | "moreThan3Months") | null;
+  hasAJobIdea?: ("yes" | "no") | null;
   projectTitle?: string | null;
   projectDescription?: string | null;
-  status_image?: ('pending' | 'approved') | null;
+  status_image?: ("pending" | "approved") | null;
   preferences?: (number | Category)[] | null;
-  notification_status?: ('enabled' | 'disabled') | null;
+  notification_status?: ("enabled" | "disabled") | null;
   notification_subscription?:
     | {
         [k: string]: unknown;
@@ -106,6 +119,8 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -115,6 +130,7 @@ export interface Category {
   id: number;
   slug: string;
   label: string;
+  color?: string | null;
   icon: number | Media;
   updatedAt: string;
   createdAt: string;
@@ -126,7 +142,7 @@ export interface Category {
 export interface Supervisor {
   id: number;
   cgu?: boolean | null;
-  kind?: ('ML' | 'SC' | 'FT') | null;
+  kind?: ("ML" | "SC" | "FT") | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -146,7 +162,7 @@ export interface Permission {
   id: number;
   phone_number: string;
   createdBy?: (number | null) | Supervisor;
-  supervisorKind?: ('ML' | 'SC' | 'FT') | null;
+  supervisorKind?: ("ML" | "SC" | "FT") | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -172,16 +188,20 @@ export interface Partner {
 export interface Offer {
   id: number;
   title: string;
+  subtitle?: string | null;
   partner: number | Partner;
-  category: number | Category;
+  category: (number | Category)[];
+  tags?: (number | Tag)[] | null;
   validityFrom?: string | null;
   validityTo: string;
-  kind: 'voucher' | 'voucher_pass' | 'code' | 'code_space';
+  kind: "voucher" | "voucher_pass" | "code" | "code_space";
   url?: string | null;
   nbOfEligibleStores?: number | null;
   imageOfEligibleStores?: number | Media | null;
   linkOfEligibleStores?: string | null;
-  barcodeFormat?: ('CODE39' | 'EAN13' | 'ITF14' | 'MSI' | 'pharmacode' | 'codabar' | 'upc') | null;
+  barcodeFormat?:
+    | ("CODE39" | "EAN13" | "ITF14" | "MSI" | "pharmacode" | "codabar" | "upc")
+    | null;
   termsOfUse?:
     | {
         slug?: string | null;
@@ -195,7 +215,26 @@ export interface Offer {
         id?: string | null;
       }[]
     | null;
+  conditionBlocks?:
+    | {
+        slug: string;
+        id?: string | null;
+      }[]
+    | null;
   nbSeen?: number | null;
+  image?: number | Media | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  slug: string;
+  label: string;
+  icon: number | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -251,21 +290,44 @@ export interface Notification {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search_requests".
+ */
+export interface SearchRequest {
+  id: number;
+  name: string;
+  count: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email_auth_tokens".
+ */
+export interface EmailAuthToken {
+  id: number;
+  user: number | User;
+  token: string;
+  expiration?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
   id: number;
   user:
     | {
-        relationTo: 'admins';
+        relationTo: "admins";
         value: number | Admin;
       }
     | {
-        relationTo: 'users';
+        relationTo: "users";
         value: number | User;
       }
     | {
-        relationTo: 'supervisors';
+        relationTo: "supervisors";
         value: number | Supervisor;
       };
   key?: string | null;
@@ -356,8 +418,37 @@ export interface NewCategory {
   updatedAt?: string | null;
   createdAt?: string | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_list".
+ */
+export interface CategoriesList {
+  id: number;
+  items?:
+    | {
+        category: number | Category;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_list".
+ */
+export interface TagsList {
+  id: number;
+  items?:
+    | {
+        tag: number | Tag;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
 
-
-declare module 'payload' {
+declare module "payload" {
   export interface GeneratedTypes extends Config {}
 }

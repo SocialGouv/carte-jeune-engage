@@ -1,4 +1,4 @@
-import { Box, Container, Flex, useDisclosure } from "@chakra-ui/react";
+import { Box, Container, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect } from "react";
@@ -8,7 +8,7 @@ import Header from "~/components/landing/Header";
 import NotificationModal from "~/components/modals/NotificationModal";
 import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
-import { isIOS, isStandalone } from "~/utils/tools";
+import { isIOS } from "~/utils/tools";
 import { push } from "@socialgouv/matomo-next";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
@@ -43,7 +43,9 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     (pathname === "/" ||
       pathname === "/cgu" ||
       pathname === "/mentions-legales" ||
-      pathname === "/politique-de-confidentialite") &&
+      pathname === "/politique-de-confidentialite" ||
+      pathname === "/partners" ||
+      pathname === "/login") &&
     !isOtpGenerated &&
     !user;
 
@@ -155,7 +157,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         background={isLanding ? "white" : undefined}
         h={isLanding ? "auto" : "full"}
       >
-        {isLanding && <Header />}
+        {isLanding && pathname !== "/login" && <Header />}
         <Container
           maxWidth={{
             base: isLanding ? "container.xl" : "container.sm",
@@ -180,7 +182,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         {isLanding && <Footer />}
         {(pathname === "/dashboard" ||
           pathname === "/dashboard/wallet" ||
-          pathname === "/dashboard/categories") && <BottomNavigation />}
+          pathname === "/dashboard/search") && <BottomNavigation />}
       </Box>
     </>
   );

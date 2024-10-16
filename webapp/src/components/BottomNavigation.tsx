@@ -2,13 +2,10 @@ import { Flex, Icon, SimpleGrid, Text } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import {
-  HiHome,
-  HiMiniSquares2X2,
-  HiMiniSwatch,
-  HiMiniUser,
-} from "react-icons/hi2";
+import { HiOutlineTag, HiTag } from "react-icons/hi2";
 import { push } from "@socialgouv/matomo-next";
+import { ReductionIcon, ReductionOutlineIcon } from "./Icons";
+import { CgSearch } from "react-icons/cg";
 
 const BottomNavigation = () => {
   const router = useRouter();
@@ -26,7 +23,7 @@ const BottomNavigation = () => {
 
       if (bottomNavigation)
         bottomNavigation.style.paddingBottom =
-          safeAreaInsetBottom !== "0px" ? safeAreaInsetBottom : "20px";
+          safeAreaInsetBottom !== "0px" ? safeAreaInsetBottom : "24px";
     };
 
     updatePadding();
@@ -37,39 +34,44 @@ const BottomNavigation = () => {
 
   const navigationItems = [
     {
-      label: "Accueil",
-      icon: HiHome,
-      href: "/dashboard",
-      matomoEvent: ["Navigation", "Accueil"],
-    },
-    {
-      label: "Explorer",
-      icon: HiMiniSquares2X2,
-      href: "/dashboard/categories",
-      matomoEvent: ["Navigation", "Explorer"],
-    },
-    {
       label: "Mes réductions",
-      icon: HiMiniSwatch,
+      icon: ReductionOutlineIcon,
+      activeIcon: ReductionIcon,
       href: "/dashboard/wallet",
       matomoEvent: ["Navigation", "Mes réductions"],
+    },
+    {
+      label: "Offres",
+      icon: HiOutlineTag,
+      activeIcon: HiTag,
+      href: "/dashboard",
+      matomoEvent: ["Navigation", "Accueil (Offres)"],
+    },
+    {
+      label: "Rechercher",
+      icon: CgSearch,
+      activeIcon: CgSearch,
+      href: "/dashboard/search",
+      matomoEvent: ["Navigation", "Rechercher"],
     },
   ];
 
   return (
     <SimpleGrid
       id="cje-bottom-navigation"
+      zIndex={100}
       columns={navigationItems.length}
-      borderTopRadius={24}
+      borderTopWidth={1}
+      borderTopColor="cje-gray.100"
       bgColor="white"
       position="fixed"
       bottom={0}
       left={0}
       right={0}
-      pt={5}
-      px={10}
+      pt={2.5}
+      px={11}
     >
-      {navigationItems.map(({ href, label, icon, matomoEvent }) => (
+      {navigationItems.map(({ href, label, icon, activeIcon, matomoEvent }) => (
         <Flex
           key={label}
           flexDir="column"
@@ -82,16 +84,12 @@ const BottomNavigation = () => {
           }}
         >
           <Icon
-            as={icon}
-            color={pathname === href ? "black" : "disabled"}
+            as={pathname === href ? activeIcon : icon}
+            color="blackLight"
             width={6}
             height={6}
           />
-          <Text
-            fontSize="2xs"
-            fontWeight="bold"
-            color={pathname === href ? "black" : "disabled"}
-          >
+          <Text fontSize={12} fontWeight={500} color="blackLight">
             {label}
           </Text>
         </Flex>

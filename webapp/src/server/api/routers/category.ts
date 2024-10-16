@@ -5,6 +5,7 @@ import {
   createTRPCRouter,
   userProtectedProcedure,
   publicProcedure,
+  userOrWidgetProtectedProcedure,
 } from "~/server/api/trpc";
 import { ZGetListParams } from "~/server/types";
 
@@ -31,7 +32,7 @@ export const categoryRouter = createTRPCRouter({
       };
     }),
 
-  getBySlug: userProtectedProcedure
+  getBySlug: userOrWidgetProtectedProcedure
     .input(z.object({ slug: z.string() }))
     .query(async ({ ctx, input }) => {
       const { slug } = input;

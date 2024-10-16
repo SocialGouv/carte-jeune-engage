@@ -2,11 +2,14 @@ import {
   Box,
   Button,
   Center,
+  Divider,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Spinner,
   Text,
+  useOutsideClick,
 } from "@chakra-ui/react";
 import {
   Control,
@@ -21,7 +24,7 @@ import {
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
 import { FieldProps } from "./FormInput";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 interface Props {
   field: FieldProps;
@@ -32,6 +35,7 @@ interface Props {
   control: Control<any>;
   fieldError: FieldError | undefined;
   handleSubmit: () => Promise<void>;
+  setIsInputFocused: Dispatch<SetStateAction<boolean>>;
 }
 
 const FormAutocompleteInput = ({
@@ -43,12 +47,45 @@ const FormAutocompleteInput = ({
   clearErrors,
   isLoading,
   handleSubmit,
+  setIsInputFocused,
 }: Props) => {
   const { label, name } = field;
   const [optionsHistory, setOptionsHistory] = useState<string[]>([]);
+  const autocompleteRef = useRef<HTMLInputElement | null>(null);
+
+  useOutsideClick({
+    ref: autocompleteRef,
+    handler: () => setIsInputFocused(false),
+  });
+
+  const [currentValue, setCurrentValue] = useState<string | undefined>(
+    undefined
+  );
+
+  if (currentValue) {
+    return (
+      <Flex flexDir="column" textAlign="center" gap={20}>
+        <Text fontWeight={800} fontSize={24} mt={10}>
+          {currentValue}
+        </Text>
+        <Text
+          fontWeight={800}
+          textDecoration="underline"
+          textDecorationThickness="2px"
+          textUnderlineOffset={2}
+          onClick={() => setCurrentValue(undefined)}
+        >
+          Modifier
+        </Text>
+      </Flex>
+    );
+  }
 
   return (
-    <FormControl isRequired isInvalid={!!fieldError} variant="floating">
+    <FormControl isRequired isInvalid={!!fieldError}>
+      <FormLabel fontWeight="medium" color="disabled" fontSize={12} mb={1}>
+        {label}
+      </FormLabel>
       <Controller
         control={control}
         name={name}
@@ -67,18 +104,25 @@ const FormAutocompleteInput = ({
 
           return (
             <Box
+              ref={autocompleteRef}
               className={
                 value && value !== "" ? "chakra-autocomplete-has-value" : ""
               }
+              sx={{
+                ".chakra-popover__popper": {
+                  minWidth: "100% !important",
+                },
+              }}
             >
               <AutoComplete
                 defaultIsOpen
                 openOnFocus
                 disableFilter
                 placement="bottom"
-                isLoading={value && value.length > 4 && isLoading}
+                matchWidth={false}
+                isLoading={value && value.length > 2 && isLoading}
                 emptyState={(e: any) => {
-                  if (e.query.length > 4) {
+                  if (e.query.length > 2) {
                     return (
                       <Center
                         display="flex"
@@ -89,7 +133,7 @@ const FormAutocompleteInput = ({
                         py={8}
                       >
                         <Text>Pas de résultats</Text>
-                        <Text
+                        {/* <Text
                           fontWeight="bold"
                           mt={2}
                           borderBottom="1px solid"
@@ -100,7 +144,7 @@ const FormAutocompleteInput = ({
                           }}
                         >
                           Valider quand même cette adresse
-                        </Text>
+                        </Text> */}
                       </Center>
                     );
                   }
@@ -109,10 +153,12 @@ const FormAutocompleteInput = ({
                   clearErrors(name);
                   setOptionsHistory([...optionsHistory, item.value]);
                   onChange(item.value);
+                  setCurrentValue(item.value);
+                  setIsInputFocused(false);
                 }}
               >
                 <AutoCompleteInput
-                  placeholder=""
+                  placeholder={field.placeholder || ""}
                   borderRadius="2xl"
                   border="none"
                   loadingIcon={<></>}
@@ -120,11 +166,11 @@ const FormAutocompleteInput = ({
                   autoComplete="off"
                   backgroundColor={
                     !fieldError || fieldError.type === "autocompleteValue"
-                      ? "cje-gray.500"
+                      ? "bgGray"
                       : "errorLight"
                   }
                   px={5}
-                  pt={9}
+                  py={8}
                   autoFocus
                   onChange={(e: any) => {
                     onChange(e.target.value);
@@ -137,63 +183,59 @@ const FormAutocompleteInput = ({
                       clearErrors(name);
                     }
                   }}
+                  onFocus={() => setIsInputFocused(true)}
                   value={value}
-                  pb={7}
                   _focusVisible={{
                     borderColor: "transparent",
                     boxShadow: "none",
                   }}
                 />
                 <AutoCompleteList
+                  position="fixed"
                   style={{
                     backgroundColor: "transparent",
                     border: "0",
                     boxShadow: "none",
+                    minWidth: "100%",
                   }}
                   loadingState={
-                    <Center
-                      bgColor="cje-gray.500"
-                      borderRadius="2xl"
-                      fontWeight="medium"
-                      w="full"
-                      py={8}
-                    >
+                    <Center fontWeight="medium" w="full" py={8}>
                       <Spinner />
                     </Center>
                   }
                   gap={2}
                   mt={-4}
                 >
-                  {options?.map((option) => (
-                    <AutoCompleteItem
-                      key={option}
-                      value={option}
-                      mx={0}
-                      textTransform="capitalize"
-                      bgColor="cje-gray.500"
-                      borderRadius="2xl"
-                      py={3}
-                      px={4}
-                      border="2px solid"
-                      borderColor={
-                        option === value ? "blackLight" : "transparent"
-                      }
-                      _focus={{
-                        borderColor: "blackLight",
-                      }}
-                    >
-                      <Text fontWeight="medium">{option}</Text>
-                    </AutoCompleteItem>
-                  ))}
+                  {options?.map((option, index) => {
+                    const highlightedText = option.slice(0, value.length);
+                    const restOfText = option.slice(value.length);
+                    return (
+                      <>
+                        <AutoCompleteItem
+                          key={option}
+                          value={option}
+                          mx={0}
+                          _focus={{ bgColor: "transparent" }}
+                        >
+                          <Text fontWeight={800} fontSize={18}>
+                            {highlightedText}
+                            <Text as="span" fontWeight={500}>
+                              {restOfText}
+                            </Text>
+                          </Text>
+                        </AutoCompleteItem>
+                        {index !== options.length - 1 && (
+                          <Divider borderColor="cje-gray.500" />
+                        )}
+                      </>
+                    );
+                  })}
                 </AutoCompleteList>
               </AutoComplete>
             </Box>
           );
         }}
       />
-      <FormLabel fontWeight="medium" color="disabled">
-        {label}
-      </FormLabel>
       <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
     </FormControl>
   );

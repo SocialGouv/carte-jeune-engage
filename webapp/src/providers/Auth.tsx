@@ -1,7 +1,14 @@
 import { getCookie, deleteCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/router";
-import React, { useState, createContext, useContext, useEffect } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { UserIncluded } from "~/server/api/routers/user";
 import * as Sentry from "@sentry/browser";
 
@@ -25,13 +32,18 @@ type AuthContext = {
   setShowNotificationModal: (showNotificationModal: boolean) => void;
   showModalInstallApp: boolean;
   setShowModalInstallApp: (showModalInstallApp: boolean) => void;
+  showDesktopQRCode: boolean;
+  setShowDesktopQRCode: Dispatch<SetStateAction<boolean>>;
+  showDesktopEligibleModal: boolean;
+  setShowDesktopEligibleModal: (showDesktopEligibleModal: boolean) => void;
   deferredEvent: BeforeInstallPromptEvent | null;
   setDeferredEvent: (event: BeforeInstallPromptEvent | null) => void;
   serviceWorkerRegistration: ServiceWorkerRegistration | null;
   setServiceWorkerRegistration: (
     registration: ServiceWorkerRegistration | null
   ) => void;
-  refetchUser: () => void;
+
+  refetchUser: () => Promise<void>;
 };
 
 const Context = createContext({} as AuthContext);
@@ -46,8 +58,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     useState<boolean>(false);
   const [showModalInstallApp, setShowModalInstallApp] =
     useState<boolean>(false);
+  const [showDesktopQRCode, setShowDesktopQRCode] = useState<boolean>(true);
+  const [showDesktopEligibleModal, setShowDesktopEligibleModal] =
+    useState<boolean>(false);
 
-  const [showing, setShowing] = useState(false);
+  const [showing, setShowing] = useState(true);
   const [deferredEvent, setDeferredEvent] =
     useState<BeforeInstallPromptEvent | null>(null);
 
@@ -99,6 +114,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setShowNotificationModal,
         showModalInstallApp,
         setShowModalInstallApp,
+        showDesktopQRCode,
+        setShowDesktopQRCode,
+        showDesktopEligibleModal,
+        setShowDesktopEligibleModal,
         serviceWorkerRegistration,
         setServiceWorkerRegistration,
         deferredEvent,

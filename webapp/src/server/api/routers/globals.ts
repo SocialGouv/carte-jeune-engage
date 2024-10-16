@@ -7,6 +7,8 @@ import { PartnerIncluded } from "./partner";
 import { OfferIncluded } from "./offer";
 import { Media } from "~/payload/payload-types";
 import { CategoryIncluded } from "./category";
+import { TagIncluded } from "./tag";
+import { z } from "zod";
 
 export const globalsRouter = createTRPCRouter({
   quickAccessGetAll: userProtectedProcedure.query(async ({ ctx }) => {
@@ -70,4 +72,44 @@ export const globalsRouter = createTRPCRouter({
       data: tmpNewCategory,
     };
   }),
+
+  categoriesListOrdered: publicProcedure.query(async ({ ctx }) => {
+    const categoriesList = await ctx.payload.findGlobal({
+      slug: "categories_list",
+      depth: 2,
+    });
+
+    const categories = categoriesList.items?.map(
+      (item) => item.category
+    ) as CategoryIncluded[];
+
+    return {
+      data: categories,
+    };
+  }),
+
+  tagsListOrdered: publicProcedure
+    .input(z.object({ search: z.string().optional() }).optional())
+    .query(async ({ ctx, input }) => {
+      const { search } = input ?? {};
+
+      const tagsList = await ctx.payload.findGlobal({
+        slug: "tags_list",
+        depth: 2,
+      });
+
+      let tags = (tagsList.items ?? []).map(
+        (item) => item.tag
+      ) as TagIncluded[];
+
+      if (search) {
+        tags = tags.filter((tag) =>
+          tag.label.toLowerCase().includes(search.toLowerCase())
+        );
+      }
+
+      return {
+        data: tags,
+      };
+    }),
 });

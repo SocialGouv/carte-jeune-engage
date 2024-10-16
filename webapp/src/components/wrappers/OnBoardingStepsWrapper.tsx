@@ -1,5 +1,6 @@
-import { Box, Flex, Icon } from "@chakra-ui/react";
+import { Box, Flex, Icon, IconButton } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import { HiChevronLeft } from "react-icons/hi2";
@@ -23,17 +24,28 @@ const OnBoardingStepsWrapper = ({
         justifyContent="center"
         pt={8}
       >
-        {current > 1 && !isFirstStep && (
-          <Icon
-            as={HiChevronLeft}
-            w={6}
-            h={6}
-            onClick={() => router.back()}
-            cursor="pointer"
-            position="absolute"
-            left={6}
-          />
-        )}
+        <IconButton
+          icon={<Icon as={HiChevronLeft} w={5} h={5} />}
+          aria-label="Retour"
+          variant="unstyled"
+          h={5}
+          minW="fit-content"
+          isDisabled={!(current > 1 && !isFirstStep)}
+          onClick={() => router.back()}
+          cursor="pointer"
+          position="absolute"
+          left={4}
+        />
+        <Image
+          src="/images/cje-logo.png"
+          alt="CJE Logo"
+          width={52}
+          height={0}
+          style={{
+            position: "absolute",
+            left: 50,
+          }}
+        />
         <Box bgColor="cje-gray.300" borderRadius="xl" w="30%" h="6px">
           <Box
             as={motion.div}
@@ -41,7 +53,7 @@ const OnBoardingStepsWrapper = ({
             h="6px"
             w={`${(current / total) * 100}%`}
             borderRadius="xl"
-            bgColor="blackLight"
+            bgColor="primary"
           />
         </Box>
       </Flex>

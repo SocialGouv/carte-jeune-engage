@@ -18,6 +18,7 @@ import {
 import { Link } from "@chakra-ui/next-js";
 import { useRouter } from "next/router";
 import { useAuth } from "~/providers/Auth";
+import BackButton from "~/components/ui/BackButton";
 
 const SubHeading = ({ children }: { children: React.ReactNode }) => (
   <Heading as="h2" size={{ base: "lg", lg: "2xl" }} mt={10} color="black">
@@ -39,19 +40,7 @@ export default function PrivacyPolicy() {
       fontWeight="medium"
       color="secondaryText"
     >
-      {!!user && (
-        <Button
-          colorScheme="whiteBtn"
-          onClick={() => {
-            router.back();
-          }}
-          size="md"
-          width={8}
-          iconSpacing={0}
-          px={0}
-          rightIcon={<ChevronLeftIcon w={6} h={6} color="black" />}
-        />
-      )}
+      {!!user && <BackButton />}
       <Heading
         as="h1"
         size={{ base: "xl", lg: "3xl" }}
@@ -163,10 +152,10 @@ export default function PrivacyPolicy() {
               <Tbody>
                 <Tr>
                   <Td>Données de contact des jeunes</Td>
-                  <Td>Données de contact des conseillers</Td>
+                  <Td>2 ans à compter du dernier contact </Td>
                 </Tr>
                 <Tr>
-                  <Td>2 ans à compter du dernier contact </Td>
+                  <Td>Données de contact des conseillers</Td>
                   <Td>2 ans à compter de la dernière connexion</Td>
                 </Tr>
               </Tbody>

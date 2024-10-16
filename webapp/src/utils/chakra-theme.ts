@@ -7,6 +7,7 @@ import {
   defineStyleConfig,
 } from "@chakra-ui/react";
 import localFont from "next/font/local";
+import { checkboxTheme } from "~/components/theme/checkbox";
 import { modalTheme } from "~/components/theme/modal";
 import { textareaTheme } from "~/components/theme/textarea";
 
@@ -70,9 +71,14 @@ export const theme = extendTheme({
     Button: {
       sizes: {
         lg: {
-          borderRadius: "xl",
+          borderRadius: "2.25xl",
           py: 8,
           fontWeight: "bold",
+        },
+        md: {
+          borderRadius: "2.25xl",
+          py: 7,
+          fontWeight: 800,
         },
         sm: {
           borderRadius: "lg",
@@ -91,6 +97,11 @@ export const theme = extendTheme({
             _hover: {
               bg: defaultTheme.components.Button.variants?.solid(props).bg,
             },
+          },
+        }),
+        outline: (props: StyleFunctionProps) => ({
+          "&:active": {
+            bg: "white",
           },
         }),
       },
@@ -124,6 +135,7 @@ export const theme = extendTheme({
     },
     Textarea: textareaTheme,
     Modal: modalTheme,
+    Checkbox: checkboxTheme,
   },
   styles: {
     global: () => ({
@@ -132,7 +144,7 @@ export const theme = extendTheme({
       },
       body: {
         height: "100%",
-        bg: "bgWhite",
+        bg: "white",
       },
       main: {
         height: "100%",
@@ -143,17 +155,32 @@ export const theme = extendTheme({
     }),
   },
   colors: {
-    primary: {
-      "50": "#dee8ff",
-      "100": "#c3d3ff",
-      "200": "#9fb5ff",
-      "300": "#788dff",
-      "400": "#5965fb",
-      "500": "#4141f1",
-      "700": "#302dd5",
-      "800": "#2928ab",
-      "900": "#282a87",
-      "950": "#18184e",
+    primary: "#1698FC",
+    primaryShades: {
+      "50": "#edf8ff",
+      "100": "#d6f0fe",
+      "200": "#b5e3fe",
+      "300": "#83d4fd",
+      "400": "#47bcfd",
+      "500": "#1698fc",
+      "600": "#067bf6",
+      "700": "#0f64d2",
+      "800": "#1351aa",
+      "900": "#154685",
+      "950": "#122b51",
+    },
+    errorShades: {
+      "50": "#fef3f1",
+      "100": "#fde2de",
+      "200": "#fbc9c2",
+      "300": "#f8a498",
+      "400": "#f5705d",
+      "500": "#f13c22",
+      "600": "#db361e",
+      "700": "#ac2815",
+      "800": "#8e2415",
+      "900": "#742419",
+      "950": "#400f08",
     },
     whiteBtn: {
       "50": "#FFFFFF",
@@ -191,23 +218,35 @@ export const theme = extendTheme({
       "800": "#ffffff",
       "900": "#ffffff",
     },
-    success: "#42B918",
-    sucessLight: "#DDF2E6",
-    error: "#FF5959",
+    success: "#459F00",
+    successLight: "#E9F6DF",
+    error: "#F13C22",
     errorLight: "#FFE8E8",
     bgWhite: "#F7F7F7",
-    disabled: "#9595B1",
+    bgGray: "#F2F2F8",
+    disabled: "#8585AD",
     secondaryText: "#5C5C70",
     borderGray: "#B5BBBD",
     blackLight: "#20202C",
+    frontBlack: "#1D1C25",
   },
   shadows: {
     "landing-phone-number-component":
       "0px 4px 9.9px 0px rgba(177, 177, 177, 0.25)",
     "landing-qr-code-desktop": "0px 0px 24.2px 0px rgba(145, 145, 145, 0.25)",
+    default: "0px 24px 24px -10px #00000040",
+    "default-wallet":
+      "0px 24px 24px -10px #00000040, 0px -6px 24px -10px #00000040",
+    "installation-banner-icon":
+      "0px 16px 14px -9px #1698FC70, 0px 1px 40px 6px #A8CEEC",
   },
   radii: {
-    "1.5xl": "1.25rem",
+    "2lg": "0.625rem",
+    "1.5xl": "0.875rem",
+    "2.25xl": "1.125rem",
+    "2.5xl": "1.25rem",
+    "4xl": "2rem",
+    "5xl": "2.5rem",
   },
   fonts: {
     heading: Marianne.style.fontFamily,
@@ -215,5 +254,14 @@ export const theme = extendTheme({
   },
   fontSizes: {
     xss: "0.7rem",
+  },
+  space: {
+    "1.25": "0.3125rem",
+    "5.5": "1.375rem",
+    11: "2.75rem",
+    18: "4.5rem",
+  },
+  sizes: {
+    "18": "4.5rem",
   },
 });

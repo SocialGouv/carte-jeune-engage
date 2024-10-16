@@ -5,9 +5,10 @@ import { getBaseUrl } from "~/utils/tools";
 type QRCodeProps = {
   size?: number;
   wrapperProps?: ChakraProps;
+  imageProps?: ChakraProps;
 };
 
-const QRCodeWrapper = ({ size, wrapperProps }: QRCodeProps) => {
+const QRCodeWrapper = ({ size, wrapperProps, imageProps }: QRCodeProps) => {
   const qrCodeImageSrc = () => {
     if (process.env.NEXT_PUBLIC_ENV_APP === "preproduction") {
       return "/images/landing/qr-code-preprod.png";
@@ -21,8 +22,9 @@ const QRCodeWrapper = ({ size, wrapperProps }: QRCodeProps) => {
       <Image
         src={qrCodeImageSrc()}
         alt="QR Code production"
-        h="200px"
-        w="200px"
+        h="120px"
+        w="120px"
+        {...imageProps}
       />
       {/* REMOVE FOR NOW , ISSUES ON IPHONE
 			<QRCode

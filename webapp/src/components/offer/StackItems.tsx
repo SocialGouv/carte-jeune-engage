@@ -30,7 +30,7 @@ const propsActiveText = {
   py: 2,
   px: 3,
   borderRadius: "full",
-  bgColor: "sucessLight",
+  bgColor: "successLight",
 } as ChakraProps;
 
 const StackItems = ({

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { HiArrowLeft } from "react-icons/hi2";
 import LoadingLoader from "~/components/LoadingLoader";
+import BackButton from "~/components/ui/BackButton";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import { base64ToUint8Array } from "~/utils/tools";
@@ -48,20 +49,8 @@ export default function AccountNotifications() {
   const WrapperNotification = ({ children }: { children: React.ReactNode }) => {
     return (
       <Flex flexDir="column" pt={12} px={8} h="full">
-        <Icon
-          as={HiArrowLeft}
-          w={6}
-          h={6}
-          onClick={() => router.back()}
-          cursor="pointer"
-        />
-        <Heading
-          as="h2"
-          size="lg"
-          fontWeight="extrabold"
-          mt={4}
-          textAlign="center"
-        >
+        <BackButton />
+        <Heading as="h2" size="xl" fontWeight={800} mt={6}>
           Mes notifications
         </Heading>
         {children}

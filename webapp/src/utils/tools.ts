@@ -1,4 +1,5 @@
-import { Text } from "@chakra-ui/react";
+import { ChakraProps, Link, LinkProps } from "@chakra-ui/react";
+import NextLink from "next/link";
 import crypto from "crypto";
 import { Where } from "payload/types";
 
@@ -103,10 +104,7 @@ export const addSpaceToTwoCharacters = (input: string) => {
 };
 
 export const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_ENV_APP === "production")
-    return "https://cje.fabrique.social.gouv.fr";
-  if (process.env.NEXT_PUBLIC_ENV_APP === "preproduction")
-    return "https://cje-preprod.ovh.fabrique.social.gouv.fr";
+  if (process.env.NEXT_PUBLIC_URL_APP) return process.env.NEXT_PUBLIC_URL_APP;
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
@@ -158,3 +156,39 @@ export const dateDiffInDays = (a: Date, b: Date) => {
 
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 };
+
+export function paginateArray<T>(array: T[], itemsPerPage: number): T[][] {
+  return array.reduce((acc: T[][], item: T, index: number) => {
+    const pageIndex = Math.floor(index / itemsPerPage);
+    if (!acc[pageIndex]) {
+      acc[pageIndex] = [];
+    }
+    acc[pageIndex].push(item);
+    return acc;
+  }, []);
+}
+
+export function maskEmail(email: string) {
+  if (!email || !email.includes("@")) {
+    return email;
+  }
+
+  const [localPart, domain] = email.split("@");
+  const [domainName, ...topLevelDomains] = domain.split(".");
+  const tld = `.${topLevelDomains.join(".")}`;
+
+  let maskedLocalPart;
+  if (localPart.length <= 2) {
+    maskedLocalPart = localPart;
+  } else {
+    maskedLocalPart =
+      localPart.charAt(0) +
+      "*".repeat(Math.max(0, localPart.length - 2)) +
+      localPart.charAt(localPart.length - 1);
+  }
+
+  const maskedDomainName =
+    domainName.slice(0, 2) + "*".repeat(Math.max(0, domainName.length - 2));
+
+  return `${maskedLocalPart}@${maskedDomainName}${tld}`;
+}
