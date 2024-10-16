@@ -29,6 +29,11 @@ export const Categories: CollectionConfig = {
       label: "Couleur",
     },
     {
+      name: "textWhite",
+      type: "checkbox",
+      label: "Texte en blanc",
+    },
+    {
       name: "icon",
       type: "upload",
       label: "Icône",

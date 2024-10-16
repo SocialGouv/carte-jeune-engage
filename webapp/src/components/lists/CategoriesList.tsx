@@ -54,7 +54,7 @@ const CategoriesList = (props: CategoriesListProps) => {
 
   const renderCategory = (category: CategoryWithOffers) => {
     const bgColor = category.color ?? "cje-gray.100";
-    const textColor = mostReadable(bgColor, ["black", "white"])?.toHexString();
+    const textColor = category.textWhite ? "white" : "black";
 
     return (
       <Link

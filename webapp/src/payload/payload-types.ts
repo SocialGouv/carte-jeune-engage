@@ -81,7 +81,7 @@ export interface User {
   projectTitle?: string | null;
   projectDescription?: string | null;
   status_image?: ("pending" | "approved") | null;
-  preferences?: (number | Category)[] | null;
+  preferences?: (number | Tag)[] | null;
   notification_status?: ("enabled" | "disabled") | null;
   notification_subscription?:
     | {
@@ -124,13 +124,12 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
+ * via the `definition` "tags".
  */
-export interface Category {
+export interface Tag {
   id: number;
   slug: string;
   label: string;
-  color?: string | null;
   icon: number | Media;
   updatedAt: string;
   createdAt: string;
@@ -168,6 +167,20 @@ export interface Permission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  slug: string;
+  label: string;
+  color?: string | null;
+  textWhite?: boolean | null;
+  icon: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "partners".
  */
 export interface Partner {
@@ -188,6 +201,7 @@ export interface Partner {
 export interface Offer {
   id: number;
   title: string;
+  formatedTitle?: string | null;
   subtitle?: string | null;
   partner: number | Partner;
   category: (number | Category)[];
@@ -223,18 +237,6 @@ export interface Offer {
     | null;
   nbSeen?: number | null;
   image?: number | Media | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: number;
-  slug: string;
-  label: string;
-  icon: number | Media;
   updatedAt: string;
   createdAt: string;
 }
