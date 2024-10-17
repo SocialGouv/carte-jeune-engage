@@ -9,6 +9,7 @@
 export interface Config {
   collections: {
     admins: Admin;
+    apikeys: Apikey;
     users: User;
     supervisors: Supervisor;
     permissions: Permission;
@@ -52,6 +53,16 @@ export interface Admin {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apikeys".
+ */
+export interface Apikey {
+  id: number;
+  key: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

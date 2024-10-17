@@ -12,6 +12,7 @@ import SearchBar from "~/components/SearchBar";
 import { api } from "~/utils/api";
 import NextImage from "next/image";
 import NextLink from "next/link";
+import { decryptData } from "~/utils/tools";
 
 type WidgetProps = {
   initialToken: string;
