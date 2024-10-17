@@ -14,6 +14,7 @@ import { CategoriesList } from "./globals/CategoriesList";
 import { TagsList } from "./globals/TagsList";
 
 import { Admins } from "./collections/Admin";
+import { ApiKeys } from "./collections/ApiKey";
 import { Users } from "./collections/User";
 import { Media } from "./collections/Media";
 import { Categories } from "./collections/Categorie";
@@ -69,6 +70,7 @@ export default buildConfig({
   },
   collections: [
     Admins,
+    ApiKeys,
     Users,
     Supervisors,
     Permissions,
