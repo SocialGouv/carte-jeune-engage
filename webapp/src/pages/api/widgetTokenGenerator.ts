@@ -12,10 +12,18 @@ const WidgetTokenGenerator = async (
     return res.status(405).send("Invalid request method.");
   }
 
-  const { user_id, api_key } = req.body as {
+  const { user_id } = req.body as {
     user_id: string;
-    api_key: string;
   };
+
+  const authorizationHeader = req.headers.authorization;
+
+  if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "Missing or invalid Authorization header." });
+  }
+  const api_key = authorizationHeader.split(" ")[1];
 
   try {
     const payload = await getPayloadClient({ seed: false });
