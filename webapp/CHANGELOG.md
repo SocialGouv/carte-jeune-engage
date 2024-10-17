@@ -1,9 +1,8 @@
 # [0.42.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.41.0...v0.42.0) (2024-10-16)
 
-
 ### Features
 
-* add categories textWhite option ([e2bfb36](https://github.com/SocialGouv/carte-jeune-engage/commit/e2bfb36be267790115570e3023845b48824eaabc))
+- add categories textWhite option ([e2bfb36](https://github.com/SocialGouv/carte-jeune-engage/commit/e2bfb36be267790115570e3023845b48824eaabc))
 
 # [0.41.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.40.4...v0.41.0) (2024-10-16)
 
