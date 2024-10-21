@@ -1,3 +1,20 @@
+# [0.43.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.42.0...v0.43.0) (2024-10-21)
+
+
+### Bug Fixes
+
+* apikey to Authorization header ([425531b](https://github.com/SocialGouv/carte-jeune-engage/commit/425531b2db6923364efbcbeac08dad1735b42c02))
+
+
+### Features
+
+* add user cej_id field ([d783e17](https://github.com/SocialGouv/carte-jeune-engage/commit/d783e17a49297c2bb9646077fdc08a4df3c464b4))
+* create ApiKey collection ([2a8c46c](https://github.com/SocialGouv/carte-jeune-engage/commit/2a8c46c4fa876f0134f5851c2416516fded7fdd1))
+* magiclink to already signup users from cej ([b1dbd67](https://github.com/SocialGouv/carte-jeune-engage/commit/b1dbd67bfe6b3ecbc592315afe63e78b262154fe))
+* verify token shape ([a63be4a](https://github.com/SocialGouv/carte-jeune-engage/commit/a63be4af48781e6011d8c15618d13959c90c95b8))
+* verify token shape on trpc procedures ([ccc6b1b](https://github.com/SocialGouv/carte-jeune-engage/commit/ccc6b1b4caeada47ffc5f7884d3a1511ab0c89a0))
+* widgetTokenGenerator endpoint with secured by API KEY ([f5b8f81](https://github.com/SocialGouv/carte-jeune-engage/commit/f5b8f81a6bc9ecdf194b8f5807cf873f241395b1))
+
 # [0.42.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.41.0...v0.42.0) (2024-10-16)
 
 ### Features
