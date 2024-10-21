@@ -27,6 +27,7 @@ Remplacer `your_user_id` par l'identifiant de l'utilisateur
 #### Exemple avec curl
 
 Remplacer `your_api_key` par votre clé API
+
 Remplacer `your_user_id` par l'identifiant de l'utilisateur
 
 ```bash
