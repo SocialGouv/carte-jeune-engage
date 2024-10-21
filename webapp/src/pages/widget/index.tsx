@@ -2,6 +2,8 @@ import { Box, Divider, Flex, Grid, Heading, Link } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import { GetServerSideProps } from "next";
+import NextImage from "next/image";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import OfferCard from "~/components/cards/OfferCard";
@@ -9,11 +11,10 @@ import Jumbotron from "~/components/landing/Jumbotron";
 import CategoriesList from "~/components/lists/CategoriesList";
 import TagsList from "~/components/lists/TagsList";
 import SearchBar from "~/components/SearchBar";
-import { api } from "~/utils/api";
-import NextImage from "next/image";
-import NextLink from "next/link";
-import { decryptData } from "~/utils/tools";
+import getPayloadClient from "~/payload/payloadClient";
 import { ZWidgetToken } from "~/server/types";
+import { api } from "~/utils/api";
+import { decryptData } from "~/utils/tools";
 
 type WidgetProps = {
   initialToken: string;
@@ -223,7 +224,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 
     const decoded = jwt.verify(widgetToken, process.env.WIDGET_SECRET_JWT!);
-    ZWidgetToken.parse(decoded);
+    const tokenObject = ZWidgetToken.parse(decoded);
+    const cjeUserId = decryptData(
+      tokenObject.user_id,
+      process.env.WIDGET_SECRET_DATA_ENCRYPTION!
+    );
+
+    const payload = await getPayloadClient({ seed: false });
+    const users = await payload.find({
+      collection: "users",
+      where: {
+        cej_id: { equals: cjeUserId },
+      },
+    });
+
+    if (!!users.docs.length) {
+      return {
+        redirect: {
+          destination: `/widget/magiclink?widgetToken=${widgetToken}`,
+          permanent: false,
+        },
+      };
+    }
 
     return {
       props: {

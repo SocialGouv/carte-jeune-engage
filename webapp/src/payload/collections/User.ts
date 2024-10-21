@@ -256,6 +256,7 @@ export const Users: CollectionConfig = {
     {
       name: "cej_id",
       type: "text",
+      unique: true,
       admin: {
         readOnly: true,
       },
