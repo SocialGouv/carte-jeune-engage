@@ -13,6 +13,7 @@ import { api } from "~/utils/api";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import { decryptData } from "~/utils/tools";
+import { ZWidgetToken } from "~/server/types";
 
 type WidgetProps = {
   initialToken: string;
@@ -221,7 +222,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
-    jwt.verify(widgetToken, process.env.WIDGET_SECRET_JWT!);
+    const decoded = jwt.verify(widgetToken, process.env.WIDGET_SECRET_JWT!);
+    ZWidgetToken.parse(decoded);
 
     return {
       props: {

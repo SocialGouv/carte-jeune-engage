@@ -6,4 +6,10 @@ export const ZGetListParams = z.object({
   sort: z.string().optional(),
 });
 
+export const ZWidgetToken = z.object({
+  user_id: z.string(),
+  iat: z.number(),
+  exp: z.number(),
+});
+
 export type TGetListParams = z.infer<typeof ZGetListParams>;
