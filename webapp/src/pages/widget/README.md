@@ -1,27 +1,34 @@
-# Widget CJE
+## Widget CJE
 
-## Générer un token
+### Générer un token
 
-Endpoint
+#### Endpoint
 
 ```
 https://cje-preprod.ovh.fabrique.social.gouv.fr/api/widgetTokenGenerator
 ```
 
-Headers (remplacer `your_api_key` par votre clé API)
+#### Headers
+
+Remplacer `your_api_key` par votre clé API
 
 ```yaml
 Content-Type: application/json
 Authorization: Bearer your_api_key
 ```
 
-Body (replacer `your_user_id` par l'identifiant de l'utilisateur)
+#### Body
+
+Remplacer `your_user_id` par l'identifiant de l'utilisateur
 
 ```json
 { "user_id": "your_user_id" }
 ```
 
-Exemple complet avec une requête curl
+#### Exemple avec curl
+
+Remplacer `your_api_key` par votre clé API
+Remplacer `your_user_id` par l'identifiant de l'utilisateur
 
 ```bash
 curl -X POST https://cje-preprod.ovh.fabrique.social.gouv.fr/api/widgetTokenGenerator -H "Content-Type: application/json" -H "Authorization: Bearer your_api_key" -d '{
@@ -29,7 +36,7 @@ curl -X POST https://cje-preprod.ovh.fabrique.social.gouv.fr/api/widgetTokenGene
 }'
 ```
 
-Format de la réponse
+#### Réponse
 
 ```json
 {
@@ -39,10 +46,14 @@ Format de la réponse
 }
 ```
 
-## Charger la vue widget
+Le widgetToken est à vous !
 
-URL à appeler (remplacer le token par celui généré dynamiquement)
+### Charger la vue widget
+
+Une fois que vous avez généré le token d'authentification, vous pouvez l'utiliser pour charger la vue du widget :
 
 ```
 https://cje-preprod.ovh.fabrique.social.gouv.fr/widget?widgetToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYTBhOTQ4ZGE3NGM5ZjYxNzVkZjQzN2E2ZTNhODI3MzI6NTcxNjgwZWNhMDA5ZDQ2NzU0ZmJkNjM2YWM5ZWJjNGMiMDJpYXQiOjE3Mjk1MTIyMTAsImV4cCI6MTcyOTU5ODYxMH0.u7a6lM2Lgfnq_1e3x11lKJG5oZ5Hz6U24KK8K0XwWHk
 ```
+
+Remplacez le token par celui que vous avez généré précédemment.
