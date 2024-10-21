@@ -37,6 +37,8 @@ export const getServerSideProps = (async (context) => {
       ).toUTCString()}; Path=/; SameSite=Strict`
     );
 
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     return {
       redirect: {
         destination: "/dashboard",
@@ -44,6 +46,7 @@ export const getServerSideProps = (async (context) => {
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       redirect: {
         destination: "/",
