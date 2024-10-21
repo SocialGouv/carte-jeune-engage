@@ -16,6 +16,7 @@ import { jwtDecode } from "jwt-decode";
 import jwt from "jsonwebtoken";
 import { Payload } from "payload";
 import { NextApiRequest } from "next";
+import { ZWidgetToken } from "../types";
 
 export type PayloadJwtSession = {
   id: number;
@@ -166,7 +167,8 @@ const hasWidgetToken = t.middleware(async ({ next, ctx }) => {
       });
     }
 
-    jwt.verify(token, process.env.WIDGET_SECRET_JWT!);
+    const decoded = jwt.verify(token, process.env.WIDGET_SECRET_JWT!);
+    ZWidgetToken.parse(decoded);
 
     return next();
   } catch (error) {
@@ -209,7 +211,8 @@ const isAuthedAsUserOrWidgetToken = t.middleware(async ({ next, ctx }) => {
 
     const token = ctx.req?.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
     if (token) {
-      jwt.verify(token, process.env.WIDGET_SECRET_JWT!);
+      const decoded = jwt.verify(token, process.env.WIDGET_SECRET_JWT!);
+      ZWidgetToken.parse(decoded);
       return next();
     }
 

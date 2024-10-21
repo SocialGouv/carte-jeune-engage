@@ -9,6 +9,7 @@
 export interface Config {
   collections: {
     admins: Admin;
+    apikeys: Apikey;
     users: User;
     supervisors: Supervisor;
     permissions: Permission;
@@ -55,6 +56,16 @@ export interface Admin {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apikeys".
+ */
+export interface Apikey {
+  id: number;
+  key: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -93,6 +104,7 @@ export interface User {
     | boolean
     | null;
   otp_request_token?: string | null;
+  cej_id?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
