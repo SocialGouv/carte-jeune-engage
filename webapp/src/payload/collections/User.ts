@@ -253,6 +253,14 @@ export const Users: CollectionConfig = {
       },
       label: "OTP request (ne pas toucher)",
     },
+    {
+      name: "cej_id",
+      type: "text",
+      admin: {
+        readOnly: true,
+      },
+      label: "Identifiant CEJ (ne pas toucher)",
+    },
   ],
   hooks: {
     afterChange: [

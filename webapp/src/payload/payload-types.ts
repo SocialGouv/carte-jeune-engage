@@ -104,6 +104,7 @@ export interface User {
     | boolean
     | null;
   otp_request_token?: string | null;
+  cej_id?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
