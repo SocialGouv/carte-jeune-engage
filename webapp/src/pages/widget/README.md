@@ -1,4 +1,5 @@
 # Widget CJE
+
 ### Générer un token
 
 #### Endpoint
