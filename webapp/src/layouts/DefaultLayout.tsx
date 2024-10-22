@@ -156,6 +156,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         role="main"
         background={isLanding ? "white" : undefined}
         h={isLanding ? "auto" : "full"}
+        overflowX={isLanding ? "hidden" : undefined}
       >
         {isLanding && pathname !== "/login" && <Header />}
         <Container

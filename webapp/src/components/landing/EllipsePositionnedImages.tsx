@@ -29,13 +29,31 @@ const EllipsePositionnedImages = ({
 
   useEffect(() => {
     if (isMobile || !isPlayingAnimation) return;
-    const interval = setInterval(() => {
-      // rotate by 0.5 image every 2 seconds
+
+    // Continuous rotation: changing little angle every 16ms
+    const continuousRotationInterval = setInterval(() => {
+      const slowDownFactor = 60; // bigger = slower
       setDegreeOffset((prev) =>
-        prev !== undefined ? (prev - 360 / (totalImages * 2)) % 360 : prev
+        prev !== undefined
+          ? (prev - 360 / (totalImages * slowDownFactor)) % 360
+          : prev
+      );
+    }, 100);
+
+    // Changing angle every 2 seconds image by image
+    const imageByImageInterval = setInterval(() => {
+      const slowDownFactor = 2; // bigger = slower
+      setDegreeOffset((prev) =>
+        prev !== undefined
+          ? (prev - 360 / (totalImages * slowDownFactor)) % 360
+          : prev
       );
     }, 2000);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(imageByImageInterval);
+      clearInterval(continuousRotationInterval);
+    };
   }, [isPlayingAnimation]);
 
   const getImagesRender = useCallback(() => {
@@ -60,8 +78,7 @@ const EllipsePositionnedImages = ({
           }}
           transition={{
             duration: 0.7,
-            ease: "easeInOut",
-            delay: 0.2,
+            ease: "linear",
           }}
           style={{
             position: "absolute",
