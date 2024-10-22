@@ -1,3 +1,17 @@
+# [0.45.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.3...v0.45.0) (2024-10-22)
+
+
+### Bug Fixes
+
+* CHANGELOG reset ([f8c4193](https://github.com/SocialGouv/carte-jeune-engage/commit/f8c4193eb1c20867dfef87d3c3f81ad44c141d9e))
+* conditional animation duration first loop ([cad4de3](https://github.com/SocialGouv/carte-jeune-engage/commit/cad4de38d8a79ce09296444b6b94f08c0cbc510f))
+
+
+### Features
+
+* added continuous animation (in addition to previous animation) on jumbotron images ([7c57be0](https://github.com/SocialGouv/carte-jeune-engage/commit/7c57be043d2ceacfad42e8f7d03feafac66f7778))
+* jumbotron image orbit animation + control to play/pause (disabled on mobile) ([487e5d9](https://github.com/SocialGouv/carte-jeune-engage/commit/487e5d9f5e48cc1dfb107b215575d1b47b03576f))
+
 ## [0.44.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.2...v0.44.3) (2024-10-22)
 
 ### Bug Fixes
