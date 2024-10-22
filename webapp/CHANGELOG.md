@@ -1,10 +1,9 @@
 ## [0.44.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.0...v0.44.1) (2024-10-22)
 
-
 ### Bug Fixes
 
-* images on category and tag page fromt chakra to nextjs and text decoration none on category block in home page ([19d3eb4](https://github.com/SocialGouv/carte-jeune-engage/commit/19d3eb47cd00612fe60cc8967cccbbf7fc0ea3b6))
-* remove target _blank for redirection to prevent ios to block the link ([af6870d](https://github.com/SocialGouv/carte-jeune-engage/commit/af6870da4b6493d62d787b31c331461ad20bf01d))
+- images on category and tag page fromt chakra to nextjs and text decoration none on category block in home page ([19d3eb4](https://github.com/SocialGouv/carte-jeune-engage/commit/19d3eb47cd00612fe60cc8967cccbbf7fc0ea3b6))
+- remove target \_blank for redirection to prevent ios to block the link ([af6870d](https://github.com/SocialGouv/carte-jeune-engage/commit/af6870da4b6493d62d787b31c331461ad20bf01d))
 
 # [0.44.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.2...v0.44.0) (2024-10-22)
 

@@ -82,7 +82,7 @@ const CategoriesList = (props: CategoriesListProps) => {
             src={category.icon.url as string}
             alt={category.icon.alt as string}
             width={40}
-            height={24}
+            height={40}
           />
           <Text
             wordBreak="break-word"

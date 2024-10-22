@@ -14,7 +14,7 @@ const Image = (props: ImageProps) => {
       <NextImage
         {...nextImageProps}
         placeholder="blur"
-        blurDataURL="/images/dashboard/placeholder-image.png"
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP89OlHPQAJFwNd45bXHQAAAABJRU5ErkJggg=="
         style={imageStyle}
       />
     </Box>

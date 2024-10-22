@@ -10,21 +10,16 @@ import {
   Link,
   Text,
   useBreakpointValue,
-  useDisclosure,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { type SubmitHandler, ErrorOption } from "react-hook-form";
 import { HiInformationCircle, HiMiniChevronRight } from "react-icons/hi2";
 import BigLoader from "~/components/BigLoader";
 import { api } from "~/utils/api";
 import FAQSectionAccordionItem from "~/components/landing/FAQSectionAccordionItem";
-import BaseModal from "~/components/modals/BaseModal";
 import PhoneNumberCTA, { LoginForm } from "~/components/landing/PhoneNumberCTA";
 import QRCodeWrapper from "~/components/landing/QRCode";
-import NotEligibleForm from "~/components/landing/NotEligibleForm";
 import { useAuth } from "~/providers/Auth";
-import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedImages";
 import NextLink from "next/link";
 import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
 import LoginWrapper from "~/components/wrappers/LoginWrapper";
@@ -87,24 +82,6 @@ const offersList = [
   },
 ];
 
-const partnersList = [
-  {
-    name: "Auchan",
-    img: "/images/seeds/partners/auchan.svg",
-    promo_label: "-110€",
-  },
-  {
-    name: "Flixbus",
-    img: "/images/seeds/partners/flixbus.svg",
-    promo_label: "-10%",
-  },
-  {
-    name: "Cora",
-    img: "/images/seeds/partners/cora.svg",
-    promo_label: "Gratuit",
-  },
-];
-
 const forWhoList = [
   {
     img: "/images/referent/serviceCivique.png",
@@ -163,15 +140,45 @@ export default function Home() {
     setIntervalId(id);
   };
 
-  const { data: resultLogoPartners, isLoading: isLoadingLogoPartners } =
-    api.globals.landingPartnersGetLogos.useQuery();
-
-  const logoPartners = resultLogoPartners?.data || [];
-
   const { data: resultFAQ, isLoading: isLoadingFAQ } =
     api.globals.landingFAQGetAll.useQuery();
 
   const landingFAQ = resultFAQ?.data || [];
+
+  const { data: resultLogoPartners, isLoading: isLoadingPartners } =
+    api.partner.getList.useQuery({
+      perPage: 3,
+      page: 1,
+      names: ["deezer", "AXA", "La poste mobile"],
+    });
+
+  const landingLogoPartners = resultLogoPartners?.data || [];
+
+  const partnersList = useMemo(() => {
+    if (landingLogoPartners.length === 0) return [];
+    console.log(landingLogoPartners);
+    return [
+      {
+        name: "Deezer",
+        img: landingLogoPartners.find((partner) => partner.name === "Deezer")
+          ?.url as string,
+        promo_label: "-50%",
+      },
+      {
+        name: "AXA",
+        img: landingLogoPartners.find((partner) => partner.name === "AXA")
+          ?.url as string,
+        promo_label: "-100€",
+      },
+      {
+        name: "La poste mobile",
+        img: landingLogoPartners.find(
+          (partner) => partner.name === "La poste mobile"
+        )?.url as string,
+        promo_label: "-10€",
+      },
+    ];
+  }, [landingLogoPartners]);
 
   const { mutate: generateOtp, isLoading: isLoadingOtp } =
     api.user.generateOTP.useMutation({
@@ -196,18 +203,6 @@ export default function Home() {
       },
     });
 
-  const logoAnimationBreakpoint = useBreakpointValue({
-    base: {
-      x: ["0px", `-${57 * logoPartners.length + 32 * logoPartners.length}px`],
-      transition: {
-        repeat: Infinity,
-        duration: 4,
-        ease: "linear",
-      },
-    },
-    lg: undefined,
-  });
-
   const handleGenerateOtp: SubmitHandler<LoginForm> = async (values) => {
     setCurrentPhoneNumber(values.phone_number);
     generateOtp({ phone_number: values.phone_number });
@@ -222,7 +217,7 @@ export default function Home() {
     return () => clearInterval(id);
   }, [isOtpGenerated]);
 
-  if (isLoadingLogoPartners || isLoadingFAQ) return <BigLoader />;
+  if (isLoadingFAQ || isLoadingPartners) return <BigLoader />;
 
   if (isOtpGenerated && otpKind)
     return (
