@@ -39,26 +39,9 @@ const OfferCard = ({
   } = api.coupon.assignToUser.useMutation({
     onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
   });
-  const {
-    mutateAsync: mutateAsyncRemoveCouponFromUser,
-    isLoading: isLoadingRemoveCouponFromUser,
-  } = api.coupon.unassignFromUser.useMutation({
-    onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
-  });
 
-  const handleBookmarkOffer = async (
-    offerId: number,
-    isAssignedToUser: boolean
-  ) => {
-    if (!isAssignedToUser) {
-      await mutateAsyncCouponToUser({ offer_id: offerId });
-    } else {
-      const currentUserCoupon = offer.userCoupon;
-      if (!currentUserCoupon) return;
-      await mutateAsyncRemoveCouponFromUser({
-        coupon_id: currentUserCoupon.id,
-      });
-    }
+  const handleBookmarkOffer = async (offerId: number) => {
+    if (!isBookmarked) await mutateAsyncCouponToUser({ offer_id: offerId });
   };
 
   return (
@@ -143,10 +126,8 @@ const OfferCard = ({
             </Flex>
             {variant === "default" && !fromWidget && (
               <IconButton
-                isDisabled={isDisabled}
-                isLoading={
-                  isLoadingCouponToUser || isLoadingRemoveCouponFromUser
-                }
+                isDisabled={isBookmarked}
+                isLoading={isLoadingCouponToUser}
                 aria-label="Enregistrer l'offre"
                 alignItems="center"
                 borderRadius="2.25xl"
@@ -155,7 +136,7 @@ const OfferCard = ({
                 _disabled={{ opacity: 0.7 }}
                 onClick={(e) => {
                   e.preventDefault();
-                  handleBookmarkOffer(offer.id, isBookmarked);
+                  handleBookmarkOffer(offer.id);
                 }}
                 icon={
                   <Icon
