@@ -1,8 +1,7 @@
 import { Flex, Box, Text, Grid, Link, Skeleton } from "@chakra-ui/react";
 import { api } from "~/utils/api";
-import Image from "next/image";
+import Image from "../ui/Image";
 import NextLink from "next/link";
-import { mostReadable } from "@ctrl/tinycolor";
 import { CategoryIncluded } from "~/server/api/routers/category";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { push } from "@socialgouv/matomo-next";
@@ -110,7 +109,6 @@ const CategoriesList = (props: CategoriesListProps) => {
                   alt={offer.partner.icon.alt as string}
                   width={40}
                   height={40}
-                  objectFit="cover"
                 />
               </Box>
             ))}

@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
-import Image from "next/image";
+import Image from "../ui/Image";
 import { HiBookmark, HiCheckCircle, HiOutlineBookmark } from "react-icons/hi2";
 import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
 import { api } from "~/utils/api";
@@ -98,10 +98,11 @@ const OfferCard = ({
             <Image
               src={offer.image?.url ?? "/images/landing/mobile-showcase.png"}
               alt={offer.image?.alt ?? "Image par défaut de l'offre"}
-              loading="eager"
-              objectFit="cover"
-              objectPosition="center"
-              layout="fill"
+              fill
+              imageStyle={{
+                objectFit: "cover",
+                objectPosition: "center",
+              }}
             />
           </Flex>
           <Box
@@ -133,7 +134,7 @@ const OfferCard = ({
                   alt={offer.partner.icon.alt ?? ""}
                   width={40}
                   height={40}
-                  style={{ borderRadius: "1.125rem" }}
+                  imageStyle={{ borderRadius: "1.125rem" }}
                 />
               </Flex>
               <Text fontSize="xl" fontWeight="bold" color="white">

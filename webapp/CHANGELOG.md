@@ -1,9 +1,8 @@
 ## [0.43.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.1...v0.43.2) (2024-10-22)
 
-
 ### Bug Fixes
 
-* add minimumCacheTTL to increase cache time for images ([b4a292f](https://github.com/SocialGouv/carte-jeune-engage/commit/b4a292f89daa4b6ff560ee5ee10ef3212da38a51))
+- add minimumCacheTTL to increase cache time for images ([b4a292f](https://github.com/SocialGouv/carte-jeune-engage/commit/b4a292f89daa4b6ff560ee5ee10ef3212da38a51))
 
 ## [0.43.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.0...v0.43.1) (2024-10-22)
 
