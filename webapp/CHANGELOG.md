@@ -1,3 +1,11 @@
+## [0.44.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.1...v0.44.2) (2024-10-22)
+
+
+### Bug Fixes
+
+* change partners logos on first section in landing page ([9ba7907](https://github.com/SocialGouv/carte-jeune-engage/commit/9ba790728928ffd9c1e514e1e87ea23fb92c4415))
+* image blur from image to data-image, category logo height and noOfLines for offer title in CouponCard component ([9bdaddd](https://github.com/SocialGouv/carte-jeune-engage/commit/9bdaddd64e3fc67a2c3cca0f84b3d80492aaa326))
+
 ## [0.44.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.0...v0.44.1) (2024-10-22)
 
 ### Bug Fixes
