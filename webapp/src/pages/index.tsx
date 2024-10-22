@@ -49,6 +49,30 @@ const referentItems: { name: string; image: string }[] = [
   { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png" },
 ];
 
+const partnersList = [
+  {
+    name: "Deezer",
+    img: "/images/landing/partners/deezer.png",
+    promo_label: "-50%",
+    imgWidth: "35px",
+    imgHeight: "42.5px",
+  },
+  {
+    name: "AXA",
+    img: "/images/landing/partners/axa.png",
+    promo_label: "-100€",
+    imgWidth: "35px",
+    imgHeight: "35px",
+  },
+  {
+    name: "La poste mobile",
+    img: "/images/landing/partners/la-poste-mobile.png",
+    promo_label: "-10€",
+    imgWidth: "45px",
+    imgHeight: "35px",
+  },
+];
+
 const offersList = [
   {
     title_particle: "un cinéma",
@@ -145,41 +169,6 @@ export default function Home() {
 
   const landingFAQ = resultFAQ?.data || [];
 
-  const { data: resultLogoPartners, isLoading: isLoadingPartners } =
-    api.partner.getList.useQuery({
-      perPage: 3,
-      page: 1,
-      names: ["deezer", "AXA", "La poste mobile"],
-    });
-
-  const landingLogoPartners = resultLogoPartners?.data || [];
-
-  const partnersList = useMemo(() => {
-    if (landingLogoPartners.length === 0) return [];
-    console.log(landingLogoPartners);
-    return [
-      {
-        name: "Deezer",
-        img: landingLogoPartners.find((partner) => partner.name === "Deezer")
-          ?.url as string,
-        promo_label: "-50%",
-      },
-      {
-        name: "AXA",
-        img: landingLogoPartners.find((partner) => partner.name === "AXA")
-          ?.url as string,
-        promo_label: "-100€",
-      },
-      {
-        name: "La poste mobile",
-        img: landingLogoPartners.find(
-          (partner) => partner.name === "La poste mobile"
-        )?.url as string,
-        promo_label: "-10€",
-      },
-    ];
-  }, [landingLogoPartners]);
-
   const { mutate: generateOtp, isLoading: isLoadingOtp } =
     api.user.generateOTP.useMutation({
       onSuccess: (data) => {
@@ -217,7 +206,7 @@ export default function Home() {
     return () => clearInterval(id);
   }, [isOtpGenerated]);
 
-  if (isLoadingFAQ || isLoadingPartners) return <BigLoader />;
+  if (isLoadingFAQ) return <BigLoader />;
 
   if (isOtpGenerated && otpKind)
     return (
@@ -324,7 +313,12 @@ export default function Home() {
                   rounded="full"
                   p={4}
                 >
-                  <Image src={partner.img} alt={`Logo de ${partner.name}`} />
+                  <Image
+                    src={partner.img}
+                    width={partner.imgWidth}
+                    height={partner.imgHeight}
+                    alt={`Logo de ${partner.name}`}
+                  />
                 </Flex>
                 <Flex
                   as={Text}

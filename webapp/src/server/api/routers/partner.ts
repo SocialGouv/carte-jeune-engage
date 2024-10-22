@@ -10,32 +10,15 @@ export interface PartnerIncluded extends Partner {
 
 export const partnerRouter = createTRPCRouter({
   getList: publicProcedure
-    .input(
-      ZGetListParams.merge(
-        z.object({
-          names: z.array(z.string()).optional(),
-          stared: z.boolean().optional(),
-        })
-      )
-    )
+    .input(ZGetListParams.merge(z.object({ stared: z.boolean().optional() })))
     .query(async ({ ctx, input }) => {
-      const { perPage, page, sort, names, stared } = input;
+      const { perPage, page, sort, stared } = input;
 
       let where = {} as Where;
 
       if (stared) {
         where.stared = { equals: true };
       }
-
-      if (names && names.length > 0) {
-        where = {
-          name: {
-            in: names,
-          },
-        };
-      }
-
-      console.log(where);
 
       const partners = await ctx.payload.find({
         collection: "partners",
@@ -44,8 +27,6 @@ export const partnerRouter = createTRPCRouter({
         sort,
         where,
       });
-
-      console.log(partners.docs);
 
       return {
         data: partners.docs as PartnerIncluded[],
