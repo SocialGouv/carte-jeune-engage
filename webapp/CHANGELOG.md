@@ -1,3 +1,10 @@
+# [0.44.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.2...v0.44.0) (2024-10-22)
+
+
+### Features
+
+* add ui image component to handle blur / loading of image, repalce component on all image in home page ([8135bbe](https://github.com/SocialGouv/carte-jeune-engage/commit/8135bbe28e5a52d086e64ffc860ee88da078cf43))
+
 ## [0.43.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.1...v0.43.2) (2024-10-22)
 
 ### Bug Fixes
