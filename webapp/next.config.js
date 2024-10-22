@@ -14,6 +14,7 @@ const nextOptions = {
   reactStrictMode: true,
   images: {
     domains: ["localhost"],
+    minimumCacheTTL: 604800,
   },
   env: {
     NEXT_PUBLIC_CURRENT_PACKAGE_VERSION: version,
