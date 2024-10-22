@@ -9,6 +9,7 @@ import { api } from "~/utils/api";
 import { motion, AnimatePresence } from "framer-motion";
 import OfferContent from "~/components/offer/page/OfferContent";
 import CouponContent from "~/components/offer/page/CouponContent";
+import { isIOS } from "~/utils/tools";
 
 const flipVariants = {
   hidden: { rotateY: 90 },
@@ -94,7 +95,7 @@ export default function OfferPage() {
         document.body.appendChild(a);
         a.classList.add("hidden");
         a.href = coupon?.offer?.url as string;
-        a.target = "_blank";
+        if (!isIOS()) a.target = "_blank";
         a.click();
         document.body.removeChild(a);
         onCloseExternalLink();

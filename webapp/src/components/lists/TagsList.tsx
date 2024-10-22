@@ -1,6 +1,6 @@
 import { Flex, Icon, Link, Skeleton, Text } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
-import Image from "next/image";
+import Image from "../ui/Image";
 import NextLink from "next/link";
 import { ReactNode, useMemo } from "react";
 import { HiChevronRight } from "react-icons/hi2";

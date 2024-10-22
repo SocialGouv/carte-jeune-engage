@@ -10,21 +10,16 @@ import {
   Link,
   Text,
   useBreakpointValue,
-  useDisclosure,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { type SubmitHandler, ErrorOption } from "react-hook-form";
 import { HiInformationCircle, HiMiniChevronRight } from "react-icons/hi2";
 import BigLoader from "~/components/BigLoader";
 import { api } from "~/utils/api";
 import FAQSectionAccordionItem from "~/components/landing/FAQSectionAccordionItem";
-import BaseModal from "~/components/modals/BaseModal";
 import PhoneNumberCTA, { LoginForm } from "~/components/landing/PhoneNumberCTA";
 import QRCodeWrapper from "~/components/landing/QRCode";
-import NotEligibleForm from "~/components/landing/NotEligibleForm";
 import { useAuth } from "~/providers/Auth";
-import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedImages";
 import NextLink from "next/link";
 import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
 import LoginWrapper from "~/components/wrappers/LoginWrapper";
@@ -52,6 +47,30 @@ const referentItems: { name: string; image: string }[] = [
     image: "/images/referent/ecole2ndeChance.png",
   },
   { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png" },
+];
+
+const partnersList = [
+  {
+    name: "Deezer",
+    img: "/images/landing/partners/deezer.png",
+    promo_label: "-50%",
+    imgWidth: "35px",
+    imgHeight: "42.5px",
+  },
+  {
+    name: "AXA",
+    img: "/images/landing/partners/axa.png",
+    promo_label: "-100€",
+    imgWidth: "35px",
+    imgHeight: "35px",
+  },
+  {
+    name: "La poste mobile",
+    img: "/images/landing/partners/la-poste-mobile.png",
+    promo_label: "-10€",
+    imgWidth: "45px",
+    imgHeight: "35px",
+  },
 ];
 
 const offersList = [
@@ -84,24 +103,6 @@ const offersList = [
     card_img: "/images/landing/offers/cinema-card.png",
     tag_img: "/images/seeds/tags/culture.png",
     tagRotationAngle: -11,
-  },
-];
-
-const partnersList = [
-  {
-    name: "Auchan",
-    img: "/images/seeds/partners/auchan.svg",
-    promo_label: "-110€",
-  },
-  {
-    name: "Flixbus",
-    img: "/images/seeds/partners/flixbus.svg",
-    promo_label: "-10%",
-  },
-  {
-    name: "Cora",
-    img: "/images/seeds/partners/cora.svg",
-    promo_label: "Gratuit",
   },
 ];
 
@@ -163,11 +164,6 @@ export default function Home() {
     setIntervalId(id);
   };
 
-  const { data: resultLogoPartners, isLoading: isLoadingLogoPartners } =
-    api.globals.landingPartnersGetLogos.useQuery();
-
-  const logoPartners = resultLogoPartners?.data || [];
-
   const { data: resultFAQ, isLoading: isLoadingFAQ } =
     api.globals.landingFAQGetAll.useQuery();
 
@@ -196,18 +192,6 @@ export default function Home() {
       },
     });
 
-  const logoAnimationBreakpoint = useBreakpointValue({
-    base: {
-      x: ["0px", `-${57 * logoPartners.length + 32 * logoPartners.length}px`],
-      transition: {
-        repeat: Infinity,
-        duration: 4,
-        ease: "linear",
-      },
-    },
-    lg: undefined,
-  });
-
   const handleGenerateOtp: SubmitHandler<LoginForm> = async (values) => {
     setCurrentPhoneNumber(values.phone_number);
     generateOtp({ phone_number: values.phone_number });
@@ -222,7 +206,7 @@ export default function Home() {
     return () => clearInterval(id);
   }, [isOtpGenerated]);
 
-  if (isLoadingLogoPartners || isLoadingFAQ) return <BigLoader />;
+  if (isLoadingFAQ) return <BigLoader />;
 
   if (isOtpGenerated && otpKind)
     return (
@@ -329,7 +313,12 @@ export default function Home() {
                   rounded="full"
                   p={4}
                 >
-                  <Image src={partner.img} alt={`Logo de ${partner.name}`} />
+                  <Image
+                    src={partner.img}
+                    width={partner.imgWidth}
+                    height={partner.imgHeight}
+                    alt={`Logo de ${partner.name}`}
+                  />
                 </Flex>
                 <Flex
                   as={Text}
