@@ -1,3 +1,10 @@
+## [0.43.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.0...v0.43.1) (2024-10-22)
+
+
+### Bug Fixes
+
+* re-add notification modal on onboarding ([84461cf](https://github.com/SocialGouv/carte-jeune-engage/commit/84461cfd5fa441d7670a7c305a3d4ad59cb0fb3f))
+
 # [0.43.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.42.0...v0.43.0) (2024-10-21)
 
 ### Bug Fixes
