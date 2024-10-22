@@ -31,6 +31,7 @@ import LoginWrapper from "~/components/wrappers/LoginWrapper";
 import ConditionalLink from "~/components/ConditionalLink";
 import LoginOtpContent from "~/components/landing/LoginOtpContent";
 import Jumbotron from "~/components/landing/Jumbotron";
+import { useInView, motion } from "framer-motion";
 
 const defaultTimeToResend = 30;
 
@@ -152,7 +153,14 @@ export default function Home() {
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState<string>("");
   const [phoneNumberError, setPhoneNumberError] = useState<ErrorOption>();
 
+  const [physicsAnimationTriggered, setPhysicsAnimationTriggered] =
+    useState(false);
+
   const parentPartnersRef = useRef<HTMLDivElement>(null);
+
+  const physicsTriggerRef = useRef(null);
+
+  const isInView = useInView(physicsTriggerRef);
 
   const resetTimer = () => {
     if (intervalId) clearInterval(intervalId);
@@ -275,6 +283,7 @@ export default function Home() {
           rounded="5xl"
           color={"white"}
           mt={isDesktop ? 0 : 20}
+          ref={parentPartnersRef}
         >
           <Flex
             flex={1}
@@ -297,13 +306,13 @@ export default function Home() {
               fontWeight={"bold"}
               fontSize={{ lg: "lg" }}
               passHref
+              ref={physicsTriggerRef}
             >
               Voir toutes les entreprises
               <Box as="br" display={{ base: "block", lg: "none" }} /> engagées →
             </Link>
           </Flex>
           <Flex
-            ref={parentPartnersRef}
             flex={1}
             flexDir="column"
             justify={"center"}
