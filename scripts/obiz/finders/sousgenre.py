@@ -64,6 +64,7 @@ def search_sousgenre_articles(file_paths: List[str], sousgenre_name: str) -> Dic
                                 if sg.get('sousgenres_nom', '').lower() == sousgenre_name.lower():
                                     sousgenre_info = {
                                         'nom': sg.get('sousgenres_nom', ''),
+                                        'id': sg.get('sousgenres_id'),
                                         'genre_nom': gen.get('genres_nom', ''),
                                         'url': sg.get('sousgenres_url', ''),
                                         'description': sg.get('sousgenres_descriptif', {}).get('#cdata-section', ''),
@@ -107,6 +108,7 @@ def print_sousgenre_details(results: Dict[str, List[Dict]]) -> None:
 
         for result in source_results:
             print(f"\nSous-genre: {result['nom']} (genre - {result['genre_nom']})")
+            print(f"ID : {result['id']}")
             print(f"URL: {result['url']}")
             print("\nArticles associés:")
             print("-" * 30)
