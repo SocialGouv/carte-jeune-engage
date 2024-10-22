@@ -77,7 +77,7 @@ const EllipsePositionnedImages = ({
             height: imageSize,
           }}
           transition={{
-            duration: 0.7,
+            duration: !degreeOffset || degreeOffset > 110 ? 0.2 : 0.6,
             ease: "linear",
           }}
           style={{
