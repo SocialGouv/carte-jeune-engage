@@ -1,3 +1,41 @@
+## [0.44.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.2...v0.44.3) (2024-10-22)
+
+### Bug Fixes
+
+- remove unassign coupon to user in offerCard and offer page ([97d8198](https://github.com/SocialGouv/carte-jeune-engage/commit/97d8198fc6ff8c0be6f3f7b3500f22ca3f3ac431))
+
+## [0.44.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.1...v0.44.2) (2024-10-22)
+
+### Bug Fixes
+
+- change partners logos on first section in landing page ([9ba7907](https://github.com/SocialGouv/carte-jeune-engage/commit/9ba790728928ffd9c1e514e1e87ea23fb92c4415))
+- image blur from image to data-image, category logo height and noOfLines for offer title in CouponCard component ([9bdaddd](https://github.com/SocialGouv/carte-jeune-engage/commit/9bdaddd64e3fc67a2c3cca0f84b3d80492aaa326))
+
+## [0.44.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.0...v0.44.1) (2024-10-22)
+
+### Bug Fixes
+
+- images on category and tag page fromt chakra to nextjs and text decoration none on category block in home page ([19d3eb4](https://github.com/SocialGouv/carte-jeune-engage/commit/19d3eb47cd00612fe60cc8967cccbbf7fc0ea3b6))
+- remove target \_blank for redirection to prevent ios to block the link ([af6870d](https://github.com/SocialGouv/carte-jeune-engage/commit/af6870da4b6493d62d787b31c331461ad20bf01d))
+
+# [0.44.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.2...v0.44.0) (2024-10-22)
+
+### Features
+
+- add ui image component to handle blur / loading of image, repalce component on all image in home page ([8135bbe](https://github.com/SocialGouv/carte-jeune-engage/commit/8135bbe28e5a52d086e64ffc860ee88da078cf43))
+
+## [0.43.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.1...v0.43.2) (2024-10-22)
+
+### Bug Fixes
+
+- add minimumCacheTTL to increase cache time for images ([b4a292f](https://github.com/SocialGouv/carte-jeune-engage/commit/b4a292f89daa4b6ff560ee5ee10ef3212da38a51))
+
+## [0.43.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.0...v0.43.1) (2024-10-22)
+
+### Bug Fixes
+
+- re-add notification modal on onboarding ([84461cf](https://github.com/SocialGouv/carte-jeune-engage/commit/84461cfd5fa441d7670a7c305a3d4ad59cb0fb3f))
+
 # [0.43.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.42.0...v0.43.0) (2024-10-21)
 
 ### Bug Fixes
