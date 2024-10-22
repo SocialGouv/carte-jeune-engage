@@ -1,3 +1,10 @@
+## [0.44.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.2...v0.44.3) (2024-10-22)
+
+
+### Bug Fixes
+
+* remove unassign coupon to user in offerCard and offer page ([97d8198](https://github.com/SocialGouv/carte-jeune-engage/commit/97d8198fc6ff8c0be6f3f7b3500f22ca3f3ac431))
+
 ## [0.44.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.1...v0.44.2) (2024-10-22)
 
 ### Bug Fixes
