@@ -32,6 +32,8 @@ type AuthContext = {
   setShowNotificationModal: (showNotificationModal: boolean) => void;
   showModalInstallApp: boolean;
   setShowModalInstallApp: (showModalInstallApp: boolean) => void;
+  showSplashScreenModal: boolean;
+  setShowSplashScreenModal: (showSplashScreenModal: boolean) => void;
   showDesktopQRCode: boolean;
   setShowDesktopQRCode: Dispatch<SetStateAction<boolean>>;
   showDesktopEligibleModal: boolean;
@@ -57,6 +59,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [showNotificationModal, setShowNotificationModal] =
     useState<boolean>(false);
   const [showModalInstallApp, setShowModalInstallApp] =
+    useState<boolean>(false);
+  const [showSplashScreenModal, setShowSplashScreenModal] =
     useState<boolean>(false);
   const [showDesktopQRCode, setShowDesktopQRCode] = useState<boolean>(true);
   const [showDesktopEligibleModal, setShowDesktopEligibleModal] =
@@ -114,6 +118,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setShowNotificationModal,
         showModalInstallApp,
         setShowModalInstallApp,
+        showSplashScreenModal,
+        setShowSplashScreenModal,
         showDesktopQRCode,
         setShowDesktopQRCode,
         showDesktopEligibleModal,

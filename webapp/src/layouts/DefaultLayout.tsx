@@ -6,37 +6,40 @@ import BottomNavigation from "~/components/BottomNavigation";
 import Footer from "~/components/landing/Footer";
 import Header from "~/components/landing/Header";
 import NotificationModal from "~/components/modals/NotificationModal";
-import InstallAppModal from "~/components/modals/InstallAppModal";
 import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
-import { isIOS } from "~/utils/tools";
 import { push } from "@socialgouv/matomo-next";
+import SplashScreenModal from "~/components/modals/SplashScreenModal";
+import { isIOS } from "~/utils/tools";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   const {
-    deferredEvent,
     setDeferredEvent,
     setShowing,
     user,
     isOtpGenerated,
     showNotificationModal,
     setShowNotificationModal,
-    showModalInstallApp,
-    setShowModalInstallApp,
+    showSplashScreenModal,
+    setShowSplashScreenModal,
     setServiceWorkerRegistration,
   } = useAuth();
 
   const { isOpen: isNotificationModalOpen, onClose: onNotificationModalClose } =
     useDisclosure({
-      isOpen: showNotificationModal && !!user && !user.notification_status,
+      isOpen:
+        showNotificationModal &&
+        !!user &&
+        !user.notification_status &&
+        !isIOS(),
       onClose: () => setShowNotificationModal(false),
     });
 
-  const { isOpen: isOpenModalInstallApp, onClose: onCloseModalInstallApp } =
+  const { isOpen: isSplashscreenModalOpen, onClose: onSplashscreenModalClose } =
     useDisclosure({
-      isOpen: showModalInstallApp && (!isIOS() ? deferredEvent !== null : true),
-      onClose: () => setShowModalInstallApp(false),
+      isOpen: showSplashScreenModal,
+      onClose: () => setShowSplashScreenModal(false),
     });
 
   const isLanding =
@@ -166,16 +169,16 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
           h="full"
         >
           {children}
+          {showSplashScreenModal && (
+            <SplashScreenModal
+              isOpen={isSplashscreenModalOpen}
+              onClose={onSplashscreenModalClose}
+            />
+          )}
           {showNotificationModal && (
             <NotificationModal
               isOpen={isNotificationModalOpen}
               onClose={onNotificationModalClose}
-            />
-          )}
-          {showModalInstallApp && (
-            <InstallAppModal
-              onClose={onCloseModalInstallApp}
-              isOpen={isOpenModalInstallApp}
             />
           )}
         </Container>

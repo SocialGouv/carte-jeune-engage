@@ -25,6 +25,7 @@ import useDebounceValueWithState from "~/hooks/useDebounceCallbackWithPending";
 import FormAutocompleteInput from "~/components/forms/FormAutocompleteInput";
 import { useAuth } from "~/providers/Auth";
 import Image from "next/image";
+import { isIOS } from "~/utils/tools";
 
 type SignUpForm = {
   hasAcceptedCGU: boolean;
@@ -231,7 +232,12 @@ export const signupSteps = [
 export default function Signup() {
   const router = useRouter();
 
-  const { user, refetchUser, setShowNotificationModal } = useAuth();
+  const {
+    user,
+    refetchUser,
+    setShowSplashScreenModal,
+    setShowNotificationModal,
+  } = useAuth();
 
   const { signupStep } = router.query as {
     signupStep: keyof Omit<SignUpForm, "hasAcceptedCGU"> | undefined;
@@ -240,7 +246,6 @@ export default function Signup() {
   const { mutateAsync: updateUser, isLoading: isLoadingUpdateUser } =
     api.user.update.useMutation();
 
-  const [finishedOnBoarding, setFinishedOnBoarding] = useState(false);
   const [currentSignupStep, setCurrentSignupStep] =
     useState<SignUpFormStep | null>(null);
 
@@ -298,8 +303,12 @@ export default function Signup() {
               { expires: new Date((data.exp as number) * 1000) }
             );
             refetchUser().then(() => {
-              setFinishedOnBoarding(true);
-              setTimeout(() => router.push("/dashboard"), 1200);
+              router.push("/dashboard");
+              if (!!user && !user.notification_status && !isIOS()) {
+                setShowNotificationModal(true);
+              } else {
+                setShowSplashScreenModal(true);
+              }
             });
           });
         });
@@ -600,35 +609,6 @@ export default function Signup() {
       </Flex>
     );
   }
-
-  if (finishedOnBoarding)
-    return (
-      <Box h="full" bgColor="primary">
-        <Center h="full">
-          <Flex
-            flexDir="column"
-            alignItems="center"
-            justifyContent="center"
-            textAlign="center"
-            gap={4}
-            px={6}
-            mb={20}
-          >
-            <Image
-              src="/images/cje-logo-white-blue.svg"
-              alt="Carte Jeune Engagé"
-              width={141}
-              height={75}
-            />
-            <Text fontWeight="extrabold" color="white" mt={20} fontSize={32}>
-              Ca y est {user?.firstName} !
-              <br />
-              Les réductions sont à vous
-            </Text>
-          </Flex>
-        </Center>
-      </Box>
-    );
 
   const currentFieldValue = getValues(
     currentSignupStep.field.name as keyof SignUpForm
