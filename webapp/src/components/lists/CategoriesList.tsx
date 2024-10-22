@@ -63,6 +63,7 @@ const CategoriesList = (props: CategoriesListProps) => {
         onClick={() => {
           push(["trackEvent", "Accueil", "Catégories - " + category.label]);
         }}
+        _hover={{ textDecoration: "none" }}
         passHref
       >
         <Flex
