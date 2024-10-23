@@ -1,3 +1,10 @@
+## [0.45.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.0...v0.45.1) (2024-10-23)
+
+
+### Bug Fixes
+
+* add middleware logs, redirect in default layout on dashboard for webapp issue and change manifest theme to white ([3dcb2a5](https://github.com/SocialGouv/carte-jeune-engage/commit/3dcb2a5f766e9ab04745f6230dd11d3897da3b54))
+
 # [0.45.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.3...v0.45.0) (2024-10-22)
 
 
