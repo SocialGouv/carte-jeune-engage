@@ -1,3 +1,10 @@
+## [0.45.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.1...v0.45.2) (2024-10-23)
+
+
+### Bug Fixes
+
+* add tap animation on signup page button and fix issue on notification modal if no service worker is registered ([8ef347d](https://github.com/SocialGouv/carte-jeune-engage/commit/8ef347d72c9113ab95ddf7b5ef0398e8d60a8f66))
+
 ## [0.45.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.0...v0.45.1) (2024-10-23)
 
 
