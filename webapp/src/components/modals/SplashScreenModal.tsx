@@ -19,11 +19,10 @@ const SplashScreenModal = ({
   isOpen: boolean;
 }) => {
   const router = useRouter();
-  const { user, setShowNotificationModal } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setShowNotificationModal(true);
       router.push("/dashboard").then(() => {
         onClose();
       });
