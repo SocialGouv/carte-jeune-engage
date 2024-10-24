@@ -22,31 +22,30 @@ import {
   World,
 } from "matter-js";
 import NextLink from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-
-interface PartnerSectionProps {}
+import React, { useEffect, useRef } from "react";
 
 const partnersList = [
   {
-    name: "Auchan",
-    img: "/images/seeds/partners/auchan.svg",
-    promo_label: "-110€",
+    name: "Deezer",
+    img: "/images/landing/partners/deezer.png",
+    promo_label: "-50%",
+    imgHeight: 28,
   },
   {
-    name: "Flixbus",
-    img: "/images/seeds/partners/flixbus.svg",
-    promo_label: "-10%",
+    name: "AXA",
+    img: "/images/landing/partners/axa.png",
+    promo_label: "-100€",
   },
   {
-    name: "Cora",
-    img: "/images/seeds/partners/cora.svg",
-    promo_label: "Gratuit",
+    name: "La poste mobile",
+    img: "/images/landing/partners/la-poste-mobile.png",
+    promo_label: "-10€",
   },
 ];
 
 const partnerItemClassName = "partner-item";
 
-const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
+const PartnerSectionWithPhysics = () => {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -96,11 +95,23 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
       const height = html_element.offsetHeight;
       const x = html_element.offsetLeft + width / 2;
       const y = html_element.offsetTop + height / 2;
-      const isSquare = width === height;
 
       let body;
-      if (isSquare) {
+      if (width === height) {
         body = Bodies.circle(x, y, width / 2, bodyProps);
+      } else if (width < height) {
+        const rectangle = Bodies.rectangle(x, y, width, height - width);
+        const topCircle = Bodies.circle(x, y - (height - width) / 2, width / 2);
+        const bottomCircle = Bodies.circle(
+          x,
+          y + (height - width) / 2,
+          width / 2
+        );
+
+        body = Body.create({
+          ...bodyProps,
+          parts: [rectangle, topCircle, bottomCircle],
+        });
       } else {
         const rectangle = Bodies.rectangle(x, y, width - height, height);
         const leftCircle = Bodies.circle(
@@ -266,8 +277,8 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
               justifyContent="center"
               bg="white"
               rounded="full"
-              h={{ base: 12, lg: 20 }}
-              p={2}
+              h={partner.imgHeight ? partner.imgHeight : { base: 12, lg: 20 }}
+              p={4}
               className={partnerItemClassName}
               pointerEvents={"none"}
               userSelect={"none"}
@@ -275,7 +286,6 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
               <Image
                 src={partner.img}
                 alt={`Logo de ${partner.name}`}
-                w={"auto"}
                 h={"full"}
               />
             </Flex>

@@ -50,30 +50,6 @@ const referentItems: { name: string; image: string }[] = [
   { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png" },
 ];
 
-const partnersList = [
-  {
-    name: "Deezer",
-    img: "/images/landing/partners/deezer.png",
-    promo_label: "-50%",
-    imgWidth: "35px",
-    imgHeight: "42.5px",
-  },
-  {
-    name: "AXA",
-    img: "/images/landing/partners/axa.png",
-    promo_label: "-100€",
-    imgWidth: "35px",
-    imgHeight: "35px",
-  },
-  {
-    name: "La poste mobile",
-    img: "/images/landing/partners/la-poste-mobile.png",
-    promo_label: "-10€",
-    imgWidth: "45px",
-    imgHeight: "35px",
-  },
-];
-
 const offersList = [
   {
     title_particle: "un cinéma",

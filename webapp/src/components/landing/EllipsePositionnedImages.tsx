@@ -85,6 +85,7 @@ const EllipsePositionnedImages = ({
             left: "50%",
             top: "50%",
             rotate: index % 2 === 0 ? 5 : -7.5,
+            zIndex: 1,
           }}
         >
           <Image src={src} boxSize={"full"} />
@@ -128,7 +129,6 @@ const EllipsePositionnedImages = ({
           : imageSize,
     };
   };
-
 
   return getImagesRender();
 };
