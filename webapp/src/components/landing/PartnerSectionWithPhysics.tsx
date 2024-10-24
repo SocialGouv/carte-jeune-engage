@@ -124,7 +124,7 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
       return { body, element: html_element }; // Returns the body and the DOM element
     });
 
-    const innerOffset = 45;
+    const innerOffset = 50;
     const wallsOptions: IChamferableBodyDefinition = {
       isStatic: true,
       friction: 1,
@@ -166,7 +166,6 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
     const mouse = Mouse.create(canvas);
     const mouseConstraint = MouseConstraint.create(engine, {
       mouse,
-
       constraint: {
         damping: 0.2,
         stiffness: 1,
@@ -199,8 +198,6 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
     };
   }, [arePhysicsTriggered]);
 
-  // TODO: Handle scroll when in canvas
-
   return (
     <Flex
       flexDir={{ base: "column", lg: "row" }}
@@ -212,7 +209,14 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
       color={"white"}
       mt={isDesktop ? 0 : 20}
     >
-      <Box as="canvas" ref={canvasRef} pos={"absolute"} w={"full"} h={"full"} />
+      <Box
+        as="canvas"
+        ref={canvasRef}
+        pos={"absolute"}
+        w={"full"}
+        h={"full"}
+        onWheelCapture={(e: React.WheelEvent) => e.stopPropagation()}
+      />
       <Flex
         flex={1}
         flexDir="column"
