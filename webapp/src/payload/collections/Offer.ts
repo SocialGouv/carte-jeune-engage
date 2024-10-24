@@ -2,6 +2,7 @@ import { type CollectionConfig } from "payload/types";
 import { CustomSelectTermsOfUse } from "../components/CustomSelectTermsOfUse";
 import { Partner, QuickAccess } from "../payload-types";
 import { CustomSelectConditionBlocks } from "../components/CustomSelectBlocksOfUse";
+import { CustomSelectKind } from "../components/CustomSelectKind";
 
 export const Offers: CollectionConfig = {
   slug: "offers",
@@ -81,16 +82,40 @@ export const Offers: CollectionConfig = {
     },
     {
       type: "select",
+      name: "source",
+      label: "Source",
+      required: true,
+      defaultValue: "cje",
+      admin: {
+        position: "sidebar",
+      },
+      options: [
+        { label: "CJE", value: "cje" },
+        { label: "Obiz", value: "obiz" },
+      ],
+    },
+    {
+      name: "obiz_id",
+      type: "text",
+      label: "Identifiant Obiz",
+      admin: {
+        position: "sidebar",
+        readOnly: true,
+        condition: (_, siblingData) =>
+          !!siblingData.source && siblingData.source === "obiz",
+      },
+    },
+    {
+      type: "text",
       name: "kind",
       label: "Type",
       required: true,
-      defaultValue: "voucher",
-      options: [
-        { label: "[En magasin] Bon d'achat + carte CJE", value: "voucher" },
-        { label: "[En magasin] Carte CJE", value: "voucher_pass" },
-        { label: "[En ligne] Code de réduction", value: "code" },
-        { label: "[En ligne] Espace de réduction", value: "code_space" },
-      ],
+      admin: {
+        position: "sidebar",
+        components: {
+          Field: CustomSelectKind,
+        },
+      },
     },
     {
       name: "url",
@@ -98,7 +123,10 @@ export const Offers: CollectionConfig = {
       label: "Lien de redirection de l'offre",
       admin: {
         condition: (_, siblingData) =>
-          !!siblingData.kind && siblingData.kind.startsWith("code"),
+          !!siblingData.source &&
+          siblingData.source === "cje" &&
+          !!siblingData.kind &&
+          siblingData.kind.startsWith("code"),
         position: "sidebar",
       },
       required: true,
@@ -109,7 +137,10 @@ export const Offers: CollectionConfig = {
       label: "Nombre de magasins éligibles",
       admin: {
         condition: (_, siblingData) =>
-          !!siblingData.kind && siblingData.kind.startsWith("voucher"),
+          !!siblingData.source &&
+          siblingData.source === "cje" &&
+          !!siblingData.kind &&
+          siblingData.kind.startsWith("voucher"),
         position: "sidebar",
       },
       defaultValue: 1,
@@ -121,7 +152,10 @@ export const Offers: CollectionConfig = {
       relationTo: "media",
       admin: {
         condition: (_, siblingData) =>
-          !!siblingData.kind && siblingData.kind.startsWith("voucher"),
+          !!siblingData.source &&
+          siblingData.source === "cje" &&
+          !!siblingData.kind &&
+          siblingData.kind.startsWith("voucher"),
         position: "sidebar",
       },
     },
@@ -131,7 +165,10 @@ export const Offers: CollectionConfig = {
       label: "Lien des magasins éligibles",
       admin: {
         condition: (_, siblingData) =>
-          !!siblingData.kind && siblingData.kind.startsWith("voucher"),
+          !!siblingData.source &&
+          siblingData.source === "cje" &&
+          !!siblingData.kind &&
+          siblingData.kind.startsWith("voucher"),
         position: "sidebar",
       },
     },
@@ -150,7 +187,10 @@ export const Offers: CollectionConfig = {
       ],
       admin: {
         condition: (_, siblingData) =>
-          !!siblingData.kind && siblingData.kind === "voucher",
+          !!siblingData.source &&
+          siblingData.source === "cje" &&
+          !!siblingData.kind &&
+          siblingData.kind === "voucher",
         position: "sidebar",
         description:
           "Si vide, le code-barres est formaté au format CODE128 par défaut",
@@ -163,6 +203,10 @@ export const Offers: CollectionConfig = {
       labels: {
         singular: "Étape",
         plural: "Étapes",
+      },
+      admin: {
+        condition: (_, siblingData) =>
+          !!siblingData.source && siblingData.source === "cje",
       },
       defaultValue: [],
       fields: [
@@ -191,6 +235,10 @@ export const Offers: CollectionConfig = {
         singular: "Condition",
         plural: "Conditions",
       },
+      admin: {
+        condition: (_, siblingData) =>
+          !!siblingData.source && siblingData.source === "cje",
+      },
       fields: [
         {
           name: "text",
@@ -208,6 +256,10 @@ export const Offers: CollectionConfig = {
         singular: "Condition Bloc",
         plural: "Condition Blocs",
       },
+      admin: {
+        condition: (_, siblingData) =>
+          !!siblingData.source && siblingData.source === "cje",
+      },
       fields: [
         {
           name: "slug",
@@ -219,6 +271,102 @@ export const Offers: CollectionConfig = {
             },
           },
           required: true,
+        },
+      ],
+    },
+    {
+      name: "articles",
+      type: "array",
+      label: "Articles",
+      labels: {
+        singular: "Article",
+        plural: "Articles",
+      },
+      admin: {
+        condition: (_, siblingData) =>
+          !!siblingData.source && siblingData.source === "obiz",
+      },
+      fields: [
+        {
+          name: "name",
+          label: "Nom",
+          type: "text",
+          required: true,
+        },
+        {
+          name: "reference",
+          label: "Référence",
+          type: "text",
+          required: true,
+        },
+        {
+          name: "reductionPercentage",
+          label: "Pourcentage de réduction",
+          type: "number",
+          required: true,
+          min: 0,
+          max: 100,
+        },
+        {
+          name: "validityTo",
+          type: "date",
+          label: "Article valide jusqu'au (inclus)",
+          required: true,
+        },
+        {
+          name: "kind",
+          type: "select",
+          label: "Type",
+          required: true,
+          options: [
+            { label: "Prix variable", value: "variable_price" },
+            { label: "Prix fixe", value: "fixed_price" },
+          ],
+        },
+        {
+          name: "minimumPrice",
+          label: "Valeure minimum",
+          type: "number",
+          admin: {
+            condition: (_, siblingData) =>
+              !!siblingData.kind && siblingData.kind === "variable_price",
+          },
+        },
+        {
+          name: "maximumPrice",
+          label: "Valeure maximum",
+          type: "number",
+          admin: {
+            condition: (_, siblingData) =>
+              !!siblingData.kind && siblingData.kind === "variable_price",
+          },
+        },
+        {
+          name: "publicPrice",
+          label: "Prix public",
+          type: "number",
+          admin: {
+            condition: (_, siblingData) =>
+              !!siblingData.kind && siblingData.kind === "fixed_price",
+          },
+        },
+        {
+          name: "price",
+          label: "Prix TTC",
+          type: "number",
+          admin: {
+            condition: (_, siblingData) =>
+              !!siblingData.kind && siblingData.kind === "fixed_price",
+          },
+        },
+        {
+          name: "obizJson",
+          label: "Données de Obiz (ne pas toucher)",
+          type: "json",
+          required: true,
+          admin: {
+            readOnly: true,
+          },
         },
       ],
     },

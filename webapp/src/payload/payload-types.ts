@@ -220,6 +220,7 @@ export interface Offer {
   tags?: (number | Tag)[] | null;
   validityFrom?: string | null;
   validityTo: string;
+  source: "cje" | "obiz";
   kind: "voucher" | "voucher_pass" | "code" | "code_space";
   url?: string | null;
   nbOfEligibleStores?: number | null;

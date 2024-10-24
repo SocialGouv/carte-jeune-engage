@@ -16,6 +16,7 @@ export async function seedOffers(payload: Payload) {
       category: [
         categories.findIndex((category) => category.slug === "shop") + 1,
       ],
+      source: "cje",
       kind: "voucher",
       validityTo,
     },
@@ -25,6 +26,7 @@ export async function seedOffers(payload: Payload) {
       category: [
         categories.findIndex((category) => category.slug === "shop") + 1,
       ],
+      source: "cje",
       kind: "voucher",
       validityTo,
     },
@@ -34,6 +36,7 @@ export async function seedOffers(payload: Payload) {
       category: [
         categories.findIndex((category) => category.slug === "shop") + 1,
       ],
+      source: "cje",
       kind: "voucher",
       validityTo,
     },
@@ -43,6 +46,7 @@ export async function seedOffers(payload: Payload) {
       category: [
         categories.findIndex((category) => category.slug === "mobility") + 1,
       ],
+      source: "cje",
       kind: "code",
       url: "https://flixbus.com",
       validityTo,
