@@ -10,8 +10,10 @@ import {
 import { useInView } from "framer-motion";
 import {
   Bodies,
+  Body,
   Engine,
   Events,
+  IBodyDefinition,
   IChamferableBodyDefinition,
   Mouse,
   MouseConstraint,
@@ -77,6 +79,16 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
 
     const partnerElements =
       document.getElementsByClassName(partnerItemClassName);
+
+    const bodyProps: IBodyDefinition = {
+      restitution: 0.5,
+      friction: 0.3,
+      slop: 0.01,
+      density: 0.01,
+      render: {
+        visible: false,
+      },
+    };
     // Creates Matter.js bodies dynamically for each partner element
     const partnerBodies = Array.from(partnerElements).map((element, index) => {
       const html_element = element as HTMLElement;
@@ -84,17 +96,30 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
       const height = html_element.offsetHeight;
       const x = html_element.offsetLeft + width / 2;
       const y = html_element.offsetTop + height / 2;
+      const isSquare = width === height;
 
-      const body = Bodies.rectangle(x, y, width, height, {
-        restitution: 0.5, // Bounciness
-        friction: 0.3,
-        slop: 0.01,
-        density: 0.01,
-        render: {
-          // remove border
-          visible: false,
-        },
-      });
+      let body;
+      if (isSquare) {
+        body = Bodies.circle(x, y, width / 2, bodyProps);
+      } else {
+        const rectangle = Bodies.rectangle(x, y, width - height, height);
+        const leftCircle = Bodies.circle(
+          x - (width - height) / 2,
+          y,
+          height / 2
+        );
+        const rightCircle = Bodies.circle(
+          x + (width - height) / 2,
+          y,
+          height / 2
+        );
+
+        body = Body.create({
+          ...bodyProps,
+          parts: [rectangle, leftCircle, rightCircle],
+        });
+      }
+
       World.add(engine.world, body);
       return { body, element: html_element }; // Returns the body and the DOM element
     });
@@ -174,10 +199,7 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
     };
   }, [arePhysicsTriggered]);
 
-  // TODO: Make rounded border rectangles
   // TODO: Handle scroll when in canvas
-  // TODO: Handle link click when in canvas
-  // TODO: Fix image hitboxes
 
   return (
     <Flex
@@ -209,6 +231,8 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
           fontWeight={"bold"}
           fontSize={{ lg: "lg" }}
           passHref
+          w={"fit-content"}
+          zIndex={10}
         >
           Voir toutes les entreprises
           <Box as="br" display={{ base: "block", lg: "none" }} /> engagées →
@@ -227,9 +251,10 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
           <Flex
             key={`partner-${index}`}
             flexDir={index % 2 === 0 ? "row" : "row-reverse"}
+            align={"center"}
             justifyContent={{ base: "start", lg: "center" }}
-            mb={4}
-            gap={2}
+            mb={6}
+            gap={4}
             h={{ base: 14, lg: 14 }}
           >
             <Flex
@@ -237,25 +262,32 @@ const PartnerSectionWithPhysics = ({}: PartnerSectionProps) => {
               justifyContent="center"
               bg="white"
               rounded="full"
-              h={14}
-              w={"fit-content"}
-              p={4}
+              h={{ base: 12, lg: 20 }}
+              p={2}
               className={partnerItemClassName}
               pointerEvents={"none"}
+              userSelect={"none"}
             >
-              <Image src={partner.img} alt={`Logo de ${partner.name}`} />
+              <Image
+                src={partner.img}
+                alt={`Logo de ${partner.name}`}
+                w={"auto"}
+                h={"full"}
+              />
             </Flex>
             <Flex
               as={Text}
+              justify={"center"}
               align="center"
               bg="black"
               fontWeight="extrabold"
               rounded="full"
-              fontSize="xl"
-              h={14}
+              fontSize={{ base: "2xl", lg: "3xl" }}
+              h={{ base: 12, lg: 14 }}
               p={4}
-              pointerEvents={"none"}
               className={partnerItemClassName}
+              pointerEvents={"none"}
+              userSelect={"none"}
             >
               {partner.promo_label}
             </Flex>

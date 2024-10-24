@@ -73,6 +73,7 @@ const EllipsePositionnedImages = ({
           left: "50%",
           top: "50%",
           rotate: index % 2 === 0 ? 5 : -7.5,
+          zIndex: 2,
         }}
       >
         <Image
