@@ -12,6 +12,7 @@ import { api } from "~/utils/api";
 import { base64ToUint8Array } from "~/utils/tools";
 import LoadingLoader from "../LoadingLoader";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const NotificationModalContent = ({
   isServiceWorkerAvailable,
@@ -117,6 +118,17 @@ const NotificationModal = ({
     setShowSplashScreenModal(true);
     onClose();
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!serviceWorkerRegistration) {
+        onClose();
+        setShowSplashScreenModal(true);
+      }
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, [serviceWorkerRegistration]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">

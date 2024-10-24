@@ -3,8 +3,7 @@ import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import { CategoryIncluded } from "~/server/api/routers/category";
-import NextImage from "next/image";
-import { Image } from "@chakra-ui/next-js";
+import Image from "next/image";
 import { push } from "@socialgouv/matomo-next";
 import { TagIncluded } from "~/server/api/routers/tag";
 import { usePathname } from "next/navigation";
@@ -51,11 +50,10 @@ const CategoryWrapper = ({
         {category && (
           <Flex alignItems="center" gap={2} mt={6}>
             <Image
-              as={NextImage}
               src={category.icon.url as string}
               alt={category.icon.alt as string}
-              width={12}
-              height={12}
+              width={48}
+              height={48}
             />
             <Heading as="h3" fontSize="3xl" fontWeight={800}>
               {category.label}
@@ -116,11 +114,10 @@ const CategoryWrapper = ({
                   borderRadius="full"
                 >
                   <Image
-                    as={NextImage}
                     src={tag.icon.url as string}
                     alt={tag.icon.alt as string}
-                    width={7}
-                    height={7}
+                    width={28}
+                    height={28}
                   />
                   <Text
                     color={isSelected ? "white" : "blackLight"}

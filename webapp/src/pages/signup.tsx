@@ -26,6 +26,12 @@ import FormAutocompleteInput from "~/components/forms/FormAutocompleteInput";
 import { useAuth } from "~/providers/Auth";
 import Image from "next/image";
 import { isIOS } from "~/utils/tools";
+import { chakra } from "@chakra-ui/react";
+import { motion, isValidMotionProp } from "framer-motion";
+
+const ChakraBox = chakra(motion.div, {
+  shouldForwardProp: isValidMotionProp,
+});
 
 type SignUpForm = {
   hasAcceptedCGU: boolean;
@@ -243,8 +249,7 @@ export default function Signup() {
     signupStep: keyof Omit<SignUpForm, "hasAcceptedCGU"> | undefined;
   };
 
-  const { mutateAsync: updateUser, isLoading: isLoadingUpdateUser } =
-    api.user.update.useMutation();
+  const { mutateAsync: updateUser } = api.user.update.useMutation();
 
   const [currentSignupStep, setCurrentSignupStep] =
     useState<SignUpFormStep | null>(null);
@@ -270,11 +275,13 @@ export default function Signup() {
     defaultValues,
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isAutocompleteInputFocused, setIsAutocompleteInputFocused] =
     useState(false);
 
   const onSubmit: SubmitHandler<SignUpForm> = (data) => {
     if (!currentSignupStep) return;
+    setIsSubmitting(true);
     const currentStepIndex = signupSteps.findIndex(
       (step) => step.field.name === currentSignupStep.field.name
     );
@@ -303,6 +310,7 @@ export default function Signup() {
               { expires: new Date((data.exp as number) * 1000) }
             );
             refetchUser().then(() => {
+              setIsSubmitting(false);
               router.push("/dashboard");
               if (!!user && !user.notification_status && !isIOS()) {
                 setShowNotificationModal(true);
@@ -318,6 +326,7 @@ export default function Signup() {
       if (!nextStep) return;
       router.push({ query: { signupStep: nextStep.field.name } });
       setCurrentSignupStep(nextStep);
+      setIsSubmitting(false);
     }
   };
 
@@ -789,37 +798,54 @@ export default function Signup() {
               )}
             </Box>
           </Flex>
-          <Button
-            colorScheme="blackBtn"
-            isDisabled={
-              !currentFieldValue ||
-              (currentSignupStep.field.name === "preferences" &&
-                formValues.preferences?.filter(Boolean).length === 0) ||
-              errors[currentSignupStep.field.name as keyof SignUpForm]
-                ?.message !== undefined
-            }
-            type="submit"
-            position={
+          <Box
+            alignSelf="center"
+            w={
               currentSignupStep.field.name === "preferences"
-                ? "fixed"
-                : "relative"
+                ? "fit-content"
+                : "full"
             }
-            left={
-              currentSignupStep.field.name === "preferences" ? "50%" : "auto"
-            }
-            transform={
-              currentSignupStep.field.name === "preferences"
-                ? "translateX(-50%)"
-                : "none"
-            }
-            bottom={
-              currentSignupStep.field.name === "preferences" ? 10 : "auto"
-            }
-            rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
-            isLoading={isLoadingUpdateUser}
+            sx={{
+              position:
+                currentSignupStep.field.name === "preferences"
+                  ? "fixed"
+                  : "relative",
+              left:
+                currentSignupStep.field.name === "preferences" ? "50%" : "auto",
+              transform:
+                currentSignupStep.field.name === "preferences"
+                  ? "translateX(-50%)"
+                  : "none",
+              bottom:
+                currentSignupStep.field.name === "preferences" ? 10 : "auto",
+            }}
           >
-            Suivant
-          </Button>
+            <Button
+              as={motion.button}
+              whileTap={{ scale: 0.95 }}
+              animate={{
+                transition: { type: "spring", stiffness: 400, damping: 5 },
+              }}
+              colorScheme="blackBtn"
+              isDisabled={
+                !currentFieldValue ||
+                (currentSignupStep.field.name === "preferences" &&
+                  formValues.preferences?.filter(Boolean).length === 0) ||
+                errors[currentSignupStep.field.name as keyof SignUpForm]
+                  ?.message !== undefined
+              }
+              w={
+                currentSignupStep.field.name === "preferences"
+                  ? "fit-content"
+                  : "full"
+              }
+              type="submit"
+              rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
+              isLoading={isSubmitting}
+            >
+              Suivant
+            </Button>
+          </Box>
         </Flex>
       </form>
     </OnBoardingStepsWrapper>

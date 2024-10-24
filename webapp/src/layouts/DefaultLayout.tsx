@@ -10,8 +10,10 @@ import { BeforeInstallPromptEvent, useAuth } from "~/providers/Auth";
 import { push } from "@socialgouv/matomo-next";
 import SplashScreenModal from "~/components/modals/SplashScreenModal";
 import { isIOS } from "~/utils/tools";
+import { useRouter } from "next/router";
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const pathname = usePathname();
 
   const {
@@ -42,15 +44,15 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
       onClose: () => setShowSplashScreenModal(false),
     });
 
-  const isLanding =
-    (pathname === "/" ||
-      pathname === "/cgu" ||
-      pathname === "/mentions-legales" ||
-      pathname === "/politique-de-confidentialite" ||
-      pathname === "/partners" ||
-      pathname === "/login") &&
-    !isOtpGenerated &&
-    !user;
+  const isPublicPage =
+    pathname === "/" || pathname === "/partners" || pathname === "/login";
+
+  const isLegalPage =
+    pathname === "/cgu" ||
+    pathname === "/mentions-legales" ||
+    pathname === "/politique-de-confidentialite";
+
+  const isLanding = (isPublicPage || isLegalPage) && !isOtpGenerated && !user;
 
   const handleBeforeInstallPrompt = (event: Event) => {
     // Prevent the default behavior to keep the event available for later use
@@ -80,6 +82,12 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         );
     }
   };
+
+  useEffect(() => {
+    if (user && isPublicPage) {
+      router.replace("/dashboard");
+    }
+  }, [user]);
 
   useEffect(() => {
     const handleHotjarAllowed = () =>
@@ -159,6 +167,7 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         role="main"
         background={isLanding ? "white" : undefined}
         h={isLanding ? "auto" : "full"}
+        overflowX={isLanding ? "hidden" : undefined}
       >
         {isLanding && pathname !== "/login" && <Header />}
         <Container

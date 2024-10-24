@@ -1,3 +1,63 @@
+## [0.45.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.1...v0.45.2) (2024-10-23)
+
+
+### Bug Fixes
+
+* add tap animation on signup page button and fix issue on notification modal if no service worker is registered ([8ef347d](https://github.com/SocialGouv/carte-jeune-engage/commit/8ef347d72c9113ab95ddf7b5ef0398e8d60a8f66))
+
+## [0.45.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.0...v0.45.1) (2024-10-23)
+
+
+### Bug Fixes
+
+* add middleware logs, redirect in default layout on dashboard for webapp issue and change manifest theme to white ([3dcb2a5](https://github.com/SocialGouv/carte-jeune-engage/commit/3dcb2a5f766e9ab04745f6230dd11d3897da3b54))
+
+# [0.45.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.3...v0.45.0) (2024-10-22)
+
+
+### Bug Fixes
+
+* CHANGELOG reset ([f8c4193](https://github.com/SocialGouv/carte-jeune-engage/commit/f8c4193eb1c20867dfef87d3c3f81ad44c141d9e))
+* conditional animation duration first loop ([cad4de3](https://github.com/SocialGouv/carte-jeune-engage/commit/cad4de38d8a79ce09296444b6b94f08c0cbc510f))
+
+
+### Features
+
+* added continuous animation (in addition to previous animation) on jumbotron images ([7c57be0](https://github.com/SocialGouv/carte-jeune-engage/commit/7c57be043d2ceacfad42e8f7d03feafac66f7778))
+* jumbotron image orbit animation + control to play/pause (disabled on mobile) ([487e5d9](https://github.com/SocialGouv/carte-jeune-engage/commit/487e5d9f5e48cc1dfb107b215575d1b47b03576f))
+
+## [0.44.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.2...v0.44.3) (2024-10-22)
+
+### Bug Fixes
+
+- remove unassign coupon to user in offerCard and offer page ([97d8198](https://github.com/SocialGouv/carte-jeune-engage/commit/97d8198fc6ff8c0be6f3f7b3500f22ca3f3ac431))
+
+## [0.44.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.1...v0.44.2) (2024-10-22)
+
+### Bug Fixes
+
+- change partners logos on first section in landing page ([9ba7907](https://github.com/SocialGouv/carte-jeune-engage/commit/9ba790728928ffd9c1e514e1e87ea23fb92c4415))
+- image blur from image to data-image, category logo height and noOfLines for offer title in CouponCard component ([9bdaddd](https://github.com/SocialGouv/carte-jeune-engage/commit/9bdaddd64e3fc67a2c3cca0f84b3d80492aaa326))
+
+## [0.44.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.0...v0.44.1) (2024-10-22)
+
+### Bug Fixes
+
+- images on category and tag page fromt chakra to nextjs and text decoration none on category block in home page ([19d3eb4](https://github.com/SocialGouv/carte-jeune-engage/commit/19d3eb47cd00612fe60cc8967cccbbf7fc0ea3b6))
+- remove target \_blank for redirection to prevent ios to block the link ([af6870d](https://github.com/SocialGouv/carte-jeune-engage/commit/af6870da4b6493d62d787b31c331461ad20bf01d))
+
+# [0.44.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.2...v0.44.0) (2024-10-22)
+
+### Features
+
+- add ui image component to handle blur / loading of image, repalce component on all image in home page ([8135bbe](https://github.com/SocialGouv/carte-jeune-engage/commit/8135bbe28e5a52d086e64ffc860ee88da078cf43))
+
+## [0.43.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.1...v0.43.2) (2024-10-22)
+
+### Bug Fixes
+
+- add minimumCacheTTL to increase cache time for images ([b4a292f](https://github.com/SocialGouv/carte-jeune-engage/commit/b4a292f89daa4b6ff560ee5ee10ef3212da38a51))
+
 ## [0.43.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.0...v0.43.1) (2024-10-22)
 
 ### Bug Fixes

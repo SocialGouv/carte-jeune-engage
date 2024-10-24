@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
-import Image from "next/image";
+import Image from "../ui/Image";
 import { HiBookmark, HiCheckCircle, HiOutlineBookmark } from "react-icons/hi2";
 import { OfferIncludedWithUserCoupon } from "~/server/api/routers/offer";
 import { api } from "~/utils/api";
@@ -39,26 +39,9 @@ const OfferCard = ({
   } = api.coupon.assignToUser.useMutation({
     onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
   });
-  const {
-    mutateAsync: mutateAsyncRemoveCouponFromUser,
-    isLoading: isLoadingRemoveCouponFromUser,
-  } = api.coupon.unassignFromUser.useMutation({
-    onSuccess: () => utils.offer.getListOfAvailables.invalidate(),
-  });
 
-  const handleBookmarkOffer = async (
-    offerId: number,
-    isAssignedToUser: boolean
-  ) => {
-    if (!isAssignedToUser) {
-      await mutateAsyncCouponToUser({ offer_id: offerId });
-    } else {
-      const currentUserCoupon = offer.userCoupon;
-      if (!currentUserCoupon) return;
-      await mutateAsyncRemoveCouponFromUser({
-        coupon_id: currentUserCoupon.id,
-      });
-    }
+  const handleBookmarkOffer = async (offerId: number) => {
+    if (!isBookmarked) await mutateAsyncCouponToUser({ offer_id: offerId });
   };
 
   return (
@@ -98,10 +81,11 @@ const OfferCard = ({
             <Image
               src={offer.image?.url ?? "/images/landing/mobile-showcase.png"}
               alt={offer.image?.alt ?? "Image par défaut de l'offre"}
-              loading="eager"
-              objectFit="cover"
-              objectPosition="center"
-              layout="fill"
+              fill
+              imageStyle={{
+                objectFit: "cover",
+                objectPosition: "center",
+              }}
             />
           </Flex>
           <Box
@@ -133,7 +117,7 @@ const OfferCard = ({
                   alt={offer.partner.icon.alt ?? ""}
                   width={40}
                   height={40}
-                  style={{ borderRadius: "1.125rem" }}
+                  imageStyle={{ borderRadius: "1.125rem" }}
                 />
               </Flex>
               <Text fontSize="xl" fontWeight="bold" color="white">
@@ -142,10 +126,8 @@ const OfferCard = ({
             </Flex>
             {variant === "default" && !fromWidget && (
               <IconButton
-                isDisabled={isDisabled}
-                isLoading={
-                  isLoadingCouponToUser || isLoadingRemoveCouponFromUser
-                }
+                isDisabled={isBookmarked}
+                isLoading={isLoadingCouponToUser}
                 aria-label="Enregistrer l'offre"
                 alignItems="center"
                 borderRadius="2.25xl"
@@ -154,7 +136,7 @@ const OfferCard = ({
                 _disabled={{ opacity: 0.7 }}
                 onClick={(e) => {
                   e.preventDefault();
-                  handleBookmarkOffer(offer.id, isBookmarked);
+                  handleBookmarkOffer(offer.id);
                 }}
                 icon={
                   <Icon
