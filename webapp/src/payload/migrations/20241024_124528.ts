@@ -2,7 +2,7 @@ import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-postgres'
 import { sql } from 'drizzle-orm'
 
 export async function up({ payload }: MigrateUpArgs): Promise<void> {
-await payload.db.drizzle.execute(sql`
+	await payload.db.drizzle.execute(sql`
 
 DO $$ BEGIN
  CREATE TYPE "enum_offers_source" AS ENUM('cje', 'obiz');
@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS "offers_articles" (
 ALTER TABLE "offers_conditions" ALTER COLUMN "text" DROP NOT NULL;
 ALTER TABLE "offers_condition_blocks" ALTER COLUMN "slug" DROP NOT NULL;
 ALTER TABLE "offers" ALTER COLUMN "kind" SET DATA TYPE varchar;
-ALTER TABLE "offers" ADD COLUMN "source" "enum_offers_source" NOT NULL;
+ALTER TABLE "offers" ADD COLUMN "source" "enum_offers_source";
+UPDATE "offers" SET "source" = 'cje'::enum_offers_source WHERE "source" IS NULL;
+ALTER TABLE "offers" ALTER COLUMN "source" SET NOT NULL;
 ALTER TABLE "offers" ADD COLUMN "obiz_id" varchar;
 CREATE INDEX IF NOT EXISTS "offers_articles_order_idx" ON "offers_articles" ("_order");
 CREATE INDEX IF NOT EXISTS "offers_articles_parent_id_idx" ON "offers_articles" ("_parent_id");
@@ -49,7 +51,7 @@ END $$;
 };
 
 export async function down({ payload }: MigrateDownArgs): Promise<void> {
-await payload.db.drizzle.execute(sql`
+	await payload.db.drizzle.execute(sql`
 
 DO $$ BEGIN
  CREATE TYPE "enum_offers_kind" AS ENUM('voucher', 'voucher_pass', 'code', 'code_space');
