@@ -99,7 +99,7 @@ export const signupFormSchema = z.object({
       ],
     }
   ),
-  email: withMeta(
+  userEmail: withMeta(
     z
       .string({ required_error: "Ce champ est obligatoire" })
       .email("Veuillez saisir une adresse email valide"),
