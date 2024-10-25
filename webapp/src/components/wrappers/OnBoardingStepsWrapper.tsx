@@ -8,11 +8,13 @@ import { HiChevronLeft } from "react-icons/hi2";
 type OnBoardingStepsWrapperProps = {
   children: ReactNode;
   stepContext: { isFirstStep?: boolean; current: number; total: number };
+  onBack?: () => void;
 };
 
 const OnBoardingStepsWrapper = ({
   children,
   stepContext: { isFirstStep, current, total },
+  onBack,
 }: OnBoardingStepsWrapperProps) => {
   const router = useRouter();
 
@@ -31,7 +33,7 @@ const OnBoardingStepsWrapper = ({
           h={5}
           minW="fit-content"
           isDisabled={!(current > 1 && !isFirstStep)}
-          onClick={() => router.back()}
+          onClick={() => (onBack ? onBack() : router.back())}
           cursor="pointer"
           position="absolute"
           left={4}

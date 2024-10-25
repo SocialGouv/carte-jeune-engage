@@ -34,7 +34,6 @@ interface Props {
   isLoading: boolean;
   control: Control<any>;
   fieldError: FieldError | undefined;
-  handleSubmit: () => Promise<void>;
   setIsInputFocused: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -46,7 +45,6 @@ const FormAutocompleteInput = ({
   setError,
   clearErrors,
   isLoading,
-  handleSubmit,
   setIsInputFocused,
 }: Props) => {
   const { label, name } = field;
@@ -86,6 +84,7 @@ const FormAutocompleteInput = ({
       <FormLabel fontWeight="medium" color="disabled" fontSize={12} mb={1}>
         {label}
       </FormLabel>
+      <FormErrorMessage mb={3}>{fieldError?.message}</FormErrorMessage>
       <Controller
         control={control}
         name={name}
@@ -98,7 +97,7 @@ const FormAutocompleteInput = ({
           ) {
             setError(name, {
               type: "autocompleteValue",
-              message: "",
+              message: "Le champ doit être sélectionné dans la liste",
             });
           }
 
@@ -133,18 +132,6 @@ const FormAutocompleteInput = ({
                         py={8}
                       >
                         <Text>Pas de résultats</Text>
-                        {/* <Text
-                          fontWeight="bold"
-                          mt={2}
-                          borderBottom="1px solid"
-                          onClick={() => {
-                            clearErrors(name);
-                            setOptionsHistory([...optionsHistory, value]);
-                            handleSubmit();
-                          }}
-                        >
-                          Valider quand même cette adresse
-                        </Text> */}
                       </Center>
                     );
                   }
@@ -236,7 +223,6 @@ const FormAutocompleteInput = ({
           );
         }}
       />
-      <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
     </FormControl>
   );
 };

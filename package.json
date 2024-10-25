@@ -4,5 +4,8 @@
   },
   "scripts": {
     "prepare": "husky install"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0"
   }
 }
