@@ -17,6 +17,7 @@ import {
   IChamferableBodyDefinition,
   Mouse,
   MouseConstraint,
+  Query,
   Render,
   Runner,
   World,
@@ -29,7 +30,7 @@ const partnersList = [
     name: "Deezer",
     img: "/images/landing/partners/deezer.png",
     promo_label: "-50%",
-    imgHeight: 28,
+    imgHeight: { base: 20, lg: 28 },
   },
   {
     name: "AXA",
@@ -185,6 +186,24 @@ const PartnerSectionWithPhysics = () => {
     });
     World.add(engine.world, mouseConstraint);
 
+    // Handle cursor change on mouse over body
+    let mouseDown = false;
+    const isMouseOverBody = () =>
+      Query.point(
+        partnerBodies.map(({ body }) => body),
+        mouse.position
+      ).length > 0;
+
+    Events.on(engine, "beforeUpdate", () => {
+      if (isMouseOverBody()) {
+        canvas.style.cursor = mouseDown ? "grabbing" : "grab";
+      } else {
+        canvas.style.cursor = "default";
+      }
+    });
+    Events.on(mouseConstraint, "mousedown", () => (mouseDown = true));
+    Events.on(mouseConstraint, "mouseup", () => (mouseDown = false));
+
     // Update function for DOM position synced with matter-js bodies
     const update = () => {
       partnerBodies.forEach(({ body, element }) => {
@@ -219,23 +238,25 @@ const PartnerSectionWithPhysics = () => {
       rounded="5xl"
       color={"white"}
       mt={isDesktop ? 0 : 20}
+      p={{ base: 8, lg: 44 }}
     >
       <Box
         as="canvas"
         ref={canvasRef}
         pos={"absolute"}
+        top={0}
+        left={0}
         w={"full"}
         h={"full"}
         onWheelCapture={(e: React.WheelEvent) => e.stopPropagation()}
+        pointerEvents={isDesktop ? "auto" : "none"}
       />
-      <Flex
-        flex={1}
-        flexDir="column"
-        p={{ base: 8, lg: 44 }}
-        pr={{ lg: 8 }}
-        pt={12}
-      >
-        <Heading fontSize={{ base: "2xl", lg: "5xl" }} fontWeight="extrabold">
+      <Flex flex={1} flexDir="column" justify={"center"}>
+        <Heading
+          fontSize={{ base: "2xl", lg: "5xl" }}
+          fontWeight="extrabold"
+          userSelect={"none"}
+        >
           Une appli utile avec des réductions de grandes marques
         </Heading>
         <Link
@@ -248,6 +269,7 @@ const PartnerSectionWithPhysics = () => {
           passHref
           w={"fit-content"}
           zIndex={10}
+          userSelect={"none"}
         >
           Voir toutes les entreprises
           <Box as="br" display={{ base: "block", lg: "none" }} /> engagées →
@@ -257,9 +279,9 @@ const PartnerSectionWithPhysics = () => {
         flex={1}
         flexDir="column"
         justify={"center"}
-        p={{ base: 8, lg: 44 }}
-        px={{ lg: 8 }}
-        pt={0}
+        align={{ base: "center", lg: "end" }}
+        p={8}
+        px={0}
         overflow="hidden"
       >
         {partnersList.map((partner, index) => (
@@ -268,17 +290,17 @@ const PartnerSectionWithPhysics = () => {
             flexDir={index % 2 === 0 ? "row" : "row-reverse"}
             align={"center"}
             justifyContent={{ base: "start", lg: "center" }}
-            mb={6}
+            mb={index < partnersList.length - 1 ? 8 : undefined}
             gap={4}
-            h={{ base: 14, lg: 14 }}
+            h={14}
           >
             <Flex
               alignItems="center"
               justifyContent="center"
               bg="white"
               rounded="full"
-              h={partner.imgHeight ? partner.imgHeight : { base: 12, lg: 20 }}
-              p={4}
+              h={partner.imgHeight ? partner.imgHeight : { base: 16, lg: 20 }}
+              p={{ base: 3, lg: 4 }}
               className={partnerItemClassName}
               pointerEvents={"none"}
               userSelect={"none"}
@@ -303,7 +325,9 @@ const PartnerSectionWithPhysics = () => {
               pointerEvents={"none"}
               userSelect={"none"}
             >
-              {partner.promo_label}
+              <Text as="span" mb={1}>
+                {partner.promo_label}
+              </Text>
             </Flex>
           </Flex>
         ))}
