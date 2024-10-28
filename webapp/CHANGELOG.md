@@ -1,3 +1,20 @@
+# [0.47.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.46.0...v0.47.0) (2024-10-28)
+
+
+### Bug Fixes
+
+* correct seed with new required field source on offer ([3ac52cf](https://github.com/SocialGouv/carte-jeune-engage/commit/3ac52cfa006031c45a78f84b25831e7e75c7c6f5))
+* migration fill db for new required source field ([a2b5305](https://github.com/SocialGouv/carte-jeune-engage/commit/a2b53053f922a0bb07496823e79d858176e24f44))
+* sousgenre script finder ([49bb826](https://github.com/SocialGouv/carte-jeune-engage/commit/49bb82604e583b726b4bf675487a39a1bf0aa246))
+
+
+### Features
+
+* begin importer ([cae1d45](https://github.com/SocialGouv/carte-jeune-engage/commit/cae1d45e03ec5cb132e59d8dd4f7d01777e61362))
+* handle obiz version of offer in payload ([3b4b1f0](https://github.com/SocialGouv/carte-jeune-engage/commit/3b4b1f09ea5b3b8b90ffe1db24ad6807d9a9c889))
+* improve explorer & first genre mapping ([f8e5ea6](https://github.com/SocialGouv/carte-jeune-engage/commit/f8e5ea6b445671b87d513bcf0d9e917668297d71))
+* SLD parser & finder ([a995b27](https://github.com/SocialGouv/carte-jeune-engage/commit/a995b27bae1a6154d0eec14c7cfdade5a01d7929))
+
 # [0.46.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.2...v0.46.0) (2024-10-28)
 
 
