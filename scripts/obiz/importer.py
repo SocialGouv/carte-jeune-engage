@@ -1,19 +1,23 @@
 # importer.py
 import json
+import requests
 from typing import List, Dict
 from config.genre_mapping import GenreMapper
 from config.sousgenres_whitelist import sousgenre_ids
 from config.utils import convert_date_format
+import argparse
 
 
 class DataImporter:
-    def __init__(self):
+    def __init__(self, api_url: str, api_key: str):
         self.genre_mapper = GenreMapper()
         self.source_files = [
             'inputs/reduccine.fr-preprod.json',
             'inputs/reduckdo.fr-preprod.json',
             'inputs/reducparc.fr-preprod.json'
         ]
+        self.api_url = api_url
+        self.api_key = api_key
 
     @staticmethod
     def convert_french_number(number_str: str) -> float:
@@ -33,14 +37,12 @@ class DataImporter:
         if not offer or not offer.get('articles'):
             return offer
 
-        # Récupère tous les pourcentages de réduction uniques (non nuls)
         reduction_percentages = sorted(set(
             article['reductionPercentage']
             for article in offer['articles']
             if article.get('reductionPercentage') is not None
         ))
 
-        # Trouve la date de validité la plus éloignée
         validity_dates = [
             article['validityTo']
             for article in offer['articles']
@@ -49,19 +51,48 @@ class DataImporter:
         if validity_dates:
             offer['validityTo'] = max(validity_dates)
 
-        # Construit le titre formaté
         partner_name = sousgenre.get('sousgenres_nom', '')
 
         if len(reduction_percentages) == 0:
-            offer['formatedTitle'] = f"Offre chez {partner_name}"
+            offer['title'] = f"Offre chez {partner_name}"
         elif len(reduction_percentages) == 1:
-            offer['formatedTitle'] = f"-{int(reduction_percentages[0])}% chez {partner_name}"
+            offer['title'] = f"-{int(reduction_percentages[0])}% chez {partner_name}"
         else:
             min_reduction = int(min(reduction_percentages))
             max_reduction = int(max(reduction_percentages))
-            offer['formatedTitle'] = f"Entre -{min_reduction}% et -{max_reduction}% chez {partner_name}"
+            offer['title'] = f"Entre -{min_reduction}% et -{max_reduction}% chez {partner_name}"
+
+        offer['formatedTitle'] = offer['title']
 
         return offer
+
+    def send_to_api(self, offers: List[Dict]) -> None:
+        """
+        Envoie les offres traitées à l'API
+        """
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "obiz_offers": offers
+        }
+
+        try:
+            response = requests.post(
+                self.api_url,
+                headers=headers,
+                json=payload
+            )
+            response.raise_for_status()
+            print(f"Successfully sent {len(offers)} offers to API")
+            print(f"API Response: {response.json()}")
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error sending data to API: {str(e)}")
+            if hasattr(e.response, 'text'):
+                print(f"Response content: {e.response.text}")
 
     def process_sousgenre(self, genre: Dict, sousgenre: Dict, genre_name: str, source: str) -> Dict:
         """
@@ -79,10 +110,13 @@ class DataImporter:
             }
         }
 
-    def process_article(self, article: Dict, sousgenre: Dict, genre_name: str, source: str) -> Dict:
+    def process_article(self, article: Dict, sousgenre: Dict, genre_name: str, source: str) -> Dict or None:
         """
         Traite un article spécifique
         """
+        if article.get('articles_actif') == 'False':
+            return
+
         articleKind = "variable_price" if article.get('articles_valeur_variable') == "True" else "fixed_price"
 
         offerArticle = {
@@ -111,7 +145,6 @@ class DataImporter:
 
         for file_path in self.source_files:
             source = file_path.split('/')[-1].split('.')[0]
-            print(f"\nProcessing source: {source}")
 
             try:
                 with open(file_path, 'r', encoding='utf-8') as file:
@@ -130,8 +163,7 @@ class DataImporter:
 
                                         if sousgenre_id in sousgenre_ids:
                                             if sousgenre_id in offers_by_id:
-                                                if category and category not in offers_by_id[sousgenre_id][
-                                                    'categories']:
+                                                if category and category not in offers_by_id[sousgenre_id]['categories']:
                                                     offers_by_id[sousgenre_id]['categories'].append(category)
                                             else:
                                                 offer = self.process_sousgenre(genre, sousgenre, genre_name, source)
@@ -156,11 +188,28 @@ class DataImporter:
                 print(f"Error processing file {file_path}: {str(e)}")
 
         offers = list(offers_by_id.values())
-        print(json.dumps(offers, indent=2))
+
+        if offers:
+            print(f"\nProcessed {len(offers)} offers, sending to API...")
+            self.send_to_api(offers)
+        else:
+            print("No offers to send to API")
+
+
 
 
 def main():
-    importer = DataImporter()
+    parser = argparse.ArgumentParser(description='Import Obiz data and send to API')
+    parser.add_argument('--api-url',
+                       default="http://localhost:3000/api/obizIntegration",
+                       help='API URL (default: http://localhost:3000/api/obizIntegration)')
+    parser.add_argument('--api-key',
+                       required=True,
+                       help='API Key for authentication')
+
+    args = parser.parse_args()
+
+    importer = DataImporter(api_url=args.api_url, api_key=args.api_key)
     importer.import_data()
 
 

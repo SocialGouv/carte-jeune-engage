@@ -221,7 +221,8 @@ export interface Offer {
   validityFrom?: string | null;
   validityTo: string;
   source: "cje" | "obiz";
-  kind: "voucher" | "voucher_pass" | "code" | "code_space";
+  obiz_id?: string | null;
+  kind: string;
   url?: string | null;
   nbOfEligibleStores?: number | null;
   imageOfEligibleStores?: number | Media | null;
@@ -245,6 +246,29 @@ export interface Offer {
   conditionBlocks?:
     | {
         slug: string;
+        id?: string | null;
+      }[]
+    | null;
+  articles?:
+    | {
+        name: string;
+        reference: string;
+        reductionPercentage: number;
+        validityTo: string;
+        kind: "variable_price" | "fixed_price";
+        minimumPrice?: number | null;
+        maximumPrice?: number | null;
+        publicPrice?: number | null;
+        price?: number | null;
+        obizJson:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
         id?: string | null;
       }[]
     | null;

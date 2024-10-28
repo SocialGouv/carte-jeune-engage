@@ -1,3 +1,5 @@
+import { TRPCError } from "@trpc/server";
+import { File } from "payload/dist/uploads/types";
 import { Where } from "payload/types";
 import { z } from "zod";
 import {
@@ -10,11 +12,12 @@ import {
 } from "~/payload/payload-types";
 import {
   createTRPCRouter,
+  publicProcedure,
   userOrWidgetProtectedProcedure,
   userProtectedProcedure,
   widgetTokenProtectedProcedure,
 } from "~/server/api/trpc";
-import { ZGetListParams } from "~/server/types";
+import { ZGetListParams, ZObizOffer } from "~/server/types";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
 
 export interface OfferIncluded extends Offer {
@@ -312,5 +315,157 @@ export const offerRouter = createTRPCRouter({
       }
 
       return { data: "Offer not found" };
+    }),
+
+  insertObizOffers: publicProcedure
+    .input(z.object({ obiz_offers: z.array(ZObizOffer), api_key: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { obiz_offers, api_key } = input;
+
+      const apiKey = await ctx.payload.find({
+        collection: "apikeys",
+        where: {
+          key: { equals: api_key },
+        },
+      });
+
+      if (!apiKey.docs.length) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Your API KEY is not authorized",
+        });
+      }
+
+      const categories = await ctx.payload.find({
+        collection: "categories",
+        limit: 100,
+      });
+
+      const partners = await ctx.payload.find({
+        collection: "partners",
+        limit: 100,
+      });
+
+      const created_offers: Offer[] = [];
+      const updated_offers: Offer[] = [];
+
+      for (const obiz_offer of obiz_offers) {
+        try {
+          const existingOffers = await ctx.payload.find({
+            collection: "offers",
+            where: {
+              obiz_id: { equals: obiz_offer.obiz_id },
+            },
+          });
+          const existingOffer = existingOffers.docs[0];
+
+          if (!!existingOffer) {
+            let updatedData: {
+              title?: string;
+              formatedTitle?: string;
+              validityTo?: string;
+              articles?: any[];
+            } = {};
+
+            if (existingOffer.validityTo !== obiz_offer.validityTo) {
+              updatedData.validityTo = obiz_offer.validityTo;
+            }
+
+            if (existingOffer.title !== obiz_offer.title) {
+              updatedData.title = obiz_offer.title;
+              updatedData.formatedTitle = obiz_offer.formatedTitle;
+            }
+
+            for (const obiz_article of obiz_offer.articles) {
+              const existingArticle = existingOffer.articles?.find(
+                (article) => article.reference === obiz_article.reference
+              );
+
+              if (!existingArticle) {
+                updatedData.articles = [
+                  ...obiz_offer.articles,
+                  ...(updatedData.articles || []),
+                  obiz_article,
+                ];
+              }
+            }
+
+            if (Object.keys(updatedData).length > 0) {
+              const offer = await ctx.payload.update({
+                collection: "offers",
+                id: existingOffer.id,
+                data: updatedData,
+              });
+
+              updated_offers.push(offer);
+            }
+
+            continue;
+          }
+
+          const category_ids = categories.docs
+            .filter((category) =>
+              obiz_offer.categories.includes(category.label)
+            )
+            .map((cat) => cat.id);
+
+          let partner = partners.docs.find(
+            (p) => p.name === obiz_offer.partner.name
+          );
+
+          if (!partner) {
+            const response = await fetch(
+              obiz_offer.partner.icon_url ||
+                "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+            );
+            const arrayBuffer = await response.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            const icon: File = {
+              data: buffer,
+              mimetype: response.headers.get("content-type") || "image/png",
+              name: `${obiz_offer.partner.name.toLowerCase().replace(/\s+/g, "-")}.png`,
+              size: buffer.length,
+            };
+
+            const mediaIcon = await ctx.payload.create({
+              collection: "media",
+              file: icon,
+              data: {
+                alt: `${obiz_offer.partner.name.toLowerCase()} icon`,
+              },
+            });
+
+            partner = await ctx.payload.create({
+              collection: "partners",
+              data: {
+                name: obiz_offer.partner.name,
+                color: obiz_offer.partner.color || "#000000",
+                icon: mediaIcon.id,
+              },
+            });
+          }
+
+          const offer = await ctx.payload.create({
+            collection: "offers",
+            data: {
+              ...obiz_offer,
+              partner: partner.id,
+              category: category_ids,
+            },
+          });
+
+          created_offers.push(offer);
+        } catch (error) {
+          console.error(
+            `Error processing offer for ${obiz_offer.partner.name}:`,
+            error
+          );
+        }
+      }
+
+      return {
+        created_offers,
+        updated_offers,
+      };
     }),
 });
