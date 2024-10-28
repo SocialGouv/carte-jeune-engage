@@ -431,9 +431,11 @@ const SignupPage: React.FC = () => {
                   formValues.preferences?.filter(Boolean).length === 0
                 }
                 w={isActiveStepPreferences ? "fit-content" : "full"}
-                type={currentStep === steps.length - 1 ? "submit" : "button"}
+                type="button"
                 onClick={
-                  currentStep === steps.length - 1 ? undefined : handleNext
+                  currentStep === steps.length - 1
+                    ? methods.handleSubmit(onSubmit)
+                    : handleNext
                 }
                 rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
               >
