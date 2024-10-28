@@ -1,3 +1,20 @@
+# [0.46.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.2...v0.46.0) (2024-10-28)
+
+
+### Bug Fixes
+
+* handle mouse over body cursor change, paddings, sizes, disable interaction on mobile, disabling text selection ([1895410](https://github.com/SocialGouv/carte-jeune-engage/commit/189541036e06db05382b1d8fbe1687072920400a))
+* scrolling through canvas ([c2ea8fa](https://github.com/SocialGouv/carte-jeune-engage/commit/c2ea8fadd370ed29ca2b361efb4d17c0502b7935))
+
+
+### Features
+
+* adapted to partners images from main branch, handled all cases of width/height bodies, possible to set img height value ([9bdddaf](https://github.com/SocialGouv/carte-jeune-engage/commit/9bdddaf5008757a7c5b5a74b1d45a4038a160d1e))
+* base for triggering physics animation ([17c042e](https://github.com/SocialGouv/carte-jeune-engage/commit/17c042e3b6523d50b22e742ab12c8daf293dd1d0))
+* base section with physics using matter js lib to handle physic with body interaction (wip) ([7c763be](https://github.com/SocialGouv/carte-jeune-engage/commit/7c763beb1206fae3259b5664a4141bf0a74f6a52))
+* base world with physics on each partner items (using matter js) ([0a8abb5](https://github.com/SocialGouv/carte-jeune-engage/commit/0a8abb56336562bd8e86d0a9aab1048d7188b533))
+* handled rounded body using circles bodies, fixed link click, fixed jumbotron images over second section ([076be34](https://github.com/SocialGouv/carte-jeune-engage/commit/076be34ef747fc30134fdc00845b7cf274966790))
+
 ## [0.45.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.1...v0.45.2) (2024-10-23)
 
 
