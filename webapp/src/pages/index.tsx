@@ -26,6 +26,7 @@ import LoginWrapper from "~/components/wrappers/LoginWrapper";
 import ConditionalLink from "~/components/ConditionalLink";
 import LoginOtpContent from "~/components/landing/LoginOtpContent";
 import Jumbotron from "~/components/landing/Jumbotron";
+import PartnerSectionWithPhysics from "~/components/landing/PartnerSectionWithPhysics";
 
 const defaultTimeToResend = 30;
 
@@ -47,30 +48,6 @@ const referentItems: { name: string; image: string }[] = [
     image: "/images/referent/ecole2ndeChance.png",
   },
   { name: "Je suis à l'EPIDE", image: "/images/referent/epide.png" },
-];
-
-const partnersList = [
-  {
-    name: "Deezer",
-    img: "/images/landing/partners/deezer.png",
-    promo_label: "-50%",
-    imgWidth: "35px",
-    imgHeight: "42.5px",
-  },
-  {
-    name: "AXA",
-    img: "/images/landing/partners/axa.png",
-    promo_label: "-100€",
-    imgWidth: "35px",
-    imgHeight: "35px",
-  },
-  {
-    name: "La poste mobile",
-    img: "/images/landing/partners/la-poste-mobile.png",
-    promo_label: "-10€",
-    imgWidth: "45px",
-    imgHeight: "35px",
-  },
 ];
 
 const offersList = [
@@ -152,8 +129,6 @@ export default function Home() {
 
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState<string>("");
   const [phoneNumberError, setPhoneNumberError] = useState<ErrorOption>();
-
-  const parentPartnersRef = useRef<HTMLDivElement>(null);
 
   const resetTimer = () => {
     if (intervalId) clearInterval(intervalId);
@@ -251,90 +226,7 @@ export default function Home() {
             />
           </Box>
         )}
-        <Flex
-          flexDir={{ base: "column", lg: "row" }}
-          bg={"primary"}
-          w={{ base: "95%", lg: "full" }}
-          mx={"auto"}
-          rounded="5xl"
-          color={"white"}
-          mt={isDesktop ? 0 : 20}
-        >
-          <Flex
-            flex={1}
-            flexDir="column"
-            p={{ base: 8, lg: 44 }}
-            pr={{ lg: 8 }}
-            pt={12}
-          >
-            <Heading
-              fontSize={{ base: "2xl", lg: "5xl" }}
-              fontWeight="extrabold"
-            >
-              Une appli utile avec des réductions de grandes marques
-            </Heading>
-            <Link
-              as={NextLink}
-              href="/partners"
-              mt={6}
-              textDecor={"underline"}
-              fontWeight={"bold"}
-              fontSize={{ lg: "lg" }}
-              passHref
-            >
-              Voir toutes les entreprises
-              <Box as="br" display={{ base: "block", lg: "none" }} /> engagées →
-            </Link>
-          </Flex>
-          <Flex
-            ref={parentPartnersRef}
-            flex={1}
-            flexDir="column"
-            justify={"center"}
-            p={{ base: 8, lg: 44 }}
-            px={{ lg: 8 }}
-            pt={0}
-            position="relative"
-            overflow="hidden"
-          >
-            {partnersList.map((partner, index) => (
-              <Flex
-                key={`partner-${index}`}
-                flexDir={index % 2 === 0 ? "row" : "row-reverse"}
-                justifyContent={{ base: "start", lg: "center" }}
-                mb={4}
-                gap={2}
-                h={{ base: 14, lg: 14 }}
-              >
-                <Flex
-                  alignItems="center"
-                  justifyContent="center"
-                  bg="white"
-                  rounded="full"
-                  p={4}
-                >
-                  <Image
-                    src={partner.img}
-                    width={partner.imgWidth}
-                    height={partner.imgHeight}
-                    alt={`Logo de ${partner.name}`}
-                  />
-                </Flex>
-                <Flex
-                  as={Text}
-                  align="center"
-                  bg="black"
-                  fontWeight="extrabold"
-                  rounded="full"
-                  fontSize="xl"
-                  p={4}
-                >
-                  {partner.promo_label}
-                </Flex>
-              </Flex>
-            ))}
-          </Flex>
-        </Flex>
+        <PartnerSectionWithPhysics />
         <Flex
           id="who-can-benefit-section"
           flexDir="column"
