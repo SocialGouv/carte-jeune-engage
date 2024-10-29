@@ -286,6 +286,7 @@ export const Offers: CollectionConfig = {
       admin: {
         condition: (_, siblingData) =>
           !!siblingData.source && siblingData.source === "obiz",
+        initCollapsed: true,
         components: {
           RowLabel: ({ data, index }: RowLabelArgs) => {
             return data
@@ -382,6 +383,7 @@ export const Offers: CollectionConfig = {
           required: true,
           admin: {
             readOnly: true,
+            hidden: true,
           },
         },
       ],
@@ -391,7 +393,9 @@ export const Offers: CollectionConfig = {
       type: "number",
       label: "Nombre de vues",
       defaultValue: 0,
-      // hidden: true
+      admin: {
+        readOnly: true,
+      },
     },
     {
       name: "image",
