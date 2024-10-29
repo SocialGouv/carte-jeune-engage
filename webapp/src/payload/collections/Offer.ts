@@ -298,6 +298,7 @@ export const Offers: CollectionConfig = {
           label: "Référence",
           type: "text",
           required: true,
+          unique: true,
         },
         {
           name: "reductionPercentage",

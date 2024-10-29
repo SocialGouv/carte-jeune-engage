@@ -393,9 +393,6 @@ export const offerRouter = createTRPCRouter({
                   JSON.stringify(JSON.parse(obiz_article.obizJson));
                 if (hasDifferentJson) {
                   updatedData.articles = [
-                    ...obiz_offer.articles.filter(
-                      (article) => article.reference !== obiz_article.reference
-                    ),
                     ...(updatedData.articles || []),
                     { id: existingArticle.id, ...obiz_article },
                   ];
@@ -404,6 +401,28 @@ export const offerRouter = createTRPCRouter({
             }
 
             if (Object.keys(updatedData).length > 0) {
+              if (updatedData.articles && !!updatedData.articles.length) {
+                const updateArticlesReferences = updatedData.articles?.map(
+                  (uArticle) => uArticle.reference
+                );
+                updatedData.articles = [
+                  ...(existingOffer.articles || [])?.filter(
+                    (article) =>
+                      !updateArticlesReferences.includes(article.reference)
+                  ),
+                  ...updatedData.articles,
+                ].sort((a, b) => {
+                  if (!a.validityTo && !b.validityTo) return 0;
+                  if (!a.validityTo) return 1;
+                  if (!b.validityTo) return -1;
+
+                  return (
+                    new Date(a.validityTo).getTime() -
+                    new Date(b.validityTo).getTime()
+                  );
+                });
+              }
+
               const offer = await ctx.payload.update({
                 collection: "offers",
                 id: existingOffer.id,
