@@ -5468,21 +5468,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 22.5.3
-  resolution: "@types/node@npm:22.5.3"
+"@types/node@npm:*, @types/node@npm:^22.0.0":
+  version: 22.8.2
+  resolution: "@types/node@npm:22.8.2"
   dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10c0/a068e31dd424a0eadfba7d9a5c5b415b76cfd729f3caa299674ad257f59df85c5fe77f1d0a343e811864c790baefb9003d7627618ee3cf85400af338481ba29f
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^20":
-  version: 20.16.4
-  resolution: "@types/node@npm:20.16.4"
-  dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10c0/1dfd24b8a1552adf1f37c189bcebb6e287184852188d8aa28f8e955f15079f8ee62d88f142b6a52c0fd59132fc40644bf6197c139e4e1d645c1db040b231caaa
+    undici-types: "npm:~6.19.8"
+  checksum: 10c0/c6fa6c54c23e61015cace1517c4101602cae0ff3c4f6604f6cdb89875143921830e5602cabe8b4f90f90363451687a0497f1d07d30be8104fee758d6d44c90ac
   languageName: node
   linkType: hard
 
@@ -14538,7 +14529,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.19.2":
+"undici-types@npm:~6.19.8":
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
   checksum: 10c0/078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
@@ -14845,7 +14836,7 @@ __metadata:
     "@types/js-cookie": "npm:^3"
     "@types/jsonwebtoken": "npm:^9"
     "@types/matter-js": "npm:^0.19.7"
-    "@types/node": "npm:^20"
+    "@types/node": "npm:^22.0.0"
     "@types/papaparse": "npm:^5"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
