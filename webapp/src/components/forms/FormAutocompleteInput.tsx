@@ -27,7 +27,7 @@ import { FieldProps } from "./FormInput";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 interface Props {
-  field: FieldProps;
+  field: FieldProps & { autoFocus?: boolean };
   options: string[] | undefined;
   setError: any;
   clearErrors: any;
@@ -158,7 +158,7 @@ const FormAutocompleteInput = ({
                   }
                   px={5}
                   py={8}
-                  autoFocus
+                  autoFocus={field.autoFocus}
                   onChange={(e: any) => {
                     onChange(e.target.value);
                     if (!options?.includes(e.target.value)) {

@@ -48,16 +48,18 @@ const OnBoardingStepsWrapper = ({
             left: 50,
           }}
         />
-        <Box bgColor="cje-gray.300" borderRadius="xl" w="30%" h="6px">
-          <Box
-            as={motion.div}
-            layout
-            h="6px"
-            w={`${(current / total) * 100}%`}
-            borderRadius="xl"
-            bgColor="primary"
-          />
-        </Box>
+        {total > 1 && (
+          <Box bgColor="cje-gray.300" borderRadius="xl" w="30%" h="6px">
+            <Box
+              as={motion.div}
+              layout
+              h="6px"
+              w={`${(current / total) * 100}%`}
+              borderRadius="xl"
+              bgColor="primary"
+            />
+          </Box>
+        )}
       </Flex>
       {children}
     </Flex>

@@ -1,34 +1,24 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
-  Controller,
-  FieldError,
-  FormProvider,
-  SubmitHandler,
-  useForm,
-  useFormContext,
-} from "react-hook-form";
-import { SignupFormData, signupFormSchema } from "~/utils/form/formSchemas";
+  SignupFormData,
+  signupFormSchema,
+  SignupWidgetFormData,
+  signupWidgetFormSchema,
+} from "~/utils/form/formSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FieldMetadata,
-  FormStep,
-  generateSteps,
-} from "~/utils/form/formHelpers";
+import { FormStep, generateSteps } from "~/utils/form/formHelpers";
 import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Heading,
   Icon,
   Text,
 } from "@chakra-ui/react";
 import OnBoardingStepsWrapper from "~/components/wrappers/OnBoardingStepsWrapper";
-import FormInput from "~/components/forms/FormInput";
-import FormBlock from "~/components/forms/FormBlock";
-import useDebounceValueWithState from "~/hooks/useDebounceCallbackWithPending";
-import { useQuery } from "@tanstack/react-query";
-import FormAutocompleteInput from "~/components/forms/FormAutocompleteInput";
 import { motion } from "framer-motion";
 import { HiArrowRight } from "react-icons/hi2";
 import Image from "next/image";
@@ -40,134 +30,7 @@ import { isIOS } from "~/utils/tools";
 import LoadingLoader from "~/components/LoadingLoader";
 import CGUAcceptContent from "~/components/signup/cguAcceptContent";
 import { useLocalStorage } from "usehooks-ts";
-
-const FormField: React.FC<{
-  field: FieldMetadata & { name: string; path: string[] };
-  setIsAutocompleteInputFocused: Dispatch<SetStateAction<boolean>>;
-}> = ({ field, setIsAutocompleteInputFocused }) => {
-  const {
-    control,
-    register,
-    setError,
-    clearErrors,
-    formState: { errors },
-    watch,
-  } = useFormContext<SignupFormData>();
-  const error = errors[field.name as keyof SignupFormData];
-  const value = watch(field.name as keyof SignupFormData);
-
-  switch (field.kind) {
-    case "text":
-    case "email":
-    case "date":
-      return (
-        <FormInput
-          key={field.name}
-          register={register}
-          field={field}
-          fieldError={error as FieldError}
-        />
-      );
-    case "radio":
-      return (
-        <>
-          <Controller
-            control={control}
-            name={field.name as keyof SignupFormData}
-            render={({ field: { onChange, value } }) => (
-              <Flex
-                gap={4}
-                flexDir={field.variant == "inline" ? "column" : "row"}
-              >
-                {field.options?.map((option) => (
-                  <FormBlock
-                    key={`${field.name}-${option.value}`}
-                    value={option.value}
-                    kind="radio"
-                    currentValue={value}
-                    variant={field.variant}
-                    iconSrc={option.iconSrc}
-                    onChange={onChange}
-                  >
-                    {option.label}
-                  </FormBlock>
-                ))}
-              </Flex>
-            )}
-          />
-          {error && (
-            <Text color="red" fontSize="sm" mt={2}>
-              {error.message}
-            </Text>
-          )}
-        </>
-      );
-    case "checkbox":
-      return (
-        <Flex flexDir="column" alignItems="center" w="full" gap={2} pb={32}>
-          {field.options?.map((option, index) => (
-            <Controller
-              key={option.value}
-              control={control}
-              name={`preferences.${index}`}
-              render={({ field: { onChange } }) => (
-                <FormBlock
-                  value={option.value}
-                  currentValue={value}
-                  kind="checkbox"
-                  variant={field.variant}
-                  iconSrc={option.iconSrc}
-                  onChange={onChange}
-                  withCheckbox
-                >
-                  {option.label}
-                </FormBlock>
-              )}
-            />
-          ))}
-        </Flex>
-      );
-    case "autocomplete":
-      const [debouncedAddress, isDebouncePending] = useDebounceValueWithState(
-        value as string,
-        500
-      );
-
-      const { data: addressOptions, isLoading: isLoadingAddressOptions } =
-        useQuery(
-          ["getAddressOptions", debouncedAddress],
-          async () => {
-            const formatedDebouncedAddress = debouncedAddress.split(",")[0];
-            const response = await fetch(
-              `https://geo.api.gouv.fr/communes?nom=${formatedDebouncedAddress}&codeDepartement=95&fields=departement&limit=5`
-            );
-            const data = await response.json();
-            return data.map(
-              (municipality: any) =>
-                `${municipality.nom}, ${municipality.departement.nom}`
-            ) as string[];
-          },
-          {
-            enabled: !!debouncedAddress && debouncedAddress.length > 2,
-          }
-        );
-
-      return (
-        <FormAutocompleteInput
-          control={control}
-          options={addressOptions}
-          setError={setError}
-          clearErrors={clearErrors}
-          isLoading={isLoadingAddressOptions || isDebouncePending}
-          field={field}
-          fieldError={error as FieldError}
-          setIsInputFocused={setIsAutocompleteInputFocused}
-        />
-      );
-    default:
-      return null;
-  }
-};
+import FormField from "~/components/forms/FormField";
 
 const SignupPage: React.FC = () => {
   const router = useRouter();
@@ -182,13 +45,19 @@ const SignupPage: React.FC = () => {
     signupStep: string | undefined;
   };
 
+  const onBoardingKind = useMemo(() => {
+    if (!!user?.cej_id)
+      return { name: "widget", schema: signupWidgetFormSchema };
+    return { name: "base", schema: signupFormSchema };
+  }, [user]);
+
   const [hasAcceptedCGU, setHasAcceptedCGU] = useLocalStorage(
     "cje-signup-cgu",
     false
   );
   const [isLoading, setIsLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
-  const [steps, setSteps] = useState<FormStep>(generateSteps(signupFormSchema));
+  const [steps, setSteps] = useState<FormStep[]>([]);
 
   const defaultValues = useMemo(() => {
     return typeof window !== "undefined"
@@ -196,9 +65,9 @@ const SignupPage: React.FC = () => {
       : { preferences: [] };
   }, [typeof window !== "undefined"]);
 
-  const methods = useForm<SignupFormData>({
-    resolver: zodResolver(signupFormSchema),
-    mode: "onBlur",
+  const methods = useForm({
+    resolver: zodResolver(onBoardingKind.schema),
+    mode: onBoardingKind.name === "widget" ? "onSubmit" : "onBlur",
     defaultValues,
   });
 
@@ -206,17 +75,23 @@ const SignupPage: React.FC = () => {
   const { data: resultTags } = api.globals.tagsListOrdered.useQuery();
   const { data: tags } = resultTags || { data: [] };
 
-  const activeStep = steps[currentStep];
-  const isActiveStepPreferences = activeStep.fields[0].name === "preferences";
+  const activeStep = steps[currentStep] ?? { fields: [] };
+  const isActiveStepPreferences = activeStep.fields[0]?.name === "preferences";
   const formValues = methods.getValues();
 
   const [isAutocompleteInputFocused, setIsAutocompleteInputFocused] =
     useState(false);
 
-  const onSubmit: SubmitHandler<SignupFormData> = (data) => {
+  const onSubmit: SubmitHandler<SignupFormData | SignupWidgetFormData> = (
+    data
+  ) => {
     updateUser({
       ...data,
-      preferences: data.preferences.filter(Boolean).map(Number),
+      preferences:
+        "preferences" in data
+          ? data.preferences.filter(Boolean).map(Number)
+          : [],
+      cejFrom: "cejFrom" in data ? data.cejFrom : "missionLocale",
     }).then(() => {
       const jwtToken = getCookie(process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt");
       if (!jwtToken) return;
@@ -291,7 +166,7 @@ const SignupPage: React.FC = () => {
         value: tag.id.toString(),
         iconSrc: tag.icon.url as string,
       }));
-      setSteps(generateSteps(signupFormSchema));
+      setSteps(generateSteps(onBoardingKind.schema));
     }
   }, [tags]);
 
@@ -300,7 +175,7 @@ const SignupPage: React.FC = () => {
       JSON.parse(localStorage.getItem("cje-signup-form") as string)
         ?.signupStepNumber ?? 0;
 
-    if (!signupStep || typeof signupStep !== "string") {
+    if (!signupStep || typeof signupStep !== "string" || steps.length === 0) {
       console.log("signupStep is not a string");
       if (router.isReady) {
         router.replace({
@@ -320,15 +195,18 @@ const SignupPage: React.FC = () => {
     }
 
     if (signupStepNumber < 0 || signupStepNumber >= steps.length) {
-      router.back();
+      console.log("signupStep is out of bounds");
+      console.log(signupStepNumber);
+      console.log(steps.length);
+      // router.back();
       return;
     }
 
     setCurrentStep(signupStepNumber);
     setIsLoading(false);
-  }, [signupStep, router.isReady]);
+  }, [signupStep, router.isReady, steps]);
 
-  if (isLoading)
+  if (isLoading || !user)
     return (
       <OnBoardingStepsWrapper
         stepContext={{ current: currentStep + 1, total: steps.length }}
@@ -351,7 +229,7 @@ const SignupPage: React.FC = () => {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
-          style={{ height: "100%" }}
+          // style={{ minHeight: "100%" }}
         >
           <Flex
             display="flex"
@@ -395,13 +273,19 @@ const SignupPage: React.FC = () => {
               )}
               <Flex flexDir="column" mt={6}>
                 {activeStep.fields.map((field, index) => (
-                  <Box key={field.name} mt={index != 0 ? 10 : 0}>
+                  <Box
+                    key={field.name}
+                    mt={index != 0 && onBoardingKind.name === "base" ? 10 : 2}
+                  >
                     <FormField
                       field={field}
                       setIsAutocompleteInputFocused={
                         setIsAutocompleteInputFocused
                       }
                     />
+                    {index != 0 && onBoardingKind.name === "widget" && (
+                      <Divider mt={4} />
+                    )}
                   </Box>
                 ))}
               </Flex>

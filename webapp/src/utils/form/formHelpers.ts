@@ -6,6 +6,8 @@ export type FieldMetadata = {
   label?: string;
   kind: "text" | "email" | "date" | "radio" | "checkbox" | "autocomplete";
   placeholder?: string;
+  autocomplete?: string;
+  autoFocus?: boolean;
   options?: { label: string; value: string; iconSrc?: string }[];
   variant?: "default" | "inline";
   step?: number; // Which form step this field belongs to
@@ -22,7 +24,7 @@ export type FormStep = {
     name: string;
     path: string[];
   })[];
-}[];
+};
 
 // Helper function to extract field metadata from schema
 const extractFieldMetadata = (schema: z.ZodObject<any>) => {
@@ -46,7 +48,7 @@ const extractFieldMetadata = (schema: z.ZodObject<any>) => {
 };
 
 // Generate steps configuration from schema
-export const generateSteps = (schema: z.ZodObject<any>): FormStep => {
+export const generateSteps = (schema: z.ZodObject<any>): FormStep[] => {
   const fields = extractFieldMetadata(schema);
   const steps = Object.entries(fields).reduce(
     (acc, [path, field]) => {

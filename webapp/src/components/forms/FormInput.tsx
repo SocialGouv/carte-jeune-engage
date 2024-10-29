@@ -19,6 +19,7 @@ export type FieldProps = {
   name: string;
   kind: HTMLInputTypeAttribute | "block";
   placeholder?: string;
+  autocomplete?: string;
   prefix?: string;
   values?: { value: string; label: string }[];
   rules?: {
@@ -39,7 +40,7 @@ interface Props {
 }
 
 const FormInput = ({
-  field: { name, kind, rules, label, placeholder, prefix },
+  field: { name, kind, rules, label, placeholder, prefix, autocomplete },
   register,
   fieldError,
   wrapperProps,
@@ -81,7 +82,7 @@ const FormInput = ({
         borderRadius={16}
         border="none"
         errorBorderColor="transparent"
-        autoComplete="off"
+        autoComplete={autocomplete || "off"}
         backgroundColor={!fieldError ? "bgGray" : "errorLight"}
         pr={5}
         pl={prefix ? 12 : 5}

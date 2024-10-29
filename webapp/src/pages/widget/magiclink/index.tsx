@@ -74,7 +74,7 @@ export default function WidgetMagicLinkPage() {
         </Heading>
         <Button
           as={NextLink}
-          href={`/?widgetToken=${Cookies.get(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!)}`}
+          href={`/login-widget?widgetToken=${Cookies.get(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!)}`}
           target="_blank"
           colorScheme="whiteBtn"
           color="black"

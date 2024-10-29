@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { FieldMetadata } from "./formHelpers";
+import { frenchPhoneNumber } from "../tools";
 
 const withMeta = <T extends z.ZodType>(
   schema: T,
@@ -161,3 +162,114 @@ export const signupFormSchema = z.object({
 });
 
 export type SignupFormData = z.infer<typeof signupFormSchema>;
+
+export const signupWidgetFormSchema = z.object({
+  civility: withMeta(
+    z.enum(["man", "woman"], { message: "Ce champ est obligatoire" }),
+    {
+      step: 1,
+      stepTitle: "Vos codes seront à votre nom, ajoutez vos infos",
+      stepDescription:
+        "Saisissez la même information que sur vos documents administratifs officiels.",
+      autoFocus: false,
+      label: "Email Address",
+      kind: "radio",
+      placeholder: "john@example.com",
+      options: [
+        { label: "Homme", value: "man" },
+        { label: "Femme", value: "woman" },
+      ],
+    }
+  ),
+  firstName: withMeta(
+    z
+      .string()
+      .min(2, "Votre prénom doit contenir au moins 2 caractères")
+      .max(50, "Votre prénom doit contenir au plus 50 caractères"),
+    {
+      step: 1,
+      label: "Prénom",
+      kind: "text",
+      placeholder: "Votre prénom",
+      autoFocus: false,
+    }
+  ),
+  lastName: withMeta(
+    z
+      .string({ required_error: "Ce champ est obligatoire" })
+      .min(2, "Votre nom doit contenir au moins 2 caractères")
+      .max(50, "Votre nom doit contenir au plus 50 caractères"),
+    {
+      step: 1,
+      label: "Nom de Famille",
+      kind: "text",
+      placeholder: "Votre nom de famille",
+      autoFocus: false,
+    }
+  ),
+  birthDate: withMeta(
+    z
+      .string({ required_error: "Ce champ est obligatoire" })
+      .date("Veuillez saisir une date de naissance valide")
+      .refine(
+        (value) => {
+          const brithDate = new Date(value);
+          const now = new Date();
+          const age = now.getFullYear() - brithDate.getFullYear();
+          const hasNot26Yet =
+            brithDate.getMonth() >= now.getMonth() &&
+            (brithDate.getMonth() === now.getMonth()
+              ? brithDate.getDate() > now.getDate()
+              : true);
+          return age >= 16 && age <= 26 && (age !== 26 ? true : hasNot26Yet);
+        },
+        { message: "Vous devez avoir entre 16 et 26 ans pour vous inscrire" }
+      ),
+    {
+      step: 1,
+      label: "Date de naissance",
+      kind: "date",
+      autoFocus: false,
+    }
+  ),
+  address: withMeta(z.string({ required_error: "Ce champ est obligatoire" }), {
+    step: 1,
+    label: "Votre adresse",
+    kind: "autocomplete",
+    placeholder: "Mettez votre adresse complète",
+    autoFocus: false,
+  }),
+});
+
+export type SignupWidgetFormData = z.infer<typeof signupWidgetFormSchema>;
+
+export const loginWidgetSchema = z.object({
+  phoneNumber: withMeta(
+    z
+      .string({ required_error: "Ce champ est obligatoire" })
+      .refine((value) => frenchPhoneNumber.test(value), {
+        message: "Veuillez saisir un numéro de téléphone valide",
+      }),
+    {
+      step: 1,
+      autocomplete: "tel-national",
+      label: "Votre téléphone",
+      kind: "text",
+      placeholder: "06 00 00 00 00",
+    }
+  ),
+  userEmail: withMeta(
+    z
+      .string({ required_error: "Ce champ est obligatoire" })
+      .email("Veuillez saisir une adresse email valide"),
+    {
+      step: 1,
+      autocomplete: "email",
+      label: "Votre adresse email",
+      placeholder: "adresse@email.com",
+      kind: "email",
+    }
+  ),
+});
+
+export type LoginWidgetFormData = z.infer<typeof loginWidgetSchema>;
