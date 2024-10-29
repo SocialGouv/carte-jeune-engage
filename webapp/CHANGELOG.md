@@ -1,3 +1,10 @@
+## [0.47.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.0...v0.47.1) (2024-10-29)
+
+
+### Bug Fixes
+
+* ssr for jumbotron animation ([566b9e6](https://github.com/SocialGouv/carte-jeune-engage/commit/566b9e60f7514192a8d99de7a8486c7aefd117f7))
+
 # [0.47.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.46.0...v0.47.0) (2024-10-28)
 
 
