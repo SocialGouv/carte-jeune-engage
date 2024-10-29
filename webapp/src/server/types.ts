@@ -19,6 +19,7 @@ export const ZObizPartner = z.object({
 });
 
 export const ZObizArticle = z.object({
+  available: z.boolean(),
   name: z.string(),
   reference: z.string(),
   reductionPercentage: z.number(),

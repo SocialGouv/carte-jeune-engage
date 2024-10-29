@@ -383,7 +383,6 @@ export const offerRouter = createTRPCRouter({
 
               if (!existingArticle) {
                 updatedData.articles = [
-                  ...obiz_offer.articles,
                   ...(updatedData.articles || []),
                   obiz_article,
                 ];

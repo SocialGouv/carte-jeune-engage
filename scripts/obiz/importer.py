@@ -114,13 +114,12 @@ class DataImporter:
         """
         Traite un article spécifique
         """
-        if article.get('articles_actif') == 'False':
-            return
 
         articleKind = "variable_price" if article.get('articles_valeur_variable') == "True" else "fixed_price"
 
         offerArticle = {
             "name": article.get('articles_nom'),
+            "available": article.get('articles_actif') == 'True',
             "reference": article.get('articles_code'),
             "reductionPercentage": self.convert_french_number(article.get('articles_remise_btob')),
             "validityTo": convert_date_format(article.get('articles_date_fin')),
