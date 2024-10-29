@@ -301,6 +301,13 @@ export const Offers: CollectionConfig = {
           unique: true,
         },
         {
+          name: "available",
+          label: "Disponible",
+          type: "checkbox",
+          required: true,
+          defaultValue: true,
+        },
+        {
           name: "reductionPercentage",
           label: "Pourcentage de réduction",
           type: "number",
