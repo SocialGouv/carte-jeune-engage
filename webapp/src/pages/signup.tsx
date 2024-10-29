@@ -47,8 +47,8 @@ const SignupPage: React.FC = () => {
 
   const onBoardingKind = useMemo(() => {
     if (!!user?.cej_id)
-      return { name: "widget", schema: signupWidgetFormSchema };
-    return { name: "base", schema: signupFormSchema };
+      return { name: "widget", schema: signupWidgetFormSchema } as const;
+    return { name: "base", schema: signupFormSchema } as const;
   }, [user]);
 
   const [hasAcceptedCGU, setHasAcceptedCGU] = useLocalStorage(
@@ -56,6 +56,7 @@ const SignupPage: React.FC = () => {
     false
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [steps, setSteps] = useState<FormStep[]>([]);
 
@@ -85,6 +86,7 @@ const SignupPage: React.FC = () => {
   const onSubmit: SubmitHandler<SignupFormData | SignupWidgetFormData> = (
     data
   ) => {
+    setIsSubmitting(true);
     updateUser({
       ...data,
       preferences:
@@ -110,6 +112,7 @@ const SignupPage: React.FC = () => {
             { expires: new Date((data.exp as number) * 1000) }
           );
           refetchUser().then(() => {
+            setIsSubmitting(false);
             localStorage.removeItem("cje-signup-cgu");
             localStorage.removeItem("cje-signup-form");
             router.push("/dashboard");
@@ -195,10 +198,7 @@ const SignupPage: React.FC = () => {
     }
 
     if (signupStepNumber < 0 || signupStepNumber >= steps.length) {
-      console.log("signupStep is out of bounds");
-      console.log(signupStepNumber);
-      console.log(steps.length);
-      // router.back();
+      router.back();
       return;
     }
 
@@ -229,7 +229,9 @@ const SignupPage: React.FC = () => {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
-          // style={{ minHeight: "100%" }}
+          style={{
+            height: onBoardingKind.name === "base" ? "100%" : "auto",
+          }}
         >
           <Flex
             display="flex"
@@ -249,30 +251,31 @@ const SignupPage: React.FC = () => {
               >
                 {activeStep.title}
               </Heading>
-              {!isAutocompleteInputFocused && (
-                <>
-                  <Text
-                    fontSize={14}
-                    fontWeight="medium"
-                    color="secondaryText"
-                    mt={4}
-                  >
-                    {activeStep.description}
-                  </Text>
-                  {activeStep.imageSrc && (
-                    <Center mt={2}>
-                      <Image
-                        src={activeStep.imageSrc}
-                        alt={activeStep.title as string}
-                        width={126}
-                        height={0}
-                      />
-                    </Center>
-                  )}
-                </>
-              )}
+              {!isAutocompleteInputFocused &&
+                onBoardingKind.name === "base" && (
+                  <>
+                    <Text
+                      fontSize={14}
+                      fontWeight="medium"
+                      color="secondaryText"
+                      mt={4}
+                    >
+                      {activeStep.description}
+                    </Text>
+                    {activeStep.imageSrc && (
+                      <Center mt={2}>
+                        <Image
+                          src={activeStep.imageSrc}
+                          alt={activeStep.title as string}
+                          width={126}
+                          height={0}
+                        />
+                      </Center>
+                    )}
+                  </>
+                )}
               <Flex flexDir="column" mt={6}>
-                {activeStep.fields.map((field, index) => (
+                {activeStep.fields.map((field, index, arr) => (
                   <Box
                     key={field.name}
                     mt={index != 0 && onBoardingKind.name === "base" ? 10 : 2}
@@ -283,9 +286,9 @@ const SignupPage: React.FC = () => {
                         setIsAutocompleteInputFocused
                       }
                     />
-                    {index != 0 && onBoardingKind.name === "widget" && (
-                      <Divider mt={4} />
-                    )}
+                    {index != 0 &&
+                      index !== arr.length - 1 &&
+                      onBoardingKind.name === "widget" && <Divider mt={4} />}
                   </Box>
                 ))}
               </Flex>
@@ -322,6 +325,7 @@ const SignupPage: React.FC = () => {
                     : handleNext
                 }
                 rightIcon={<Icon as={HiArrowRight} w={6} h={6} />}
+                isLoading={isSubmitting}
               >
                 Suivant
               </Button>

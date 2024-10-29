@@ -5,9 +5,11 @@ import { z } from "zod";
 export type FieldMetadata = {
   label?: string;
   kind: "text" | "email" | "date" | "radio" | "checkbox" | "autocomplete";
+  description?: string;
   placeholder?: string;
   autocomplete?: string;
   autoFocus?: boolean;
+  inputView?: boolean;
   options?: { label: string; value: string; iconSrc?: string }[];
   variant?: "default" | "inline";
   step?: number; // Which form step this field belongs to

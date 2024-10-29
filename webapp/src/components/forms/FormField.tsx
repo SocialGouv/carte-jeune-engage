@@ -118,12 +118,12 @@ const FormField = <TFormData extends FieldValues>({
           async () => {
             const formatedDebouncedAddress = debouncedAddress.split(",")[0];
             const response = await fetch(
-              `https://geo.api.gouv.fr/communes?nom=${formatedDebouncedAddress}&codeDepartement=95&fields=departement&limit=5`
+              `https://api-adresse.data.gouv.fr/search?q=${formatedDebouncedAddress}&limit=6`
             );
             const data = await response.json();
-            return data.map(
-              (municipality: any) =>
-                `${municipality.nom}, ${municipality.departement.nom}`
+            return data.features.map(
+              ({ properties }: { properties: Record<string, string> }) =>
+                `${properties.name}, ${properties.city} ${properties.citycode}`
             ) as string[];
           },
           {

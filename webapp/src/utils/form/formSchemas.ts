@@ -228,6 +228,8 @@ export const signupWidgetFormSchema = z.object({
     {
       step: 1,
       label: "Date de naissance",
+      description:
+        "La date de naissance est demandée pour certaines offres qui sont réservées au + de 18 ans",
       kind: "date",
       autoFocus: false,
     }
@@ -237,6 +239,7 @@ export const signupWidgetFormSchema = z.object({
     label: "Votre adresse",
     kind: "autocomplete",
     placeholder: "Mettez votre adresse complète",
+    inputView: true,
     autoFocus: false,
   }),
 });

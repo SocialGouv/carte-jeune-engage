@@ -357,8 +357,6 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: userInput }) => {
       const { phone_number, cej_id } = userInput;
 
-      // For CEJ users, we generate an OTP only if the CEJ ID is vali
-
       const users = await ctx.payload.find({
         collection: "users",
         limit: 1,
@@ -369,6 +367,7 @@ export const userRouter = createTRPCRouter({
       });
 
       if (!users.docs.length) {
+        // For CEJ users, we generate an OTP only if the CEJ ID is valid
         if (cej_id) {
           await generateAndSendOTP(ctx.payload, userInput, true);
           return { kind: "otp" };

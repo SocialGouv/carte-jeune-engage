@@ -11,12 +11,7 @@ import {
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
-import {
-  Control,
-  Controller,
-  FieldError,
-  UseFormHandleSubmit,
-} from "react-hook-form";
+import { Control, Controller, FieldError } from "react-hook-form";
 import {
   AutoComplete,
   AutoCompleteInput,
@@ -27,7 +22,7 @@ import { FieldProps } from "./FormInput";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 interface Props {
-  field: FieldProps & { autoFocus?: boolean };
+  field: FieldProps & { autoFocus?: boolean; inputView?: boolean };
   options: string[] | undefined;
   setError: any;
   clearErrors: any;
@@ -60,7 +55,7 @@ const FormAutocompleteInput = ({
     undefined
   );
 
-  if (currentValue) {
+  if (currentValue && !field.inputView) {
     return (
       <Flex flexDir="column" textAlign="center" gap={20}>
         <Text fontWeight={800} fontSize={24} mt={10}>
@@ -110,6 +105,8 @@ const FormAutocompleteInput = ({
               sx={{
                 ".chakra-popover__popper": {
                   minWidth: "100% !important",
+                  position: "relative !important",
+                  transform: "none !important",
                 },
               }}
             >
@@ -178,7 +175,7 @@ const FormAutocompleteInput = ({
                   }}
                 />
                 <AutoCompleteList
-                  position="fixed"
+                  position="relative"
                   style={{
                     backgroundColor: "transparent",
                     border: "0",
@@ -190,7 +187,7 @@ const FormAutocompleteInput = ({
                       <Spinner />
                     </Center>
                   }
-                  gap={2}
+                  gap={0}
                   mt={-4}
                 >
                   {options?.map((option, index) => {
@@ -204,7 +201,7 @@ const FormAutocompleteInput = ({
                           mx={0}
                           _focus={{ bgColor: "transparent" }}
                         >
-                          <Text fontWeight={800} fontSize={18}>
+                          <Text fontWeight={800}>
                             {highlightedText}
                             <Text as="span" fontWeight={500}>
                               {restOfText}
