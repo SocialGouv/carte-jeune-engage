@@ -387,6 +387,19 @@ export const offerRouter = createTRPCRouter({
                   ...(updatedData.articles || []),
                   obiz_article,
                 ];
+              } else {
+                const hasDifferentJson =
+                  JSON.stringify(existingArticle.obizJson) !==
+                  JSON.stringify(JSON.parse(obiz_article.obizJson));
+                if (hasDifferentJson) {
+                  updatedData.articles = [
+                    ...obiz_offer.articles.filter(
+                      (article) => article.reference !== obiz_article.reference
+                    ),
+                    ...(updatedData.articles || []),
+                    { id: existingArticle.id, ...obiz_article },
+                  ];
+                }
               }
             }
 
