@@ -3,6 +3,7 @@ import { CustomSelectTermsOfUse } from "../components/CustomSelectTermsOfUse";
 import { Partner, QuickAccess } from "../payload-types";
 import { CustomSelectConditionBlocks } from "../components/CustomSelectBlocksOfUse";
 import { CustomSelectKind } from "../components/CustomSelectKind";
+import { RowLabelArgs } from "payload/dist/admin/components/forms/RowLabel/types";
 
 export const Offers: CollectionConfig = {
   slug: "offers",
@@ -285,6 +286,11 @@ export const Offers: CollectionConfig = {
       admin: {
         condition: (_, siblingData) =>
           !!siblingData.source && siblingData.source === "obiz",
+        components: {
+          RowLabel: ({ data, index }: RowLabelArgs) => {
+            return data?.name || `Article ${String(index).padStart(2, "0")}`;
+          },
+        },
       },
       fields: [
         {
