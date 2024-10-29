@@ -288,6 +288,13 @@ export const Offers: CollectionConfig = {
       },
       fields: [
         {
+          name: "available",
+          label: "Disponible",
+          type: "checkbox",
+          required: true,
+          defaultValue: true,
+        },
+        {
           name: "name",
           label: "Nom",
           type: "text",
@@ -299,13 +306,6 @@ export const Offers: CollectionConfig = {
           type: "text",
           required: true,
           unique: true,
-        },
-        {
-          name: "available",
-          label: "Disponible",
-          type: "checkbox",
-          required: true,
-          defaultValue: true,
         },
         {
           name: "reductionPercentage",
