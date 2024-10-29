@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextApiRequest } from "next";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import FormField from "~/components/forms/FormField";
@@ -17,6 +17,9 @@ import {
 import jwt from "jsonwebtoken";
 import { ZWidgetToken } from "~/server/types";
 import { decryptData } from "~/utils/tools";
+import { appRouter } from "~/server/api/root";
+import getPayloadClient from "~/payload/payloadClient";
+import { createCallerFactory } from "~/server/api/trpc";
 
 type HomeLoginWidgetProps = {
   cej_id: string;
@@ -120,9 +123,6 @@ export default function HomeLoginWidget({ cej_id }: HomeLoginWidgetProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     let { widgetToken } = context.query;
-    if (!widgetToken)
-      widgetToken =
-        context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
 
     if (!widgetToken || typeof widgetToken !== "string") {
       return {
@@ -140,9 +140,50 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       process.env.WIDGET_SECRET_DATA_ENCRYPTION!
     );
 
+    const payload = await getPayloadClient({ seed: false });
+
+    const users = await payload.find({
+      collection: "users",
+      where: {
+        cej_id: {
+          equals: cejUserId,
+        },
+      },
+    });
+
+    // If no user found, we redirect to the widget login page
+    if (!users.docs.length) {
+      return {
+        props: {
+          cej_id: cejUserId,
+        },
+      };
+    }
+
+    // If user found, we log him in and redirect to the dashboard
+    const createCaller = createCallerFactory(appRouter);
+    const caller = createCaller({
+      payload,
+      session: null,
+      req: context.req as NextApiRequest,
+    });
+
+    const { data: userSession } = await caller.widget.login({
+      user_id: cejUserId,
+      widget_token: widgetToken,
+    });
+
+    context.res.setHeader(
+      "Set-Cookie",
+      `${process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"}=${userSession.token}; Expires=${new Date(
+        (userSession.exp as number) * 1000
+      ).toUTCString()}; Path=/; SameSite=Strict`
+    );
+
     return {
-      props: {
-        cej_id: cejUserId,
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
       },
     };
   } catch (error) {
