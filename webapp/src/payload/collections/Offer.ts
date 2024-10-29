@@ -288,7 +288,9 @@ export const Offers: CollectionConfig = {
           !!siblingData.source && siblingData.source === "obiz",
         components: {
           RowLabel: ({ data, index }: RowLabelArgs) => {
-            return data?.name || `Article ${String(index).padStart(2, "0")}`;
+            return data
+              ? `${data.available ? "🟢" : "🔴"} ${data.name}`
+              : `Article ${String(index).padStart(2, "0")}`;
           },
         },
       },
