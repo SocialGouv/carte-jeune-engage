@@ -15,6 +15,7 @@ import { push } from "@socialgouv/matomo-next";
 
 export type LoginForm = {
   phone_number: string;
+  user_email?: string;
 };
 
 const PhoneNumberCTA = ({

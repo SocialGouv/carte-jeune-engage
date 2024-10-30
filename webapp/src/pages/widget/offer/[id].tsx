@@ -1,5 +1,5 @@
 import { Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
-import Cookies from "js-cookie";
+import { GetServerSideProps } from "next";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
@@ -10,7 +10,11 @@ import { ScrollAnimatedPerspectiveBox } from "~/components/offer/ScrollAnimatedP
 import BackButton from "~/components/ui/BackButton";
 import { api } from "~/utils/api";
 
-export default function WidgetOfferPage() {
+export default function WidgetOfferPage({
+  widgetToken,
+}: {
+  widgetToken: string;
+}) {
   const router = useRouter();
   const { id } = router.query;
 
@@ -84,7 +88,7 @@ export default function WidgetOfferPage() {
         </Flex>
         <Button
           as={NextLink}
-          href={`/?widgetToken=${Cookies.get(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!)}&offer_id=${id}`}
+          href={`/login-widget?widgetToken=${widgetToken}&offer_id=${id}`}
           target="_blank"
           colorScheme="whiteBtn"
           color="black"
@@ -107,3 +111,25 @@ export default function WidgetOfferPage() {
     </Flex>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let { widgetToken } = context.query;
+  if (!widgetToken)
+    widgetToken =
+      context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
+
+  if (!widgetToken || typeof widgetToken !== "string") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      widgetToken,
+    },
+  };
+};
