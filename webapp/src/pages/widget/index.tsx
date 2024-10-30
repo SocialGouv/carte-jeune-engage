@@ -125,7 +125,7 @@ export default function Widget({ initialToken }: WidgetProps) {
           />
         </Link>
       </Flex>
-      {/* <Jumbotron /> */}
+      <Jumbotron />
       <Box mt={8}>
         <CategoriesList offers={allOffers} baseLink="/widget/category" />
       </Box>
