@@ -1,3 +1,25 @@
+# [0.48.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.2...v0.48.0) (2024-10-30)
+
+
+### Bug Fixes
+
+* add @hookform/resolvers ([bfb4246](https://github.com/SocialGouv/carte-jeune-engage/commit/bfb42460b4db26da56f18b96aaaebd402aff492e))
+* add auto-connect on login-widget page if cej_id already exists ([2001d3b](https://github.com/SocialGouv/carte-jeune-engage/commit/2001d3b398beff78989e47fb7187a3606f6c6b9d))
+* build ([c0b66c0](https://github.com/SocialGouv/carte-jeune-engage/commit/c0b66c08d4541f21a5f21ab163aef0845b9bb0db))
+* cookie same-site and secure properties for iframe purpose ([a2b55f8](https://github.com/SocialGouv/carte-jeune-engage/commit/a2b55f87d0ff89cc096988c8a5b4257bec71c240))
+* name of userEmail in signup schema zod defintion ([6b8a1af](https://github.com/SocialGouv/carte-jeune-engage/commit/6b8a1af7fd5fc8ebe8d393d517f3bf29fd44ef2a))
+* onboarding cej from widget with full address for autocomplete, add description on text field ([6daa308](https://github.com/SocialGouv/carte-jeune-engage/commit/6daa308f4779dd92eb8bbf4f5b590ab39176fe67))
+* refactor page signup for better dev dx ([71e4660](https://github.com/SocialGouv/carte-jeune-engage/commit/71e4660492534b0443d93337e2c9a58844466026))
+* remove @hookform/resolvers from main package.json ([02b4b42](https://github.com/SocialGouv/carte-jeune-engage/commit/02b4b42c1c1427d50ed1b5dfce691f8558294504))
+* remove type submit to prevent multiple form submission ([ca1f5a4](https://github.com/SocialGouv/carte-jeune-engage/commit/ca1f5a4d48db51137d1de6e10958c85bb06a6cc4))
+* set-cookie in server side instead of client side and return this cookie from getServerSideProps instead of gettingit client side ([1e0edc7](https://github.com/SocialGouv/carte-jeune-engage/commit/1e0edc7aade135fbb6765aa73f07e425fe7fb0dd))
+* uncomment hero section on widget page ([d896f64](https://github.com/SocialGouv/carte-jeune-engage/commit/d896f64b67bc6dc66d9fec5760aa96a90f4e4a9d))
+
+
+### Features
+
+* add widget-login and widget onboarding schema, move FormField to a separate component ([dc62c23](https://github.com/SocialGouv/carte-jeune-engage/commit/dc62c23e2a17f4bf6f30894536ba6281708565f5))
+
 ## [0.47.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.1...v0.47.2) (2024-10-30)
 
 
