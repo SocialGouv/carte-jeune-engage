@@ -142,12 +142,12 @@ export const signupFormSchema = z.object({
   ),
   address: withMeta(z.string({ required_error: "Ce champ est obligatoire" }), {
     step: 6,
-    stepTitle: "Votre ville",
+    stepTitle: "Votre adresse",
     stepDescription: "Pour trouver les promotions proches de chez vous.",
     stepImageSrc: "/images/onboarding/map-pin.png",
-    label: "Nom de ma ville",
+    label: "Votre adresse",
     kind: "autocomplete",
-    placeholder: "Chercher le nom de votre ville",
+    placeholder: "Mettez votre adresse complète",
   }),
   preferences: withMeta(
     z.array(z.string().optional()).transform((prefs) => prefs.filter(Boolean)),
