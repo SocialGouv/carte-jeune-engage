@@ -1,3 +1,10 @@
+## [0.48.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.0...v0.48.1) (2024-10-30)
+
+
+### Bug Fixes
+
+* change address label, title and placeholder in signup form to match the new onboarding ([ed3036b](https://github.com/SocialGouv/carte-jeune-engage/commit/ed3036bcd40126ff5c456411ae98b10a593a692f))
+
 # [0.48.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.2...v0.48.0) (2024-10-30)
 
 
