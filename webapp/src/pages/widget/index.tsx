@@ -196,7 +196,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         "Set-Cookie",
         `${process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME}=${widgetToken}; Expires=${new Date(
           new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-        ).toUTCString()}; Path=/; SameSite=Strict`
+        ).toUTCString()}; Path=/; SameSite=None; Secure`
       );
     }
 

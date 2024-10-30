@@ -148,7 +148,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         "Set-Cookie",
         `${process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME}=${widgetToken}; Expires=${new Date(
           new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-        ).toUTCString()}; Path=/; SameSite=Strict`
+        ).toUTCString()}; Path=/; SameSite=None; Secure`
       );
       context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!] =
         widgetToken;
@@ -191,7 +191,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       "Set-Cookie",
       `${process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"}=${userSession.token}; Expires=${new Date(
         (userSession.exp as number) * 1000
-      ).toUTCString()}; Path=/; SameSite=Strict`
+      ).toUTCString()}; Path=/; SameSite=None; Secure`
     );
 
     return {
