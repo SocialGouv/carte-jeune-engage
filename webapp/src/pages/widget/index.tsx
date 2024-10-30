@@ -1,11 +1,8 @@
 import { Box, Divider, Flex, Grid, Heading, Link } from "@chakra-ui/react";
-import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import { GetServerSideProps } from "next";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import OfferCard from "~/components/cards/OfferCard";
 import Jumbotron from "~/components/landing/Jumbotron";
 import CategoriesList from "~/components/lists/CategoriesList";
@@ -16,66 +13,22 @@ import { ZWidgetToken } from "~/server/types";
 import { api } from "~/utils/api";
 import { decryptData } from "~/utils/tools";
 
-type WidgetProps = {
-  initialToken: string;
-};
+export default function Widget() {
+  const { data: resultOffersOnline } =
+    api.offer.getWidgetListOfAvailables.useQuery({
+      page: 1,
+      perPage: 10,
+      sort: "partner.name",
+      kinds: ["code", "code_space"],
+    });
 
-export default function Widget({ initialToken }: WidgetProps) {
-  const router = useRouter();
-  const [isCookieSet, setIsCookieSet] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (initialToken) {
-      Cookies.set(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!, initialToken, {
-        expires: 7,
-        path: "/",
-        secure: true,
-        sameSite: "none",
-      });
-      setIsCookieSet(true);
-    }
-  }, [router.query, router]);
-
-  useEffect(() => {
-    if (isCookieSet) {
-      const newQuery = { ...router.query };
-      delete newQuery.widgetToken;
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: newQuery,
-        },
-        undefined,
-        { shallow: true }
-      );
-    }
-  }, [isCookieSet]);
-
-  const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
-    api.offer.getWidgetListOfAvailables.useQuery(
-      {
-        page: 1,
-        perPage: 10,
-        sort: "partner.name",
-        kinds: ["code", "code_space"],
-      },
-      {
-        enabled: isCookieSet,
-      }
-    );
-
-  const { data: resultOffersInStore, isLoading: isLoadingOffersInStore } =
-    api.offer.getWidgetListOfAvailables.useQuery(
-      {
-        page: 1,
-        perPage: 10,
-        sort: "partner.name",
-        kinds: ["voucher", "voucher_pass"],
-      },
-      {
-        enabled: isCookieSet,
-      }
-    );
+  const { data: resultOffersInStore } =
+    api.offer.getWidgetListOfAvailables.useQuery({
+      page: 1,
+      perPage: 10,
+      sort: "partner.name",
+      kinds: ["voucher", "voucher_pass"],
+    });
 
   const { data: offersOnline } = resultOffersOnline || {};
   const { data: offersInStore } = resultOffersInStore || {};
@@ -225,7 +178,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const decoded = jwt.verify(widgetToken, process.env.WIDGET_SECRET_JWT!);
     const tokenObject = ZWidgetToken.parse(decoded);
-    const cjeUserId = decryptData(
+    const cejUserId = decryptData(
       tokenObject.user_id,
       process.env.WIDGET_SECRET_DATA_ENCRYPTION!
     );
@@ -234,9 +187,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const users = await payload.find({
       collection: "users",
       where: {
-        cej_id: { equals: cjeUserId },
+        cej_id: { equals: cejUserId },
       },
     });
+
+    if (!context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!]) {
+      context.res.setHeader(
+        "Set-Cookie",
+        `${process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME}=${widgetToken}; Expires=${new Date(
+          new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+        ).toUTCString()}; Path=/; SameSite=Strict`
+      );
+    }
 
     if (!!users.docs.length) {
       return {
@@ -246,11 +208,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       };
     }
-
     return {
-      props: {
-        initialToken: widgetToken,
-      },
+      props: {},
     };
   } catch (error) {
     return {

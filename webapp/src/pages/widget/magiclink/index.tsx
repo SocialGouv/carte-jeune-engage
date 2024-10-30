@@ -1,49 +1,15 @@
 import { Button, Flex, Heading, Icon } from "@chakra-ui/react";
 import Cookies from "js-cookie";
+import { GetServerSideProps } from "next";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { HiArrowTopRightOnSquare } from "react-icons/hi2";
 
-export default function WidgetMagicLinkPage() {
-  const router = useRouter();
-  const [isCookieSet, setIsCookieSet] = useState<boolean>(false);
-
-  useEffect(() => {
-    const { widgetToken: initialToken } = router.query;
-    if (initialToken) {
-      Cookies.set(
-        process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!,
-        initialToken as string,
-        {
-          expires: 7,
-          path: "/",
-          secure: true,
-          sameSite: "none",
-        }
-      );
-      setIsCookieSet(true);
-    }
-  }, [router.query, router]);
-
-  useEffect(() => {
-    if (isCookieSet) {
-      const newQuery = { ...router.query };
-      delete newQuery.widgetToken;
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: newQuery,
-        },
-        undefined,
-        { shallow: true }
-      );
-    }
-  }, [isCookieSet]);
-
-  if (!isCookieSet) return;
-
+export default function WidgetMagicLinkPage({
+  widgetToken,
+}: {
+  widgetToken: string;
+}) {
   return (
     <Flex
       direction={"column"}
@@ -74,7 +40,7 @@ export default function WidgetMagicLinkPage() {
         </Heading>
         <Button
           as={NextLink}
-          href={`/login-widget?widgetToken=${Cookies.get(process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!)}`}
+          href={`/login-widget?widgetToken=${widgetToken}`}
           target="_blank"
           colorScheme="whiteBtn"
           color="black"
@@ -88,3 +54,25 @@ export default function WidgetMagicLinkPage() {
     </Flex>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let { widgetToken } = context.query;
+  if (!widgetToken)
+    widgetToken =
+      context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
+
+  if (!widgetToken || typeof widgetToken !== "string") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      widgetToken,
+    },
+  };
+};

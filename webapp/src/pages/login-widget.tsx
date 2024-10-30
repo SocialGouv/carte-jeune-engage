@@ -123,6 +123,9 @@ export default function HomeLoginWidget({ cej_id }: HomeLoginWidgetProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     let { widgetToken } = context.query;
+    if (!widgetToken)
+      widgetToken =
+        context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
 
     if (!widgetToken || typeof widgetToken !== "string") {
       return {
@@ -139,6 +142,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       tokenObject.user_id,
       process.env.WIDGET_SECRET_DATA_ENCRYPTION!
     );
+
+    if (!context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!]) {
+      context.res.setHeader(
+        "Set-Cookie",
+        `${process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME}=${widgetToken}; Expires=${new Date(
+          new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+        ).toUTCString()}; Path=/; SameSite=Strict`
+      );
+      context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!] =
+        widgetToken;
+    }
 
     const payload = await getPayloadClient({ seed: false });
 
