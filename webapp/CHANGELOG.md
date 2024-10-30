@@ -1,3 +1,10 @@
+## [0.47.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.1...v0.47.2) (2024-10-30)
+
+
+### Bug Fixes
+
+* add tutorial modal to install webapp for ios ([05be70b](https://github.com/SocialGouv/carte-jeune-engage/commit/05be70b96ddbc9a4822c3a1269eef2b74ebab814))
+
 ## [0.47.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.0...v0.47.1) (2024-10-29)
 
 
