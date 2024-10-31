@@ -7,16 +7,16 @@ RUN apt-get update && \
     git \
     && rm -rf /var/lib/apt/lists/*
 
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
 RUN groupadd -g 1001 appuser && \
     useradd -r -u 1001 -g appuser appuser && \
     mkdir -p /app && \
     chown -R appuser:appuser /app
 
 USER 1001
-
-COPY --chown=1001:1001 requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --chown=1001:1001 config/ ./config/
 COPY --chown=1001:1001 finders/ ./finders/
