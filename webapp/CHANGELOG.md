@@ -1,3 +1,10 @@
+## [0.48.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.3...v0.48.4) (2024-10-31)
+
+
+### Bug Fixes
+
+* protect payload routes, only admin can acces them ([332e791](https://github.com/SocialGouv/carte-jeune-engage/commit/332e791fc53d88f3ca4aec1023363d180b692e96))
+
 ## [0.48.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.2...v0.48.3) (2024-10-31)
 
 
