@@ -19,44 +19,15 @@ spec:
               image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/app:{{ .Values.global.imageTag }}"
               command: ["python3", "importer.py"]
 							args: [
-                "--api-url", "$(PAYLOAD_API_URL)",
-                "--api-key", "$(PAYLOAD_API_KEY)",
+                "--api-url", "$(APP_API_URL)",
+                "--api-key", "$(APP_API_KEY)",
                 "--s3-bucket", "$(S3_BUCKET)",
                 "--s3-endpoint", "$(S3_ENDPOINT)",
                 "--s3-access-key", "$(S3_ACCESS_KEY)",
                 "--s3-secret-key", "$(S3_SECRET_KEY)"
               ]
 							# env:
-              #   - name: PAYLOAD_API_URL
-              #     valueFrom:
-              #       secretKeyRef:
-              #         name: obiz-integration-secrets
-              #         key: payload_api_url
-              #   - name: PAYLOAD_API_KEY
-              #     valueFrom:
-              #       secretKeyRef:
-              #         name: obiz-integration-secrets
-              #         key: payload_api_key
-              #   - name: S3_BUCKET
-              #     valueFrom:
-              #       secretKeyRef:
-              #         name: obiz-integration-secrets
-              #         key: s3_bucket
-              #   - name: S3_ENDPOINT
-              #     valueFrom:
-              #       secretKeyRef:
-              #         name: obiz-integration-secrets
-              #         key: s3_endpoint
-              #   - name: S3_ACCESS_KEY
-              #     valueFrom:
-              #       secretKeyRef:
-              #         name: obiz-integration-secrets
-              #         key: s3_access_key
-              #   - name: S3_SECRET_KEY
-              #     valueFrom:
-              #       secretKeyRef:
-              #         name: obiz-integration-secrets
-              #         key: s3_secret_key
+              # TOUS LES ARGS
               resources:
                 requests:
                   cpu: 200m
