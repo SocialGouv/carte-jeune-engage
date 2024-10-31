@@ -1,3 +1,10 @@
+## [0.48.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.2...v0.48.3) (2024-10-31)
+
+
+### Bug Fixes
+
+* remove newPassModal if user already uploaded a picture ([4af6b34](https://github.com/SocialGouv/carte-jeune-engage/commit/4af6b34f7a95a89d6966fd0c002fe0a0d2b3d590))
+
 ## [0.48.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.1...v0.48.2) (2024-10-31)
 
 
