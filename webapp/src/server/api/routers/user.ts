@@ -46,9 +46,10 @@ export const changeUserPassword = async (
 
 const generateAndSendOTP = async (
   payload: Payload,
-  phone_number: string,
+  data: { phone_number: string; user_email?: string; cej_id?: string },
   firstLogin: boolean
 ) => {
+  const { phone_number, user_email, cej_id } = data;
   const hasDialingCode = phone_number.startsWith("+");
   const email = `${
     hasDialingCode ? `0${phone_number.substring(3)}` : phone_number
@@ -91,6 +92,8 @@ const generateAndSendOTP = async (
           otp_request_token: octopushResponse.otp_request_token,
           password: generateRandomPassword(16),
           phone_number: phone_number,
+          userEmail: user_email,
+          cej_id: cej_id,
         },
       });
     } else {
@@ -342,6 +345,8 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         phone_number: z.string(),
+        user_email: z.string().optional(),
+        cej_id: z.string().optional(),
       })
     )
     .output(
@@ -350,7 +355,7 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input: userInput }) => {
-      const { phone_number } = userInput;
+      const { phone_number, cej_id } = userInput;
 
       const users = await ctx.payload.find({
         collection: "users",
@@ -362,6 +367,12 @@ export const userRouter = createTRPCRouter({
       });
 
       if (!users.docs.length) {
+        // For CEJ users, we generate an OTP only if the CEJ ID is valid
+        if (cej_id) {
+          await generateAndSendOTP(ctx.payload, userInput, true);
+          return { kind: "otp" };
+        }
+
         const permissions = await ctx.payload.find({
           collection: "permissions",
           limit: 1,
@@ -377,7 +388,7 @@ export const userRouter = createTRPCRouter({
             message: "Phone number does not exists on the database",
           });
         } else {
-          await generateAndSendOTP(ctx.payload, phone_number, true);
+          await generateAndSendOTP(ctx.payload, userInput, true);
           return { kind: "otp" };
         }
       } else {
@@ -404,7 +415,7 @@ export const userRouter = createTRPCRouter({
 
           return { kind: "email" };
         } else {
-          await generateAndSendOTP(ctx.payload, phone_number, false);
+          await generateAndSendOTP(ctx.payload, userInput, false);
           return { kind: "otp" };
         }
       }

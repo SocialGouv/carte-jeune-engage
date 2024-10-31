@@ -10,27 +10,23 @@ import {
   Link,
   Text,
   useBreakpointValue,
-  useDisclosure,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { type SubmitHandler, ErrorOption } from "react-hook-form";
 import { HiInformationCircle, HiMiniChevronRight } from "react-icons/hi2";
 import BigLoader from "~/components/BigLoader";
 import { api } from "~/utils/api";
 import FAQSectionAccordionItem from "~/components/landing/FAQSectionAccordionItem";
-import BaseModal from "~/components/modals/BaseModal";
 import PhoneNumberCTA, { LoginForm } from "~/components/landing/PhoneNumberCTA";
 import QRCodeWrapper from "~/components/landing/QRCode";
-import NotEligibleForm from "~/components/landing/NotEligibleForm";
 import { useAuth } from "~/providers/Auth";
-import EllipsePositionnedImages from "~/components/landing/EllipsePositionnedImages";
 import NextLink from "next/link";
 import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
 import LoginWrapper from "~/components/wrappers/LoginWrapper";
 import ConditionalLink from "~/components/ConditionalLink";
 import LoginOtpContent from "~/components/landing/LoginOtpContent";
 import Jumbotron from "~/components/landing/Jumbotron";
+import PartnerSectionWithPhysics from "~/components/landing/PartnerSectionWithPhysics";
 
 const defaultTimeToResend = 30;
 
@@ -87,24 +83,6 @@ const offersList = [
   },
 ];
 
-const partnersList = [
-  {
-    name: "Auchan",
-    img: "/images/seeds/partners/auchan.svg",
-    promo_label: "-110€",
-  },
-  {
-    name: "Flixbus",
-    img: "/images/seeds/partners/flixbus.svg",
-    promo_label: "-10%",
-  },
-  {
-    name: "Cora",
-    img: "/images/seeds/partners/cora.svg",
-    promo_label: "Gratuit",
-  },
-];
-
 const forWhoList = [
   {
     img: "/images/referent/serviceCivique.png",
@@ -152,8 +130,6 @@ export default function Home() {
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState<string>("");
   const [phoneNumberError, setPhoneNumberError] = useState<ErrorOption>();
 
-  const parentPartnersRef = useRef<HTMLDivElement>(null);
-
   const resetTimer = () => {
     if (intervalId) clearInterval(intervalId);
     setTimeToResend(defaultTimeToResend);
@@ -162,11 +138,6 @@ export default function Home() {
     }, 1000);
     setIntervalId(id);
   };
-
-  const { data: resultLogoPartners, isLoading: isLoadingLogoPartners } =
-    api.globals.landingPartnersGetLogos.useQuery();
-
-  const logoPartners = resultLogoPartners?.data || [];
 
   const { data: resultFAQ, isLoading: isLoadingFAQ } =
     api.globals.landingFAQGetAll.useQuery();
@@ -196,18 +167,6 @@ export default function Home() {
       },
     });
 
-  const logoAnimationBreakpoint = useBreakpointValue({
-    base: {
-      x: ["0px", `-${57 * logoPartners.length + 32 * logoPartners.length}px`],
-      transition: {
-        repeat: Infinity,
-        duration: 4,
-        ease: "linear",
-      },
-    },
-    lg: undefined,
-  });
-
   const handleGenerateOtp: SubmitHandler<LoginForm> = async (values) => {
     setCurrentPhoneNumber(values.phone_number);
     generateOtp({ phone_number: values.phone_number });
@@ -222,7 +181,7 @@ export default function Home() {
     return () => clearInterval(id);
   }, [isOtpGenerated]);
 
-  if (isLoadingLogoPartners || isLoadingFAQ) return <BigLoader />;
+  if (isLoadingFAQ) return <BigLoader />;
 
   if (isOtpGenerated && otpKind)
     return (
@@ -267,85 +226,7 @@ export default function Home() {
             />
           </Box>
         )}
-        <Flex
-          flexDir={{ base: "column", lg: "row" }}
-          bg={"primary"}
-          w={{ base: "95%", lg: "full" }}
-          mx={"auto"}
-          rounded="5xl"
-          color={"white"}
-          mt={isDesktop ? 0 : 20}
-        >
-          <Flex
-            flex={1}
-            flexDir="column"
-            p={{ base: 8, lg: 44 }}
-            pr={{ lg: 8 }}
-            pt={12}
-          >
-            <Heading
-              fontSize={{ base: "2xl", lg: "5xl" }}
-              fontWeight="extrabold"
-            >
-              Une appli utile avec des réductions de grandes marques
-            </Heading>
-            <Link
-              as={NextLink}
-              href="/partners"
-              mt={6}
-              textDecor={"underline"}
-              fontWeight={"bold"}
-              fontSize={{ lg: "lg" }}
-              passHref
-            >
-              Voir toutes les entreprises
-              <Box as="br" display={{ base: "block", lg: "none" }} /> engagées →
-            </Link>
-          </Flex>
-          <Flex
-            ref={parentPartnersRef}
-            flex={1}
-            flexDir="column"
-            justify={"center"}
-            p={{ base: 8, lg: 44 }}
-            px={{ lg: 8 }}
-            pt={0}
-            position="relative"
-            overflow="hidden"
-          >
-            {partnersList.map((partner, index) => (
-              <Flex
-                key={`partner-${index}`}
-                flexDir={index % 2 === 0 ? "row" : "row-reverse"}
-                justifyContent={{ base: "start", lg: "center" }}
-                mb={4}
-                gap={2}
-                h={{ base: 14, lg: 14 }}
-              >
-                <Flex
-                  alignItems="center"
-                  justifyContent="center"
-                  bg="white"
-                  rounded="full"
-                  p={4}
-                >
-                  <Image src={partner.img} alt={`Logo de ${partner.name}`} />
-                </Flex>
-                <Flex
-                  as={Text}
-                  align="center"
-                  bg="black"
-                  fontWeight="extrabold"
-                  rounded="full"
-                  fontSize="xl"
-                  p={4}
-                >
-                  {partner.promo_label}
-                </Flex>
-              </Flex>
-            ))}
-          </Flex>
-        </Flex>
+        <PartnerSectionWithPhysics />
         <Flex
           id="who-can-benefit-section"
           flexDir="column"

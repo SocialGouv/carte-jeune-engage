@@ -239,6 +239,7 @@ export const theme = extendTheme({
       "0px 24px 24px -10px #00000040, 0px -6px 24px -10px #00000040",
     "installation-banner-icon":
       "0px 16px 14px -9px #1698FC70, 0px 1px 40px 6px #A8CEEC",
+    icon: "0px 4px 13px 0px rgba(32, 32, 44, 0.20)",
   },
   radii: {
     "2lg": "0.625rem",

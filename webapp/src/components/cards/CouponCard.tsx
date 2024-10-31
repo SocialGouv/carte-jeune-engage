@@ -348,7 +348,7 @@ const CouponCard = ({
             px={mode === "default" ? 0 : 2}
           >
             {coupon ? (
-              <Text fontWeight={500} h="66px">
+              <Text fontWeight={500} h="72px" noOfLines={3}>
                 {`${coupon.offer.title} ${coupon.offer.subtitle ?? ""}`}
               </Text>
             ) : (

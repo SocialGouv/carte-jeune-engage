@@ -5,6 +5,7 @@ import {
   FormLabel,
   Input,
   InputProps,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 import { HTMLInputTypeAttribute } from "react";
@@ -19,6 +20,8 @@ export type FieldProps = {
   name: string;
   kind: HTMLInputTypeAttribute | "block";
   placeholder?: string;
+  description?: string;
+  autocomplete?: string;
   prefix?: string;
   values?: { value: string; label: string }[];
   rules?: {
@@ -39,7 +42,16 @@ interface Props {
 }
 
 const FormInput = ({
-  field: { name, kind, rules, label, placeholder, prefix },
+  field: {
+    name,
+    kind,
+    rules,
+    label,
+    placeholder,
+    description,
+    prefix,
+    autocomplete,
+  },
   register,
   fieldError,
   wrapperProps,
@@ -81,7 +93,7 @@ const FormInput = ({
         borderRadius={16}
         border="none"
         errorBorderColor="transparent"
-        autoComplete="off"
+        autoComplete={autocomplete || "off"}
         backgroundColor={!fieldError ? "bgGray" : "errorLight"}
         pr={5}
         pl={prefix ? 12 : 5}
@@ -93,6 +105,11 @@ const FormInput = ({
         {...register(name, { ...rules })}
         position={"relative"}
       />
+      {description && (
+        <Text color="disabled" fontSize={12} mt={1} fontWeight={500}>
+          {description}
+        </Text>
+      )}
       <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
     </FormControl>
   );

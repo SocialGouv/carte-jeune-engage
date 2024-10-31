@@ -4,6 +4,7 @@ import { Partner, QuickAccess } from "../payload-types";
 import { CustomSelectConditionBlocks } from "../components/CustomSelectBlocksOfUse";
 import { CustomSelectKind } from "../components/CustomSelectKind";
 import { RowLabelArgs } from "payload/dist/admin/components/forms/RowLabel/types";
+import { isAdmin } from "../access/isAdmin";
 
 export const Offers: CollectionConfig = {
   slug: "offers",
@@ -13,6 +14,12 @@ export const Offers: CollectionConfig = {
   },
   admin: {
     useAsTitle: "formatedTitle",
+  },
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

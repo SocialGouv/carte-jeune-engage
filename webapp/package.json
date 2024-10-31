@@ -1,6 +1,6 @@
 {
   "name": "webapp",
-  "version": "0.43.0",
+  "version": "0.48.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -24,6 +24,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@gsap/react": "^2.1.0",
+    "@hookform/resolvers": "^3.9.1",
     "@payloadcms/bundler-webpack": "^1.0.5",
     "@payloadcms/db-postgres": "^0.7.0",
     "@payloadcms/next-payload": "^0.1.11",
@@ -38,6 +39,7 @@
     "@trpc/react-query": "^10.44.1",
     "@trpc/server": "^10.44.1",
     "aws-crt": "^1.20.1",
+    "bowser": "^2.11.0",
     "cookies-next": "^4.1.0",
     "crisp-sdk-web": "^1.0.21",
     "dotenv": "^16.3.1",
@@ -47,6 +49,7 @@
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "matter-js": "^0.20.0",
     "next": "13.5.6",
     "papaparse": "^5.4.1",
     "payload": "^2.10.0",
@@ -70,6 +73,7 @@
   "devDependencies": {
     "@types/js-cookie": "^3",
     "@types/jsonwebtoken": "^9",
+    "@types/matter-js": "^0.19.7",
     "@types/node": "^20",
     "@types/papaparse": "^5",
     "@types/react": "^18",

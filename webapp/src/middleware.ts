@@ -31,6 +31,15 @@ export function middleware(request: NextRequest) {
         jwtRole = "supervisor";
         break;
     }
+
+    console.log(
+      "Middleware with jwt",
+      request.nextUrl.pathname,
+      jwtCookie,
+      decoded
+    );
+  } else {
+    console.log("Middleware without JWT", request.nextUrl.pathname, jwtCookie);
   }
 
   const legalRoute =

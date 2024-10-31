@@ -1,4 +1,5 @@
 import { type CollectionConfig } from "payload/types";
+import { isAdmin } from "../access/isAdmin";
 
 export const Notifications: CollectionConfig = {
   slug: "notifications",
@@ -7,8 +8,10 @@ export const Notifications: CollectionConfig = {
     plural: "Notifications",
   },
   access: {
+    read: isAdmin,
     create: () => false,
     update: () => false,
+    delete: isAdmin,
   },
   fields: [
     {

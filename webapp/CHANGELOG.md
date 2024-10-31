@@ -1,3 +1,174 @@
+## [0.48.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.4...v0.48.5) (2024-10-31)
+
+
+### Bug Fixes
+
+* add isAdminOrSelf access for user and supervisor read on self ([1ce1e11](https://github.com/SocialGouv/carte-jeune-engage/commit/1ce1e11fdcb0313cecbb24dd7b4267652f16f3ea))
+
+## [0.48.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.3...v0.48.4) (2024-10-31)
+
+
+### Bug Fixes
+
+* protect payload routes, only admin can acces them ([332e791](https://github.com/SocialGouv/carte-jeune-engage/commit/332e791fc53d88f3ca4aec1023363d180b692e96))
+
+## [0.48.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.2...v0.48.3) (2024-10-31)
+
+
+### Bug Fixes
+
+* remove newPassModal if user already uploaded a picture ([4af6b34](https://github.com/SocialGouv/carte-jeune-engage/commit/4af6b34f7a95a89d6966fd0c002fe0a0d2b3d590))
+
+## [0.48.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.1...v0.48.2) (2024-10-31)
+
+
+### Bug Fixes
+
+* redirect to offer_id on widget onboarding cej ([a1e6b05](https://github.com/SocialGouv/carte-jeune-engage/commit/a1e6b0543184751d3e0c7b86a914bb4b25e67f23))
+
+## [0.48.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.0...v0.48.1) (2024-10-30)
+
+
+### Bug Fixes
+
+* change address label, title and placeholder in signup form to match the new onboarding ([ed3036b](https://github.com/SocialGouv/carte-jeune-engage/commit/ed3036bcd40126ff5c456411ae98b10a593a692f))
+
+# [0.48.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.2...v0.48.0) (2024-10-30)
+
+
+### Bug Fixes
+
+* add @hookform/resolvers ([bfb4246](https://github.com/SocialGouv/carte-jeune-engage/commit/bfb42460b4db26da56f18b96aaaebd402aff492e))
+* add auto-connect on login-widget page if cej_id already exists ([2001d3b](https://github.com/SocialGouv/carte-jeune-engage/commit/2001d3b398beff78989e47fb7187a3606f6c6b9d))
+* build ([c0b66c0](https://github.com/SocialGouv/carte-jeune-engage/commit/c0b66c08d4541f21a5f21ab163aef0845b9bb0db))
+* cookie same-site and secure properties for iframe purpose ([a2b55f8](https://github.com/SocialGouv/carte-jeune-engage/commit/a2b55f87d0ff89cc096988c8a5b4257bec71c240))
+* name of userEmail in signup schema zod defintion ([6b8a1af](https://github.com/SocialGouv/carte-jeune-engage/commit/6b8a1af7fd5fc8ebe8d393d517f3bf29fd44ef2a))
+* onboarding cej from widget with full address for autocomplete, add description on text field ([6daa308](https://github.com/SocialGouv/carte-jeune-engage/commit/6daa308f4779dd92eb8bbf4f5b590ab39176fe67))
+* refactor page signup for better dev dx ([71e4660](https://github.com/SocialGouv/carte-jeune-engage/commit/71e4660492534b0443d93337e2c9a58844466026))
+* remove @hookform/resolvers from main package.json ([02b4b42](https://github.com/SocialGouv/carte-jeune-engage/commit/02b4b42c1c1427d50ed1b5dfce691f8558294504))
+* remove type submit to prevent multiple form submission ([ca1f5a4](https://github.com/SocialGouv/carte-jeune-engage/commit/ca1f5a4d48db51137d1de6e10958c85bb06a6cc4))
+* set-cookie in server side instead of client side and return this cookie from getServerSideProps instead of gettingit client side ([1e0edc7](https://github.com/SocialGouv/carte-jeune-engage/commit/1e0edc7aade135fbb6765aa73f07e425fe7fb0dd))
+* uncomment hero section on widget page ([d896f64](https://github.com/SocialGouv/carte-jeune-engage/commit/d896f64b67bc6dc66d9fec5760aa96a90f4e4a9d))
+
+
+### Features
+
+* add widget-login and widget onboarding schema, move FormField to a separate component ([dc62c23](https://github.com/SocialGouv/carte-jeune-engage/commit/dc62c23e2a17f4bf6f30894536ba6281708565f5))
+
+## [0.47.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.1...v0.47.2) (2024-10-30)
+
+
+### Bug Fixes
+
+* add tutorial modal to install webapp for ios ([05be70b](https://github.com/SocialGouv/carte-jeune-engage/commit/05be70b96ddbc9a4822c3a1269eef2b74ebab814))
+
+## [0.47.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.47.0...v0.47.1) (2024-10-29)
+
+
+### Bug Fixes
+
+* ssr for jumbotron animation ([566b9e6](https://github.com/SocialGouv/carte-jeune-engage/commit/566b9e60f7514192a8d99de7a8486c7aefd117f7))
+
+# [0.47.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.46.0...v0.47.0) (2024-10-28)
+
+
+### Bug Fixes
+
+* correct seed with new required field source on offer ([3ac52cf](https://github.com/SocialGouv/carte-jeune-engage/commit/3ac52cfa006031c45a78f84b25831e7e75c7c6f5))
+* migration fill db for new required source field ([a2b5305](https://github.com/SocialGouv/carte-jeune-engage/commit/a2b53053f922a0bb07496823e79d858176e24f44))
+* sousgenre script finder ([49bb826](https://github.com/SocialGouv/carte-jeune-engage/commit/49bb82604e583b726b4bf675487a39a1bf0aa246))
+
+
+### Features
+
+* begin importer ([cae1d45](https://github.com/SocialGouv/carte-jeune-engage/commit/cae1d45e03ec5cb132e59d8dd4f7d01777e61362))
+* handle obiz version of offer in payload ([3b4b1f0](https://github.com/SocialGouv/carte-jeune-engage/commit/3b4b1f09ea5b3b8b90ffe1db24ad6807d9a9c889))
+* improve explorer & first genre mapping ([f8e5ea6](https://github.com/SocialGouv/carte-jeune-engage/commit/f8e5ea6b445671b87d513bcf0d9e917668297d71))
+* SLD parser & finder ([a995b27](https://github.com/SocialGouv/carte-jeune-engage/commit/a995b27bae1a6154d0eec14c7cfdade5a01d7929))
+
+# [0.46.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.2...v0.46.0) (2024-10-28)
+
+
+### Bug Fixes
+
+* handle mouse over body cursor change, paddings, sizes, disable interaction on mobile, disabling text selection ([1895410](https://github.com/SocialGouv/carte-jeune-engage/commit/189541036e06db05382b1d8fbe1687072920400a))
+* scrolling through canvas ([c2ea8fa](https://github.com/SocialGouv/carte-jeune-engage/commit/c2ea8fadd370ed29ca2b361efb4d17c0502b7935))
+
+
+### Features
+
+* adapted to partners images from main branch, handled all cases of width/height bodies, possible to set img height value ([9bdddaf](https://github.com/SocialGouv/carte-jeune-engage/commit/9bdddaf5008757a7c5b5a74b1d45a4038a160d1e))
+* base for triggering physics animation ([17c042e](https://github.com/SocialGouv/carte-jeune-engage/commit/17c042e3b6523d50b22e742ab12c8daf293dd1d0))
+* base section with physics using matter js lib to handle physic with body interaction (wip) ([7c763be](https://github.com/SocialGouv/carte-jeune-engage/commit/7c763beb1206fae3259b5664a4141bf0a74f6a52))
+* base world with physics on each partner items (using matter js) ([0a8abb5](https://github.com/SocialGouv/carte-jeune-engage/commit/0a8abb56336562bd8e86d0a9aab1048d7188b533))
+* handled rounded body using circles bodies, fixed link click, fixed jumbotron images over second section ([076be34](https://github.com/SocialGouv/carte-jeune-engage/commit/076be34ef747fc30134fdc00845b7cf274966790))
+
+## [0.45.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.1...v0.45.2) (2024-10-23)
+
+
+### Bug Fixes
+
+* add tap animation on signup page button and fix issue on notification modal if no service worker is registered ([8ef347d](https://github.com/SocialGouv/carte-jeune-engage/commit/8ef347d72c9113ab95ddf7b5ef0398e8d60a8f66))
+
+## [0.45.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.45.0...v0.45.1) (2024-10-23)
+
+
+### Bug Fixes
+
+* add middleware logs, redirect in default layout on dashboard for webapp issue and change manifest theme to white ([3dcb2a5](https://github.com/SocialGouv/carte-jeune-engage/commit/3dcb2a5f766e9ab04745f6230dd11d3897da3b54))
+
+# [0.45.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.3...v0.45.0) (2024-10-22)
+
+
+### Bug Fixes
+
+* CHANGELOG reset ([f8c4193](https://github.com/SocialGouv/carte-jeune-engage/commit/f8c4193eb1c20867dfef87d3c3f81ad44c141d9e))
+* conditional animation duration first loop ([cad4de3](https://github.com/SocialGouv/carte-jeune-engage/commit/cad4de38d8a79ce09296444b6b94f08c0cbc510f))
+
+
+### Features
+
+* added continuous animation (in addition to previous animation) on jumbotron images ([7c57be0](https://github.com/SocialGouv/carte-jeune-engage/commit/7c57be043d2ceacfad42e8f7d03feafac66f7778))
+* jumbotron image orbit animation + control to play/pause (disabled on mobile) ([487e5d9](https://github.com/SocialGouv/carte-jeune-engage/commit/487e5d9f5e48cc1dfb107b215575d1b47b03576f))
+
+## [0.44.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.2...v0.44.3) (2024-10-22)
+
+### Bug Fixes
+
+- remove unassign coupon to user in offerCard and offer page ([97d8198](https://github.com/SocialGouv/carte-jeune-engage/commit/97d8198fc6ff8c0be6f3f7b3500f22ca3f3ac431))
+
+## [0.44.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.1...v0.44.2) (2024-10-22)
+
+### Bug Fixes
+
+- change partners logos on first section in landing page ([9ba7907](https://github.com/SocialGouv/carte-jeune-engage/commit/9ba790728928ffd9c1e514e1e87ea23fb92c4415))
+- image blur from image to data-image, category logo height and noOfLines for offer title in CouponCard component ([9bdaddd](https://github.com/SocialGouv/carte-jeune-engage/commit/9bdaddd64e3fc67a2c3cca0f84b3d80492aaa326))
+
+## [0.44.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.44.0...v0.44.1) (2024-10-22)
+
+### Bug Fixes
+
+- images on category and tag page fromt chakra to nextjs and text decoration none on category block in home page ([19d3eb4](https://github.com/SocialGouv/carte-jeune-engage/commit/19d3eb47cd00612fe60cc8967cccbbf7fc0ea3b6))
+- remove target \_blank for redirection to prevent ios to block the link ([af6870d](https://github.com/SocialGouv/carte-jeune-engage/commit/af6870da4b6493d62d787b31c331461ad20bf01d))
+
+# [0.44.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.2...v0.44.0) (2024-10-22)
+
+### Features
+
+- add ui image component to handle blur / loading of image, repalce component on all image in home page ([8135bbe](https://github.com/SocialGouv/carte-jeune-engage/commit/8135bbe28e5a52d086e64ffc860ee88da078cf43))
+
+## [0.43.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.1...v0.43.2) (2024-10-22)
+
+### Bug Fixes
+
+- add minimumCacheTTL to increase cache time for images ([b4a292f](https://github.com/SocialGouv/carte-jeune-engage/commit/b4a292f89daa4b6ff560ee5ee10ef3212da38a51))
+
+## [0.43.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.43.0...v0.43.1) (2024-10-22)
+
+### Bug Fixes
+
+- re-add notification modal on onboarding ([84461cf](https://github.com/SocialGouv/carte-jeune-engage/commit/84461cfd5fa441d7670a7c305a3d4ad59cb0fb3f))
+
 # [0.43.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.42.0...v0.43.0) (2024-10-21)
 
 ### Bug Fixes
