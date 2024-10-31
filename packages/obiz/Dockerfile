@@ -13,7 +13,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY config/ ./config/
 COPY finders/ ./finders/
-COPY inputs/ ./inputs/
 COPY parsers/ ./parsers/
 COPY importer.py .
 
