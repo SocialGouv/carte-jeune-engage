@@ -55,7 +55,7 @@ class DataImporter:
         reduction_percentages = sorted(set(
             article['reductionPercentage']
             for article in offer['articles']
-            if article.get('reductionPercentage') is not None
+            if article.get('reductionPercentage') is not None and article.get('available') == True
         ))
 
         validity_dates = [
