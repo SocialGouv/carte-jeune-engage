@@ -1,3 +1,10 @@
+## [0.48.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.4...v0.48.5) (2024-10-31)
+
+
+### Bug Fixes
+
+* add isAdminOrSelf access for user and supervisor read on self ([1ce1e11](https://github.com/SocialGouv/carte-jeune-engage/commit/1ce1e11fdcb0313cecbb24dd7b4267652f16f3ea))
+
 ## [0.48.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.3...v0.48.4) (2024-10-31)
 
 
