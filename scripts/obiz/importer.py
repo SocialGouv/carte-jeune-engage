@@ -1,6 +1,9 @@
 # importer.py
+import boto3
+from botocore.config import Config
 import json
 import requests
+from jsonpath_ng import parse
 from typing import List, Dict
 from config.genre_mapping import GenreMapper
 from config.sousgenres_whitelist import sousgenre_ids
@@ -9,15 +12,26 @@ import argparse
 
 
 class DataImporter:
-    def __init__(self, api_url: str, api_key: str):
+    def __init__(self, api_url: str, api_key: str, s3_bucket: str, s3_endpoint: str, s3_access_key: str,
+                 s3_secret_key: str):
         self.genre_mapper = GenreMapper()
         self.source_files = [
-            'inputs/reduccine.fr-preprod.json',
-            'inputs/reduckdo.fr-preprod.json',
-            'inputs/reducparc.fr-preprod.json'
+            'reduccine.fr-preprod.json',
+            'reduckdo.fr-preprod.json',
+            'reducparc.fr-preprod.json'
         ]
         self.api_url = api_url
         self.api_key = api_key
+
+        self.s3_client = boto3.client(
+            's3',
+            endpoint_url=s3_endpoint,
+            aws_access_key_id=s3_access_key,
+            aws_secret_access_key=s3_secret_key,
+            config=Config(signature_version='s3v4'),
+            verify=True
+        )
+        self.s3_bucket = s3_bucket
 
     @staticmethod
     def convert_french_number(number_str: str) -> float:
@@ -65,6 +79,20 @@ class DataImporter:
         offer['formatedTitle'] = offer['title']
 
         return offer
+
+    def get_file_from_s3(self, file_name: str) -> dict:
+        """
+        Récupère un fichier JSON depuis S3 et le retourne comme dictionnaire
+        """
+        try:
+            response = self.s3_client.get_object(
+                Bucket=self.s3_bucket,
+                Key=file_name
+            )
+            return json.loads(response['Body'].read().decode('utf-8'))
+        except Exception as e:
+            print(f"Error getting file {file_name} from S3: {str(e)}")
+            return None
 
     def send_to_api(self, offers: List[Dict]) -> None:
         """
@@ -142,49 +170,62 @@ class DataImporter:
         """
         offers_by_id = {}
 
-        for file_path in self.source_files:
-            source = file_path.split('/')[-1].split('.')[0]
+        sousgenre_expr = parse('$.catalogues[*].catalogue[*].genres[*].genre[*].sousgenres[*].sousgenre[*]')
+        genre_expr = parse('$.catalogues[*].catalogue[*].genres[*].genre[*]')
+
+        for file_name in self.source_files:
+            source = file_name.split('.')[0]
+            print(f"\nProcessing source: {source}")
 
             try:
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    data = json.load(file)
+                data = self.get_file_from_s3(file_name)
+                if not data:
+                    continue
 
-                for catalogue in data.get('catalogues', []):
-                    for cat in catalogue.get('catalogue', []):
-                        for genres in cat.get('genres', []):
-                            for genre in genres.get('genre', []):
-                                genre_name = genre.get('genres_nom', '')
-                                category = self.genre_mapper.get_category(genre_name)
+                sousgenres = [match.value for match in sousgenre_expr.find(data)]
+                genres = [match.value for match in genre_expr.find(data)]
 
-                                for sousgenres in genre.get('sousgenres', []):
-                                    for sousgenre in sousgenres.get('sousgenre', []):
-                                        sousgenre_id = sousgenre.get('sousgenres_id')
+                genre_map = {
+                    sg['sousgenres_id']: genre['genres_nom']
+                    for genre in genres
+                    for sgs in genre.get('sousgenres', [])
+                    for sg in sgs.get('sousgenre', [])
+                    if 'sousgenres_id' in sg
+                }
 
-                                        if sousgenre_id in sousgenre_ids:
-                                            if sousgenre_id in offers_by_id:
-                                                if category and category not in offers_by_id[sousgenre_id]['categories']:
-                                                    offers_by_id[sousgenre_id]['categories'].append(category)
-                                            else:
-                                                offer = self.process_sousgenre(genre, sousgenre, genre_name, source)
-                                                offer['articles'] = []
+                for sousgenre in sousgenres:
+                    sousgenre_id = sousgenre.get('sousgenres_id')
+                    if sousgenre_id in sousgenre_ids:
+                        genre_name = genre_map.get(sousgenre_id, '')
+                        category = self.genre_mapper.get_category(genre_name)
 
-                                                for articles in sousgenre.get('articles', []):
-                                                    for article in articles.get('article', []):
-                                                        offerArticle = self.process_article(
-                                                            article, sousgenre, genre_name, source)
-                                                        if offerArticle:
-                                                            offer['articles'].append(offerArticle)
+                        if sousgenre_id in offers_by_id:
+                            if category and category not in offers_by_id[sousgenre_id]['categories']:
+                                offers_by_id[sousgenre_id]['categories'].append(category)
+                        else:
+                            offer = self.process_sousgenre(
+                                {'genres_nom': genre_name},
+                                sousgenre,
+                                genre_name,
+                                source
+                            )
+                            offer['articles'] = []
 
-                                                offer = self.enrich_offer(offer, sousgenre)
+                            articles_expr = parse('$.articles[*].article[*]')
+                            articles = [match.value for match in articles_expr.find(sousgenre)]
 
-                                                offers_by_id[sousgenre_id] = offer
+                            for article in articles:
+                                offer_article = self.process_article(
+                                    article, sousgenre, genre_name, source
+                                )
+                                if offer_article:
+                                    offer['articles'].append(offer_article)
 
-            except FileNotFoundError:
-                print(f"File not found: {file_path}")
-            except json.JSONDecodeError:
-                print(f"Error decoding JSON from file: {file_path}")
+                            offer = self.enrich_offer(offer, sousgenre)
+                            offers_by_id[sousgenre_id] = offer
+
             except Exception as e:
-                print(f"Error processing file {file_path}: {str(e)}")
+                print(f"Error processing file {file_name}: {str(e)}")
 
         offers = list(offers_by_id.values())
 
@@ -195,20 +236,39 @@ class DataImporter:
             print("No offers to send to API")
 
 
-
-
 def main():
-    parser = argparse.ArgumentParser(description='Import Obiz data and send to API')
+    parser = argparse.ArgumentParser(description='Import Obiz data from S3 and send to API')
     parser.add_argument('--api-url',
-                       default="http://localhost:3000/api/obizIntegration",
-                       help='API URL (default: http://localhost:3000/api/obizIntegration)')
+                        default="http://localhost:3000/api/obizIntegration",
+                        help='API URL (default: http://localhost:3000/api/obizIntegration)')
     parser.add_argument('--api-key',
-                       required=True,
-                       help='API Key for authentication')
+                        required=True,
+                        help='API Key for authentication')
+
+    # Arguments S3 modifiés
+    parser.add_argument('--s3-bucket',
+                        required=True,
+                        help='S3 bucket name')
+    parser.add_argument('--s3-endpoint',
+                        required=True,
+                        help='S3 endpoint URL')
+    parser.add_argument('--s3-access-key',
+                        required=True,
+                        help='S3 Access Key')
+    parser.add_argument('--s3-secret-key',
+                        required=True,
+                        help='S3 Secret Key')
 
     args = parser.parse_args()
 
-    importer = DataImporter(api_url=args.api_url, api_key=args.api_key)
+    importer = DataImporter(
+        api_url=args.api_url,
+        api_key=args.api_key,
+        s3_bucket=args.s3_bucket,
+        s3_endpoint=args.s3_endpoint,
+        s3_access_key=args.s3_access_key,
+        s3_secret_key=args.s3_secret_key
+    )
     importer.import_data()
 
 

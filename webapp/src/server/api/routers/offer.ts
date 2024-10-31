@@ -324,12 +324,11 @@ export const offerRouter = createTRPCRouter({
 
       const apiKey = await ctx.payload.find({
         collection: "apikeys",
-        where: {
-          key: { equals: api_key },
-        },
+        limit: 100,
       });
+      const hasAccess = apiKey.docs.some((apiKey) => apiKey.key === api_key);
 
-      if (!apiKey.docs.length) {
+      if (!hasAccess) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "Your API KEY is not authorized",
