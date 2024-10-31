@@ -1,6 +1,5 @@
 # importer.py
-import boto3
-from botocore.config import Config
+import paramiko
 import json
 import requests
 from jsonpath_ng import parse
@@ -9,11 +8,12 @@ from config.genre_mapping import GenreMapper
 from config.sousgenres_whitelist import sousgenre_ids
 from config.utils import convert_date_format
 import argparse
+from pathlib import Path
 
 
 class DataImporter:
-    def __init__(self, api_url: str, api_key: str, s3_bucket: str, s3_endpoint: str, s3_access_key: str,
-                 s3_secret_key: str):
+    def __init__(self, api_url: str, api_key: str, sftp_host: str, sftp_port: int,
+                 sftp_username: str, sftp_password: str, sftp_path: str):
         self.genre_mapper = GenreMapper()
         self.source_files = [
             'reduccine.fr-preprod.json',
@@ -23,15 +23,16 @@ class DataImporter:
         self.api_url = api_url
         self.api_key = api_key
 
-        self.s3_client = boto3.client(
-            's3',
-            endpoint_url=s3_endpoint,
-            aws_access_key_id=s3_access_key,
-            aws_secret_access_key=s3_secret_key,
-            config=Config(signature_version='s3v4'),
-            verify=True
-        )
-        self.s3_bucket = s3_bucket
+        self.sftp_client = None
+        self.sftp_host = sftp_host
+        self.sftp_port = sftp_port
+        self.sftp_username = sftp_username
+        self.sftp_password = sftp_password
+        self.sftp_path = sftp_path
+
+    def __del__(self):
+        if self.sftp_client:
+            self.sftp_client.close()
 
     @staticmethod
     def convert_french_number(number_str: str) -> float:
@@ -80,18 +81,37 @@ class DataImporter:
 
         return offer
 
-    def get_file_from_s3(self, file_name: str) -> dict:
+    def connect_sftp(self):
+        """Établit la connexion SFTP"""
+        try:
+            transport = paramiko.Transport((self.sftp_host, self.sftp_port))
+            transport.connect(username=self.sftp_username, password=self.sftp_password)
+            self.sftp_client = paramiko.SFTPClient.from_transport(transport)
+        except Exception as e:
+            print(f"Error connecting to SFTP: {str(e)}")
+            raise
+
+    def get_file_from_sftp(self, file_name: str) -> dict:
         """
-        Récupère un fichier JSON depuis S3 et le retourne comme dictionnaire
+        Récupère un fichier JSON depuis SFTP et le retourne comme dictionnaire
         """
         try:
-            response = self.s3_client.get_object(
-                Bucket=self.s3_bucket,
-                Key=file_name
-            )
-            return json.loads(response['Body'].read().decode('utf-8'))
+            if self.sftp_client is None:
+                self.connect_sftp()
+
+            remote_path = Path(self.sftp_path) / file_name
+
+            temp_file = f"/tmp/{file_name}"
+            self.sftp_client.get(str(remote_path), temp_file)
+
+            with open(temp_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+            Path(temp_file).unlink()
+
+            return data
         except Exception as e:
-            print(f"Error getting file {file_name} from S3: {str(e)}")
+            print(f"Error getting file {file_name} from SFTP: {str(e)}")
             return None
 
     def send_to_api(self, offers: List[Dict]) -> None:
@@ -178,7 +198,7 @@ class DataImporter:
             print(f"\nProcessing source: {source}")
 
             try:
-                data = self.get_file_from_s3(file_name)
+                data = self.get_file_from_sftp(file_name)
                 if not data:
                     continue
 
@@ -237,37 +257,42 @@ class DataImporter:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Import Obiz data from S3 and send to API')
+    parser = argparse.ArgumentParser(description='Import Obiz data from SFTP and send to API')
     parser.add_argument('--api-url',
-                        default="http://localhost:3000/api/obizIntegration",
-                        help='API URL (default: http://localhost:3000/api/obizIntegration)')
+                       default="http://localhost:3000/api/obizIntegration",
+                       help='API URL (default: http://localhost:3000/api/obizIntegration)')
     parser.add_argument('--api-key',
-                        required=True,
-                        help='API Key for authentication')
+                       required=True,
+                       help='API Key for authentication')
 
-    # Arguments S3 modifiés
-    parser.add_argument('--s3-bucket',
-                        required=True,
-                        help='S3 bucket name')
-    parser.add_argument('--s3-endpoint',
-                        required=True,
-                        help='S3 endpoint URL')
-    parser.add_argument('--s3-access-key',
-                        required=True,
-                        help='S3 Access Key')
-    parser.add_argument('--s3-secret-key',
-                        required=True,
-                        help='S3 Secret Key')
+    # Arguments SFTP
+    parser.add_argument('--sftp-host',
+                       required=True,
+                       help='SFTP host')
+    parser.add_argument('--sftp-port',
+                       type=int,
+                       default=22,
+                       help='SFTP port (default: 22)')
+    parser.add_argument('--sftp-username',
+                       required=True,
+                       help='SFTP username')
+    parser.add_argument('--sftp-password',
+                       required=True,
+                       help='SFTP password')
+    parser.add_argument('--sftp-path',
+                       required=True,
+                       help='SFTP remote path')
 
     args = parser.parse_args()
 
     importer = DataImporter(
         api_url=args.api_url,
         api_key=args.api_key,
-        s3_bucket=args.s3_bucket,
-        s3_endpoint=args.s3_endpoint,
-        s3_access_key=args.s3_access_key,
-        s3_secret_key=args.s3_secret_key
+        sftp_host=args.sftp_host,
+        sftp_port=args.sftp_port,
+        sftp_username=args.sftp_username,
+        sftp_password=args.sftp_password,
+        sftp_path=args.sftp_path
     )
     importer.import_data()
 

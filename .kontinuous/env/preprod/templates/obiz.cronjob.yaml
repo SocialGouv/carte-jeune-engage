@@ -19,12 +19,12 @@ spec:
               image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/app:{{ .Values.global.imageTag }}"
               command: ["python3", "importer.py"]
 							args: [
-                "--api-url", "$(APP_API_URL)",
-                "--api-key", "$(APP_API_KEY)",
-                "--s3-bucket", "$(S3_BUCKET)",
-                "--s3-endpoint", "$(S3_ENDPOINT)",
-                "--s3-access-key", "$(S3_ACCESS_KEY)",
-                "--s3-secret-key", "$(S3_SECRET_KEY)"
+                "--api-url", "$(PAYLOAD_API_URL)",
+                "--api-key", "$(PAYLOAD_API_KEY)",
+                "--sftp-host", "$(SFTP_HOST)",
+                "--sftp-username", "$(SFTP_USERNAME)",
+                "--sftp-password", "$(SFTP_PASSWORD)",
+                "--sftp-path", "$(SFTP_PATH)"
               ]
 							# env:
               # TOUS LES ARGS
