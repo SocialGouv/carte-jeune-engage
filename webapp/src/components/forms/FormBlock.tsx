@@ -1,21 +1,22 @@
 import { Box, type ChakraProps, Checkbox, Flex, Text } from "@chakra-ui/react";
 import Image, { ImageProps } from "next/image";
+import { FieldMetadata } from "~/utils/form/formHelpers";
 
 type Props = {
   children: React.ReactNode;
-  variant?: "default" | "inline";
+  kind: "checkbox" | "radio";
+  variant?: FieldMetadata["variant"];
   withCheckbox?: boolean;
   value: string;
-  currentValue: string | string[];
+  currentValue: string | (string | undefined)[];
   iconSrc?: string;
   onChange: (value: string | undefined) => void;
   wrapperProps?: ChakraProps;
-  iconProps?: Partial<ImageProps>;
-  wrapperIconProps?: ChakraProps;
 };
 
 const FormBlock = ({
   children,
+  kind,
   variant = "default",
   withCheckbox,
   value,
@@ -23,8 +24,6 @@ const FormBlock = ({
   onChange,
   iconSrc,
   wrapperProps,
-  iconProps,
-  wrapperIconProps,
 }: Props) => {
   const isSelected =
     typeof currentValue === "string"
@@ -59,8 +58,17 @@ const FormBlock = ({
         {...wrapperProps}
       >
         {iconSrc && (
-          <Box p={1} {...wrapperIconProps}>
-            <Image src={iconSrc} alt="" width={65} height={65} {...iconProps} />
+          <Box
+            p={1}
+            bgColor={kind === "radio" && isSelected ? "white" : "transparent"}
+            borderRadius="2lg"
+          >
+            <Image
+              src={iconSrc}
+              alt=""
+              width={kind === "radio" ? 80 : 65}
+              height={kind === "radio" ? 40 : 65}
+            />
           </Box>
         )}
         <Text

@@ -4,6 +4,7 @@ import { getBaseUrl } from "../../utils/tools";
 import UserCustomView from "../components/UserCustomView";
 import type { Props } from "payload/components/views/List";
 import dynamic from "next/dynamic";
+import { isAdmin, isAdminOrSelf } from "../access/isAdmin";
 
 const ExportUsers = dynamic<Props>(() => import("../components/ExportUsers"), {
   ssr: false,
@@ -46,6 +47,12 @@ export const Users: CollectionConfig = {
         Edit: UserCustomView,
       },
     },
+  },
+  access: {
+    read: isAdminOrSelf,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

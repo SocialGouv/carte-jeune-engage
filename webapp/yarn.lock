@@ -3330,6 +3330,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^3.9.1":
+  version: 3.9.1
+  resolution: "@hookform/resolvers@npm:3.9.1"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 10c0/8a4056db3860b12ee30921ba352996104d6ae75ac45996d4c8b6df429e07ee73f5b87c82a22a15403789213f6f52f5fead1c2637b26ef624068b68d213362cd1
+  languageName: node
+  linkType: hard
+
 "@httptoolkit/websocket-stream@npm:^6.0.1":
   version: 6.0.1
   resolution: "@httptoolkit/websocket-stream@npm:6.0.1"
@@ -5448,6 +5457,13 @@ __metadata:
   version: 4.17.7
   resolution: "@types/lodash@npm:4.17.7"
   checksum: 10c0/40c965b5ffdcf7ff5c9105307ee08b782da228c01b5c0529122c554c64f6b7168fc8f11dc79aa7bae4e67e17efafaba685dc3a47e294dbf52a65ed2b67100561
+  languageName: node
+  linkType: hard
+
+"@types/matter-js@npm:^0.19.7":
+  version: 0.19.7
+  resolution: "@types/matter-js@npm:0.19.7"
+  checksum: 10c0/c42cd117c9e0b85c55382f935480e7b11ec0c66f1bd79b11cf582adb97d222724efecae31e7e37650a665ee1f61924066cfeca6f5c28f2a1a5e5b6ec2690f48b
   languageName: node
   linkType: hard
 
@@ -10344,6 +10360,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"matter-js@npm:^0.20.0":
+  version: 0.20.0
+  resolution: "matter-js@npm:0.20.0"
+  checksum: 10c0/95d58f407205ad24c96422109c959999f474ef29af79b4c2ad7550bca97cdcdac99df31ebe35ab858d9863c8f6cd5205339fbbff70909b56a3e2a6a57200c51b
+  languageName: node
+  linkType: hard
+
 "md5@npm:2.3.0":
   version: 2.3.0
   resolution: "md5@npm:2.3.0"
@@ -14815,6 +14838,7 @@ __metadata:
     "@emotion/react": "npm:^11.11.1"
     "@emotion/styled": "npm:^11.11.0"
     "@gsap/react": "npm:^2.1.0"
+    "@hookform/resolvers": "npm:^3.9.1"
     "@payloadcms/bundler-webpack": "npm:^1.0.5"
     "@payloadcms/db-postgres": "npm:^0.7.0"
     "@payloadcms/next-payload": "npm:^0.1.11"
@@ -14830,12 +14854,14 @@ __metadata:
     "@trpc/server": "npm:^10.44.1"
     "@types/js-cookie": "npm:^3"
     "@types/jsonwebtoken": "npm:^9"
+    "@types/matter-js": "npm:^0.19.7"
     "@types/node": "npm:^20"
     "@types/papaparse": "npm:^5"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     "@types/web-push": "npm:^3"
     aws-crt: "npm:^1.20.1"
+    bowser: "npm:^2.11.0"
     cookies-next: "npm:^4.1.0"
     crisp-sdk-web: "npm:^1.0.21"
     dotenv: "npm:^16.3.1"
@@ -14845,6 +14871,7 @@ __metadata:
     js-cookie: "npm:^3.0.5"
     jsonwebtoken: "npm:^9.0.2"
     jwt-decode: "npm:^4.0.0"
+    matter-js: "npm:^0.20.0"
     next: "npm:13.5.6"
     papaparse: "npm:^5.4.1"
     payload: "npm:^2.10.0"

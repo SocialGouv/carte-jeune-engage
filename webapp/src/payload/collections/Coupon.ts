@@ -3,6 +3,7 @@ import type { Props } from "payload/components/views/List";
 import { type CollectionConfig } from "payload/types";
 import { getBaseUrl } from "../../utils/tools";
 import { sendPushNotification } from "../../utils/sendPushNotification";
+import { isAdmin } from "../access/isAdmin";
 
 const ImportCoupons = dynamic<Props>(
   () => import("../components/ImportCoupons"),
@@ -16,6 +17,12 @@ export const Coupons: CollectionConfig = {
   labels: {
     singular: "Bon de réduction",
     plural: "Bons de réduction",
+  },
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

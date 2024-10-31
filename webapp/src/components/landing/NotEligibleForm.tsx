@@ -108,6 +108,7 @@ const NotEligibleForm = (props: NotEligibleFormProps) => {
                 <>
                   <FormBlock
                     value="yes"
+                    kind="radio"
                     currentValue={value}
                     onChange={onChange}
                   >
@@ -115,6 +116,7 @@ const NotEligibleForm = (props: NotEligibleFormProps) => {
                   </FormBlock>
                   <FormBlock
                     value="no"
+                    kind="radio"
                     currentValue={value}
                     onChange={onChange}
                   >

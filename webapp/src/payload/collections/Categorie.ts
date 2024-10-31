@@ -1,4 +1,5 @@
 import { type CollectionConfig } from "payload/types";
+import { isAdmin } from "../access/isAdmin";
 
 export const Categories: CollectionConfig = {
   slug: "categories",
@@ -8,6 +9,12 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: "label",
+  },
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

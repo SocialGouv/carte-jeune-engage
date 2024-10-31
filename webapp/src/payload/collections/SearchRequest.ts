@@ -1,4 +1,5 @@
 import { type CollectionConfig } from "payload/types";
+import { isAdmin } from "../access/isAdmin";
 
 export const SearchRequests: CollectionConfig = {
   slug: "search_requests",
@@ -8,6 +9,12 @@ export const SearchRequests: CollectionConfig = {
   },
   admin: {
     useAsTitle: "name",
+  },
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

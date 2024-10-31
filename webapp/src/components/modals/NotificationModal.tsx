@@ -1,10 +1,85 @@
-import { Button, Center, Flex, Heading, Image } from "@chakra-ui/react";
-import BaseModal from "./BaseModal";
-import StackItems from "../offer/StackItems";
+import {
+  Center,
+  Flex,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalContent,
+  Text,
+} from "@chakra-ui/react";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import { base64ToUint8Array } from "~/utils/tools";
 import LoadingLoader from "../LoadingLoader";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+const NotificationModalContent = ({
+  isServiceWorkerAvailable,
+  onClose,
+  handleRequestNotification,
+}: {
+  isServiceWorkerAvailable: boolean;
+  onClose: () => void;
+  handleRequestNotification: () => void;
+}) => {
+  if (!isServiceWorkerAvailable) {
+    return (
+      <Center h="full">
+        <LoadingLoader />
+      </Center>
+    );
+  }
+
+  return (
+    <>
+      <Heading size="lg" fontWeight="extrabold" textAlign="center">
+        Ne ratez pas les
+        <br />
+        nouvelles réductions
+      </Heading>
+      <Flex flexDir="column" bgColor="white" borderRadius="2.25xl">
+        <Flex
+          flexDir="column"
+          textAlign="center"
+          py={5}
+          px={3.5}
+          color="black"
+          gap={1.5}
+        >
+          <Text fontWeight={700}>
+            Autorisez vous Carte “jeune engagé” à vous envoyer des notifications
+            ?
+          </Text>
+          <Text fontSize={14}>
+            Les notification peuvent inclure des alertes, des sons et des
+            pastilles d’icône. Vous pouvez les configurer dans vos Réglages.
+          </Text>
+        </Flex>
+        <Flex borderTopWidth={1} borderTopColor="cje-gray.400" fontWeight={800}>
+          <Center
+            flex={1}
+            py={4}
+            bgColor="blackBtn"
+            borderBottomLeftRadius="2.25xl"
+            onClick={onClose}
+          >
+            <Text color="disabled">Refuser</Text>
+          </Center>
+          <Center
+            flex={1}
+            py={4}
+            bgColor="primary"
+            borderBottomRightRadius="2.25xl"
+            onClick={handleRequestNotification}
+          >
+            <Text>Autoriser</Text>
+          </Center>
+        </Flex>
+      </Flex>
+    </>
+  );
+};
 
 const NotificationModal = ({
   onClose,
@@ -13,7 +88,9 @@ const NotificationModal = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const { refetchUser, serviceWorkerRegistration } = useAuth();
+  const router = useRouter();
+  const { refetchUser, serviceWorkerRegistration, setShowSplashScreenModal } =
+    useAuth();
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
@@ -38,83 +115,41 @@ const NotificationModal = ({
     });
 
     refetchUser();
+    setShowSplashScreenModal(true);
     onClose();
   };
 
-  if (!serviceWorkerRegistration) {
-    return (
-      <BaseModal
-        onClose={onClose}
-        isOpen={isOpen}
-        hideCloseBtn={true}
-        pb={6}
-        heightModalContent="full"
-      >
-        <Center h="full">
-          <LoadingLoader />
-        </Center>
-      </BaseModal>
-    );
-  }
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!serviceWorkerRegistration) {
+        onClose();
+        setShowSplashScreenModal(true);
+      }
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, [serviceWorkerRegistration]);
 
   return (
-    <BaseModal
-      onClose={onClose}
-      isOpen={isOpen}
-      hideCloseBtn={true}
-      pb={6}
-      heightModalContent="full"
-    >
-      <Flex flexDir="column" h="full">
-        <Flex flexDir="column" my="auto">
-          <Image
-            src="/images/notification-modal-header.png"
-            alt="Notification modal header"
-            w="full"
-            h="auto"
-            maxH={140}
-            objectFit="contain"
+    <Modal isOpen={isOpen} onClose={onClose} size="full">
+      <ModalContent bgColor="black">
+        <ModalBody
+          display="flex"
+          flexDir="column"
+          color="white"
+          justifyContent="center"
+          mb={40}
+          gap={12}
+          px={16}
+        >
+          <NotificationModalContent
+            isServiceWorkerAvailable={!!serviceWorkerRegistration}
+            onClose={onClose}
+            handleRequestNotification={handleRequestNotification}
           />
-          <Heading size="lg" fontWeight="extrabold" textAlign="center" mt={10}>
-            Ne manquez aucune des
-            <br />
-            nouvelles offres en activant
-            <br />
-            les notifications
-          </Heading>
-          <StackItems
-            props={{ mt: 8 }}
-            items={[
-              {
-                icon: "HiCheckCircle",
-                text: "Pas de notif inutile",
-              },
-              {
-                icon: "HiTicket",
-                text: "On vous rappelle vos offres à utiliser",
-              },
-              {
-                icon: "HiTicket",
-                text: "Dès qu’une nouvelle offre arrive, vous êtes au courant",
-              },
-            ]}
-          />
-        </Flex>
-        <Flex flexDir="column" mt="auto">
-          <Button colorScheme="blackBtn" onClick={handleRequestNotification}>
-            Activer les notifications
-          </Button>
-          <Button
-            colorScheme="transparent"
-            mt={2}
-            color="blackBtn.500"
-            onClick={onClose}
-          >
-            Plus tard
-          </Button>
-        </Flex>
-      </Flex>
-    </BaseModal>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 

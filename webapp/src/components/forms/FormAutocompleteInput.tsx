@@ -11,12 +11,7 @@ import {
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
-import {
-  Control,
-  Controller,
-  FieldError,
-  UseFormHandleSubmit,
-} from "react-hook-form";
+import { Control, Controller, FieldError } from "react-hook-form";
 import {
   AutoComplete,
   AutoCompleteInput,
@@ -27,14 +22,13 @@ import { FieldProps } from "./FormInput";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 interface Props {
-  field: FieldProps;
+  field: FieldProps & { autoFocus?: boolean; inputView?: boolean };
   options: string[] | undefined;
   setError: any;
   clearErrors: any;
   isLoading: boolean;
   control: Control<any>;
   fieldError: FieldError | undefined;
-  handleSubmit: () => Promise<void>;
   setIsInputFocused: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -46,7 +40,6 @@ const FormAutocompleteInput = ({
   setError,
   clearErrors,
   isLoading,
-  handleSubmit,
   setIsInputFocused,
 }: Props) => {
   const { label, name } = field;
@@ -62,7 +55,7 @@ const FormAutocompleteInput = ({
     undefined
   );
 
-  if (currentValue) {
+  if (currentValue && !field.inputView) {
     return (
       <Flex flexDir="column" textAlign="center" gap={20}>
         <Text fontWeight={800} fontSize={24} mt={10}>
@@ -86,6 +79,7 @@ const FormAutocompleteInput = ({
       <FormLabel fontWeight="medium" color="disabled" fontSize={12} mb={1}>
         {label}
       </FormLabel>
+      <FormErrorMessage mb={3}>{fieldError?.message}</FormErrorMessage>
       <Controller
         control={control}
         name={name}
@@ -98,7 +92,7 @@ const FormAutocompleteInput = ({
           ) {
             setError(name, {
               type: "autocompleteValue",
-              message: "",
+              message: "Le champ doit être sélectionné dans la liste",
             });
           }
 
@@ -111,6 +105,8 @@ const FormAutocompleteInput = ({
               sx={{
                 ".chakra-popover__popper": {
                   minWidth: "100% !important",
+                  position: "relative !important",
+                  transform: "none !important",
                 },
               }}
             >
@@ -133,18 +129,6 @@ const FormAutocompleteInput = ({
                         py={8}
                       >
                         <Text>Pas de résultats</Text>
-                        {/* <Text
-                          fontWeight="bold"
-                          mt={2}
-                          borderBottom="1px solid"
-                          onClick={() => {
-                            clearErrors(name);
-                            setOptionsHistory([...optionsHistory, value]);
-                            handleSubmit();
-                          }}
-                        >
-                          Valider quand même cette adresse
-                        </Text> */}
                       </Center>
                     );
                   }
@@ -171,7 +155,7 @@ const FormAutocompleteInput = ({
                   }
                   px={5}
                   py={8}
-                  autoFocus
+                  autoFocus={field.autoFocus}
                   onChange={(e: any) => {
                     onChange(e.target.value);
                     if (!options?.includes(e.target.value)) {
@@ -191,7 +175,7 @@ const FormAutocompleteInput = ({
                   }}
                 />
                 <AutoCompleteList
-                  position="fixed"
+                  position="relative"
                   style={{
                     backgroundColor: "transparent",
                     border: "0",
@@ -203,7 +187,7 @@ const FormAutocompleteInput = ({
                       <Spinner />
                     </Center>
                   }
-                  gap={2}
+                  gap={0}
                   mt={-4}
                 >
                   {options?.map((option, index) => {
@@ -217,7 +201,7 @@ const FormAutocompleteInput = ({
                           mx={0}
                           _focus={{ bgColor: "transparent" }}
                         >
-                          <Text fontWeight={800} fontSize={18}>
+                          <Text fontWeight={800}>
                             {highlightedText}
                             <Text as="span" fontWeight={500}>
                               {restOfText}
@@ -236,7 +220,6 @@ const FormAutocompleteInput = ({
           );
         }}
       />
-      <FormErrorMessage>{fieldError?.message}</FormErrorMessage>
     </FormControl>
   );
 };

@@ -3,9 +3,9 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Icon,
   Text,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useAuth } from "~/providers/Auth";
@@ -14,6 +14,8 @@ import { FiX } from "react-icons/fi";
 import { push } from "@socialgouv/matomo-next";
 import { HiMiniArrowDownTray } from "react-icons/hi2";
 import Image from "next/image";
+import WebappBrowserTutorialsModal from "./modals/WebappBrowserTutorialsModal";
+import { isIOS } from "~/utils/tools";
 
 type Props = {
   ignoreUserOutcome: boolean;
@@ -27,6 +29,12 @@ const InstallationBanner: React.FC<Props> = ({
   // overlay show state
   const toast = useToast();
   const { user } = useAuth();
+
+  const {
+    isOpen: isOpenTutoModal,
+    onOpen: onOpenTutoModal,
+    onClose: onCloseTutoModal,
+  } = useDisclosure();
   const [userOutcome, setUserOutcome] = useLocalStorage<
     "accepted" | "dismissed" | null
   >("cje-pwa-user-outcome", null);
@@ -35,6 +43,11 @@ const InstallationBanner: React.FC<Props> = ({
 
   async function handleInstallClick() {
     if (!!matomoEvent.length) push(["trackEvent", ...matomoEvent]);
+
+    if (isIOS()) {
+      onOpenTutoModal();
+      return;
+    }
 
     if (deferredEvent) {
       await deferredEvent.prompt();
@@ -131,6 +144,10 @@ const InstallationBanner: React.FC<Props> = ({
           left: "50%",
           transform: "translate(-50%, -50%)",
         }}
+      />
+      <WebappBrowserTutorialsModal
+        isOpen={isOpenTutoModal}
+        onClose={onCloseTutoModal}
       />
     </Center>
   );

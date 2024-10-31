@@ -1,4 +1,5 @@
 import { type CollectionConfig } from "payload/types";
+import { isAdmin } from "../access/isAdmin";
 
 export const EmailAuthTokens: CollectionConfig = {
   slug: "email_auth_tokens",
@@ -7,7 +8,10 @@ export const EmailAuthTokens: CollectionConfig = {
     plural: "Tokens d'authentification par email",
   },
   access: {
+    read: isAdmin,
     create: () => false,
+    update: () => false,
+    delete: isAdmin,
   },
   fields: [
     {

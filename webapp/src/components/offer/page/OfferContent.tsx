@@ -43,21 +43,6 @@ type OfferContentProps = {
 const OfferContent = (props: OfferContentProps) => {
   const { offer, coupon, handleValidateOffer, isLoadingValidateOffer } = props;
   const hasCoupon = !!coupon;
-  const utils = api.useUtils();
-
-  const { mutateAsync } = api.coupon.unassignFromUser.useMutation({
-    onSuccess: () => utils.coupon.getOne.invalidate(),
-  });
-
-  const handleRemoveCouponFromUser = async () => {
-    if (coupon) await mutateAsync({ coupon_id: coupon.id });
-  };
-
-  const {
-    isOpen: isOpenBookmarkKeepOfferModal,
-    onOpen: onOpenBookmarkKeepOfferModal,
-    onClose: onCloseBookmarkKeepOfferModal,
-  } = useDisclosure();
 
   const conditionsRef = useRef<HTMLUListElement>(null);
   const [isConditionsOpen, setIsConditionsOpen] = useState(false);
@@ -294,11 +279,10 @@ const OfferContent = (props: OfferContentProps) => {
             borderColor={hasCoupon ? "transparent" : "cje-gray.100"}
             color={hasCoupon ? "white" : "blackLight"}
             colorScheme={hasCoupon ? "primaryShades" : "inherit"}
+            isDisabled={hasCoupon}
             isLoading={!hasCoupon && isLoadingValidateOffer}
             onClick={() => {
-              if (hasCoupon) {
-                onOpenBookmarkKeepOfferModal();
-              } else {
+              if (!hasCoupon) {
                 handleValidateOffer(offer.id, false);
               }
             }}
@@ -331,17 +315,6 @@ const OfferContent = (props: OfferContentProps) => {
           </Button>
         </Flex>
       )}
-      <ConfirmModal
-        title={"Vous n’en voulez plus ?"}
-        labels={{
-          primary: "Je n'en veux plus",
-          secondary: "Je la garde",
-        }}
-        isOpen={isOpenBookmarkKeepOfferModal}
-        onClose={onCloseBookmarkKeepOfferModal}
-        onConfirm={handleRemoveCouponFromUser}
-        danger
-      />
     </Flex>
   );
 };

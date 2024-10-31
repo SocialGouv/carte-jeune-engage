@@ -8,11 +8,13 @@ import { HiChevronLeft } from "react-icons/hi2";
 type OnBoardingStepsWrapperProps = {
   children: ReactNode;
   stepContext: { isFirstStep?: boolean; current: number; total: number };
+  onBack?: () => void;
 };
 
 const OnBoardingStepsWrapper = ({
   children,
   stepContext: { isFirstStep, current, total },
+  onBack,
 }: OnBoardingStepsWrapperProps) => {
   const router = useRouter();
 
@@ -31,7 +33,7 @@ const OnBoardingStepsWrapper = ({
           h={5}
           minW="fit-content"
           isDisabled={!(current > 1 && !isFirstStep)}
-          onClick={() => router.back()}
+          onClick={() => (onBack ? onBack() : router.back())}
           cursor="pointer"
           position="absolute"
           left={4}
@@ -46,16 +48,18 @@ const OnBoardingStepsWrapper = ({
             left: 50,
           }}
         />
-        <Box bgColor="cje-gray.300" borderRadius="xl" w="30%" h="6px">
-          <Box
-            as={motion.div}
-            layout
-            h="6px"
-            w={`${(current / total) * 100}%`}
-            borderRadius="xl"
-            bgColor="primary"
-          />
-        </Box>
+        {total > 1 && (
+          <Box bgColor="cje-gray.300" borderRadius="xl" w="30%" h="6px">
+            <Box
+              as={motion.div}
+              layout
+              h="6px"
+              w={`${(current / total) * 100}%`}
+              borderRadius="xl"
+              bgColor="primary"
+            />
+          </Box>
+        )}
       </Flex>
       {children}
     </Flex>
