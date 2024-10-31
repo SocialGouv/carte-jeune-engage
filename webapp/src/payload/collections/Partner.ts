@@ -1,5 +1,6 @@
 import { type CollectionConfig } from "payload/types";
 import { QuickAccess } from "../payload-types";
+import { isAdmin } from "../access/isAdmin";
 
 export const Partners: CollectionConfig = {
   slug: "partners",
@@ -9,6 +10,12 @@ export const Partners: CollectionConfig = {
   },
   admin: {
     useAsTitle: "name",
+  },
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

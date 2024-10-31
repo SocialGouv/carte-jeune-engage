@@ -3,6 +3,7 @@ import { CustomSelectTermsOfUse } from "../components/CustomSelectTermsOfUse";
 import { Partner, QuickAccess } from "../payload-types";
 import { CustomSelectConditionBlocks } from "../components/CustomSelectBlocksOfUse";
 import { CustomSelectKind } from "../components/CustomSelectKind";
+import { isAdmin } from "../access/isAdmin";
 
 export const Offers: CollectionConfig = {
   slug: "offers",
@@ -12,6 +13,12 @@ export const Offers: CollectionConfig = {
   },
   admin: {
     useAsTitle: "formatedTitle",
+  },
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

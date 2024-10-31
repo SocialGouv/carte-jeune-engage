@@ -179,7 +179,6 @@ const SignupPage: React.FC = () => {
         ?.signupStepNumber ?? 0;
 
     if (!signupStep || typeof signupStep !== "string" || steps.length === 0) {
-      console.log("signupStep is not a string");
       if (router.isReady) {
         router.replace({
           query: { signupStep: localStorageSignupStep },

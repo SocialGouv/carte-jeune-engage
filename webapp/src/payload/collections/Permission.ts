@@ -1,6 +1,7 @@
 import { type CollectionConfig } from "payload/types";
 import type { Props } from "payload/components/views/List";
 import dynamic from "next/dynamic";
+import { isAdmin } from "../access/isAdmin";
 
 const ExportPermissions = dynamic<Props>(
   () => import("../components/ExportPermissions"),
@@ -20,6 +21,12 @@ export const Permissions: CollectionConfig = {
     components: {
       BeforeListTable: [ExportPermissions],
     },
+  },
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {
