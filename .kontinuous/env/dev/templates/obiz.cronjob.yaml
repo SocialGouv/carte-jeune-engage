@@ -32,7 +32,7 @@ spec:
                   value: "https://{{ $.Values.global.host }}/api"
               envFrom:
                 - secretRef:
-                  name: obiz-sealed-secret
+                    name: obiz-sealed-secret
               resources:
                 requests:
                   cpu: 200m
