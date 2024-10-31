@@ -190,7 +190,6 @@ class DataImporter:
         """
         offers_by_id = {}
 
-        sousgenre_expr = parse('$.catalogues[*].catalogue[*].genres[*].genre[*].sousgenres[*].sousgenre[*]')
         genre_expr = parse('$.catalogues[*].catalogue[*].genres[*].genre[*]')
 
         for file_name in self.source_files:
@@ -202,47 +201,41 @@ class DataImporter:
                 if not data:
                     continue
 
-                sousgenres = [match.value for match in sousgenre_expr.find(data)]
                 genres = [match.value for match in genre_expr.find(data)]
 
-                genre_map = {
-                    sg['sousgenres_id']: genre['genres_nom']
-                    for genre in genres
-                    for sgs in genre.get('sousgenres', [])
-                    for sg in sgs.get('sousgenre', [])
-                    if 'sousgenres_id' in sg
-                }
+                for genre in genres:
+                    sousgenres_expr = parse('$.sousgenres[*].sousgenre[*]')
+                    sousgenres = [match.value for match in sousgenres_expr.find(genre)]
+                    for sousgenre in sousgenres:
+                        sousgenre_id = sousgenre.get('sousgenres_id')
+                        if sousgenre_id in sousgenre_ids:
+                            genre_name = genre.get('genres_nom')
+                            category = self.genre_mapper.get_category(genre_name)
 
-                for sousgenre in sousgenres:
-                    sousgenre_id = sousgenre.get('sousgenres_id')
-                    if sousgenre_id in sousgenre_ids:
-                        genre_name = genre_map.get(sousgenre_id, '')
-                        category = self.genre_mapper.get_category(genre_name)
-
-                        if sousgenre_id in offers_by_id:
-                            if category and category not in offers_by_id[sousgenre_id]['categories']:
-                                offers_by_id[sousgenre_id]['categories'].append(category)
-                        else:
-                            offer = self.process_sousgenre(
-                                {'genres_nom': genre_name},
-                                sousgenre,
-                                genre_name,
-                                source
-                            )
-                            offer['articles'] = []
-
-                            articles_expr = parse('$.articles[*].article[*]')
-                            articles = [match.value for match in articles_expr.find(sousgenre)]
-
-                            for article in articles:
-                                offer_article = self.process_article(
-                                    article, sousgenre, genre_name, source
+                            if sousgenre_id in offers_by_id:
+                                if category and category not in offers_by_id[sousgenre_id]['categories']:
+                                    offers_by_id[sousgenre_id]['categories'].append(category)
+                            else:
+                                offer = self.process_sousgenre(
+                                    {'genres_nom': genre_name},
+                                    sousgenre,
+                                    genre_name,
+                                    source
                                 )
-                                if offer_article:
-                                    offer['articles'].append(offer_article)
+                                offer['articles'] = []
 
-                            offer = self.enrich_offer(offer, sousgenre)
-                            offers_by_id[sousgenre_id] = offer
+                                articles_expr = parse('$.articles[*].article[*]')
+                                articles = [match.value for match in articles_expr.find(sousgenre)]
+
+                                for article in articles:
+                                    offer_article = self.process_article(
+                                        article, sousgenre, genre_name, source
+                                    )
+                                    if offer_article:
+                                        offer['articles'].append(offer_article)
+
+                                offer = self.enrich_offer(offer, sousgenre)
+                                offers_by_id[sousgenre_id] = offer
 
             except Exception as e:
                 print(f"Error processing file {file_name}: {str(e)}")
