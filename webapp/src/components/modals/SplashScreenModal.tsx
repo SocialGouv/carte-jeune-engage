@@ -22,10 +22,20 @@ const SplashScreenModal = ({
   const { user } = useAuth();
 
   useEffect(() => {
+    const cjeRedirectionOfferId = localStorage.getItem(
+      "cje-widget-redirection-offer-id"
+    );
     const timeoutId = setTimeout(() => {
-      router.push("/dashboard").then(() => {
-        onClose();
-      });
+      router
+        .push(
+          cjeRedirectionOfferId
+            ? `/dashboard/offer/${cjeRedirectionOfferId}`
+            : "/dashboard"
+        )
+        .then(() => {
+          localStorage.removeItem("cje-widget-redirection-offer-id");
+          onClose();
+        });
     }, 1200);
 
     return () => clearTimeout(timeoutId);

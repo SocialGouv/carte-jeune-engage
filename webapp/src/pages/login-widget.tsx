@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GetServerSideProps, NextApiRequest } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import FormField from "~/components/forms/FormField";
 import LoginOtpContent from "~/components/landing/LoginOtpContent";
@@ -23,9 +23,13 @@ import { createCallerFactory } from "~/server/api/trpc";
 
 type HomeLoginWidgetProps = {
   cej_id: string;
+  offer_id?: string;
 };
 
-export default function HomeLoginWidget({ cej_id }: HomeLoginWidgetProps) {
+export default function HomeLoginWidget({
+  cej_id,
+  offer_id,
+}: HomeLoginWidgetProps) {
   const { isOtpGenerated, setIsOtpGenerated } = useAuth();
 
   const methods = useForm<LoginWidgetFormData>({
@@ -70,6 +74,12 @@ export default function HomeLoginWidget({ cej_id }: HomeLoginWidgetProps) {
     setCurrentPhoneNumber(values.phone_number);
     generateOtp({ ...values, cej_id });
   };
+
+  useEffect(() => {
+    if (offer_id && !isNaN(parseInt(offer_id))) {
+      localStorage.setItem("cje-widget-redirection-offer-id", offer_id);
+    }
+  });
 
   if (isOtpGenerated && otpKind)
     return (
@@ -122,7 +132,7 @@ export default function HomeLoginWidget({ cej_id }: HomeLoginWidgetProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    let { widgetToken } = context.query;
+    let { widgetToken, offer_id } = context.query;
     if (!widgetToken)
       widgetToken =
         context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!];
@@ -170,6 +180,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       return {
         props: {
           cej_id: cejUserId,
+          offer_id,
         },
       };
     }
