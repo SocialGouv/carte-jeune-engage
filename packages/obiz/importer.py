@@ -13,12 +13,12 @@ from pathlib import Path
 
 class DataImporter:
     def __init__(self, api_url: str, api_key: str, sftp_host: str, sftp_port: int,
-                 sftp_username: str, sftp_password: str, sftp_path: str):
+                 sftp_username: str, sftp_password: str, sftp_path: str, file_suffix: str):
         self.genre_mapper = GenreMapper()
         self.source_files = [
-            'reduccine.fr-preprod.json',
-            'reduckdo.fr-preprod.json',
-            'reducparc.fr-preprod.json'
+            f'reduccine.{file_suffix}.json',
+            f'reduckdo.{file_suffix}.json',
+            f'reducparc.{file_suffix}.json'
         ]
         self.api_url = api_url
         self.api_key = api_key
@@ -275,6 +275,10 @@ def main():
     parser.add_argument('--sftp-path',
                        required=True,
                        help='SFTP remote path')
+    
+    parser.add_argument('--file-suffix',
+                       required=True,
+                       help='Obiz file suffix')
 
     args = parser.parse_args()
 
@@ -285,7 +289,8 @@ def main():
         sftp_port=args.sftp_port,
         sftp_username=args.sftp_username,
         sftp_password=args.sftp_password,
-        sftp_path=args.sftp_path
+        sftp_path=args.sftp_path,
+        file_suffix=args.file_suffix
     )
     importer.import_data()
 

@@ -25,7 +25,8 @@ spec:
                 "--sftp-username", "$(SFTP_USERNAME)",
                 "--sftp-password", "$(SFTP_PASSWORD)",
                 "--sftp-path", "$(SFTP_PATH)",
-                "--sftp-port", "$(SFTP_PORT)"
+                "--sftp-port", "$(SFTP_PORT)",
+                "--file-suffix", "fr.preprod"
               ]
               env:
                 - name: APP_API_URL
