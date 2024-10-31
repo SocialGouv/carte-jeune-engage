@@ -54,4 +54,5 @@ USER 1000
 
 EXPOSE 3000
 ENV PORT 3000
-CMD ["yarn", "start"]
+# CMD ["yarn", "start"]
+CMD ["sh", "-c", "yarn payload migrate && yarn start"]
