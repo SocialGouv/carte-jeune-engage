@@ -16,7 +16,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: notification
-              image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/obiz-jobs:{{ .Values.global.imageTag }}"
+              image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/app:{{ .Values.global.imageTag }}"
               command: ["yarn", "cron-job"]
               resources:
                 requests:

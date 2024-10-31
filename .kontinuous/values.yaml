@@ -28,8 +28,8 @@ jobs:
             secretName: app-sealed-secret
             secretKey: SENTRY_AUTH_TOKEN
 
-    build-obiz-jobs:
+    build-obiz:
       use: build
       with:
-        imagePackage: obiz-jobs
+        imagePackage: obiz
         context: ./packages/obiz
