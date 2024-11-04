@@ -206,7 +206,11 @@ export const offerRouter = createTRPCRouter({
             .filter((coupon) => !coupon.used)
             .find((coupon) => coupon.offer === offer.id);
 
-          if (offer.source === "obiz") return true;
+          if (offer.source === "obiz")
+            return (
+              offer.articles &&
+              !!offer.articles.filter((a) => a.available).length
+            );
           else if (
             !isCurrentUser &&
             (offer.kind === "voucher_pass" || offer.kind === "code_space")
