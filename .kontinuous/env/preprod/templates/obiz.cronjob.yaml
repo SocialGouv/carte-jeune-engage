@@ -30,7 +30,7 @@ spec:
               ]
               env:
                 - name: APP_API_URL
-                  value: "https://cje-preprod.ovh.fabrique.social.gouv.fr/api/obizIntegration"
+                  value: "https://{{ $.Values.global.host }}/api/obizIntegration"
               envFrom:
                 - secretRef:
                     name: obiz-sealed-secret
