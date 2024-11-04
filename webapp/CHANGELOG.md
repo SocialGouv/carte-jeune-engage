@@ -1,3 +1,10 @@
+# [0.50.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.49.0...v0.50.0) (2024-11-04)
+
+
+### Features
+
+* init soap obiz client in trpc context and begin order router ([abaa53b](https://github.com/SocialGouv/carte-jeune-engage/commit/abaa53b6045d9d2fc8f0354db858d3031bf31e8c))
+
 # [0.49.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.5...v0.49.0) (2024-11-04)
 
 
