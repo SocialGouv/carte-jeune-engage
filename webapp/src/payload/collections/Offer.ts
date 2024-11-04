@@ -3,6 +3,7 @@ import { CustomSelectTermsOfUse } from "../components/CustomSelectTermsOfUse";
 import { Partner, QuickAccess } from "../payload-types";
 import { CustomSelectConditionBlocks } from "../components/CustomSelectBlocksOfUse";
 import { CustomSelectKind } from "../components/CustomSelectKind";
+import { RowLabelArgs } from "payload/dist/admin/components/forms/RowLabel/types";
 import { isAdmin } from "../access/isAdmin";
 
 export const Offers: CollectionConfig = {
@@ -292,8 +293,23 @@ export const Offers: CollectionConfig = {
       admin: {
         condition: (_, siblingData) =>
           !!siblingData.source && siblingData.source === "obiz",
+        initCollapsed: true,
+        components: {
+          RowLabel: ({ data, index }: RowLabelArgs) => {
+            return data
+              ? `${data.available ? "🟢" : "🔴"} ${data.name}`
+              : `Article ${String(index).padStart(2, "0")}`;
+          },
+        },
       },
       fields: [
+        {
+          name: "available",
+          label: "Disponible",
+          type: "checkbox",
+          required: true,
+          defaultValue: true,
+        },
         {
           name: "name",
           label: "Nom",
@@ -305,6 +321,7 @@ export const Offers: CollectionConfig = {
           label: "Référence",
           type: "text",
           required: true,
+          unique: true,
         },
         {
           name: "reductionPercentage",
@@ -373,6 +390,7 @@ export const Offers: CollectionConfig = {
           required: true,
           admin: {
             readOnly: true,
+            hidden: true,
           },
         },
       ],
@@ -382,7 +400,9 @@ export const Offers: CollectionConfig = {
       type: "number",
       label: "Nombre de vues",
       defaultValue: 0,
-      // hidden: true
+      admin: {
+        readOnly: true,
+      },
     },
     {
       name: "image",
