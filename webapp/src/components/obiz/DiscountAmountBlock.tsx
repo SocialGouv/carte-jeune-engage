@@ -5,8 +5,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  NumberInput,
-  NumberInputField,
   Text,
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
@@ -31,7 +29,7 @@ const DiscountAmountBlock = ({
 
   return (
     <Center flexDir="column">
-      <Flex display="flex" flexDir="column" alignItems="center" mx={10}>
+      <FormControl display="flex" flexDir="column" alignItems="center" mx={10}>
         <FormLabel
           textAlign="center"
           color="disabled"
@@ -61,7 +59,7 @@ const DiscountAmountBlock = ({
           min={minAmount}
           max={maxAmount}
         />
-      </Flex>
+      </FormControl>
       <Flex alignItems="center" mt={6}>
         <Center flexDir="column">
           <Text fontSize={14} fontWeight={500}>
