@@ -1,11 +1,15 @@
+import { z } from "zod";
 import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
+import { createOrderPayload } from "~/utils/obiz";
 
 export const orderRouter = createTRPCRouter({
-  createOrder: userProtectedProcedure.query(async ({ ctx }) => {
-    // const [test] = await ctx.soapObizClient.ETAT_SITEAsync();
+  createOrder: userProtectedProcedure
+    .input(z.object({ user_id: z.number(), client_id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const order_payload = createOrderPayload(input);
 
-    // console.log(JSON.stringify(test, null, 2));
+      const [] = await ctx.soapObizClient.CREATION_COMMANDE_ARRAYAsync();
 
-    return { data: "Hello" };
-  }),
+      return { data: "Hello" };
+    }),
 });
