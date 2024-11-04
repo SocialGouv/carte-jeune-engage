@@ -17,6 +17,8 @@ import jwt from "jsonwebtoken";
 import { Payload } from "payload";
 import { NextApiRequest } from "next";
 import { ZWidgetToken } from "../types";
+var soap = require("soap");
+import { obiz_soap_client_options, obiz_soap_client_url } from "../soap-obiz";
 
 export type PayloadJwtSession = {
   id: number;
@@ -66,6 +68,11 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
     seed: false,
   });
 
+  var soapObizClient = await soap.createClientAsync(
+    obiz_soap_client_url,
+    obiz_soap_client_options
+  );
+
   const jwtCookie =
     _opts.req.cookies[process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"];
 
@@ -73,6 +80,7 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
     return {
       payload,
       session: null,
+      soapObizClient,
       req: _opts.req,
     };
   }
@@ -82,6 +90,7 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
   return {
     payload,
     session,
+    soapObizClient,
     req: _opts.req,
   };
 };

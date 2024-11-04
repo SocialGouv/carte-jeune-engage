@@ -12,6 +12,7 @@ import { tagRouter } from "./routers/tag";
 import { searchRequestRouter } from "./routers/searchRequest";
 import { emailAuthTokenRouter } from "./routers/emailAuthToken";
 import { widgetRouter } from "./routers/widget";
+import { orderRouter } from "./routers/order";
 
 /**
  * This is the primary router for your server.
@@ -31,6 +32,7 @@ export const appRouter = createTRPCRouter({
   searchRequest: searchRequestRouter,
   emailAuthToken: emailAuthTokenRouter,
   widget: widgetRouter,
+  order: orderRouter,
 });
 
 // export type definition of API
