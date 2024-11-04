@@ -23,7 +23,12 @@ export const hasAccessToOffer: GetServerSideProps = async (context) => {
 
   const createCaller = createCallerFactory(appRouter);
 
-  const caller = createCaller({ payload, session, req: {} as NextApiRequest });
+  const caller = createCaller({
+    payload,
+    session,
+    soapObizClient: null,
+    req: {} as NextApiRequest,
+  });
 
   const { data: offerListAvailables } = await caller.offer.getListOfAvailables({
     offerIds: [parseInt(context.params?.id as string)],
