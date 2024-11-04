@@ -142,7 +142,7 @@ export default function OfferPage() {
     }
   }, [router.isReady, isLoadingCoupon]);
 
-  if (isLoadingOffer || isLoadingCoupon || !offer || !router.isReady)
+  if (isLoadingOffer || isLoadingCoupon || !router.isReady)
     return (
       <OfferHeaderWrapper
         kind="offer"
@@ -154,6 +154,11 @@ export default function OfferPage() {
         </Center>
       </OfferHeaderWrapper>
     );
+
+  if (!offer) {
+    router.replace("/dashboard");
+    return;
+  }
 
   return (
     <OfferHeaderWrapper

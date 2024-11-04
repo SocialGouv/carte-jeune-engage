@@ -251,6 +251,7 @@ export interface Offer {
     | null;
   articles?:
     | {
+        available: boolean;
         name: string;
         reference: string;
         reductionPercentage: number;

@@ -56,7 +56,7 @@ export const payloadWhereOfferIsValid = (prefix?: string): Where => {
   return {
     and: [
       {
-        source: { equals: "cje" },
+        [`${finalPrefix}source`]: { equals: "cje" },
       },
       {
         [`${finalPrefix}validityTo`]: {
