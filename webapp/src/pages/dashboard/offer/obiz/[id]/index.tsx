@@ -1,5 +1,6 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import LoadingLoader from "~/components/LoadingLoader";
 import { api } from "~/utils/api";
 
 export default function OfferObizPage() {
@@ -14,6 +15,21 @@ export default function OfferObizPage() {
       { id: parseInt(id), source: "obiz" },
       { enabled: id !== undefined }
     );
+
+  const { data: offer } = resultOffer || {};
+
+  if (isLoadingOffer || !router.isReady) {
+    return (
+      <Center h="full">
+        <LoadingLoader />
+      </Center>
+    );
+  }
+
+  if (!offer) {
+    router.replace("/dashboard");
+    return;
+  }
 
   return <Box>{JSON.stringify(resultOffer, null, 2)}</Box>;
 }

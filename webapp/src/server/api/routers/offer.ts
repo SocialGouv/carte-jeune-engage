@@ -523,6 +523,19 @@ export const offerRouter = createTRPCRouter({
             });
           }
 
+          for (const article of obiz_offer.articles) {
+            if (article.image_url) {
+              const mediaIcon = await downloadAndCreateMedia(
+                obiz_offer.partner.icon_url ||
+                  "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
+                obiz_offer.partner.name,
+                ctx
+              );
+
+              article.image = mediaIcon.id;
+            }
+          }
+
           const offer = await ctx.payload.create({
             collection: "offers",
             data: {

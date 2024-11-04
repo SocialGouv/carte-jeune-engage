@@ -53,6 +53,19 @@ export const Offers: CollectionConfig = {
       name: "subtitle",
       type: "text",
       label: "Complément de titre",
+      admin: {
+        condition: (_, siblingData) =>
+          !!siblingData.source && siblingData.source === "cje",
+      },
+    },
+    {
+      name: "description",
+      type: "textarea",
+      label: "Description",
+      admin: {
+        condition: (_, siblingData) =>
+          !!siblingData.source && siblingData.source === "obiz",
+      },
     },
     {
       name: "partner",
@@ -311,6 +324,12 @@ export const Offers: CollectionConfig = {
           defaultValue: true,
         },
         {
+          name: "image",
+          type: "upload",
+          label: "Image",
+          relationTo: "media",
+        },
+        {
           name: "name",
           label: "Nom",
           type: "text",
@@ -322,6 +341,11 @@ export const Offers: CollectionConfig = {
           type: "text",
           required: true,
           unique: true,
+        },
+        {
+          name: "description",
+          type: "textarea",
+          label: "Description",
         },
         {
           name: "reductionPercentage",

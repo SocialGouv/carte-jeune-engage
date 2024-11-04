@@ -215,6 +215,7 @@ export interface Offer {
   title: string;
   formatedTitle?: string | null;
   subtitle?: string | null;
+  description?: string | null;
   partner: number | Partner;
   category: (number | Category)[];
   tags?: (number | Tag)[] | null;
@@ -252,8 +253,10 @@ export interface Offer {
   articles?:
     | {
         available: boolean;
+        image?: number | Media | null;
         name: string;
         reference: string;
+        description?: string | null;
         reductionPercentage: number;
         validityTo: string;
         kind: "variable_price" | "fixed_price";
