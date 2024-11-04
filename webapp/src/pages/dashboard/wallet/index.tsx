@@ -1,13 +1,13 @@
 import {
-	Box,
-	Button,
-	Center,
-	Divider,
-	Flex,
-	Heading,
-	Icon,
-	Link,
-	Text,
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Heading,
+  Icon,
+  Link,
+  Text,
 } from "@chakra-ui/react";
 import LoadingLoader from "~/components/LoadingLoader";
 import WalletWrapper from "~/components/wrappers/WalletWrapper";
@@ -20,125 +20,125 @@ import TagsList from "~/components/lists/TagsList";
 import Image from "next/image";
 
 export default function Wallet() {
-	const router = useRouter();
+  const router = useRouter();
 
-	const { data: resultOffers, isLoading: isLoadingOffers } =
-		api.offer.getListOfAvailables.useQuery({
-			page: 1,
-			perPage: 1000,
-		});
+  const { data: resultOffers, isLoading: isLoadingOffers } =
+    api.offer.getListOfAvailables.useQuery({
+      page: 1,
+      perPage: 1000,
+    });
 
-	const { data: resultUserCoupons, isLoading: isLoadingUserCoupons } =
-		api.coupon.getList.useQuery();
+  const { data: resultUserCoupons, isLoading: isLoadingUserCoupons } =
+    api.coupon.getList.useQuery();
 
-	const { data: currentUserCoupons } = resultUserCoupons || { data: [] };
-	const { data: offers } = resultOffers || { data: [] };
+  const { data: currentUserCoupons } = resultUserCoupons || { data: [] };
+  const { data: offers } = resultOffers || { data: [] };
 
-	if (isLoadingUserCoupons || isLoadingOffers)
-		return (
-			<WalletWrapper>
-				<Center h="85%" w="full">
-					<LoadingLoader />
-				</Center>
-			</WalletWrapper>
-		);
+  if (isLoadingUserCoupons || isLoadingOffers)
+    return (
+      <WalletWrapper>
+        <Center h="85%" w="full">
+          <LoadingLoader />
+        </Center>
+      </WalletWrapper>
+    );
 
-	return (
-		<WalletWrapper>
-			{currentUserCoupons && currentUserCoupons.length > 0 ? (
-				<>
-					<Flex flexDir="column" gap={6}>
-						{currentUserCoupons.map((coupon, index) => (
-							<Box
-								mt={index !== 0 ? -16 : 0}
-								bgColor="white"
-								w="full"
-								pt={index !== 0 ? 3 : 0}
-								zIndex={1}
-								borderTopWidth={index !== 0 ? 1 : 0}
-								px={8}
-							>
-								<CouponCard
-									key={coupon.id}
-									coupon={coupon}
-									link={`/dashboard/offer/cje/${coupon.offer.id}?offerKind=coupon`}
-									mode="wallet"
-								/>
-							</Box>
-						))}
-					</Flex>
-					<Box px={8}>
-						<Divider mt={16} borderColor="cje-gray.100" />
-						<Link
-							as={NextLink}
-							href="/dashboard/account/history"
-							_hover={{ textDecoration: "none" }}
-							passHref
-						>
-							<Flex alignItems="center" justifyContent="space-between" py={5}>
-								<Flex alignItems="center" gap={4}>
-									<Icon
-										as={HiReceiptRefund}
-										w={5}
-										h={5}
-										mt={0.5}
-										color="blackLight"
-									/>
-									<Text fontWeight={500}>Historique des réductions</Text>
-								</Flex>
-								<Icon as={HiChevronRight} w={6} h={6} />
-							</Flex>
-						</Link>
-						<Divider borderColor="cje-gray.100" />
-					</Box>
-				</>
-			) : (
-				<Box px={8}>
-					<CouponCard mode="wallet" />
-				</Box>
-			)}
-			<Box px={8}>
-				<Center
-					flexDir="column"
-					mt={4}
-					py={8}
-					px={10}
-					bgColor="bgGray"
-					borderRadius="3xl"
-				>
-					<Text fontSize={20} fontWeight={800} textAlign="center" mb={8}>
-						{currentUserCoupons && currentUserCoupons.length > 0
-							? "Trouver + de réductions"
-							: "Dès qu’une offre vous intéresse, elle sera ici !"}
-					</Text>
-					<Image
-						src="/images/dashboard/offer-cards.png"
-						alt="Cartes d'offres"
-						width={0}
-						height={0}
-						sizes="100vw"
-						style={{
-							width: "100%",
-							height: "111px",
-							marginBottom: "-36px",
-							marginLeft: "10px",
-						}}
-					/>
-					<Button
-						colorScheme="blackBtn"
-						fontWeight={800}
-						size="lg"
-						fontSize={14}
-						rightIcon={<Icon as={HiArrowRight} w={4} h={4} mt={1} />}
-						onClick={() => router.push("/dashboard")}
-					>
-						Voir les réductions
-					</Button>
-				</Center>
-				<Box mt={4} py={8} bgColor="bgGray" borderRadius="2.5xl">
-					<TagsList offers={offers} />
-				</Box>
-			</Box>
-		</WalletWrapper>
-	);
+  return (
+    <WalletWrapper>
+      {currentUserCoupons && currentUserCoupons.length > 0 ? (
+        <>
+          <Flex flexDir="column" gap={6}>
+            {currentUserCoupons.map((coupon, index) => (
+              <Box
+                mt={index !== 0 ? -16 : 0}
+                bgColor="white"
+                w="full"
+                pt={index !== 0 ? 3 : 0}
+                zIndex={1}
+                borderTopWidth={index !== 0 ? 1 : 0}
+                px={8}
+              >
+                <CouponCard
+                  key={coupon.id}
+                  coupon={coupon}
+                  link={`/dashboard/offer/cje/${coupon.offer.id}?offerKind=coupon`}
+                  mode="wallet"
+                />
+              </Box>
+            ))}
+          </Flex>
+          <Box px={8}>
+            <Divider mt={16} borderColor="cje-gray.100" />
+            <Link
+              as={NextLink}
+              href="/dashboard/account/history"
+              _hover={{ textDecoration: "none" }}
+              passHref
+            >
+              <Flex alignItems="center" justifyContent="space-between" py={5}>
+                <Flex alignItems="center" gap={4}>
+                  <Icon
+                    as={HiReceiptRefund}
+                    w={5}
+                    h={5}
+                    mt={0.5}
+                    color="blackLight"
+                  />
+                  <Text fontWeight={500}>Historique des réductions</Text>
+                </Flex>
+                <Icon as={HiChevronRight} w={6} h={6} />
+              </Flex>
+            </Link>
+            <Divider borderColor="cje-gray.100" />
+          </Box>
+        </>
+      ) : (
+        <Box px={8}>
+          <CouponCard mode="wallet" />
+        </Box>
+      )}
+      <Box px={8}>
+        <Center
+          flexDir="column"
+          mt={4}
+          py={8}
+          px={10}
+          bgColor="bgGray"
+          borderRadius="3xl"
+        >
+          <Text fontSize={20} fontWeight={800} textAlign="center" mb={8}>
+            {currentUserCoupons && currentUserCoupons.length > 0
+              ? "Trouver + de réductions"
+              : "Dès qu’une offre vous intéresse, elle sera ici !"}
+          </Text>
+          <Image
+            src="/images/dashboard/offer-cards.png"
+            alt="Cartes d'offres"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{
+              width: "100%",
+              height: "111px",
+              marginBottom: "-36px",
+              marginLeft: "10px",
+            }}
+          />
+          <Button
+            colorScheme="blackBtn"
+            fontWeight={800}
+            size="lg"
+            fontSize={14}
+            rightIcon={<Icon as={HiArrowRight} w={4} h={4} mt={1} />}
+            onClick={() => router.push("/dashboard")}
+          >
+            Voir les réductions
+          </Button>
+        </Center>
+        <Box mt={4} py={8} bgColor="bgGray" borderRadius="2.5xl">
+          <TagsList offers={offers} />
+        </Box>
+      </Box>
+    </WalletWrapper>
+  );
 }

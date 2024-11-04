@@ -6,104 +6,106 @@ import { getBaseUrl } from "../utils/tools";
 const slug = "new-offer-available";
 
 export async function sendNewOfferAvailable() {
-	console.log(`[${slug}] - Start sending notifications`);
+  console.log(`[${slug}] - Start sending notifications`);
 
-	let nbOfNotificationsSent = 0;
-	let nbOfNotificationsInDb = 0;
+  let nbOfNotificationsSent = 0;
+  let nbOfNotificationsInDb = 0;
 
-	try {
-		const payload = await getPayloadClient({ seed: false });
+  try {
+    const payload = await getPayloadClient({ seed: false });
 
-		const currentDate = new Date();
+    const currentDate = new Date();
 
-		let todayOffers = await payload.find({
-			collection: "offers",
-			pagination: false,
-			depth: 1,
-			where: {
-				validityFrom: {
-					greater_than_equal: `${currentDate.toISOString().split("T")[0]
-						}T00:00:00`,
-					less_than_equal: `${currentDate.toISOString().split("T")[0]
-						}T23:59:59`,
-				},
-			},
-		});
+    let todayOffers = await payload.find({
+      collection: "offers",
+      pagination: false,
+      depth: 1,
+      where: {
+        validityFrom: {
+          greater_than_equal: `${
+            currentDate.toISOString().split("T")[0]
+          }T00:00:00`,
+          less_than_equal: `${
+            currentDate.toISOString().split("T")[0]
+          }T23:59:59`,
+        },
+      },
+    });
 
-		await Promise.all(
-			todayOffers.docs.map(async (offer) => {
-				const offerCoupons = await payload.find({
-					collection: "coupons",
-					limit: 1,
-					where: {
-						offer: {
-							equals: offer.id,
-						},
-						user: {
-							exists: false,
-						},
-						used: {
-							equals: false,
-						},
-					},
-				});
+    await Promise.all(
+      todayOffers.docs.map(async (offer) => {
+        const offerCoupons = await payload.find({
+          collection: "coupons",
+          limit: 1,
+          where: {
+            offer: {
+              equals: offer.id,
+            },
+            user: {
+              exists: false,
+            },
+            used: {
+              equals: false,
+            },
+          },
+        });
 
-				return offerCoupons.docs.length === 0;
-			})
-		).then((results) => {
-			todayOffers.docs = todayOffers.docs.filter((_, index) => results[index]);
-		});
+        return offerCoupons.docs.length === 0;
+      })
+    ).then((results) => {
+      todayOffers.docs = todayOffers.docs.filter((_, index) => results[index]);
+    });
 
-		if (todayOffers.docs.length === 0) {
-			console.log(`[${slug}] - Ending (No new offers today)`);
-			return;
-		}
+    if (todayOffers.docs.length === 0) {
+      console.log(`[${slug}] - Ending (No new offers today)`);
+      return;
+    }
 
-		const users = await payload.find({
-			collection: "users",
-			pagination: false,
-			depth: 0,
-			where: {
-				notification_status: {
-					equals: "enabled",
-					exists: true,
-				},
-				notification_subscription: {
-					exists: true,
-				},
-			},
-		});
+    const users = await payload.find({
+      collection: "users",
+      pagination: false,
+      depth: 0,
+      where: {
+        notification_status: {
+          equals: "enabled",
+          exists: true,
+        },
+        notification_subscription: {
+          exists: true,
+        },
+      },
+    });
 
-		for (const user of users.docs) {
-			for (const offer of todayOffers.docs as OfferIncluded[]) {
-				const { notificationSent, notificationInDb } =
-					await sendPushNotification({
-						sub: user.notification_subscription,
-						payload,
-						userId: user.id,
-						offerId: offer.id,
-						payloadNotification: {
-							title: "🎁 Nouvelle offre sur l’appli !",
-							message: `${offer.partner.name} ${offer?.title}, maintenant disponible sur l’appli`,
-							url: `${getBaseUrl()}/dashboard/offer/${offer.source}/${offer.id}`,
-							slug,
-						},
-					});
+    for (const user of users.docs) {
+      for (const offer of todayOffers.docs as OfferIncluded[]) {
+        const { notificationSent, notificationInDb } =
+          await sendPushNotification({
+            sub: user.notification_subscription,
+            payload,
+            userId: user.id,
+            offerId: offer.id,
+            payloadNotification: {
+              title: "🎁 Nouvelle offre sur l’appli !",
+              message: `${offer.partner.name} ${offer?.title}, maintenant disponible sur l’appli`,
+              url: `${getBaseUrl()}/dashboard/offer/${offer.source}/${offer.id}`,
+              slug,
+            },
+          });
 
-				if (notificationSent) nbOfNotificationsSent++;
-				if (notificationInDb) nbOfNotificationsInDb++;
-			}
-		}
+        if (notificationSent) nbOfNotificationsSent++;
+        if (notificationInDb) nbOfNotificationsInDb++;
+      }
+    }
 
-		console.log(`[${slug}] - Summary`, {
-			nbOfNotificationsSent,
-			nbOfNotificationsInDb,
-			slug,
-		});
-	} catch (e) {
-		console.log({
-			error: `[${slug}] - Error on condition to send notification`,
-		});
-		console.error(e);
-	}
+    console.log(`[${slug}] - Summary`, {
+      nbOfNotificationsSent,
+      nbOfNotificationsInDb,
+      slug,
+    });
+  } catch (e) {
+    console.log({
+      error: `[${slug}] - Error on condition to send notification`,
+    });
+    console.error(e);
+  }
 }
