@@ -1,3 +1,41 @@
+# [0.49.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.5...v0.49.0) (2024-11-04)
+
+
+### Bug Fixes
+
+* admin panel article title accordions add availability ([73ed244](https://github.com/SocialGouv/carte-jeune-engage/commit/73ed24415daf7cfba60394069f693bdc12712fa0))
+* admin panel article title of accordion items ([a7ea562](https://github.com/SocialGouv/carte-jeune-engage/commit/a7ea562ae831a9351bc33e0153e93b0f8498bdb9))
+* admin panel hidden fields ([a3de1be](https://github.com/SocialGouv/carte-jeune-engage/commit/a3de1be997ff2f5d1367b606d1dfe68b4335bd7a))
+* api url ([cb35ebf](https://github.com/SocialGouv/carte-jeune-engage/commit/cb35ebf99960c40b81edbc3b24655f9c09316e2f))
+* available admin UI order ([7c16101](https://github.com/SocialGouv/carte-jeune-engage/commit/7c16101574220d1b840e7a6b74187ebc60577eef))
+* cronjobfile TODO ([8b7bebd](https://github.com/SocialGouv/carte-jeune-engage/commit/8b7bebd27d2fae2f6f5635cc62a79961b52d1718))
+* datetime to french timezone ([d21cbc3](https://github.com/SocialGouv/carte-jeune-engage/commit/d21cbc3602e30ceebdbd2f12da1d525f5f9d2c3d))
+* dynamic title only with available offers ([ea4bfc4](https://github.com/SocialGouv/carte-jeune-engage/commit/ea4bfc47ce807b63db8c8b6414eb988d41ec0681))
+* file suffix obiz script ([e89d98f](https://github.com/SocialGouv/carte-jeune-engage/commit/e89d98fc423dded40d3f169aaa601c87de64ddb9))
+* format ([aaf1c6b](https://github.com/SocialGouv/carte-jeune-engage/commit/aaf1c6b50796063cc00f637e30a233f46fd21bab))
+* job env variables ([17b786d](https://github.com/SocialGouv/carte-jeune-engage/commit/17b786d7278c52c72fb3476e1f0a743f9d1333ac))
+* partner images & offer categories at import ([2244a6f](https://github.com/SocialGouv/carte-jeune-engage/commit/2244a6f0ca97777af47256c126d879b2baa94adf))
+* pip install permissions ([de4de38](https://github.com/SocialGouv/carte-jeune-engage/commit/de4de38ce758878f342c7f1a7a8a39279d01814d))
+* pre-commit ([b6fd2cd](https://github.com/SocialGouv/carte-jeune-engage/commit/b6fd2cd3f275cfc15bbbc5dcc4ca2cc76760a65f))
+* refactor importer with jsonpath ([8623dda](https://github.com/SocialGouv/carte-jeune-engage/commit/8623ddacffe3204808ae94d81f8420eaef1b3f7e))
+* s3 to sftp in importer ([922e04d](https://github.com/SocialGouv/carte-jeune-engage/commit/922e04ded71a9464a9bb80c9a01eb1f09bed3694))
+* secretRef ([2b7c829](https://github.com/SocialGouv/carte-jeune-engage/commit/2b7c8294a12fafa99be83c702c4d2d9b7c83f9d2))
+* sym links ([244fcff](https://github.com/SocialGouv/carte-jeune-engage/commit/244fcff09829a882452a75d8eec746094440f68a))
+* symbolic link kontinuous obiz.cronjob dev env ([eca769f](https://github.com/SocialGouv/carte-jeune-engage/commit/eca769f6951ab5d0b630e8cb0b5d42bc3a3e08f5))
+* update article if JSON changed ([bbf5ed8](https://github.com/SocialGouv/carte-jeune-engage/commit/bbf5ed859dbff302390dbab407a8cb7aa5201f2e))
+
+
+### Features
+
+* add available field on articles ([2cdd646](https://github.com/SocialGouv/carte-jeune-engage/commit/2cdd646177a6763405e47f50d207388329ea8e11))
+* add file-suffix for file sources ([9db4027](https://github.com/SocialGouv/carte-jeune-engage/commit/9db4027e5263b8180e8de33614e315bda3f8e2ea))
+* add README for obiz scripts ([7674974](https://github.com/SocialGouv/carte-jeune-engage/commit/76749742f0f1e8aa659c0ee98ec17e40c5b3d42f))
+* article available field in importer ([5764614](https://github.com/SocialGouv/carte-jeune-engage/commit/5764614ac5c8d5996b171995b08a1b770bd8552d))
+* importer offers array ([e586941](https://github.com/SocialGouv/carte-jeune-engage/commit/e586941e2641d4073b72c53e48d9a593dfeec89c))
+* improve update article implementation ([35c3a34](https://github.com/SocialGouv/carte-jeune-engage/commit/35c3a34c7c76e8a09395f638bb54aa8f67d354a7))
+* obiz api offer integration & update ([6cd74fe](https://github.com/SocialGouv/carte-jeune-engage/commit/6cd74fe561b4865229acf0cff18323d52efe73f3))
+* offer available only cje source ([58548cc](https://github.com/SocialGouv/carte-jeune-engage/commit/58548cc79a7e02b6304b2b4c17b3243bd7be339c))
+
 ## [0.48.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.48.4...v0.48.5) (2024-10-31)
 
 ### Bug Fixes
