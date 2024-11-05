@@ -98,12 +98,16 @@ const CategoriesList = (props: CategoriesListProps) => {
           </Text>
           <Grid templateColumns="repeat(3, 1fr)" gap={2}>
             {category.offers?.map((offer) => (
-              <Box
+              <Flex
                 key={offer.id}
+                alignItems={"center"}
+                justifyContent={"center"}
                 borderRadius="50%"
                 overflow="hidden"
                 width="40px"
                 height="40px"
+                bg="white"
+                p={1}
               >
                 <Image
                   src={offer.partner.icon.url as string}
@@ -111,7 +115,7 @@ const CategoriesList = (props: CategoriesListProps) => {
                   width={40}
                   height={40}
                 />
-              </Box>
+              </Flex>
             ))}
           </Grid>
         </Flex>

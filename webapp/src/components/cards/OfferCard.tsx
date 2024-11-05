@@ -79,8 +79,16 @@ const OfferCard = ({
         >
           <Flex opacity={isDisabled ? 0.6 : 1}>
             <Image
-              src={offer.image?.url ?? "/images/landing/mobile-showcase.png"}
-              alt={offer.image?.alt ?? "Image par défaut de l'offre"}
+              src={
+                offer.image?.url ??
+                offer.partner.icon.url ??
+                "/images/notification-modal-header.png"
+              }
+              alt={
+                offer.image?.alt ??
+                offer.partner.icon.alt ??
+                "Image par défaut de l'offre"
+              }
               fill
               imageStyle={{
                 objectFit: "cover",
@@ -108,8 +116,10 @@ const OfferCard = ({
             <Flex align="center" gap={3}>
               <Flex
                 alignItems="center"
-                borderRadius="2.25xl"
+                borderRadius="2xl"
                 p={1}
+                w={"40px"}
+                h={"40px"}
                 bgColor="white"
               >
                 <Image
@@ -117,7 +127,6 @@ const OfferCard = ({
                   alt={offer.partner.icon.alt ?? ""}
                   width={40}
                   height={40}
-                  imageStyle={{ borderRadius: "1.125rem" }}
                 />
               </Flex>
               <Text fontSize="xl" fontWeight="bold" color="white">
