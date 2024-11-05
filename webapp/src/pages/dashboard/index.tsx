@@ -14,7 +14,7 @@ export default function Dashboard() {
       page: 1,
       perPage: 100,
       sort: "partner.name",
-      kinds: ["code", "code_space"],
+      kinds: ["code", "code_space", "code_obiz"],
     });
 
   const { data: resultOffersInStore, isLoading: isLoadingOffersInStore } =

@@ -56,7 +56,7 @@ export const payloadWhereOfferIsValid = (prefix?: string): Where => {
   return {
     and: [
       {
-        source: { equals: "cje" },
+        [`${finalPrefix}published`]: { equals: true },
       },
       {
         [`${finalPrefix}validityTo`]: {
@@ -222,4 +222,13 @@ export function decryptData(encryptedText: string, secret: string): string {
   let decrypted = decipher.update(encryptedTextBuffer);
   decrypted = Buffer.concat([decrypted, decipher.final()]);
   return decrypted.toString();
+}
+
+export function cleanHtml(html: string): string {
+  return html
+    .replace(/<br\s*\/?>/gi, "§BR§")
+    .replace(/<br\s*\/\s*>/gi, "§BR§")
+    .replace(/<[^>]*>/g, "")
+    .replace(/§BR§\s*§BR§+/g, "§BR§")
+    .replace(/§BR§/g, "<br>");
 }

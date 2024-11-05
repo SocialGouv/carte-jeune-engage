@@ -57,7 +57,7 @@ export async function sendReminderOfferActivated() {
           payloadNotification: {
             title: "Votre offre vous attend !",
             message: `👉 L’offre ${offerActivated.offer.title} vous attend, utilisez-la quand vous voulez. Ne l’oubliez pas 😶`,
-            url: `${getBaseUrl()}/dashboard/offer/${offerActivated.offer.id}`,
+            url: `${getBaseUrl()}/dashboard/offer/${offerActivated.offer.source}/${offerActivated.offer.id}`,
             slug,
           },
         }

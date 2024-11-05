@@ -5,6 +5,31 @@ import React from "react";
 export const getItemsConditionBlocks = (offerKind: Offer["kind"]) => {
   const items: { text: string; slug: string; icon: string }[] = [];
 
+  if (offerKind === "code_obiz") {
+    return [
+      {
+        text: "en magasin uniquement",
+        slug: "go-to-store",
+        icon: "HiBuildingStorefront",
+      },
+      {
+        text: "utilisable en plusieurs fois",
+        slug: "usable-in-parts",
+        icon: "HiRectangleStack",
+      },
+      {
+        text: "cumulable avec carte ou espèce",
+        slug: "cumulative-with-other-payment-methods",
+        icon: "HiCreditCard",
+      },
+      {
+        text: "cumulable avec d'autres bons",
+        slug: "cumulative-with-other-codes",
+        icon: "BsCashStack",
+      },
+    ];
+  }
+
   let defaultItems = [
     {
       text: "en ligne ou en magasin",

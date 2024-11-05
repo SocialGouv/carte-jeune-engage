@@ -185,9 +185,32 @@ const OfferContent = (props: OfferContentProps) => {
               <Text fontWeight="extrabold" fontSize={20}>
                 Comment utiliser l'offre ?
               </Text>
-              <OrderedList fontWeight={500} pl={3}>
+              <OrderedList
+                fontWeight={500}
+                styleType="none"
+                ml={2}
+                pr={4}
+                css={{
+                  counterReset: "item",
+                }}
+              >
                 {itemsTermsOfUse.map((termOfUse) => (
-                  <ListItem key={termOfUse.text} mb={2}>
+                  <ListItem
+                    key={termOfUse.text}
+                    mb={2}
+                    mt={4}
+                    display="flex"
+                    alignItems="center"
+                    css={{
+                      counterIncrement: "item",
+                      "&::before": {
+                        content: 'counter(item) "."',
+                        marginRight: "1rem",
+                        fontWeight: 900,
+                        display: "inline-block",
+                      },
+                    }}
+                  >
                     <Text
                       dangerouslySetInnerHTML={{ __html: termOfUse.text }}
                     />

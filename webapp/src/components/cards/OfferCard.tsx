@@ -49,7 +49,7 @@ const OfferCard = ({
       to={
         fromWidget
           ? `/widget/offer/${offer.id}`
-          : `/dashboard/offer/${offer.id}`
+          : `/dashboard/offer/${offer.source}/${offer.id}`
       }
       condition={variant === "default"}
       props={{

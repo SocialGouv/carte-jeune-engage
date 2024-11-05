@@ -76,7 +76,15 @@ export const offerRouter = createTRPCRouter({
           tagIds: z.array(z.number()).optional(),
           categoryId: z.number().optional(),
           kinds: z
-            .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
+            .array(
+              z.enum([
+                "code",
+                "code_space",
+                "code_obiz",
+                "voucher",
+                "voucher_pass",
+              ])
+            )
             .optional(),
           isCurrentUser: z.boolean().optional(),
           matchPreferences: z.boolean().optional(),
@@ -198,7 +206,12 @@ export const offerRouter = createTRPCRouter({
             .filter((coupon) => !coupon.used)
             .find((coupon) => coupon.offer === offer.id);
 
-          if (
+          if (offer.source === "obiz")
+            return (
+              offer.articles &&
+              !!offer.articles.filter((a) => a.available).length
+            );
+          else if (
             !isCurrentUser &&
             (offer.kind === "voucher_pass" || offer.kind === "code_space")
           )
@@ -311,14 +324,33 @@ export const offerRouter = createTRPCRouter({
     }),
 
   getById: userOrWidgetProtectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(
+      z.object({ id: z.number(), source: z.enum(["cje", "obiz"]).optional() })
+    )
     .query(async ({ ctx, input }) => {
-      const { id } = input;
+      const { id, source } = input;
 
-      const offer = await ctx.payload.findByID({
+      const where: Where = {
+        id: { equals: id },
+        published: { equals: true },
+      };
+
+      if (source) {
+        where.source = { equals: source };
+      }
+
+      const offers = await ctx.payload.find({
         collection: "offers",
-        id,
+        where,
       });
+      const offer = offers.docs[0];
+
+      if (!offer) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Offer not found",
+        });
+      }
 
       return { data: offer as OfferIncluded };
     }),
@@ -494,6 +526,19 @@ export const offerRouter = createTRPCRouter({
                 icon: mediaIcon.id,
               },
             });
+          }
+
+          for (const article of obiz_offer.articles) {
+            if (article.image_url) {
+              const mediaIcon = await downloadAndCreateMedia(
+                obiz_offer.partner.icon_url ||
+                  "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
+                obiz_offer.partner.name,
+                ctx
+              );
+
+              article.image = mediaIcon.id;
+            }
           }
 
           const offer = await ctx.payload.create({

@@ -87,7 +87,7 @@ export async function sendNewOfferAvailable() {
             payloadNotification: {
               title: "🎁 Nouvelle offre sur l’appli !",
               message: `${offer.partner.name} ${offer?.title}, maintenant disponible sur l’appli`,
-              url: `${getBaseUrl()}/dashboard/offer/${offer.id}`,
+              url: `${getBaseUrl()}/dashboard/offer/${offer.source}/${offer.id}`,
               slug,
             },
           });

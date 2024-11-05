@@ -21,6 +21,9 @@ export const ZObizPartner = z.object({
 export const ZObizArticle = z.object({
   available: z.boolean(),
   name: z.string(),
+  description: z.string().optional(),
+  image_url: z.string().optional(),
+  image: z.number().optional(),
   reference: z.string(),
   reductionPercentage: z.number(),
   validityTo: z.string(),
@@ -34,6 +37,7 @@ export const ZObizArticle = z.object({
 
 export const ZObizOffer = z.object({
   title: z.string(),
+  description: z.string().optional(),
   formatedTitle: z.string(),
   obiz_id: z.string().uuid(),
   categories: z.array(z.string()),
