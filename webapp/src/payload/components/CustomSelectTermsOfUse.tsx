@@ -5,6 +5,27 @@ import React from "react";
 export const getItemsTermsOfUse = (offerKind: Offer["kind"]) => {
   const items: { text: string; slug: string; icon: string }[] = [];
 
+  if (offerKind === "code_obiz") {
+    return [
+      {
+        text: "Choisissez la valeur de votre bon d’achat",
+        slug: "code-value",
+      },
+      {
+        text: "Achetez votre bon d’achat avec la réduction",
+        slug: "code-buy",
+      },
+      {
+        text: "Votre bon d’achat est disponible dans l’appli",
+        slug: "code-inapp",
+      },
+      {
+        text: "Au moment du paiement, vous pouvez payer tout ou une partie avec votre bon d’achat",
+        slug: "code-paywith",
+      },
+    ];
+  }
+
   if (offerKind.startsWith("code")) {
     const defaultCodeItems = [
       {

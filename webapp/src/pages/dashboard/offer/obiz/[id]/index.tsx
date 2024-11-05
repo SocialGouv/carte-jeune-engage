@@ -1,13 +1,34 @@
-import { Button, Center, Flex, Icon, Tag, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Heading,
+  Icon,
+  Link,
+  ListItem,
+  OrderedList,
+  Tag,
+  Text,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useMemo, useState } from "react";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
+import { StackItem } from "~/components/offer/StackItems";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
+import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
+import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { api } from "~/utils/api";
+import ReactIcon from "~/utils/dynamicIcon";
+import { cleanHtml } from "~/utils/tools";
 
 export default function OfferObizPage() {
   const router = useRouter();
+
+  const [isDescriptionCollapsed, setIsDescriptionCollapsed] = useState(true);
 
   const { id } = router.query as {
     id: string;
@@ -20,6 +41,16 @@ export default function OfferObizPage() {
     );
 
   const { data: offer } = resultOffer || {};
+
+  const itemsTermsOfUse = useMemo(() => {
+    if (!offer) return [];
+    return getItemsTermsOfUse(offer.kind);
+  }, [offer]);
+
+  const offerConditionBlocks = useMemo(() => {
+    if (!offer) return [];
+    return getItemsConditionBlocks(offer.kind) as StackItem[];
+  }, [offer]);
 
   if (isLoadingOffer || !router.isReady) {
     return (
@@ -35,7 +66,7 @@ export default function OfferObizPage() {
   }
 
   return (
-    <Flex direction={"column"}>
+    <Flex direction={"column"} position="relative">
       <Flex
         bg={offer.partner.color}
         px={8}
@@ -75,11 +106,133 @@ export default function OfferObizPage() {
         </Flex>
       </Flex>
 
-      <Flex direction={"column"} p={8} gap={4}>
-        <Text textAlign={"center"} fontSize={"2xl"} fontWeight={700}>
+      <Flex direction={"column"} px={4} py={8} gap={8}>
+        <Text textAlign={"center"} fontSize={"2xl"} fontWeight={700} mb={2}>
           {offer.partner.name}
         </Text>
-        <Button colorScheme="blackBtn" mt={4}>
+        <Button colorScheme="blackBtn" mx={4}>
+          Acheter un bon
+        </Button>
+      </Flex>
+      {offerConditionBlocks.length > 0 && (
+        <Flex
+          gap={3}
+          w="full"
+          h="max-content"
+          py={1}
+          px={4}
+          pl={4}
+          overflowX="scroll"
+          sx={{
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
+        >
+          {offerConditionBlocks.map(({ text, icon }, index) => (
+            <Flex
+              key={text}
+              position="relative"
+              minW="43%"
+              flexDir="column"
+              alignItems="center"
+              justifyContent="center"
+              py={4}
+              px={6}
+            >
+              <Box
+                position="absolute"
+                inset={0}
+                bg="bgGray"
+                zIndex={1}
+                borderRadius="3xl"
+                transform={`rotate(${index % 2 === 0 ? 3 : -2}deg)`}
+              />
+              <Box p={4} bg="white" borderRadius="full" zIndex={2}>
+                {typeof icon === "string" && (
+                  <ReactIcon icon={icon} size={24} color="inherit" />
+                )}
+              </Box>
+              <Text fontWeight={500} textAlign="center" mt={2} zIndex={2}>
+                {text}
+              </Text>
+            </Flex>
+          ))}
+        </Flex>
+      )}
+
+      <Flex direction={"column"} px={4} pb={8} gap={8}>
+        <Flex flexDir="column" mt={10}>
+          <Text fontWeight="extrabold" fontSize={20}>
+            Le{" "}
+            <Tag fontWeight="extrabold" fontSize={20} py={1} rounded={"xl"}>
+              <BarcodeIcon mr={2} w={6} h={6} /> Bon d'achat
+            </Tag>
+            <br />
+            Comment ça marche ?
+          </Text>
+          <OrderedList
+            fontWeight={500}
+            styleType="none"
+            ml={2}
+            pr={4}
+            css={{
+              counterReset: "item",
+            }}
+          >
+            {itemsTermsOfUse.map((termOfUse) => (
+              <ListItem
+                key={termOfUse.text}
+                mb={2}
+                mt={4}
+                display="flex"
+                alignItems="center"
+                css={{
+                  counterIncrement: "item",
+                  "&::before": {
+                    content: 'counter(item) "."',
+                    marginRight: "1rem",
+                    fontWeight: 900,
+                    display: "inline-block",
+                  },
+                }}
+              >
+                <Text dangerouslySetInnerHTML={{ __html: termOfUse.text }} />
+              </ListItem>
+            ))}
+          </OrderedList>
+        </Flex>
+        {offer.description && (
+          <>
+            <Divider />
+            <Flex direction={"column"} gap={2}>
+              <Heading size="md" fontWeight={800}>
+                Description détaillée
+              </Heading>
+              <Text
+                noOfLines={isDescriptionCollapsed ? 4 : undefined}
+                dangerouslySetInnerHTML={{
+                  __html: isDescriptionCollapsed
+                    ? cleanHtml(offer.description)
+                    : offer.description,
+                }}
+              />
+              {isDescriptionCollapsed && (
+                <Link
+                  fontWeight={700}
+                  textDecoration={"underline"}
+                  onClick={() => setIsDescriptionCollapsed(false)}
+                >
+                  Lire toute la description
+                </Link>
+              )}
+            </Flex>
+          </>
+        )}
+      </Flex>
+
+      <Flex position={"sticky"} bottom={0} p={4} pb={6} bg="white">
+        <Button colorScheme="blackBtn" w="full">
           Acheter un bon
         </Button>
       </Flex>
