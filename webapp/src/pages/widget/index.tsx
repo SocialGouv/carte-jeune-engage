@@ -19,7 +19,7 @@ export default function Widget() {
       page: 1,
       perPage: 10,
       sort: "partner.name",
-      kinds: ["code", "code_space"],
+      kinds: ["code", "code_obiz", "code_space"],
     });
 
   const { data: resultOffersInStore } =

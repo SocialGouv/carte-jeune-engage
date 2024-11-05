@@ -235,7 +235,15 @@ export const offerRouter = createTRPCRouter({
           tagIds: z.array(z.number()).optional(),
           categoryId: z.number().optional(),
           kinds: z
-            .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
+            .array(
+              z.enum([
+                "code",
+                "code_space",
+                "code_obiz",
+                "voucher",
+                "voucher_pass",
+              ])
+            )
             .optional(),
           searchOnPartner: z.string().optional(),
         })
