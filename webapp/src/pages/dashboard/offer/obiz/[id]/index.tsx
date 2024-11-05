@@ -229,6 +229,20 @@ export default function OfferObizPage() {
             </Flex>
           </>
         )}
+        <Divider />
+        <Text color="disabled" fontSize="sm">
+          Pour plus d’informations sur cette offre veuillez consulter{" "}
+          <Link
+            href="https://obiz.fr/medias/upload/pdf/cgv_reducce-obiz.pdf"
+            target="_blank"
+            color="primary"
+            textDecor={"underline"}
+            fontWeight={700}
+          >
+            les conditions générales de vente et d’utilisation
+          </Link>{" "}
+          de notre partenaire.
+        </Text>
       </Flex>
 
       <Flex position={"sticky"} bottom={0} p={4} pb={6} bg="white">
