@@ -332,6 +332,7 @@ export const offerRouter = createTRPCRouter({
 
       const where: Where = {
         id: { equals: id },
+        published: { equals: true },
       };
 
       if (source) {

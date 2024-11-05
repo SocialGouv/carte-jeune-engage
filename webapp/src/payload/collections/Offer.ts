@@ -102,6 +102,16 @@ export const Offers: CollectionConfig = {
       required: true,
     },
     {
+      type: "checkbox",
+      name: "published",
+      label: "Publiée",
+      required: true,
+      defaultValue: true,
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
       type: "select",
       name: "source",
       label: "Source",

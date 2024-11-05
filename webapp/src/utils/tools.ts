@@ -56,6 +56,9 @@ export const payloadWhereOfferIsValid = (prefix?: string): Where => {
   return {
     and: [
       {
+        [`${finalPrefix}published`]: { equals: true },
+      },
+      {
         [`${finalPrefix}validityTo`]: {
           greater_than_equal: `${nowDate}T00:00:00.000`,
         },
