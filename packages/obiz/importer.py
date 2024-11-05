@@ -69,13 +69,13 @@ class DataImporter:
         partner_name = sousgenre.get('sousgenres_nom', '')
 
         if len(reduction_percentages) == 0:
-            offer['title'] = f"Offre chez {partner_name}"
+            offer['title'] = f"Offre"
         elif len(reduction_percentages) == 1:
-            offer['title'] = f"-{int(reduction_percentages[0])}% chez {partner_name}"
+            offer['title'] = f"-{int(reduction_percentages[0])}%"
         else:
             min_reduction = int(min(reduction_percentages))
             max_reduction = int(max(reduction_percentages))
-            offer['title'] = f"Entre -{min_reduction}% et -{max_reduction}% chez {partner_name}"
+            offer['title'] = f"Entre -{min_reduction}% et -{max_reduction}%"
 
         offer['formatedTitle'] = offer['title']
 
@@ -148,6 +148,7 @@ class DataImporter:
         """
         return {
             "obiz_id": sousgenre.get('sousgenres_id'),
+            "description": (sousgenre.get('sousgenres_descriptif') or {}).get('#cdata-section', ''),
             "categories": [self.genre_mapper.get_category(genre.get('genres_nom'))],
             "source": "obiz",
             "kind": "code_obiz",
@@ -167,12 +168,14 @@ class DataImporter:
 
         offerArticle = {
             "name": article.get('articles_nom'),
+            "description":  (article.get('articles_descriptif') or {}).get('#cdata-section', ''),
             "available": article.get('articles_actif') == 'True',
             "reference": article.get('articles_code'),
             "reductionPercentage": self.convert_french_number(article.get('articles_remise_btob')),
             "validityTo": convert_date_format(article.get('articles_date_fin')),
             "kind": articleKind,
-            "obizJson": json.dumps(article)
+            "image_url": article.get('articles_image'),
+            "obizJson": json.dumps(article),
         }
 
         if articleKind == "variable_price":

@@ -17,7 +17,7 @@ const flipVariants = {
   exit: { rotateY: -90 },
 };
 
-export default function OfferPage() {
+export default function OfferCjePage() {
   const router = useRouter();
 
   const { id } = router.query as {
@@ -26,7 +26,7 @@ export default function OfferPage() {
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
     api.offer.getById.useQuery(
-      { id: parseInt(id) },
+      { id: parseInt(id), source: "cje" },
       { enabled: id !== undefined }
     );
 
@@ -142,7 +142,7 @@ export default function OfferPage() {
     }
   }, [router.isReady, isLoadingCoupon]);
 
-  if (isLoadingOffer || isLoadingCoupon || !offer || !router.isReady)
+  if (isLoadingOffer || isLoadingCoupon || !router.isReady)
     return (
       <OfferHeaderWrapper
         kind="offer"
@@ -154,6 +154,11 @@ export default function OfferPage() {
         </Center>
       </OfferHeaderWrapper>
     );
+
+  if (!offer) {
+    router.replace("/dashboard");
+    return;
+  }
 
   return (
     <OfferHeaderWrapper

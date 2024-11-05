@@ -215,11 +215,13 @@ export interface Offer {
   title: string;
   formatedTitle?: string | null;
   subtitle?: string | null;
+  description?: string | null;
   partner: number | Partner;
   category: (number | Category)[];
   tags?: (number | Tag)[] | null;
   validityFrom?: string | null;
   validityTo: string;
+  published: boolean;
   source: "cje" | "obiz";
   obiz_id?: string | null;
   kind: string;
@@ -251,8 +253,11 @@ export interface Offer {
     | null;
   articles?:
     | {
+        available: boolean;
+        image?: number | Media | null;
         name: string;
         reference: string;
+        description?: string | null;
         reductionPercentage: number;
         validityTo: string;
         kind: "variable_price" | "fixed_price";

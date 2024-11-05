@@ -67,7 +67,7 @@ export async function sendReminderAuchan() {
             message:
               "10% chez Auchan Sarcelles expire dans 10j. Activez l’offre et rendez-vous au Auchan de Sarcelles pour en profiter.",
             slug,
-            url: `${getBaseUrl()}/dashboard/offer/${auchanCurrentOffer.id}`,
+            url: `${getBaseUrl()}/dashboard/offer/cje/${auchanCurrentOffer.id}`,
           },
         }
       );

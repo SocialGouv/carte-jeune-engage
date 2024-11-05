@@ -190,6 +190,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const caller = createCaller({
       payload,
       session: null,
+      soapObizClient: null,
       req: context.req as NextApiRequest,
     });
 

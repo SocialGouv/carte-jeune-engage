@@ -26,7 +26,12 @@ const ObizIntegration = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const payload = await getPayloadClient({ seed: false });
     const createCaller = createCallerFactory(appRouter);
-    const caller = createCaller({ payload, session: null, req });
+    const caller = createCaller({
+      payload,
+      session: null,
+      soapObizClient: null,
+      req,
+    });
 
     const result = await caller.offer.insertObizOffers({
       obiz_offers,

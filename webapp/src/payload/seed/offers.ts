@@ -13,6 +13,7 @@ export async function seedOffers(payload: Payload) {
     {
       title: "15% de réduction sur les produits alimentaire",
       partner: partners.findIndex((partner) => partner.name === "Cora") + 1,
+      published: true,
       category: [
         categories.findIndex((category) => category.slug === "shop") + 1,
       ],
@@ -23,6 +24,7 @@ export async function seedOffers(payload: Payload) {
     {
       title: "10% de réduction sur plus de 50 produits alimentaire",
       partner: partners.findIndex((partner) => partner.name === "Lidl") + 1,
+      published: true,
       category: [
         categories.findIndex((category) => category.slug === "shop") + 1,
       ],
@@ -33,6 +35,7 @@ export async function seedOffers(payload: Payload) {
     {
       title: "10% de réduction les produits alimentaire",
       partner: partners.findIndex((partner) => partner.name === "Auchan") + 1,
+      published: true,
       category: [
         categories.findIndex((category) => category.slug === "shop") + 1,
       ],
@@ -43,6 +46,7 @@ export async function seedOffers(payload: Payload) {
     {
       title: "10% de réduction sur l’ensemble des billets en France et Europe",
       partner: partners.findIndex((partner) => partner.name === "Flixbus") + 1,
+      published: true,
       category: [
         categories.findIndex((category) => category.slug === "mobility") + 1,
       ],

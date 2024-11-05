@@ -61,7 +61,7 @@ export default function Wallet() {
                 <CouponCard
                   key={coupon.id}
                   coupon={coupon}
-                  link={`/dashboard/offer/${coupon.offer.id}?offerKind=coupon`}
+                  link={`/dashboard/offer/cje/${coupon.offer.id}?offerKind=coupon`}
                   mode="wallet"
                 />
               </Box>

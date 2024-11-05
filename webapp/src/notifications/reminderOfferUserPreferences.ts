@@ -109,7 +109,7 @@ export async function sendReminderOfferUserPreferences() {
           payloadNotification: {
             title: `${offer.partner.name} fait une offre 👀`,
             message: `Une réduction ${offer.title} disponible sur l’appli carte “jeune engagé”`,
-            url: `${getBaseUrl()}/dashboard/offer/${offer.id}`,
+            url: `${getBaseUrl()}/dashboard/offer/${offer.source}/${offer.id}`,
             slug,
           },
         }

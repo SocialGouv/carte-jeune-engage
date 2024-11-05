@@ -4,3 +4,4 @@
 cd webapp
 yarn lint
 yarn format
+git add -u
