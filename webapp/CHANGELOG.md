@@ -1,3 +1,10 @@
+## [0.51.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.51.0...v0.51.1) (2024-11-05)
+
+
+### Bug Fixes
+
+* generate types & published to false on obiz integration ([f816ca6](https://github.com/SocialGouv/carte-jeune-engage/commit/f816ca6d4e4abbcba74b23cb2a840259dc5d328b))
+
 # [0.51.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.50.1...v0.51.0) (2024-11-05)
 
 ### Bug Fixes
