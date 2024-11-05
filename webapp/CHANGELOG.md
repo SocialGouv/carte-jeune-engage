@@ -1,3 +1,10 @@
+## [0.51.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.51.1...v0.51.2) (2024-11-05)
+
+
+### Bug Fixes
+
+* seed offers published param ([ad7b8bf](https://github.com/SocialGouv/carte-jeune-engage/commit/ad7b8bfd8a5462946b27e64e30b5af413f1c6825))
+
 ## [0.51.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.51.0...v0.51.1) (2024-11-05)
 
 
