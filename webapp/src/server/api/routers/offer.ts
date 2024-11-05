@@ -318,6 +318,11 @@ export const offerRouter = createTRPCRouter({
       const offersFiltered = (
         offers.docs as OfferIncludedWithUserCoupon[]
       ).filter((offer, index) => {
+        if (offer.source === "obiz")
+          return (
+            offer.articles && !!offer.articles.filter((a) => a.available).length
+          );
+
         if (offer.kind === "voucher_pass" || offer.kind === "code_space")
           return true;
 
