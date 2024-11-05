@@ -12,12 +12,14 @@ const ObizOfferVariableContent = ({
   amount,
   setAmount,
   offer,
+  createOrder,
 }: {
   step: "amount" | "summary";
   setStep: Dispatch<SetStateAction<"amount" | "summary">>;
   amount: number;
   setAmount: Dispatch<SetStateAction<number>>;
   offer: OfferIncluded | undefined;
+  createOrder: any;
 }) => {
   switch (step) {
     case "amount":
@@ -44,7 +46,7 @@ const ObizOfferVariableContent = ({
           <Box mt={8}>
             <RecapOrder discount={5} amount={amount} offer={offer} />
           </Box>
-          <Button mt={10} onClick={() => {}}>
+          <Button mt={10} onClick={() => createOrder()}>
             Passer au paiement
           </Button>
         </>
@@ -55,6 +57,8 @@ const ObizOfferVariableContent = ({
 export default function ObizOfferVariable() {
   const [amount, setAmount] = useState(0);
   const [step, setStep] = useState<"amount" | "summary">("amount");
+
+  const { mutate: createTestOrder } = api.order.createOrder.useMutation();
 
   const { data: offerResult } = api.offer.getById.useQuery({
     id: 1,
@@ -70,6 +74,7 @@ export default function ObizOfferVariable() {
         amount={amount}
         setAmount={setAmount}
         offer={offer}
+        createOrder={createTestOrder}
       />
     </Flex>
   );
