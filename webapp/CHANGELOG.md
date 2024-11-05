@@ -1,3 +1,10 @@
+# [0.52.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.51.3...v0.52.0) (2024-11-05)
+
+
+### Features
+
+* obiz offers to widget ([ccdbdab](https://github.com/SocialGouv/carte-jeune-engage/commit/ccdbdabeff540ea2d59944fe666f7e9a629c2b2a))
+
 ## [0.51.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.51.2...v0.51.3) (2024-11-05)
 
 
