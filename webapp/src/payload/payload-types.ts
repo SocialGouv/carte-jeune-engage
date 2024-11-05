@@ -221,6 +221,7 @@ export interface Offer {
   tags?: (number | Tag)[] | null;
   validityFrom?: string | null;
   validityTo: string;
+  published: boolean;
   source: "cje" | "obiz";
   obiz_id?: string | null;
   kind: string;

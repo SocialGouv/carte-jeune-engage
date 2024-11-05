@@ -1,24 +1,22 @@
 # [0.51.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.50.1...v0.51.0) (2024-11-05)
 
-
 ### Bug Fixes
 
-* add offer published param ([9d593a9](https://github.com/SocialGouv/carte-jeune-engage/commit/9d593a92b08ef3a0748e0aff60e70071e3d49c2e))
-* add source type in route to offer ([b7bbfa9](https://github.com/SocialGouv/carte-jeune-engage/commit/b7bbfa9cb489bbc09cf38c36890680126879fd00))
-* add source type in route to offer ([4881580](https://github.com/SocialGouv/carte-jeune-engage/commit/48815804aeaab07f83ef172355252537cec16e48))
-* correct callers with soapObizClient to null ([f1b2211](https://github.com/SocialGouv/carte-jeune-engage/commit/f1b2211fc7d28dac5a600d2dd55199b2ea63298f))
-* husky pre-commit & format ([4eb5ed2](https://github.com/SocialGouv/carte-jeune-engage/commit/4eb5ed2e807e33115f251b339267e36bd21bf7be))
-* only obiz offer with available articles ([b142d48](https://github.com/SocialGouv/carte-jeune-engage/commit/b142d487123ffff4ee9b496f2cab10aa0d492864))
-* replace router offer not found ([b2b7526](https://github.com/SocialGouv/carte-jeune-engage/commit/b2b752693e5504c29735d20d19def09d85282b97))
-
+- add offer published param ([9d593a9](https://github.com/SocialGouv/carte-jeune-engage/commit/9d593a92b08ef3a0748e0aff60e70071e3d49c2e))
+- add source type in route to offer ([b7bbfa9](https://github.com/SocialGouv/carte-jeune-engage/commit/b7bbfa9cb489bbc09cf38c36890680126879fd00))
+- add source type in route to offer ([4881580](https://github.com/SocialGouv/carte-jeune-engage/commit/48815804aeaab07f83ef172355252537cec16e48))
+- correct callers with soapObizClient to null ([f1b2211](https://github.com/SocialGouv/carte-jeune-engage/commit/f1b2211fc7d28dac5a600d2dd55199b2ea63298f))
+- husky pre-commit & format ([4eb5ed2](https://github.com/SocialGouv/carte-jeune-engage/commit/4eb5ed2e807e33115f251b339267e36bd21bf7be))
+- only obiz offer with available articles ([b142d48](https://github.com/SocialGouv/carte-jeune-engage/commit/b142d487123ffff4ee9b496f2cab10aa0d492864))
+- replace router offer not found ([b2b7526](https://github.com/SocialGouv/carte-jeune-engage/commit/b2b752693e5504c29735d20d19def09d85282b97))
 
 ### Features
 
-* add cgv obiz part ([6f0fc57](https://github.com/SocialGouv/carte-jeune-engage/commit/6f0fc5770fb501226a09d8c782e71422ad00f624))
-* add more obiz fields & article images ([8dd81d9](https://github.com/SocialGouv/carte-jeune-engage/commit/8dd81d91bf604065a1d4c2f420affb88e97f024d))
-* begin obiz offer page ([4259929](https://github.com/SocialGouv/carte-jeune-engage/commit/4259929d75ba32f49365c076c132001fb6bcafe9))
-* finish obiz offer main page ([07dc42c](https://github.com/SocialGouv/carte-jeune-engage/commit/07dc42cb65e3eea05fd6d2c1f4a231efe4eaf229))
-* pages & requests offer by source ([d74b480](https://github.com/SocialGouv/carte-jeune-engage/commit/d74b480371e0f4b825143f3e6cdd1bea44f75f20))
+- add cgv obiz part ([6f0fc57](https://github.com/SocialGouv/carte-jeune-engage/commit/6f0fc5770fb501226a09d8c782e71422ad00f624))
+- add more obiz fields & article images ([8dd81d9](https://github.com/SocialGouv/carte-jeune-engage/commit/8dd81d91bf604065a1d4c2f420affb88e97f024d))
+- begin obiz offer page ([4259929](https://github.com/SocialGouv/carte-jeune-engage/commit/4259929d75ba32f49365c076c132001fb6bcafe9))
+- finish obiz offer main page ([07dc42c](https://github.com/SocialGouv/carte-jeune-engage/commit/07dc42cb65e3eea05fd6d2c1f4a231efe4eaf229))
+- pages & requests offer by source ([d74b480](https://github.com/SocialGouv/carte-jeune-engage/commit/d74b480371e0f4b825143f3e6cdd1bea44f75f20))
 
 ## [0.50.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.50.0...v0.50.1) (2024-11-04)
 

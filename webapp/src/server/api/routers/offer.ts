@@ -545,6 +545,7 @@ export const offerRouter = createTRPCRouter({
             collection: "offers",
             data: {
               ...obiz_offer,
+              published: false,
               partner: partner.id,
               category: category_ids,
             },
