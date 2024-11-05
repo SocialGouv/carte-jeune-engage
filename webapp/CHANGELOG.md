@@ -1,3 +1,10 @@
+## [0.51.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.51.2...v0.51.3) (2024-11-05)
+
+
+### Bug Fixes
+
+* images of partners issues ([380cb7a](https://github.com/SocialGouv/carte-jeune-engage/commit/380cb7a00f1136e29f8acf337b7c4ff1dd310663))
+
 ## [0.51.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.51.1...v0.51.2) (2024-11-05)
 
 ### Bug Fixes
