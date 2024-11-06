@@ -1,7 +1,6 @@
 import { IOptions } from "soap";
 
-export const obiz_soap_client_url =
-  "https://webservices-test.reducce.fr/Partenaire.svc?wsdl";
+export const obiz_soap_client_url = process.env.OBIZ_SOAP_URL;
 
 function parseMultipartResponse(data: string) {
   // Find the XML content between the MIME boundaries

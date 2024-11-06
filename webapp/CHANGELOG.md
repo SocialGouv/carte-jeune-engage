@@ -1,48 +1,45 @@
 # [0.53.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.52.2...v0.53.0) (2024-11-06)
 
-
 ### Bug Fixes
 
-* add disabled button in amount validation ([be7b954](https://github.com/SocialGouv/carte-jeune-engage/commit/be7b9542ca7215d0580497faec45f9a65ed15af6))
-* add loading component in order process modal ([a9d0e20](https://github.com/SocialGouv/carte-jeune-engage/commit/a9d0e2099e6df2f2c6b2a4f9b5ad634dd3360096))
-* begin component summary of order and enhance discount amount blocks ([0b2e0af](https://github.com/SocialGouv/carte-jeune-engage/commit/0b2e0af7153c1ac8cc883965451b6eb7fb0b7eb0))
-* begin fixed_price in order process modal ([9e7c3ac](https://github.com/SocialGouv/carte-jeune-engage/commit/9e7c3acada4ac52d478c1ac005c2ddfd5b2d231b))
-* code_obiz to instore section ([83f9a6a](https://github.com/SocialGouv/carte-jeune-engage/commit/83f9a6a579fc313483f9fe607ddc0f786709dba2))
-* correct build issue ([d671d8b](https://github.com/SocialGouv/carte-jeune-engage/commit/d671d8b5707560e294074ca45c7ab6419082023b))
-* handle kind fixed_price in recapt order component ([397ada6](https://github.com/SocialGouv/carte-jeune-engage/commit/397ada6b0f9118680054e4b8a7992034e283dbe6))
-* handle obiz route order with multiple articles with quantity ([2744ce2](https://github.com/SocialGouv/carte-jeune-engage/commit/2744ce262ffebcb648faff715b8dc9603ea649b7))
-* insert ligne commande obiz ([5d6887e](https://github.com/SocialGouv/carte-jeune-engage/commit/5d6887e0ef8500ae90216f3ac7282c080d4431bc))
-* logs ([3e42031](https://github.com/SocialGouv/carte-jeune-engage/commit/3e42031f9015099b357a9c7cbe4fb97ba0a928b5))
-* not delivred order state ([cd27c5f](https://github.com/SocialGouv/carte-jeune-engage/commit/cd27c5f5c12676a623df802fc9b8a1dad7e3dc34))
-* put publicPrice instead of discount price in order table ([954ceff](https://github.com/SocialGouv/carte-jeune-engage/commit/954ceff58502aa81d41e1ad909eb0ba2457d487f))
-
+- add disabled button in amount validation ([be7b954](https://github.com/SocialGouv/carte-jeune-engage/commit/be7b9542ca7215d0580497faec45f9a65ed15af6))
+- add loading component in order process modal ([a9d0e20](https://github.com/SocialGouv/carte-jeune-engage/commit/a9d0e2099e6df2f2c6b2a4f9b5ad634dd3360096))
+- begin component summary of order and enhance discount amount blocks ([0b2e0af](https://github.com/SocialGouv/carte-jeune-engage/commit/0b2e0af7153c1ac8cc883965451b6eb7fb0b7eb0))
+- begin fixed_price in order process modal ([9e7c3ac](https://github.com/SocialGouv/carte-jeune-engage/commit/9e7c3acada4ac52d478c1ac005c2ddfd5b2d231b))
+- code_obiz to instore section ([83f9a6a](https://github.com/SocialGouv/carte-jeune-engage/commit/83f9a6a579fc313483f9fe607ddc0f786709dba2))
+- correct build issue ([d671d8b](https://github.com/SocialGouv/carte-jeune-engage/commit/d671d8b5707560e294074ca45c7ab6419082023b))
+- handle kind fixed_price in recapt order component ([397ada6](https://github.com/SocialGouv/carte-jeune-engage/commit/397ada6b0f9118680054e4b8a7992034e283dbe6))
+- handle obiz route order with multiple articles with quantity ([2744ce2](https://github.com/SocialGouv/carte-jeune-engage/commit/2744ce262ffebcb648faff715b8dc9603ea649b7))
+- insert ligne commande obiz ([5d6887e](https://github.com/SocialGouv/carte-jeune-engage/commit/5d6887e0ef8500ae90216f3ac7282c080d4431bc))
+- logs ([3e42031](https://github.com/SocialGouv/carte-jeune-engage/commit/3e42031f9015099b357a9c7cbe4fb97ba0a928b5))
+- not delivred order state ([cd27c5f](https://github.com/SocialGouv/carte-jeune-engage/commit/cd27c5f5c12676a623df802fc9b8a1dad7e3dc34))
+- put publicPrice instead of discount price in order table ([954ceff](https://github.com/SocialGouv/carte-jeune-engage/commit/954ceff58502aa81d41e1ad909eb0ba2457d487f))
 
 ### Features
 
-* add order relation to offer ([5dec206](https://github.com/SocialGouv/carte-jeune-engage/commit/5dec2068e0834690d59e923e8a313069bf63c9cd))
-* add orders to wallet view ([d283218](https://github.com/SocialGouv/carte-jeune-engage/commit/d2832182ff4f02a442738591f184c018fdd1235a))
-* add PDF generation & save on sync ([5c4c479](https://github.com/SocialGouv/carte-jeune-engage/commit/5c4c479f188ea09d66bae5b1c0a06dca690efbe1))
-* begin component discount amount blocks for order kind of offer ([bc6d2d0](https://github.com/SocialGouv/carte-jeune-engage/commit/bc6d2d030f473d7b63b873e94804ba37d6a67f58))
-* begin order obiz creation ([40f155c](https://github.com/SocialGouv/carte-jeune-engage/commit/40f155cd9073e482e97f88fe7261aa31aed7825a))
-* create obiz commande ([16fc470](https://github.com/SocialGouv/carte-jeune-engage/commit/16fc4701f741cb153fef1668f1d4ed5987430015))
-* download and show pdf ([6f06798](https://github.com/SocialGouv/carte-jeune-engage/commit/6f06798d9cec1689eec8038d93b1bd2f981bf7a5))
-* GET_BILLETS soap call ([908ea3c](https://github.com/SocialGouv/carte-jeune-engage/commit/908ea3c38f315d09c614b24b95d62a500d20621d))
-* handle order with multiple articles with quantity ([a5a06d5](https://github.com/SocialGouv/carte-jeune-engage/commit/a5a06d594ef55390dc1914a3bf85b9d29bad3076))
-* handle sync order if not delivered ([bae0f1b](https://github.com/SocialGouv/carte-jeune-engage/commit/bae0f1bf2e00d974e46552924e5b4ca63e42bbc9))
-* history page - handle new order schema ([c056793](https://github.com/SocialGouv/carte-jeune-engage/commit/c0567936f9a4fd0825ef9c02c76439205033229a))
-* order collection & creation ([74bb61c](https://github.com/SocialGouv/carte-jeune-engage/commit/74bb61c239ab4f3ba8b9241f72765f0cabb9599e))
-* order page instance ([65f853a](https://github.com/SocialGouv/carte-jeune-engage/commit/65f853aebe2bcdedbc6a78a86bdabd638a73c28d))
-* order page integration ([88717b7](https://github.com/SocialGouv/carte-jeune-engage/commit/88717b707276decaf008cf18b43f9ae74532bddf))
-* put order process modal in offer obiz page and redirect to payment link ([92f9735](https://github.com/SocialGouv/carte-jeune-engage/commit/92f9735b7936730a9b3c8a0356bcda924bf5fd24))
-* synchronizeOrder route with obiz SOAP service ([c1bb349](https://github.com/SocialGouv/carte-jeune-engage/commit/c1bb34906c0b4bea087810e76274301f2f1432d8))
+- add order relation to offer ([5dec206](https://github.com/SocialGouv/carte-jeune-engage/commit/5dec2068e0834690d59e923e8a313069bf63c9cd))
+- add orders to wallet view ([d283218](https://github.com/SocialGouv/carte-jeune-engage/commit/d2832182ff4f02a442738591f184c018fdd1235a))
+- add PDF generation & save on sync ([5c4c479](https://github.com/SocialGouv/carte-jeune-engage/commit/5c4c479f188ea09d66bae5b1c0a06dca690efbe1))
+- begin component discount amount blocks for order kind of offer ([bc6d2d0](https://github.com/SocialGouv/carte-jeune-engage/commit/bc6d2d030f473d7b63b873e94804ba37d6a67f58))
+- begin order obiz creation ([40f155c](https://github.com/SocialGouv/carte-jeune-engage/commit/40f155cd9073e482e97f88fe7261aa31aed7825a))
+- create obiz commande ([16fc470](https://github.com/SocialGouv/carte-jeune-engage/commit/16fc4701f741cb153fef1668f1d4ed5987430015))
+- download and show pdf ([6f06798](https://github.com/SocialGouv/carte-jeune-engage/commit/6f06798d9cec1689eec8038d93b1bd2f981bf7a5))
+- GET_BILLETS soap call ([908ea3c](https://github.com/SocialGouv/carte-jeune-engage/commit/908ea3c38f315d09c614b24b95d62a500d20621d))
+- handle order with multiple articles with quantity ([a5a06d5](https://github.com/SocialGouv/carte-jeune-engage/commit/a5a06d594ef55390dc1914a3bf85b9d29bad3076))
+- handle sync order if not delivered ([bae0f1b](https://github.com/SocialGouv/carte-jeune-engage/commit/bae0f1bf2e00d974e46552924e5b4ca63e42bbc9))
+- history page - handle new order schema ([c056793](https://github.com/SocialGouv/carte-jeune-engage/commit/c0567936f9a4fd0825ef9c02c76439205033229a))
+- order collection & creation ([74bb61c](https://github.com/SocialGouv/carte-jeune-engage/commit/74bb61c239ab4f3ba8b9241f72765f0cabb9599e))
+- order page instance ([65f853a](https://github.com/SocialGouv/carte-jeune-engage/commit/65f853aebe2bcdedbc6a78a86bdabd638a73c28d))
+- order page integration ([88717b7](https://github.com/SocialGouv/carte-jeune-engage/commit/88717b707276decaf008cf18b43f9ae74532bddf))
+- put order process modal in offer obiz page and redirect to payment link ([92f9735](https://github.com/SocialGouv/carte-jeune-engage/commit/92f9735b7936730a9b3c8a0356bcda924bf5fd24))
+- synchronizeOrder route with obiz SOAP service ([c1bb349](https://github.com/SocialGouv/carte-jeune-engage/commit/c1bb34906c0b4bea087810e76274301f2f1432d8))
 
 ## [0.52.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.52.1...v0.52.2) (2024-11-06)
 
-
 ### Bug Fixes
 
-* border and zindex of bottom sticky section obiz offer ([ab4f95a](https://github.com/SocialGouv/carte-jeune-engage/commit/ab4f95a29b77c538e1e70df6b9ef4bf11d53edc2))
-* image partner issue preprod ([1f9dbe7](https://github.com/SocialGouv/carte-jeune-engage/commit/1f9dbe7eda6678fdb624c1a897529a5eee709eb8))
+- border and zindex of bottom sticky section obiz offer ([ab4f95a](https://github.com/SocialGouv/carte-jeune-engage/commit/ab4f95a29b77c538e1e70df6b9ef4bf11d53edc2))
+- image partner issue preprod ([1f9dbe7](https://github.com/SocialGouv/carte-jeune-engage/commit/1f9dbe7eda6678fdb624c1a897529a5eee709eb8))
 
 ## [0.52.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.52.0...v0.52.1) (2024-11-05)
 
