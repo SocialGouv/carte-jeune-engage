@@ -99,8 +99,8 @@ export default function ObizOrderProcessModal(
 
   const { mutate: createTestOrder } = api.order.createOrder.useMutation({
     onMutate: () => setStep("payment"),
-    onSuccess: ({ data: paymentLink }) => {
-      window.location.href = paymentLink;
+    onSuccess: ({ data: { payment_url } }) => {
+      if (payment_url) window.location.href = payment_url;
     },
   });
 
