@@ -29,9 +29,9 @@ interface DiscountAmountBlockVariable extends DefaultProps {
 interface DiscountAmountBlockFixed extends DefaultProps {
   kind: "fixed_price";
   articles: OfferArticle[];
-  selectedArticles: { reference: string; quantity: number }[];
+  selectedArticles: { article: OfferArticle; quantity: number }[];
   setSelectedArticles: Dispatch<
-    SetStateAction<{ reference: string; quantity: number }[]>
+    SetStateAction<{ article: OfferArticle; quantity: number }[]>
   >;
 }
 
@@ -143,7 +143,7 @@ const DiscountAmountBlock = (props: DiscountAmountBlockProps) => {
         <Box mt={8} w="full">
           {props.articles.map((article, index) => {
             const selectedArticle = props.selectedArticles.find(
-              (a) => a.reference === article.reference
+              (a) => a.article.reference === article.reference
             );
             const quantity = selectedArticle?.quantity || 0;
             return (
@@ -178,7 +178,7 @@ const DiscountAmountBlock = (props: DiscountAmountBlockProps) => {
                         if (quantity === 0) return;
                         props.setSelectedArticles((prev) =>
                           prev.map((a) =>
-                            a.reference === article.reference
+                            a.article.reference === article.reference
                               ? { ...a, quantity: a.quantity - 1 }
                               : a
                           )
@@ -203,10 +203,10 @@ const DiscountAmountBlock = (props: DiscountAmountBlockProps) => {
                         if (quantity === 5) return;
                         props.setSelectedArticles((prev) => [
                           ...prev.filter(
-                            (a) => a.reference !== article.reference
+                            (a) => a.article.reference !== article.reference
                           ),
                           {
-                            reference: article.reference,
+                            article,
                             quantity: quantity + 1,
                           },
                         ]);

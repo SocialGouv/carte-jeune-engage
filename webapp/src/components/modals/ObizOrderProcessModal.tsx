@@ -34,16 +34,19 @@ const ObizOfferVariableContent = ({
   amount: number;
   setAmount: Dispatch<SetStateAction<number>>;
   articles: OfferArticle[];
-  selectedArticles?: { reference: string; quantity: number }[];
-  setSelectedArticles?: Dispatch<
-    SetStateAction<{ reference: string; quantity: number }[]>
+  selectedArticles: { article: OfferArticle; quantity: number }[];
+  setSelectedArticles: Dispatch<
+    SetStateAction<{ article: OfferArticle; quantity: number }[]>
   >;
   offer: OfferIncluded;
   createOrder: () => void;
 }) => {
+  const isVariablePrice =
+    articles.length === 1 && articles[0].kind === "variable_price";
+
   switch (step) {
     case "amount":
-      if (articles.length === 1 && articles[0].kind === "variable_price") {
+      if (isVariablePrice) {
         const article = articles[0];
         const minimumPrice = article.minimumPrice ?? 0;
         const maximumPrice = article.maximumPrice ?? 1000;
@@ -107,11 +110,22 @@ const ObizOfferVariableContent = ({
       return (
         <>
           <Box mt={10}>
-            <RecapOrder
-              discount={articles[0].reductionPercentage}
-              amount={amount}
-              offer={offer}
-            />
+            {isVariablePrice ? (
+              <RecapOrder
+                kind="variable_price"
+                discount={articles[0].reductionPercentage}
+                amount={amount}
+                offer={offer}
+              />
+            ) : (
+              <RecapOrder
+                kind="fixed_price"
+                discount={articles[0].reductionPercentage}
+                articles={selectedArticles}
+                amount={amount}
+                offer={offer}
+              />
+            )}
           </Box>
           <Button mt={10} onClick={() => createOrder()} w="full">
             Passer au paiement
@@ -155,7 +169,7 @@ export default function ObizOrderProcessModal(
   const [amount, setAmount] = useState(0);
   const [step, setStep] = useState<Steps>("amount");
   const [selectedArticles, setSelectedArticles] = useState<
-    { reference: string; quantity: number }[]
+    { article: OfferArticle; quantity: number }[]
   >([]);
 
   const { mutate: createTestOrder } = api.order.createOrder.useMutation({
