@@ -91,11 +91,19 @@ export const orderRouter = createTRPCRouter({
           return {
             data: order,
           };
+        } else {
+          // Erreur dans la réponse SOAP
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "An error occurred from obiz SOAP web service",
+          });
         }
       } catch (error) {
         console.error(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An error occurred while creating the order",
+        });
       }
-
-      return { data: "Hello" };
     }),
 });
