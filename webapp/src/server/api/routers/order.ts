@@ -138,7 +138,7 @@ export const orderRouter = createTRPCRouter({
               articles: articles.map((article) => ({
                 article_reference: article.reference,
                 article_quantity: article.quantity,
-                article_montant: input_value || article.price || 0,
+                article_montant: input_value || article.publicPrice || 0,
               })),
             },
           });
