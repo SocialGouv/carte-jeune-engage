@@ -21,6 +21,20 @@ export const convertFrenchDateToEnglish = (
   return null;
 };
 
+export const formatDateToDDMMYYYY = (isoDate: string | Date): string => {
+  const date = new Date(isoDate);
+
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date format");
+  }
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
 export const getTodayFrenchDate = () => {
   const date = new Date();
   const frenchDate = date.toLocaleDateString("fr-FR", {
