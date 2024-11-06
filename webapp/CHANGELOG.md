@@ -1,3 +1,10 @@
+## [0.54.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.54.1...v0.54.2) (2024-11-06)
+
+
+### Bug Fixes
+
+* bottom section obiz offer zindex ([88ab0b9](https://github.com/SocialGouv/carte-jeune-engage/commit/88ab0b9a1722a24a0af25edee02368017c3ff0bf))
+
 ## [0.54.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.54.0...v0.54.1) (2024-11-06)
 
 
