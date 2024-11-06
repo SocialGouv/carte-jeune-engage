@@ -1,3 +1,11 @@
+## [0.54.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.54.0...v0.54.1) (2024-11-06)
+
+
+### Bug Fixes
+
+* amount to pay displayed ([c7373d2](https://github.com/SocialGouv/carte-jeune-engage/commit/c7373d255da6aec88324bb9921f5455422022516))
+* change obiz file prefix for importer ([1176b81](https://github.com/SocialGouv/carte-jeune-engage/commit/1176b8148668645fff0f3eccaa9e86e9222ee1ea))
+
 # [0.54.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.53.0...v0.54.0) (2024-11-06)
 
 
