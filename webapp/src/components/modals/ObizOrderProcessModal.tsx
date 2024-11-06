@@ -41,6 +41,14 @@ const ObizOfferVariableContent = ({
 }) => {
   switch (step) {
     case "amount":
+      const minimumPrice = article.minimumPrice ?? 0;
+      const maximumPrice = article.maximumPrice ?? 1000;
+      const isDisabled =
+        amount === 0 ||
+        amount < minimumPrice ||
+        amount > maximumPrice ||
+        amount % 1 !== 0;
+
       return (
         <>
           <Box mt={10}>
@@ -48,11 +56,17 @@ const ObizOfferVariableContent = ({
               discount={article.reductionPercentage}
               amount={amount}
               setAmount={setAmount}
-              minAmount={article.minimumPrice || 0}
-              maxAmount={article.maximumPrice || 1000}
+              minAmount={minimumPrice}
+              maxAmount={maximumPrice}
             />
           </Box>
-          <Button mt="auto" mb={24} onClick={() => setStep("summary")} w="full">
+          <Button
+            mt="auto"
+            mb={24}
+            onClick={() => setStep("summary")}
+            w="full"
+            isDisabled={isDisabled}
+          >
             Acheter mon bon
           </Button>
         </>
