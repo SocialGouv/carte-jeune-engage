@@ -1,5 +1,6 @@
 import { User } from "~/payload/payload-types";
-import { extractAddressInformations } from "./tools";
+import { extractAddressInformations, getTodayFrenchDate } from "./tools";
+import { OfferArticle } from "~/server/types";
 
 var crypto = require("crypto");
 
@@ -82,6 +83,98 @@ export const createOrderPayload = (
         "",
         "", // url_retour_ok
         "", // url_retour_ko
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ],
+    },
+  };
+};
+
+export const insertItemPayload = (
+  orderNumber: string,
+  user: User,
+  article: OfferArticle,
+  kind: "CARTECADEAU" | "EBILLET",
+  amount?: number
+) => {
+  const signature = crypto
+    .createHash("sha512")
+    .update(
+      `${process.env.OBIZ_PARTNER_ID}+${orderNumber}+${process.env.OBIZ_SECRET}`
+    )
+    .digest("hex") as string;
+
+  const todayDate = getTodayFrenchDate();
+
+  return {
+    signature: signature,
+    LONGUEUR_TABLE_ARTICLE: 21,
+    TABLE_ARTICLES: {
+      string: [
+        article.reference,
+        1,
+        amount || article.price || 0,
+        "",
+        "",
+        "",
+        "",
+        article.reductionPercentage,
+        "",
+        "",
+        "",
+        "",
+        user.id.toString(), // skier_index
+        amount || "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ],
+    },
+    LONGUEUR_TABLE_EBILLETS: 7,
+    TABLE_EBILLETS: {
+      string: [
+        article.reference,
+        user.lastName || "Inconnu",
+        user.firstName || "Inconnu",
+        todayDate,
+        user.birthDate || "01/01/1970",
+        "",
+        user.id.toString(), // skier_index
+      ],
+    },
+    LONGUEUR_TABLE_FRAIS_GESTION: 28,
+    TABLE_FRAIS_GESTION: {
+      string: [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "",
         "",
         "",

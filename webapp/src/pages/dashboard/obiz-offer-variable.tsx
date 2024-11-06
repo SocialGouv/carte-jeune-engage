@@ -5,6 +5,7 @@ import DiscountAmountBlock from "~/components/obiz/DiscountAmountBlock";
 import RecapOrder from "~/components/obiz/RecapOrder";
 import BackButton from "~/components/ui/BackButton";
 import { OfferIncluded } from "~/server/api/routers/offer";
+import { OfferArticle } from "~/server/types";
 import { api } from "~/utils/api";
 
 const ObizOfferVariableContent = ({
@@ -20,9 +21,7 @@ const ObizOfferVariableContent = ({
   setStep: Dispatch<SetStateAction<"amount" | "summary">>;
   amount: number;
   setAmount: Dispatch<SetStateAction<number>>;
-  article: NonNullable<OfferIncluded["articles"]> extends Array<infer T>
-    ? T
-    : never;
+  article: OfferArticle;
   offer: OfferIncluded;
   createOrder: () => void;
 }) => {

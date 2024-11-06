@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
-import { createOrderPayload } from "~/utils/obiz";
+import { createOrderPayload, insertItemPayload } from "~/utils/obiz";
 
 export const orderRouter = createTRPCRouter({
   createOrder: userProtectedProcedure
@@ -36,18 +36,34 @@ export const orderRouter = createTRPCRouter({
         });
       }
 
-      const order_payload = createOrderPayload(user, "CARTECADEAU");
-
       try {
-        const [result] = await ctx.soapObizClient.CREATION_COMMANDE_ARRAYAsync({
-          CE_ID: process.env.OBIZ_PARTNER_ID,
-          ...order_payload,
-        });
-
+        // CREATION DE LA COMMANDE
+        const create_order_payload = createOrderPayload(user, "CARTECADEAU");
+        const [resultOrder] =
+          await ctx.soapObizClient.CREATION_COMMANDE_ARRAYAsync({
+            CE_ID: process.env.OBIZ_PARTNER_ID,
+            ...create_order_payload,
+          });
         const commandeNumero =
-          result.CREATION_COMMANDE_ARRAYResult.diffgram.NewDataSet.Commande
+          resultOrder.CREATION_COMMANDE_ARRAYResult.diffgram.NewDataSet.Commande
             .commandes_numero;
-        console.log("Commande number:", commandeNumero);
+
+        // INSERTION DE L'ARTICLE
+        const insert_item_payload = insertItemPayload(
+          commandeNumero,
+          user,
+          article,
+          "CARTECADEAU",
+          input_value
+        );
+        const [resultItem] =
+          await ctx.soapObizClient.INSERTION_LIGNE_COMMANDE_ARRAY_V4Async({
+            CE_ID: process.env.OBIZ_PARTNER_ID,
+            commandes_numero: commandeNumero,
+            ...insert_item_payload,
+          });
+
+        console.log(JSON.stringify(resultItem, null, 2));
       } catch (error) {
         console.error(error);
       }
