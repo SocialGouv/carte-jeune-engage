@@ -44,13 +44,14 @@ export const orderRouter = createTRPCRouter({
             CE_ID: process.env.OBIZ_PARTNER_ID,
             ...create_order_payload,
           });
-        const commandeNumero =
-          resultOrder.CREATION_COMMANDE_ARRAYResult.diffgram.NewDataSet.Commande
-            .commandes_numero;
+        const resultOrderObject =
+          resultOrder.CREATION_COMMANDE_ARRAYResult.diffgram.NewDataSet
+            .Commande;
+        const orderNumber = resultOrderObject.commandes_numero;
 
         // INSERTION DE L'ARTICLE
         const insert_item_payload = insertItemPayload(
-          commandeNumero,
+          orderNumber,
           user,
           article,
           "CARTECADEAU",
@@ -59,11 +60,38 @@ export const orderRouter = createTRPCRouter({
         const [resultItem] =
           await ctx.soapObizClient.INSERTION_LIGNE_COMMANDE_ARRAY_V4Async({
             CE_ID: process.env.OBIZ_PARTNER_ID,
-            commandes_numero: commandeNumero,
+            commandes_numero: orderNumber,
             ...insert_item_payload,
           });
+        const resultItemObject =
+          resultItem.INSERTION_LIGNE_COMMANDE_ARRAY_V4Result.diffgram.NewDataSet
+            .Commande;
+        const isOrderCompleted =
+          resultItemObject?.statut === "true" &&
+          Boolean(resultItemObject?.url_paiement);
 
-        console.log(JSON.stringify(resultItem, null, 2));
+        if (isOrderCompleted) {
+          const order = await ctx.payload.create({
+            collection: "orders",
+            data: {
+              number: orderNumber,
+              user: user.id,
+              status: "awaiting_payment",
+              payment_url: resultItemObject?.url_paiement,
+              articles: [
+                {
+                  article_reference: article.reference,
+                  article_quantity: 1,
+                  article_montant: input_value || article.price || 0,
+                },
+              ],
+            },
+          });
+
+          return {
+            data: order,
+          };
+        }
       } catch (error) {
         console.error(error);
       }
