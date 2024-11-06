@@ -54,6 +54,23 @@ export default function OrderObizPage() {
     return;
   }
 
+  const showPDF = () => {
+    if (order.ticket && typeof order.ticket === "object" && order.ticket.url) {
+      window.open(order.ticket.url, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const downloadPDF = () => {
+    if (order.ticket && typeof order.ticket === "object" && order.ticket.url) {
+      const link = document.createElement("a");
+      link.href = order.ticket.url;
+      link.download = "";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   return (
     <Flex
       minH="full"
@@ -134,7 +151,7 @@ export default function OrderObizPage() {
           </Flex>
           <Flex justifyContent={"center"} gap={8} mt={8}>
             <Box textAlign={"center"}>
-              <Button colorScheme="blackBtn" p={5} h="auto">
+              <Button colorScheme="blackBtn" p={5} h="auto" onClick={showPDF}>
                 <HiEye fontSize={24} />
               </Button>
               <Text fontWeight={900} fontSize="sm" mt={1}>
@@ -142,7 +159,13 @@ export default function OrderObizPage() {
               </Text>
             </Box>
             <Box textAlign={"center"}>
-              <Button colorScheme="blackBtn" flexGrow={0} p={5} h="auto">
+              <Button
+                colorScheme="blackBtn"
+                flexGrow={0}
+                p={5}
+                h="auto"
+                onClick={downloadPDF}
+              >
                 <MdOutlineFileDownload fontSize={24} />
               </Button>
               <Text fontWeight={900} fontSize="sm" mt={1}>
