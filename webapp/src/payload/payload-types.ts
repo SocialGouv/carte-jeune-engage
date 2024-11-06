@@ -23,6 +23,7 @@ export interface Config {
     tags: Tag;
     search_requests: SearchRequest;
     email_auth_tokens: EmailAuthToken;
+    orders: Order;
     "payload-preferences": PayloadPreference;
     "payload-migrations": PayloadMigration;
   };
@@ -352,6 +353,30 @@ export interface EmailAuthToken {
   user: number | User;
   token: string;
   expiration?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  number: number;
+  user: number | User;
+  offer: number | Offer;
+  ticket?: number | Media | null;
+  status: "awaiting_payment" | "payment_completed" | "delivered" | "archived";
+  obiz_status?: string | null;
+  payment_url?: string | null;
+  articles?:
+    | {
+        article_reference: string;
+        article_quantity: number;
+        article_montant: number;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }

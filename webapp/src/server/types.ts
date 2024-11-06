@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { OfferIncluded } from "./api/routers/offer";
 
 export const ZGetListParams = z.object({
   page: z.number(),
@@ -51,3 +52,6 @@ export const ZObizOffer = z.object({
 export type ObizOffer = z.infer<typeof ZObizOffer>;
 
 export type TGetListParams = z.infer<typeof ZGetListParams>;
+
+export type OfferArticle =
+  NonNullable<OfferIncluded["articles"]> extends Array<infer T> ? T : never;

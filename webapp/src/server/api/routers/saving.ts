@@ -26,10 +26,8 @@ export const savingRouter = createTRPCRouter({
           user: {
             equals: userId,
           },
-          ["offer.validityTo"]: {
-            less_than: new Date(new Date().setHours(23, 59, 59)).toISOString(),
-          },
         },
+        limit: 1000,
         sort: "-usedAt",
       });
 

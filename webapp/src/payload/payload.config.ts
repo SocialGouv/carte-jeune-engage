@@ -28,6 +28,7 @@ import { Notifications } from "./collections/Notification";
 import { Tags } from "./collections/Tag";
 import { SearchRequests } from "./collections/SearchRequest";
 import { EmailAuthTokens } from "./collections/EmailAuthToken";
+import { Orders } from "./collections/Order";
 
 const adapter = s3Adapter({
   config: {
@@ -84,6 +85,7 @@ export default buildConfig({
     Tags,
     SearchRequests,
     EmailAuthTokens,
+    Orders,
   ],
   localization: {
     locales: ["fr"],

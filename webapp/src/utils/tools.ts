@@ -12,17 +12,44 @@ export const convertFrenchDateToEnglish = (
     const [, day, month, year] = match.map(Number);
 
     if (year !== undefined && month !== undefined && day !== undefined) {
-      // Creating a Date object with a four-digit year
       const englishFormattedDate = new Date(2000 + year, month - 1, day);
 
-      // Using toISOString to get the date in ISO format (YYYY-MM-DD)
       return englishFormattedDate.toISOString().split("T")[0] || null;
     }
   }
 
-  // Return null if the input format is incorrect
   return null;
 };
+
+export const formatDateToDDMMYYYY = (isoDate: string | Date): string => {
+  const date = new Date(isoDate);
+
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date format");
+  }
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+export const getTodayFrenchDate = () => {
+  const date = new Date();
+  const frenchDate = date.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+  return frenchDate;
+};
+
+export const formatter2Digits = new Intl.NumberFormat("fr-FR", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
 export const frenchPhoneNumber = /^(?:\+33[1-9](\d{8})|(?!.*\+\d{2}).{10})$/;
 
@@ -231,4 +258,19 @@ export function cleanHtml(html: string): string {
     .replace(/<[^>]*>/g, "")
     .replace(/§BR§\s*§BR§+/g, "§BR§")
     .replace(/§BR§/g, "<br>");
+}
+
+export function extractAddressInformations(address: string) {
+  const regex = /^(.+?),\s*([^0-9]+?)\s+(\d+)$/;
+  const match = address.match(regex);
+
+  if (!match) {
+    throw new Error("Invalid address format");
+  }
+
+  return {
+    street_address: match[1].trim(),
+    city: match[2].trim(),
+    zip_code: match[3],
+  };
 }

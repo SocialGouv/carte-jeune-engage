@@ -11,11 +11,13 @@ import {
   OrderedList,
   Tag,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
+import ObizOrderProcessModal from "~/components/modals/ObizOrderProcessModal";
 import { StackItem } from "~/components/offer/StackItems";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
@@ -27,6 +29,12 @@ import { cleanHtml } from "~/utils/tools";
 
 export default function OfferObizPage() {
   const router = useRouter();
+
+  const {
+    isOpen: isOpenOrderProcessModal,
+    onOpen: onOpenOrderProcessModal,
+    onClose: onCloseOrderProcessModal,
+  } = useDisclosure();
 
   const [isDescriptionCollapsed, setIsDescriptionCollapsed] = useState(true);
 
@@ -110,7 +118,7 @@ export default function OfferObizPage() {
         <Text textAlign={"center"} fontSize={"2xl"} fontWeight={700} mb={2}>
           {offer.partner.name}
         </Text>
-        <Button colorScheme="blackBtn" mx={4}>
+        <Button colorScheme="blackBtn" mx={4} onClick={onOpenOrderProcessModal}>
           Acheter un bon
         </Button>
       </Flex>
@@ -244,7 +252,6 @@ export default function OfferObizPage() {
           de notre partenaire.
         </Text>
       </Flex>
-
       <Flex
         position={"sticky"}
         bottom={0}
@@ -255,10 +262,19 @@ export default function OfferObizPage() {
         borderTopColor={"gray.200"}
         zIndex={1}
       >
-        <Button colorScheme="blackBtn" w="full">
+        <Button
+          colorScheme="blackBtn"
+          w="full"
+          onClick={onOpenOrderProcessModal}
+        >
           Acheter un bon
         </Button>
       </Flex>
+      <ObizOrderProcessModal
+        isOpen={isOpenOrderProcessModal}
+        onClose={onCloseOrderProcessModal}
+        offerId={parseInt(id)}
+      />
     </Flex>
   );
 }
