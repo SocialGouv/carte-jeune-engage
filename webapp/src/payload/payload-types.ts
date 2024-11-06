@@ -364,6 +364,7 @@ export interface Order {
   id: number;
   number: number;
   user: number | User;
+  offer: number | Offer;
   status: "awaiting_payment" | "payment_completed" | "delivered" | "archived";
   obiz_status?: string | null;
   payment_url?: string | null;

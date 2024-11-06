@@ -30,6 +30,13 @@ export const Orders: CollectionConfig = {
       required: true,
     },
     {
+      name: "offer",
+      type: "relationship",
+      label: "Offre",
+      relationTo: "offers",
+      required: true,
+    },
+    {
       name: "status",
       type: "select",
       label: "État",

@@ -76,6 +76,7 @@ export const orderRouter = createTRPCRouter({
             data: {
               number: orderNumber,
               user: user.id,
+              offer: offer.id,
               status: "awaiting_payment",
               payment_url: resultItemObject?.url_paiement,
               articles: [
