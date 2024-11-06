@@ -4,11 +4,12 @@ import {
   Center,
   Flex,
   Heading,
+  Icon,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalOverlay,
+  Text,
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useState } from "react";
 import LoadingLoader from "~/components/LoadingLoader";
@@ -18,6 +19,8 @@ import BackButton from "~/components/ui/BackButton";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { OfferArticle } from "~/server/types";
 import { api } from "~/utils/api";
+import LayoutOrderStatus from "../obiz/LayoutOrderStatus";
+import { HiMiniShieldCheck } from "react-icons/hi2";
 
 const ObizOfferVariableContent = ({
   step,
@@ -40,14 +43,16 @@ const ObizOfferVariableContent = ({
     case "amount":
       return (
         <>
-          <DiscountAmountBlock
-            discount={article.reductionPercentage}
-            amount={amount}
-            setAmount={setAmount}
-            minAmount={article.minimumPrice || 0}
-            maxAmount={article.maximumPrice || 1000}
-          />
-          <Button mt={10} onClick={() => setStep("summary")}>
+          <Box mt={10}>
+            <DiscountAmountBlock
+              discount={article.reductionPercentage}
+              amount={amount}
+              setAmount={setAmount}
+              minAmount={article.minimumPrice || 0}
+              maxAmount={article.maximumPrice || 1000}
+            />
+          </Box>
+          <Button mt="auto" mb={24} onClick={() => setStep("summary")} w="full">
             Acheter mon bon
           </Button>
         </>
@@ -56,29 +61,35 @@ const ObizOfferVariableContent = ({
       if (!offer) return null;
       return (
         <>
-          <RecapOrder
-            discount={article.reductionPercentage}
-            amount={amount}
-            offer={offer}
-          />
-          <Button mt={10} onClick={() => createOrder()}>
+          <Box mt={10}>
+            <RecapOrder
+              discount={article.reductionPercentage}
+              amount={amount}
+              offer={offer}
+            />
+          </Box>
+          <Button mt={10} onClick={() => createOrder()} w="full">
             Passer au paiement
           </Button>
         </>
       );
     case "payment":
       return (
-        <Center
-          h="full"
-          w="full"
-          flexDirection={"column"}
-          justifyContent={"center"}
-        >
-          <LoadingLoader />
-          <Heading textAlign={"center"} mt={6} size="md" fontWeight={900}>
-            Votre commande est en cours de traitement...
-          </Heading>
-        </Center>
+        <LayoutOrderStatus
+          status="loading"
+          title={`Vous allez payer ${amount}€`}
+          footer={
+            <Box mt="auto" textAlign="center">
+              <Icon as={HiMiniShieldCheck} color="primary" boxSize={6} />
+              <Text fontSize={12} fontWeight={700} mt={4}>
+                Tous les paiements et tous vos bons sont entièrement sécurisés
+              </Text>
+              <Text fontSize={12} fontWeight={700} mt={4}>
+                L’application carte “jeune engagé” est un dispositif de l’État.
+              </Text>
+            </Box>
+          }
+        />
       );
   }
 };
@@ -119,30 +130,32 @@ export default function ObizOrderProcessModal(
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
       <ModalOverlay />
-      <ModalContent>
-        <ModalBody px={8}>
-          <Box mt={8}>
-            <BackButton
-              onClick={() => (step == "amount" ? onClose() : setStep("amount"))}
-            />
-          </Box>
-          <Flex flexDir="column" mt={10}>
-            <ObizOfferVariableContent
-              step={step}
-              setStep={setStep}
-              amount={amount}
-              setAmount={setAmount}
-              offer={offer}
-              article={article}
-              createOrder={() => {
-                createTestOrder({
-                  offer_id: offer.id,
-                  article_reference: article.reference,
-                  input_value: amount,
-                });
-              }}
-            />
-          </Flex>
+      <ModalContent h="100dvh">
+        <ModalBody display="flex" flexDir="column" px={8} h="100dvh">
+          {step !== "payment" && (
+            <Box mt={8}>
+              <BackButton
+                onClick={() =>
+                  step == "amount" ? onClose() : setStep("amount")
+                }
+              />
+            </Box>
+          )}
+          <ObizOfferVariableContent
+            step={step}
+            setStep={setStep}
+            amount={amount}
+            setAmount={setAmount}
+            offer={offer}
+            article={article}
+            createOrder={() => {
+              createTestOrder({
+                offer_id: offer.id,
+                article_reference: article.reference,
+                input_value: amount,
+              });
+            }}
+          />
         </ModalBody>
       </ModalContent>
     </Modal>
