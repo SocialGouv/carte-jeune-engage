@@ -212,11 +212,26 @@ export default function ObizOrderProcessModal(
             offer={offer}
             articles={availableArticles}
             createOrder={() => {
-              createTestOrder({
-                offer_id: offer.id,
-                article_reference: availableArticles[0].reference,
-                input_value: amount,
-              });
+              if (
+                availableArticles.length === 1 &&
+                availableArticles[0].kind === "variable_price"
+              ) {
+                createTestOrder({
+                  offer_id: offer.id,
+                  article_references: [
+                    { reference: availableArticles[0].reference, quantity: 1 },
+                  ],
+                  input_value: amount,
+                });
+              } else {
+                createTestOrder({
+                  offer_id: offer.id,
+                  article_references: selectedArticles.map((article) => ({
+                    reference: article.article.reference,
+                    quantity: article.quantity,
+                  })),
+                });
+              }
             }}
             selectedArticles={selectedArticles}
             setSelectedArticles={setSelectedArticles}
