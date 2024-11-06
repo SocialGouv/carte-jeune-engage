@@ -10,12 +10,19 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { HiEye, HiMinus, HiPlus } from "react-icons/hi2";
+import {
+  HiCheckCircle,
+  HiClock,
+  HiEye,
+  HiMinus,
+  HiPlus,
+} from "react-icons/hi2";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
+import { Typewriter } from "~/components/ui/Typewriter";
 import { api } from "~/utils/api";
 import { formatDateToDDMMYYYY } from "~/utils/tools";
 
@@ -66,7 +73,7 @@ export default function OrderObizPage() {
     );
   }
 
-  if (!order) {
+  if (!order || !order.articles) {
     router.replace("/dashboard");
     return;
   }
@@ -91,55 +98,146 @@ export default function OrderObizPage() {
   const getOrderContent = () => {
     if (!order.articles) return;
 
-    if (
-      order.status !== "delivered" &&
-      !isLoadingSyncOrder &&
-      !isRefetchingOrder
-    ) {
+    if (order.status !== "delivered") {
       return (
-        <Flex
-          flexDirection={"column"}
-          gap={10}
-          alignItems={"center"}
-          bg="white"
-          rounded={"2xl"}
-          shadow={"xl"}
-          p={10}
-        >
-          <Heading size={"md"} textAlign={"center"}>
-            Vos billets sont en cours d'approvisionnement, veuillez revenir dans
-            quelques minutes.
-          </Heading>
-        </Flex>
-      );
-    }
-
-    if (isLoadingSyncOrder) {
-      return (
-        <Flex
-          flexDirection={"column"}
-          gap={10}
-          alignItems={"center"}
-          bg="white"
-          rounded={"2xl"}
-          shadow={"xl"}
-          p={10}
-        >
-          <Flex direction={"column"} gap={4}>
-            <Heading size={"md"} textAlign={"center"}>
-              Nous récupérons vos billets chez notre partenaire
-            </Heading>
-            <Text color="disabled" textAlign={"center"} fontSize={"sm"}>
-              Veuillez patienter ou revenir dans quelques secondes...
-            </Text>
+        <Flex direction={"column"} gap={4} mx={4}>
+          <Flex direction={"column"} gap={4} my={8} position={"relative"}>
+            <Box w="236px" mx="auto">
+              <Image
+                src={"/images/dashboard/offer-pdf-pending.png"}
+                alt={`En attente de PDF pour ${order.offer.partner.name}`}
+                width={472}
+                height={272}
+              />
+            </Box>
+            <Flex
+              w="full"
+              position={"absolute"}
+              top={"50%"}
+              left={"50%"}
+              transform={"translateX(-50%)translateY(-50%)"}
+              color="disabled"
+              fontWeight={900}
+              fontSize="xl"
+              textAlign={"center"}
+            >
+              <Text w="full">
+                Vos bons <br /> arrivent bientôt
+                <Typewriter text="..." />
+              </Text>
+            </Flex>
           </Flex>
-          <LoadingLoader />
+          <Flex gap={3}>
+            <Box color="primary" fontSize={"lg"} pt={1}>
+              <HiCheckCircle />
+            </Box>
+            <Text>Votre paiement a bien été enregistré</Text>
+          </Flex>
+          <Flex gap={3}>
+            <Box color="black" fontSize={"lg"} pt={1}>
+              <HiClock />
+            </Box>
+            <Text>Les bons peuvent prendre 24h à être activés</Text>
+          </Flex>
         </Flex>
       );
     }
 
     return (
       <>
+        <Flex position={"relative"} my={8} h="218px">
+          <Box w="180px">
+            <Image
+              src={"/images/dashboard/order-pdf.png"}
+              alt={`Image d'un exemple PDF pour ${order.offer.partner.name}`}
+              width={360}
+              height={436}
+            />
+          </Box>
+          <Box
+            position={"absolute"}
+            top={"40%"}
+            left={"50%"}
+            transform={"translateX(-50%)translateY(-50%)"}
+          >
+            <Image
+              src={order.offer.partner.icon.url || ""}
+              width={60}
+              height={order.offer.partner.icon.height || 50}
+              alt={`Logo ${order.offer.partner.name}`}
+            />
+          </Box>
+        </Flex>
+        <Flex justifyContent={"center"} gap={8} mt={8}>
+          <Box textAlign={"center"}>
+            <Button colorScheme="blackBtn" p={5} h="auto" onClick={showPDF}>
+              <HiEye fontSize={24} />
+            </Button>
+            <Text fontWeight={900} fontSize="sm" mt={1}>
+              Afficher
+            </Text>
+          </Box>
+          <Box textAlign={"center"}>
+            <Button
+              colorScheme="blackBtn"
+              flexGrow={0}
+              p={5}
+              h="auto"
+              onClick={downloadPDF}
+            >
+              <MdOutlineFileDownload fontSize={24} />
+            </Button>
+            <Text fontWeight={900} fontSize="sm" mt={1}>
+              Télécharger
+            </Text>
+          </Box>
+        </Flex>
+      </>
+    );
+  };
+
+  return (
+    <Flex
+      minH="full"
+      direction={"column"}
+      position="relative"
+      pt={16}
+      px={6}
+      bg="bgGray"
+    >
+      <Flex direction={"column"} gap={10}>
+        <BackButton />
+        <Flex
+          alignItems={"center"}
+          direction={"column"}
+          px={4}
+          rounded={"2xl"}
+          gap={3}
+          mx={4}
+        >
+          <Flex alignItems={"center"} gap={2}>
+            <Box
+              bg="white"
+              rounded={"2xl"}
+              borderWidth={1}
+              borderColor={"bgGray"}
+              overflow={"hidden"}
+            >
+              <Image
+                src={order.offer.partner.icon.url || ""}
+                width={60}
+                height={order.offer.partner.icon.height || 50}
+                alt={`Logo ${order.offer.partner.name}`}
+              />
+            </Box>
+            <Text fontWeight={700} fontSize={"xl"}>
+              {order.offer.partner.name}
+            </Text>
+          </Flex>
+          <Tag bg="white" fontWeight={700}>
+            <BarcodeIcon mr={1} /> Bon d'achat
+          </Tag>
+        </Flex>
         <Flex
           direction={"column"}
           alignItems={"center"}
@@ -153,53 +251,7 @@ export default function OrderObizPage() {
           <Text fontWeight={900} fontSize="3xl" mt={2}>
             {amount}€
           </Text>
-          <Flex position={"relative"} my={8} h="218px">
-            <Box w="180px">
-              <Image
-                src={"/images/dashboard/order-pdf.png"}
-                alt={`Image d'un exemple PDF pour ${order.offer.partner.name}`}
-                width={360}
-                height={436}
-              />
-            </Box>
-            <Box
-              position={"absolute"}
-              top={"40%"}
-              left={"50%"}
-              transform={"translateX(-50%)translateY(-50%)"}
-            >
-              <Image
-                src={order.offer.partner.icon.url || ""}
-                width={60}
-                height={order.offer.partner.icon.height || 50}
-                alt={`Logo ${order.offer.partner.name}`}
-              />
-            </Box>
-          </Flex>
-          <Flex justifyContent={"center"} gap={8} mt={8}>
-            <Box textAlign={"center"}>
-              <Button colorScheme="blackBtn" p={5} h="auto" onClick={showPDF}>
-                <HiEye fontSize={24} />
-              </Button>
-              <Text fontWeight={900} fontSize="sm" mt={1}>
-                Afficher
-              </Text>
-            </Box>
-            <Box textAlign={"center"}>
-              <Button
-                colorScheme="blackBtn"
-                flexGrow={0}
-                p={5}
-                h="auto"
-                onClick={downloadPDF}
-              >
-                <MdOutlineFileDownload fontSize={24} />
-              </Button>
-              <Text fontWeight={900} fontSize="sm" mt={1}>
-                Télécharger
-              </Text>
-            </Box>
-          </Flex>
+          {getOrderContent()}
         </Flex>
         <Flex direction="column" bg="white" rounded={"2xl"} px={3} py={4}>
           <Flex justifyContent={"space-between"}>
@@ -248,53 +300,6 @@ export default function OrderObizPage() {
           </Flex>
           <Divider my={4} />
         </Flex>
-      </>
-    );
-  };
-
-  return (
-    <Flex
-      minH="full"
-      direction={"column"}
-      position="relative"
-      pt={16}
-      px={6}
-      bg="bgGray"
-    >
-      <Flex direction={"column"} gap={10}>
-        <BackButton />
-        <Flex
-          alignItems={"center"}
-          direction={"column"}
-          px={4}
-          rounded={"2xl"}
-          gap={3}
-          mx={4}
-        >
-          <Flex alignItems={"center"} gap={2}>
-            <Box
-              bg="white"
-              rounded={"2xl"}
-              borderWidth={1}
-              borderColor={"bgGray"}
-              overflow={"hidden"}
-            >
-              <Image
-                src={order.offer.partner.icon.url || ""}
-                width={60}
-                height={order.offer.partner.icon.height || 50}
-                alt={`Logo ${order.offer.partner.name}`}
-              />
-            </Box>
-            <Text fontWeight={700} fontSize={"xl"}>
-              {order.offer.partner.name}
-            </Text>
-          </Flex>
-          <Tag bg="white" fontWeight={700}>
-            <BarcodeIcon mr={1} /> Bon d'achat
-          </Tag>
-        </Flex>
-        {getOrderContent()}
       </Flex>
     </Flex>
   );
