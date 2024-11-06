@@ -235,7 +235,15 @@ export const offerRouter = createTRPCRouter({
           tagIds: z.array(z.number()).optional(),
           categoryId: z.number().optional(),
           kinds: z
-            .array(z.enum(["code", "code_space", "voucher", "voucher_pass"]))
+            .array(
+              z.enum([
+                "code",
+                "code_space",
+                "code_obiz",
+                "voucher",
+                "voucher_pass",
+              ])
+            )
             .optional(),
           searchOnPartner: z.string().optional(),
         })
@@ -310,6 +318,11 @@ export const offerRouter = createTRPCRouter({
       const offersFiltered = (
         offers.docs as OfferIncludedWithUserCoupon[]
       ).filter((offer, index) => {
+        if (offer.source === "obiz")
+          return (
+            offer.articles && !!offer.articles.filter((a) => a.available).length
+          );
+
         if (offer.kind === "voucher_pass" || offer.kind === "code_space")
           return true;
 
