@@ -63,11 +63,18 @@ export const orderRouter = createTRPCRouter({
             ...insert_item_payload,
           });
 
-        console.log(JSON.stringify(resultItem, null, 2));
+        const paymentLink = resultItem.INSERTION_LIGNE_COMMANDE_ARRAY_V4Result
+          .diffgram.NewDataSet.Commande.url_paiement as string;
+
+        return {
+          data: paymentLink,
+        };
       } catch (error) {
         console.error(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An error occurred while creating the order",
+        });
       }
-
-      return { data: "Hello" };
     }),
 });
