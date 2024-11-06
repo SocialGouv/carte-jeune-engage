@@ -1,14 +1,27 @@
 import { Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import Image from "../ui/Image";
 import { OfferIncluded } from "~/server/api/routers/offer";
+import { OfferArticle } from "~/server/types";
 
-type RecapOrderProps = {
+type RecapOrderDefaultProps = {
   amount: number;
   discount: number;
   offer: OfferIncluded;
 };
 
-const RecapOrder = ({ amount, discount, offer }: RecapOrderProps) => {
+interface RecapOrderVariable extends RecapOrderDefaultProps {
+  kind: "variable_price";
+}
+
+interface RecapOrderFixed extends RecapOrderDefaultProps {
+  kind: "fixed_price";
+  articles: { article: OfferArticle; quantity: number }[];
+}
+
+type RecapOrderProps = RecapOrderVariable | RecapOrderFixed;
+
+const RecapOrder = (props: RecapOrderProps) => {
+  const { kind, amount, discount, offer } = props;
   const amountWithDiscount = amount - (amount * discount) / 100;
   const discountAmount = amount - amountWithDiscount;
 
@@ -40,12 +53,31 @@ const RecapOrder = ({ amount, discount, offer }: RecapOrderProps) => {
         </Flex>
       </Flex>
       <Divider my={4} />
-      <Flex alignItems="center">
-        <Text fontWeight={500}>Valeur du bon</Text>
-        <Text fontWeight={700} ml="auto">
-          {formatter.format(amount)}€
-        </Text>
-      </Flex>
+      {kind === "variable_price" ? (
+        <Flex alignItems="center">
+          <Text fontWeight={500}>Valeur du bon</Text>
+          <Text fontWeight={700} ml="auto">
+            {formatter.format(amount)}€
+          </Text>
+        </Flex>
+      ) : (
+        <Flex flexDir="column" gap={4}>
+          {props.articles.map(({ article, quantity }) => (
+            <Flex key={article.reference} alignItems="center">
+              <Text fontWeight={500}>{`Bon de ${article.publicPrice}€`}</Text>
+              <Text fontWeight={700} ml="auto">
+                x{quantity}
+              </Text>
+            </Flex>
+          ))}
+          <Flex alignItems="center">
+            <Text fontWeight={500}>Total valeur bon d'achat </Text>
+            <Text fontWeight={700} ml="auto">
+              {formatter.format(amount)}€
+            </Text>
+          </Flex>
+        </Flex>
+      )}
       <Divider borderStyle="dashed" my={4} />
       <Flex alignItems="center">
         <Text fontWeight={500}>Réduction de {discount}%</Text>

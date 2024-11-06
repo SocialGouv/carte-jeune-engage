@@ -1,9 +1,6 @@
 import {
   Box,
   Button,
-  Center,
-  Flex,
-  Heading,
   Icon,
   Modal,
   ModalBody,
@@ -12,7 +9,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useState } from "react";
-import LoadingLoader from "~/components/LoadingLoader";
 import DiscountAmountBlock from "~/components/obiz/DiscountAmountBlock";
 import RecapOrder from "~/components/obiz/RecapOrder";
 import BackButton from "~/components/ui/BackButton";
@@ -28,45 +24,108 @@ const ObizOfferVariableContent = ({
   amount,
   setAmount,
   offer,
-  article,
+  articles,
   createOrder,
+  selectedArticles,
+  setSelectedArticles,
 }: {
-  step: "amount" | "summary" | "payment";
-  setStep: Dispatch<SetStateAction<"amount" | "summary" | "payment">>;
+  step: Steps;
+  setStep: Dispatch<SetStateAction<Steps>>;
   amount: number;
   setAmount: Dispatch<SetStateAction<number>>;
-  article: OfferArticle;
+  articles: OfferArticle[];
+  selectedArticles: { article: OfferArticle; quantity: number }[];
+  setSelectedArticles: Dispatch<
+    SetStateAction<{ article: OfferArticle; quantity: number }[]>
+  >;
   offer: OfferIncluded;
   createOrder: () => void;
 }) => {
+  const isVariablePrice =
+    articles.length === 1 && articles[0].kind === "variable_price";
+
   switch (step) {
     case "amount":
-      return (
-        <>
-          <Box mt={10}>
-            <DiscountAmountBlock
-              discount={article.reductionPercentage}
-              amount={amount}
-              setAmount={setAmount}
-              minAmount={article.minimumPrice || 0}
-              maxAmount={article.maximumPrice || 1000}
-            />
-          </Box>
-          <Button mt="auto" mb={24} onClick={() => setStep("summary")} w="full">
-            Acheter mon bon
-          </Button>
-        </>
-      );
+      if (isVariablePrice) {
+        const article = articles[0];
+        const minimumPrice = article.minimumPrice ?? 0;
+        const maximumPrice = article.maximumPrice ?? 1000;
+        const isDisabled =
+          amount === 0 ||
+          amount < minimumPrice ||
+          amount > maximumPrice ||
+          amount % 1 !== 0;
+
+        return (
+          <>
+            <Box mt={10}>
+              <DiscountAmountBlock
+                kind="variable_price"
+                discount={article.reductionPercentage}
+                amount={amount}
+                setAmount={setAmount}
+                minAmount={minimumPrice}
+                maxAmount={maximumPrice}
+              />
+            </Box>
+            <Button
+              mt="auto"
+              mb={24}
+              onClick={() => setStep("summary")}
+              w="full"
+              isDisabled={isDisabled}
+            >
+              Acheter mon bon
+            </Button>
+          </>
+        );
+      } else {
+        if (!selectedArticles || !setSelectedArticles) return null;
+        return (
+          <>
+            <Box mt={10}>
+              <DiscountAmountBlock
+                kind="fixed_price"
+                amount={amount}
+                setAmount={setAmount}
+                articles={articles}
+                selectedArticles={selectedArticles}
+                setSelectedArticles={setSelectedArticles}
+              />
+            </Box>
+            <Button
+              mt="auto"
+              mb={24}
+              onClick={() => setStep("summary")}
+              isDisabled={amount === 0}
+              w="full"
+            >
+              Acheter ces bons
+            </Button>
+          </>
+        );
+      }
     case "summary":
       if (!offer) return null;
       return (
         <>
           <Box mt={10}>
-            <RecapOrder
-              discount={article.reductionPercentage}
-              amount={amount}
-              offer={offer}
-            />
+            {isVariablePrice ? (
+              <RecapOrder
+                kind="variable_price"
+                discount={articles[0].reductionPercentage}
+                amount={amount}
+                offer={offer}
+              />
+            ) : (
+              <RecapOrder
+                kind="fixed_price"
+                discount={articles[0].reductionPercentage}
+                articles={selectedArticles}
+                amount={amount}
+                offer={offer}
+              />
+            )}
           </Box>
           <Button mt={10} onClick={() => createOrder()} w="full">
             Passer au paiement
@@ -100,13 +159,18 @@ type ObizOrderProcessModalProps = {
   offerId: number;
 };
 
+type Steps = "amount" | "summary" | "payment";
+
 export default function ObizOrderProcessModal(
   props: ObizOrderProcessModalProps
 ) {
   const { isOpen, onClose, offerId } = props;
 
   const [amount, setAmount] = useState(0);
-  const [step, setStep] = useState<"amount" | "summary" | "payment">("amount");
+  const [step, setStep] = useState<Steps>("amount");
+  const [selectedArticles, setSelectedArticles] = useState<
+    { article: OfferArticle; quantity: number }[]
+  >([]);
 
   const { mutate: createTestOrder } = api.order.createOrder.useMutation({
     onMutate: () => setStep("payment"),
@@ -123,9 +187,8 @@ export default function ObizOrderProcessModal(
   if (!offer || !offer.articles) return;
 
   const availableArticles = offer.articles.filter((a) => !!a.available);
-  const article = availableArticles.find((a) => a.kind === "variable_price");
 
-  if (!article) return;
+  if (availableArticles.length === 0) return;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
@@ -147,14 +210,31 @@ export default function ObizOrderProcessModal(
             amount={amount}
             setAmount={setAmount}
             offer={offer}
-            article={article}
+            articles={availableArticles}
             createOrder={() => {
-              createTestOrder({
-                offer_id: offer.id,
-                article_reference: article.reference,
-                input_value: amount,
-              });
+              if (
+                availableArticles.length === 1 &&
+                availableArticles[0].kind === "variable_price"
+              ) {
+                createTestOrder({
+                  offer_id: offer.id,
+                  article_references: [
+                    { reference: availableArticles[0].reference, quantity: 1 },
+                  ],
+                  input_value: amount,
+                });
+              } else {
+                createTestOrder({
+                  offer_id: offer.id,
+                  article_references: selectedArticles.map((article) => ({
+                    reference: article.article.reference,
+                    quantity: article.quantity,
+                  })),
+                });
+              }
             }}
+            selectedArticles={selectedArticles}
+            setSelectedArticles={setSelectedArticles}
           />
         </ModalBody>
       </ModalContent>

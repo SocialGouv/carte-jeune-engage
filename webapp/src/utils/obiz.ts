@@ -97,7 +97,7 @@ export const createOrderPayload = (
 export const insertItemPayload = (
   orderNumber: string,
   user: User,
-  article: OfferArticle,
+  articles: (OfferArticle & { quantity: number })[],
   kind: "CARTECADEAU" | "EBILLET",
   amount?: number
 ) => {
@@ -112,11 +112,11 @@ export const insertItemPayload = (
 
   return {
     signature: signature,
-    LONGUEUR_TABLE_ARTICLE: 21,
+    LONGUEUR_TABLE_ARTICLE: articles.length * 21,
     TABLE_ARTICLES: {
-      string: [
+      string: articles.flatMap((article) => [
         article.reference,
-        1,
+        article.quantity,
         amount || article.price || 0,
         "",
         "",
@@ -136,11 +136,11 @@ export const insertItemPayload = (
         "",
         "",
         "",
-      ],
+      ]),
     },
-    LONGUEUR_TABLE_EBILLETS: 7,
+    LONGUEUR_TABLE_EBILLETS: articles.length * 7,
     TABLE_EBILLETS: {
-      string: [
+      string: articles.flatMap((article) => [
         article.reference,
         user.lastName || "Inconnu",
         user.firstName || "Inconnu",
@@ -148,7 +148,7 @@ export const insertItemPayload = (
         user.birthDate || "01/01/1970",
         "",
         user.id.toString(), // skier_index
-      ],
+      ]),
     },
     LONGUEUR_TABLE_FRAIS_GESTION: 28,
     TABLE_FRAIS_GESTION: {

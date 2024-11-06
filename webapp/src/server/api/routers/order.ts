@@ -49,12 +49,17 @@ export const orderRouter = createTRPCRouter({
     .input(
       z.object({
         offer_id: z.number(),
-        article_reference: z.string(),
+        article_references: z.array(
+          z.object({
+            reference: z.string(),
+            quantity: z.number().default(1),
+          })
+        ),
         input_value: z.number().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { offer_id, article_reference, input_value } = input;
+      const { offer_id, article_references, input_value } = input;
 
       const user = await ctx.payload.findByID({
         collection: "users",
@@ -66,14 +71,23 @@ export const orderRouter = createTRPCRouter({
         id: offer_id,
       });
 
-      const article = (offer.articles || [])
-        .filter((a) => !!a.available)
-        .find((a) => a.reference === article_reference);
+      const articles = (offer.articles || [])
+        .filter(
+          (a) =>
+            !!a.available &&
+            article_references.find((ar) => ar.reference === a.reference)
+        )
+        .map((a) => ({
+          ...a,
+          quantity:
+            article_references.find((ar) => ar.reference === a.reference)
+              ?.quantity || 1,
+        }));
 
-      if (!article) {
+      if (articles.length !== article_references.length) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: `Article with reference "${article_reference}" not found in offer ${offer.id}`,
+          message: `Articles with references "${article_references.map((ar) => ar.reference).join(", ")}" not found in offer ${offer.id}`,
         });
       }
 
@@ -94,7 +108,7 @@ export const orderRouter = createTRPCRouter({
         const insert_item_payload = insertItemPayload(
           orderNumber,
           user,
-          article,
+          articles,
           "CARTECADEAU",
           input_value
         );
@@ -120,13 +134,11 @@ export const orderRouter = createTRPCRouter({
               offer: offer.id,
               status: "awaiting_payment",
               payment_url: resultItemObject?.url_paiement,
-              articles: [
-                {
-                  article_reference: article.reference,
-                  article_quantity: 1,
-                  article_montant: input_value || article.price || 0,
-                },
-              ],
+              articles: articles.map((article) => ({
+                article_reference: article.reference,
+                article_quantity: article.quantity,
+                article_montant: input_value || article.price || 0,
+              })),
             },
           });
 
