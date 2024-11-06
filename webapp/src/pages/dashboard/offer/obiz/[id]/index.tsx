@@ -245,7 +245,16 @@ export default function OfferObizPage() {
         </Text>
       </Flex>
 
-      <Flex position={"sticky"} bottom={0} p={4} pb={6} bg="white">
+      <Flex
+        position={"sticky"}
+        bottom={0}
+        p={4}
+        pb={6}
+        bg="white"
+        borderTopWidth={1}
+        borderTopColor={"gray.200"}
+        zIndex={1}
+      >
         <Button colorScheme="blackBtn" w="full">
           Acheter un bon
         </Button>
