@@ -1,9 +1,8 @@
 ## [0.52.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.52.0...v0.52.1) (2024-11-05)
 
-
 ### Bug Fixes
 
-* widget offer list enable obiz ([4b680f2](https://github.com/SocialGouv/carte-jeune-engage/commit/4b680f25259ca325ef757d79fd37829ab9a2d912))
+- widget offer list enable obiz ([4b680f2](https://github.com/SocialGouv/carte-jeune-engage/commit/4b680f25259ca325ef757d79fd37829ab9a2d912))
 
 # [0.52.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.51.3...v0.52.0) (2024-11-05)
 

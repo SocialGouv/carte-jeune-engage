@@ -107,7 +107,6 @@ const CategoriesList = (props: CategoriesListProps) => {
                 width="40px"
                 height="40px"
                 bg="white"
-                p={1}
               >
                 <Image
                   src={offer.partner.icon.url as string}

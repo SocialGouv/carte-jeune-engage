@@ -117,7 +117,7 @@ const OfferCard = ({
               <Flex
                 alignItems="center"
                 borderRadius="2xl"
-                p={1}
+                overflow={"hidden"}
                 w={"40px"}
                 h={"40px"}
                 bgColor="white"
