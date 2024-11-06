@@ -260,7 +260,7 @@ export default function OfferObizPage() {
         bg="white"
         borderTopWidth={1}
         borderTopColor={"gray.200"}
-        zIndex={1}
+        zIndex={2}
       >
         <Button
           colorScheme="blackBtn"
