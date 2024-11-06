@@ -1,3 +1,11 @@
+## [0.52.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.52.1...v0.52.2) (2024-11-06)
+
+
+### Bug Fixes
+
+* border and zindex of bottom sticky section obiz offer ([ab4f95a](https://github.com/SocialGouv/carte-jeune-engage/commit/ab4f95a29b77c538e1e70df6b9ef4bf11d53edc2))
+* image partner issue preprod ([1f9dbe7](https://github.com/SocialGouv/carte-jeune-engage/commit/1f9dbe7eda6678fdb624c1a897529a5eee709eb8))
+
 ## [0.52.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.52.0...v0.52.1) (2024-11-05)
 
 ### Bug Fixes
