@@ -182,9 +182,6 @@ export const orderRouter = createTRPCRouter({
           resultOrderStatus.ETATS_COMMANDES_ARRAYResult.diffgram.NewDataSet
             .Commande;
 
-        console.log(resultOrderStatusObject);
-        console.log("------------");
-
         let newStatus = order.status;
         switch (resultOrderStatusObject.etats_statut) {
           case "NON FINALISEE":
@@ -237,11 +234,14 @@ export const orderRouter = createTRPCRouter({
               console.error("Error saving PDF:", error);
               throw new TRPCError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: `Order is delivered but no PDF found. Can't synchronize.`,
+                message: `Can't save PDF.`,
               });
             }
           } else {
-            console.log("No PDF data found for order:", order.number);
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: `Order is delivered but no PDF found. Can't synchronize.`,
+            });
           }
         }
 
