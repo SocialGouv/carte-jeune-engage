@@ -283,4 +283,22 @@ export const orderRouter = createTRPCRouter({
 
     return { data: orders.docs as OrderIncluded[] };
   }),
+
+  getById: userProtectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+
+      const order = await ctx.payload.findByID({
+        collection: "orders",
+        id,
+        depth: 3,
+      });
+
+      return { data: order as OrderIncluded };
+    }),
 });

@@ -20,7 +20,7 @@ const OrderCard = (props: OrderCardProps) => {
 
   return (
     <ConditionalLink
-      to={`/`}
+      to={`/dashboard/order/${order.id}`}
       condition
       props={{
         _hover: { textDecoration: "none" },
