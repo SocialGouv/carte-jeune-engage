@@ -20,6 +20,7 @@ import TagsList from "~/components/lists/TagsList";
 import Image from "next/image";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OrderIncluded } from "~/server/api/routers/order";
+import OrderCard from "~/components/cards/OrderCard";
 
 export default function Wallet() {
   const router = useRouter();
@@ -52,10 +53,9 @@ export default function Wallet() {
     ...currentUserCoupons,
     ...currentUserOrders,
   ].sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
-  console.log(walletOffers);
   return (
     <WalletWrapper>
       {walletOffers && walletOffers.length > 0 ? (
@@ -79,7 +79,7 @@ export default function Wallet() {
                     mode="wallet"
                   />
                 ) : (
-                  <Text>Hey</Text>
+                  <OrderCard key={walletOffer.id} order={walletOffer} />
                 )}
               </Box>
             ))}

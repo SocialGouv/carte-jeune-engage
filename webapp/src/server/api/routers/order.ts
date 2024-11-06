@@ -9,7 +9,7 @@ import fs from "fs/promises";
 import os from "os";
 
 export interface OrderIncluded extends Order {
-  offer: Offer & { partner: Partner & { icon: Media } };
+  offer: Offer & { partner: Partner & { icon: Media } } & { image: Media };
   user: User;
 }
 
@@ -273,6 +273,7 @@ export const orderRouter = createTRPCRouter({
       where: {
         and: [
           { user: { equals: ctx.session.id } },
+          { status: { not_in: ["awaiting_payment", "archived"] } },
           {
             ...payloadWhereOfferIsValid("offer"),
           },
