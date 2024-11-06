@@ -1,3 +1,10 @@
+# [0.54.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.53.0...v0.54.0) (2024-11-06)
+
+
+### Features
+
+* add obiz soap url & update preprod sealed-secret ([799d06c](https://github.com/SocialGouv/carte-jeune-engage/commit/799d06c40d0e4fdf626e8ec1a6fd6452d2a232b8))
+
 # [0.53.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.52.2...v0.53.0) (2024-11-06)
 
 ### Bug Fixes
