@@ -14,7 +14,7 @@ export default function Dashboard() {
       page: 1,
       perPage: 100,
       sort: "partner.name",
-      kinds: ["code", "code_space", "code_obiz"],
+      kinds: ["code", "code_space"],
     });
 
   const { data: resultOffersInStore, isLoading: isLoadingOffersInStore } =
@@ -22,7 +22,7 @@ export default function Dashboard() {
       page: 1,
       perPage: 100,
       sort: "partner.name",
-      kinds: ["voucher", "voucher_pass"],
+      kinds: ["voucher", "voucher_pass", "code_obiz"],
     });
 
   const { data: offersOnline } = resultOffersOnline || {};
