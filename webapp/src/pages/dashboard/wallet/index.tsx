@@ -18,6 +18,8 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import TagsList from "~/components/lists/TagsList";
 import Image from "next/image";
+import { CouponIncluded } from "~/server/api/routers/coupon";
+import { OrderIncluded } from "~/server/api/routers/order";
 
 export default function Wallet() {
   const router = useRouter();
@@ -30,11 +32,14 @@ export default function Wallet() {
 
   const { data: resultUserCoupons, isLoading: isLoadingUserCoupons } =
     api.coupon.getList.useQuery();
+  const { data: resultUserOrders, isLoading: isLoadingUserOrders } =
+    api.order.getList.useQuery();
 
   const { data: currentUserCoupons } = resultUserCoupons || { data: [] };
+  const { data: currentUserOrders } = resultUserOrders || { data: [] };
   const { data: offers } = resultOffers || { data: [] };
 
-  if (isLoadingUserCoupons || isLoadingOffers)
+  if (isLoadingUserCoupons || isLoadingOffers || isLoadingUserOrders)
     return (
       <WalletWrapper>
         <Center h="85%" w="full">
@@ -43,12 +48,20 @@ export default function Wallet() {
       </WalletWrapper>
     );
 
+  const walletOffers: (CouponIncluded | OrderIncluded)[] = [
+    ...currentUserCoupons,
+    ...currentUserOrders,
+  ].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
+
+  console.log(walletOffers);
   return (
     <WalletWrapper>
-      {currentUserCoupons && currentUserCoupons.length > 0 ? (
+      {walletOffers && walletOffers.length > 0 ? (
         <>
           <Flex flexDir="column" gap={6}>
-            {currentUserCoupons.map((coupon, index) => (
+            {walletOffers.map((walletOffer, index) => (
               <Box
                 mt={index !== 0 ? -16 : 0}
                 bgColor="white"
@@ -58,12 +71,16 @@ export default function Wallet() {
                 borderTopWidth={index !== 0 ? 1 : 0}
                 px={8}
               >
-                <CouponCard
-                  key={coupon.id}
-                  coupon={coupon}
-                  link={`/dashboard/offer/cje/${coupon.offer.id}?offerKind=coupon`}
-                  mode="wallet"
-                />
+                {"code" in walletOffer ? (
+                  <CouponCard
+                    key={walletOffer.id}
+                    coupon={walletOffer}
+                    link={`/dashboard/offer/cje/${walletOffer.offer.id}?offerKind=coupon`}
+                    mode="wallet"
+                  />
+                ) : (
+                  <Text>Hey</Text>
+                )}
               </Box>
             ))}
           </Flex>

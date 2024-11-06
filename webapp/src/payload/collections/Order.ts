@@ -37,6 +37,12 @@ export const Orders: CollectionConfig = {
       required: true,
     },
     {
+      name: "ticket",
+      type: "upload",
+      label: "PDF",
+      relationTo: "media",
+    },
+    {
       name: "status",
       type: "select",
       label: "État",

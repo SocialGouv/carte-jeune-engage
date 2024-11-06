@@ -1,7 +1,47 @@
 import { TRPCError } from "@trpc/server";
+import path from "path";
 import { z } from "zod";
+import { Media, Offer, Order, Partner, User } from "~/payload/payload-types";
 import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
 import { createOrderPayload, insertItemPayload } from "~/utils/obiz";
+import { payloadWhereOfferIsValid } from "~/utils/tools";
+import fs from "fs/promises";
+import os from "os";
+
+export interface OrderIncluded extends Order {
+  offer: Offer & { partner: Partner & { icon: Media } };
+  user: User;
+}
+
+const createPdfMedia = async (
+  pdfData: string,
+  orderNumber: number,
+  ctx: any
+) => {
+  try {
+    const tempFileName = `ticket-${orderNumber}-${Date.now()}.pdf`;
+    const tempFilePath = path.join(os.tmpdir(), tempFileName);
+
+    const pdfBuffer = Buffer.from(pdfData, "base64");
+
+    await fs.writeFile(tempFilePath, pdfBuffer);
+
+    const pdfMedia = await ctx.payload.create({
+      collection: "media",
+      filePath: tempFilePath,
+      data: {
+        alt: `Ticket for order ${orderNumber}`,
+      },
+    });
+
+    await fs.unlink(tempFilePath);
+
+    return pdfMedia;
+  } catch (error) {
+    console.error("Error processing PDF:", error);
+    throw error;
+  }
+};
 
 export const orderRouter = createTRPCRouter({
   createOrder: userProtectedProcedure
@@ -142,6 +182,9 @@ export const orderRouter = createTRPCRouter({
           resultOrderStatus.ETATS_COMMANDES_ARRAYResult.diffgram.NewDataSet
             .Commande;
 
+        console.log(resultOrderStatusObject);
+        console.log("------------");
+
         let newStatus = order.status;
         switch (resultOrderStatusObject.etats_statut) {
           case "NON FINALISEE":
@@ -175,10 +218,31 @@ export const orderRouter = createTRPCRouter({
           const resultGetTicketsObject =
             resultGetTickets.GET_BILLETSResult.diffgram.NewDataSet.Billets;
 
-          console.log(order.number);
-          console.log(JSON.stringify(resultGetTicketsObject, null, 2));
+          if (resultGetTicketsObject && resultGetTicketsObject.data) {
+            try {
+              const pdfMedia = await createPdfMedia(
+                resultGetTicketsObject.data,
+                order.number,
+                ctx
+              );
 
-          // GET AND SAVE PDF(s)
+              await ctx.payload.update({
+                collection: "orders",
+                id: order.id,
+                data: {
+                  ticket: pdfMedia.id,
+                },
+              });
+            } catch (error) {
+              console.error("Error saving PDF:", error);
+              throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: `Order is delivered but no PDF found. Can't synchronize.`,
+              });
+            }
+          } else {
+            console.log("No PDF data found for order:", order.number);
+          }
         }
 
         if (newStatus !== order.status) {
@@ -201,4 +265,21 @@ export const orderRouter = createTRPCRouter({
         });
       }
     }),
+
+  getList: userProtectedProcedure.query(async ({ ctx }) => {
+    const orders = await ctx.payload.find({
+      collection: "orders",
+      depth: 3,
+      where: {
+        and: [
+          { user: { equals: ctx.session.id } },
+          {
+            ...payloadWhereOfferIsValid("offer"),
+          },
+        ],
+      },
+    });
+
+    return { data: orders.docs as OrderIncluded[] };
+  }),
 });
