@@ -166,6 +166,20 @@ export const orderRouter = createTRPCRouter({
             break;
         }
 
+        if (newStatus === "delivered") {
+          const [resultGetTickets] = await ctx.soapObizClient.GET_BILLETSAsync({
+            CE_ID: process.env.OBIZ_PARTNER_ID,
+            commandes_numero: order.number,
+          });
+          const resultGetTicketsObject =
+            resultGetTickets.GET_BILLETSResult.diffgram.NewDataSet.Billets;
+
+          console.log(order.number);
+          console.log(JSON.stringify(resultGetTicketsObject, null, 2));
+
+          // GET AND SAVE PDF(s)
+        }
+
         if (newStatus !== order.status) {
           order = await ctx.payload.update({
             id: order_id,
@@ -185,7 +199,5 @@ export const orderRouter = createTRPCRouter({
           message: "An error occurred while synchronizing the order",
         });
       }
-
-      return {};
     }),
 });
