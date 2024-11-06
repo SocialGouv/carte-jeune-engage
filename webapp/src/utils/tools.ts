@@ -232,3 +232,18 @@ export function cleanHtml(html: string): string {
     .replace(/§BR§\s*§BR§+/g, "§BR§")
     .replace(/§BR§/g, "<br>");
 }
+
+export function extractAddressInformations(address: string) {
+  const regex = /^(.+?),\s*([^0-9]+?)\s+(\d+)$/;
+  const match = address.match(regex);
+
+  if (!match) {
+    throw new Error("Invalid address format");
+  }
+
+  return {
+    street_address: match[1].trim(),
+    city: match[2].trim(),
+    zip_code: match[3],
+  };
+}

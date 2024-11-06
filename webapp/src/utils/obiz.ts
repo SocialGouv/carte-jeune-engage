@@ -1,3 +1,6 @@
+import { User } from "~/payload/payload-types";
+import { extractAddressInformations } from "./tools";
+
 var crypto = require("crypto");
 
 export const obiz_signature = crypto
@@ -5,69 +8,77 @@ export const obiz_signature = crypto
   .update(`${process.env.OBIZ_PARTNER_ID}+${process.env.OBIZ_SECRET}`)
   .digest("hex") as string;
 
-export const createOrderPayload = () => {
+export const createOrderPayload = (
+  user: User,
+  kind: "CARTECADEAU" | "EBILLET"
+) => {
+  const { street_address, city, zip_code } = extractAddressInformations(
+    user.address || ""
+  );
+
   const signature = crypto
     .createHash("sha512")
     .update(
-      `CARTECADEAU+${process.env.OBIZ_PARTNER_ID}+CB+test+Bureau+95150+test-cje@test.loc+Cje+Test+Taverny+${process.env.OBIZ_SECRET}`
+      `${kind}+${user.id.toString()}+CB +${street_address}+Maison+${zip_code}+${user.userEmail || user.email}+${user.lastName || "Inconnu"}+${user.firstName || "Inconnu"}+${city}+${process.env.OBIZ_SECRET}`
     )
     .digest("hex") as string;
 
   return {
+    SIGNATURE: signature,
     TABLE_CE: {
       string: [
-        "dcb1600d-9a0d-447e-9f84-8dc45e6c0668",
+        process.env.OBIZ_PARTNER_ID,
         "Numéricité",
-        "Homme",
-        "Nom",
-        "Test",
         "",
         "",
         "",
-        "test@loc.com",
         "",
         "",
         "",
-        "95150",
-        "Taverny",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "",
       ],
     },
     TABLE_UTILISATEUR: {
       string: [
-        "id-test-cje",
+        user.id.toString(),
         "",
         "",
-        "Cje",
-        "Test",
-        "0600000000",
-        "0600000000",
+        user.lastName || "Inconnu",
+        user.firstName || "Inconnu",
+        user.phone_number,
+        user.phone_number,
         "",
-        "test-cje@test.loc",
-        "Bureau",
-        "10 rue de la paix",
+        user.userEmail || user.email,
+        "Maison",
+        street_address,
         "",
-        "95150",
-        "Taverny",
+        zip_code,
+        city,
         "France",
-        "12/09/2000",
+        user.birthDate || "01/01/1970",
       ],
     },
     TABLE_COMMANDE: {
       string: [
         "0",
         "0",
-        "cb",
+        "CB ",
         "0",
-        "CARTECADEAU",
+        kind,
         "",
-        "2 rue de la societe",
-        "Test",
-        "10 rue de la paix",
-        "Batiment A",
-        "95150",
-        "Taverny",
         "",
+        "Adresse de facturation",
+        street_address,
+        "",
+        zip_code,
+        city,
+        "FRANCE",
         "",
         "", // url_retour_ok
         "", // url_retour_ko
@@ -79,6 +90,5 @@ export const createOrderPayload = () => {
         "",
       ],
     },
-    SIGNATURE: signature,
   };
 };

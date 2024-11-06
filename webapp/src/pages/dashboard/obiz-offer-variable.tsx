@@ -1,5 +1,6 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useState } from "react";
+import LoadingLoader from "~/components/LoadingLoader";
 import DiscountAmountBlock from "~/components/obiz/DiscountAmountBlock";
 import RecapOrder from "~/components/obiz/RecapOrder";
 import BackButton from "~/components/ui/BackButton";
@@ -12,14 +13,18 @@ const ObizOfferVariableContent = ({
   amount,
   setAmount,
   offer,
+  article,
   createOrder,
 }: {
   step: "amount" | "summary";
   setStep: Dispatch<SetStateAction<"amount" | "summary">>;
   amount: number;
   setAmount: Dispatch<SetStateAction<number>>;
-  offer: OfferIncluded | undefined;
-  createOrder: any;
+  article: NonNullable<OfferIncluded["articles"]> extends Array<infer T>
+    ? T
+    : never;
+  offer: OfferIncluded;
+  createOrder: () => void;
 }) => {
   switch (step) {
     case "amount":
@@ -27,11 +32,11 @@ const ObizOfferVariableContent = ({
         <>
           <Box mt={8}>
             <DiscountAmountBlock
-              discount={5}
+              discount={article.reductionPercentage}
               amount={amount}
               setAmount={setAmount}
-              minAmount={5}
-              maxAmount={100}
+              minAmount={article.minimumPrice || 0}
+              maxAmount={article.maximumPrice || 1000}
             />
           </Box>
           <Button mt={10} onClick={() => setStep("summary")}>
@@ -44,7 +49,11 @@ const ObizOfferVariableContent = ({
       return (
         <>
           <Box mt={8}>
-            <RecapOrder discount={5} amount={amount} offer={offer} />
+            <RecapOrder
+              discount={article.reductionPercentage}
+              amount={amount}
+              offer={offer}
+            />
           </Box>
           <Button mt={10} onClick={() => createOrder()}>
             Passer au paiement
@@ -58,12 +67,36 @@ export default function ObizOfferVariable() {
   const [amount, setAmount] = useState(0);
   const [step, setStep] = useState<"amount" | "summary">("amount");
 
-  const { mutate: createTestOrder } = api.order.createOrder.useMutation();
+  const { mutate: createTestOrder, isLoading: isCreateOrderLoading } =
+    api.order.createOrder.useMutation();
 
   const { data: offerResult } = api.offer.getById.useQuery({
-    id: 1,
+    id: 6,
   });
   const { data: offer } = offerResult || {};
+
+  if (!offer || !offer.articles) return;
+
+  const availableArticles = offer.articles.filter((a) => !!a.available);
+  const article = availableArticles.find((a) => a.kind === "variable_price");
+
+  if (!article) return;
+
+  if (isCreateOrderLoading) {
+    return (
+      <Center
+        h="full"
+        w="full"
+        flexDirection={"column"}
+        justifyContent={"center"}
+      >
+        <LoadingLoader />
+        <Heading textAlign={"center"} mt={6} size="md" fontWeight={900}>
+          Votre commande est en cours de traitement...
+        </Heading>
+      </Center>
+    );
+  }
 
   return (
     <Flex flexDir="column" mt={10} px={8}>
@@ -74,7 +107,14 @@ export default function ObizOfferVariable() {
         amount={amount}
         setAmount={setAmount}
         offer={offer}
-        createOrder={createTestOrder}
+        article={article}
+        createOrder={() => {
+          createTestOrder({
+            offer_id: offer.id,
+            article_reference: article.reference,
+            input_value: amount,
+          });
+        }}
       />
     </Flex>
   );
