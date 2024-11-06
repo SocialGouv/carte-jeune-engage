@@ -41,7 +41,13 @@ const downloadAndCreateMedia = async (
   ctx: any
 ) => {
   try {
-    const tempFileName = `${partnerName.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}.png`;
+    const cleanPartnerName = partnerName
+      .toLowerCase()
+      .replace(/[&\/\\#,+()$~%.'":*?<>{}!@^|=;[\]]/g, "")
+      .replace(/\s+/g, "-")
+      .trim();
+
+    const tempFileName = `${cleanPartnerName}-${Date.now()}.png`;
     const tempFilePath = path.join(os.tmpdir(), tempFileName);
 
     const response = await fetch(iconUrl);
