@@ -33,7 +33,13 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
       <Box mt={18}>
         <LayoutOrderStatusIcon status={status} />
       </Box>
-      <Text fontSize={24} fontWeight={800} color="blackLight" mt={14}>
+      <Text
+        fontSize={24}
+        fontWeight={800}
+        color="blackLight"
+        mt={14}
+        textAlign="center"
+      >
         {title}
       </Text>
       {subtitle && (

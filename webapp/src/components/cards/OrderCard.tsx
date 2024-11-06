@@ -4,6 +4,7 @@ import Image from "../ui/Image";
 import { BarcodeIcon } from "../icons/barcode";
 import ConditionalLink from "../ConditionalLink";
 import { useMemo } from "react";
+import { formatter2Digits } from "~/utils/tools";
 
 type OrderCardProps = {
   order: OrderIncluded;
@@ -13,9 +14,11 @@ const OrderCard = (props: OrderCardProps) => {
   const { order } = props;
 
   const amount = useMemo(() => {
-    return order.articles?.reduce((acc, curr) => {
-      return acc + curr.article_montant * curr.article_quantity;
-    }, 0);
+    return formatter2Digits.format(
+      order.articles?.reduce((acc, curr) => {
+        return acc + curr.article_montant * curr.article_quantity;
+      }, 0) ?? 0
+    );
   }, [order.articles]);
 
   return (

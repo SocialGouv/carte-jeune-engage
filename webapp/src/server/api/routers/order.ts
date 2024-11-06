@@ -118,6 +118,7 @@ export const orderRouter = createTRPCRouter({
             commandes_numero: orderNumber,
             ...insert_item_payload,
           });
+
         const resultItemObject =
           resultItem.INSERTION_LIGNE_COMMANDE_ARRAY_V4Result.diffgram.NewDataSet
             .Commande;

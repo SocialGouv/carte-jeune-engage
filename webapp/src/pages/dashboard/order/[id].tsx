@@ -24,7 +24,7 @@ import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import { Typewriter } from "~/components/ui/Typewriter";
 import { api } from "~/utils/api";
-import { formatDateToDDMMYYYY } from "~/utils/tools";
+import { formatDateToDDMMYYYY, formatter2Digits } from "~/utils/tools";
 
 export default function OrderObizPage() {
   const router = useRouter();
@@ -54,9 +54,11 @@ export default function OrderObizPage() {
   const { data: order } = resultOrder || {};
 
   const amount = useMemo(() => {
-    return order?.articles?.reduce((acc, curr) => {
-      return acc + curr.article_montant * curr.article_quantity;
-    }, 0);
+    return formatter2Digits.format(
+      order?.articles?.reduce((acc, curr) => {
+        return acc + curr.article_montant * curr.article_quantity;
+      }, 0) ?? 0
+    );
   }, [order?.articles]);
 
   useEffect(() => {

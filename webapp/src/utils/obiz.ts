@@ -112,7 +112,7 @@ export const insertItemPayload = (
 
   return {
     signature: signature,
-    LONGUEUR_TABLE_ARTICLE: articles.length * 21,
+    LONGUEUR_TABLE_ARTICLE: 21,
     TABLE_ARTICLES: {
       string: articles.flatMap((article) => [
         article.reference,
@@ -138,7 +138,7 @@ export const insertItemPayload = (
         "",
       ]),
     },
-    LONGUEUR_TABLE_EBILLETS: articles.length * 7,
+    LONGUEUR_TABLE_EBILLETS: 7,
     TABLE_EBILLETS: {
       string: articles.flatMap((article) => [
         article.reference,

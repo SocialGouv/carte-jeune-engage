@@ -46,6 +46,11 @@ export const getTodayFrenchDate = () => {
   return frenchDate;
 };
 
+export const formatter2Digits = new Intl.NumberFormat("fr-FR", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 export const frenchPhoneNumber = /^(?:\+33[1-9](\d{8})|(?!.*\+\d{2}).{10})$/;
 
 export const payloadOrPhoneNumberCheck = (phone_number: string): Where => {

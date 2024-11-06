@@ -2,6 +2,7 @@ import { Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import Image from "../ui/Image";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { OfferArticle } from "~/server/types";
+import { formatter2Digits } from "~/utils/tools";
 
 type RecapOrderDefaultProps = {
   amount: number;
@@ -24,11 +25,6 @@ const RecapOrder = (props: RecapOrderProps) => {
   const { kind, amount, discount, offer } = props;
   const amountWithDiscount = amount - (amount * discount) / 100;
   const discountAmount = amount - amountWithDiscount;
-
-  const formatter = new Intl.NumberFormat("fr-FR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 
   return (
     <Flex flexDir="column">
@@ -57,7 +53,7 @@ const RecapOrder = (props: RecapOrderProps) => {
         <Flex alignItems="center">
           <Text fontWeight={500}>Valeur du bon</Text>
           <Text fontWeight={700} ml="auto">
-            {formatter.format(amount)}€
+            {formatter2Digits.format(amount)}€
           </Text>
         </Flex>
       ) : (
@@ -73,7 +69,7 @@ const RecapOrder = (props: RecapOrderProps) => {
           <Flex alignItems="center">
             <Text fontWeight={500}>Total valeur bon d'achat </Text>
             <Text fontWeight={700} ml="auto">
-              {formatter.format(amount)}€
+              {formatter2Digits.format(amount)}€
             </Text>
           </Flex>
         </Flex>
@@ -87,23 +83,23 @@ const RecapOrder = (props: RecapOrderProps) => {
           textDecoration="line-through"
           opacity={0.5}
         >
-          {formatter.format(amount)}€
+          {formatter2Digits.format(amount)}€
         </Text>
         <Text fontWeight={700} ml={2}>
-          {formatter.format(amountWithDiscount)}€
+          {formatter2Digits.format(amountWithDiscount)}€
         </Text>
       </Flex>
       <Flex alignItems="center" mt={2.5}>
         <Text fontWeight={500}>Vous économisez</Text>
         <Text fontWeight={700} ml="auto" color="primary">
-          {formatter.format(discountAmount)}€
+          {formatter2Digits.format(discountAmount)}€
         </Text>
       </Flex>
       <Divider my={4} />
       <Flex alignItems="center" fontWeight={800}>
         <Text fontSize={18}>À payer</Text>
         <Text fontSize={18} ml="auto">
-          {formatter.format(amountWithDiscount)}€
+          {formatter2Digits.format(amountWithDiscount)}€
         </Text>
       </Flex>
       <Divider my={4} />
