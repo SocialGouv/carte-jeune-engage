@@ -7,6 +7,7 @@ import { createOrderPayload, insertItemPayload } from "~/utils/obiz";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
 import fs from "fs/promises";
 import os from "os";
+import { Where } from "payload/types";
 
 export interface OrderIncluded extends Order {
   offer: Offer & { partner: Partner & { icon: Media } } & { image: Media };
@@ -266,23 +267,41 @@ export const orderRouter = createTRPCRouter({
       }
     }),
 
-  getList: userProtectedProcedure.query(async ({ ctx }) => {
-    const orders = await ctx.payload.find({
-      collection: "orders",
-      depth: 3,
-      where: {
-        and: [
-          { user: { equals: ctx.session.id } },
-          { status: { not_in: ["awaiting_payment", "archived"] } },
-          {
-            ...payloadWhereOfferIsValid("offer"),
-          },
-        ],
-      },
-    });
+  getList: userProtectedProcedure
+    .input(
+      z.object({
+        status: z.enum(["delivered"]).optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { status } = input;
 
-    return { data: orders.docs as OrderIncluded[] };
-  }),
+      let statusQuery: Where = {
+        status: { not_in: ["awaiting_payment", "archived"] },
+      };
+
+      if (status) {
+        statusQuery = {
+          status: { equals: status },
+        };
+      }
+
+      const orders = await ctx.payload.find({
+        collection: "orders",
+        depth: 3,
+        where: {
+          and: [
+            { user: { equals: ctx.session.id } },
+            { ...statusQuery },
+            {
+              ...payloadWhereOfferIsValid("offer"),
+            },
+          ],
+        },
+      });
+
+      return { data: orders.docs as OrderIncluded[] };
+    }),
 
   getById: userProtectedProcedure
     .input(
