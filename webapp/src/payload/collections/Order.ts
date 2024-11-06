@@ -37,8 +37,18 @@ export const Orders: CollectionConfig = {
         { label: "En attente de paiement", value: "awaiting_payment" },
         { label: "Payée", value: "payment_completed" },
         { label: "Livrée", value: "delivered" },
+        { label: "Archivée", value: "archived" },
       ],
       required: true,
+    },
+    {
+      name: "obiz_status",
+      type: "text",
+      label: "État Obiz",
+      admin: {
+        condition: (_, siblingData) =>
+          !!siblingData.status && siblingData.status === "archived",
+      },
     },
     {
       name: "payment_url",

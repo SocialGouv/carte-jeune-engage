@@ -106,4 +106,86 @@ export const orderRouter = createTRPCRouter({
         });
       }
     }),
+
+  synchronizeOrder: userProtectedProcedure
+    .input(
+      z.object({
+        order_id: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { order_id } = input;
+
+      let order = await ctx.payload.findByID({
+        collection: "orders",
+        id: order_id,
+        depth: 0,
+      });
+
+      if (order.user !== ctx.session.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: `Your are not able to synchronize this order`,
+        });
+      }
+
+      try {
+        const [resultOrderStatus] =
+          await ctx.soapObizClient.ETATS_COMMANDES_ARRAYAsync({
+            CE_ID: process.env.OBIZ_PARTNER_ID,
+            TABLE_COMMANDES: {
+              string: [order.number],
+            },
+          });
+        const resultOrderStatusObject =
+          resultOrderStatus.ETATS_COMMANDES_ARRAYResult.diffgram.NewDataSet
+            .Commande;
+
+        let newStatus = order.status;
+        switch (resultOrderStatusObject.etats_statut) {
+          case "NON FINALISEE":
+          case "EN ATTENTE":
+            newStatus = "awaiting_payment";
+            break;
+
+          case "PREPARATION":
+            newStatus = "payment_completed";
+            break;
+
+          case "ENVOYEE":
+          case "CONFIRMEE":
+            newStatus = "delivered";
+            break;
+
+          case "ANNULEE":
+          case "BLOQUEE":
+          case "ERREUR":
+          case "TEST":
+          case "RESTOCKING":
+            newStatus = "archived";
+            break;
+        }
+
+        if (newStatus !== order.status) {
+          order = await ctx.payload.update({
+            id: order_id,
+            collection: "orders",
+            data: {
+              status: newStatus,
+              obiz_status: resultOrderStatusObject.etats_statut,
+            },
+          });
+        }
+
+        return { data: order };
+      } catch (error) {
+        console.error(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An error occurred while synchronizing the order",
+        });
+      }
+
+      return {};
+    }),
 });
