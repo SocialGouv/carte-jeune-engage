@@ -17,6 +17,7 @@ import { OfferArticle } from "~/server/types";
 import { api } from "~/utils/api";
 import LayoutOrderStatus from "../obiz/LayoutOrderStatus";
 import { HiMiniShieldCheck } from "react-icons/hi2";
+import { formatter2Digits } from "~/utils/tools";
 
 const ObizOfferVariableContent = ({
   step,
@@ -133,10 +134,11 @@ const ObizOfferVariableContent = ({
         </>
       );
     case "payment":
+      const discount = articles[0].reductionPercentage;
       return (
         <LayoutOrderStatus
           status="loading"
-          title={`Vous allez payer ${amount}€`}
+          title={`Vous allez payer ${formatter2Digits.format(amount - (amount * discount) / 100)}€`}
           footer={
             <Box mt="auto" textAlign="center">
               <Icon as={HiMiniShieldCheck} color="primary" boxSize={6} />
