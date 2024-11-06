@@ -4,11 +4,12 @@ import {
   Center,
   Divider,
   Flex,
+  Heading,
   Tag,
   Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { HiEye, HiMinus, HiPlus } from "react-icons/hi2";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { BarcodeIcon } from "~/components/icons/barcode";
@@ -20,6 +21,7 @@ import { formatDateToDDMMYYYY } from "~/utils/tools";
 
 export default function OrderObizPage() {
   const router = useRouter();
+  const utils = api.useUtils();
 
   const { id } = router.query as {
     id: string;
@@ -27,11 +29,20 @@ export default function OrderObizPage() {
 
   const [showDetails, setShowDetails] = useState(false);
 
-  const { data: resultOrder, isLoading: isLoadingOrder } =
-    api.order.getById.useQuery(
-      { id: parseInt(id) },
-      { enabled: id !== undefined }
-    );
+  const {
+    data: resultOrder,
+    isLoading: isLoadingOrder,
+    isRefetching: isRefetchingOrder,
+  } = api.order.getById.useQuery(
+    { id: parseInt(id) },
+    { enabled: id !== undefined }
+  );
+  const { mutateAsync: mutateOrderSync, isLoading: isLoadingSyncOrder } =
+    api.order.synchronizeOrder.useMutation({
+      onSuccess: () => {
+        utils.order.getById.invalidate();
+      },
+    });
 
   const { data: order } = resultOrder || {};
 
@@ -41,6 +52,12 @@ export default function OrderObizPage() {
     }, 0);
   }, [order?.articles]);
 
+  useEffect(() => {
+    if (order && order.status !== "delivered" && !isLoadingSyncOrder) {
+      mutateOrderSync({ order_id: order.id });
+    }
+  }, [order?.status]);
+
   if (isLoadingOrder || !router.isReady) {
     return (
       <Center h="full">
@@ -49,7 +66,7 @@ export default function OrderObizPage() {
     );
   }
 
-  if (!order || !order.articles) {
+  if (!order) {
     router.replace("/dashboard");
     return;
   }
@@ -71,48 +88,58 @@ export default function OrderObizPage() {
     }
   };
 
-  return (
-    <Flex
-      minH="full"
-      direction={"column"}
-      position="relative"
-      pt={16}
-      px={6}
-      bg="bgGray"
-    >
-      <Flex direction={"column"} gap={10}>
-        <BackButton />
+  const getOrderContent = () => {
+    if (!order.articles) return;
+
+    if (
+      order.status !== "delivered" &&
+      !isLoadingSyncOrder &&
+      !isRefetchingOrder
+    ) {
+      return (
         <Flex
+          flexDirection={"column"}
+          gap={10}
           alignItems={"center"}
-          direction={"column"}
-          px={4}
+          bg="white"
           rounded={"2xl"}
-          gap={3}
-          mx={4}
+          shadow={"xl"}
+          p={10}
         >
-          <Flex alignItems={"center"} gap={2}>
-            <Box
-              bg="white"
-              rounded={"2xl"}
-              borderWidth={1}
-              borderColor={"bgGray"}
-              overflow={"hidden"}
-            >
-              <Image
-                src={order.offer.partner.icon.url || ""}
-                width={60}
-                height={order.offer.partner.icon.height || 50}
-                alt={`Logo ${order.offer.partner.name}`}
-              />
-            </Box>
-            <Text fontWeight={700} fontSize={"xl"}>
-              {order.offer.partner.name}
+          <Heading size={"md"} textAlign={"center"}>
+            Vos billets sont en cours d'approvisionnement, veuillez revenir dans
+            quelques minutes.
+          </Heading>
+        </Flex>
+      );
+    }
+
+    if (isLoadingSyncOrder) {
+      return (
+        <Flex
+          flexDirection={"column"}
+          gap={10}
+          alignItems={"center"}
+          bg="white"
+          rounded={"2xl"}
+          shadow={"xl"}
+          p={10}
+        >
+          <Flex direction={"column"} gap={4}>
+            <Heading size={"md"} textAlign={"center"}>
+              Nous récupérons vos billets chez notre partenaire
+            </Heading>
+            <Text color="disabled" textAlign={"center"} fontSize={"sm"}>
+              Veuillez patienter ou revenir dans quelques secondes...
             </Text>
           </Flex>
-          <Tag bg="white" fontWeight={700}>
-            <BarcodeIcon mr={1} /> Bon d'achat
-          </Tag>
+          <LoadingLoader />
         </Flex>
+      );
+    }
+
+    return (
+      <>
         <Flex
           direction={"column"}
           alignItems={"center"}
@@ -221,6 +248,53 @@ export default function OrderObizPage() {
           </Flex>
           <Divider my={4} />
         </Flex>
+      </>
+    );
+  };
+
+  return (
+    <Flex
+      minH="full"
+      direction={"column"}
+      position="relative"
+      pt={16}
+      px={6}
+      bg="bgGray"
+    >
+      <Flex direction={"column"} gap={10}>
+        <BackButton />
+        <Flex
+          alignItems={"center"}
+          direction={"column"}
+          px={4}
+          rounded={"2xl"}
+          gap={3}
+          mx={4}
+        >
+          <Flex alignItems={"center"} gap={2}>
+            <Box
+              bg="white"
+              rounded={"2xl"}
+              borderWidth={1}
+              borderColor={"bgGray"}
+              overflow={"hidden"}
+            >
+              <Image
+                src={order.offer.partner.icon.url || ""}
+                width={60}
+                height={order.offer.partner.icon.height || 50}
+                alt={`Logo ${order.offer.partner.name}`}
+              />
+            </Box>
+            <Text fontWeight={700} fontSize={"xl"}>
+              {order.offer.partner.name}
+            </Text>
+          </Flex>
+          <Tag bg="white" fontWeight={700}>
+            <BarcodeIcon mr={1} /> Bon d'achat
+          </Tag>
+        </Flex>
+        {getOrderContent()}
       </Flex>
     </Flex>
   );
