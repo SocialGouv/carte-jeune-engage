@@ -34,6 +34,7 @@ import LayoutOrderStatus from "~/components/obiz/LayoutOrderStatus";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import { Typewriter } from "~/components/ui/Typewriter";
+import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import {
   formatDateToDDMMYYYY,
@@ -44,6 +45,7 @@ import {
 export default function OrderObizPage() {
   const router = useRouter();
   const utils = api.useUtils();
+  const { user } = useAuth();
 
   const { id } = router.query as {
     id: string;
@@ -144,9 +146,10 @@ export default function OrderObizPage() {
             <ModalContent h="100dvh">
               <ModalBody display="flex" flexDir="column" px={8} h="100dvh">
                 <LayoutOrderStatus
-                  title="Votre problème est bien signalé Clémence"
+                  title={`Votre problème est bien signalé ${user?.firstName}`}
                   subtitle="Pour obtenir de l’aide vous pouvez contacter directement les coordonnées ci-dessous"
                   status="info"
+                  onClose={onCloseModalSignalIssue}
                 >
                   <Flex mt={10} direction={"column"} gap={4} w="full">
                     <Flex direction={"column"} gap={4} mx={4}>

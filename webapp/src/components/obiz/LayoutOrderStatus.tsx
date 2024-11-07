@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Flex, Icon, Text } from "@chakra-ui/react";
-import { HiCheckCircle } from "react-icons/hi2";
+import { HiCheckCircle, HiXMark } from "react-icons/hi2";
 import Image from "../ui/Image";
 
 type LayoutOrderStatusProps = {
@@ -7,6 +7,7 @@ type LayoutOrderStatusProps = {
   title: string;
   subtitle?: string;
   children?: React.ReactNode;
+  onClose?: () => void;
 };
 
 const LayoutOrderStatusIcon = ({
@@ -23,10 +24,15 @@ const LayoutOrderStatusIcon = ({
 };
 
 const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
-  const { status, title, subtitle, children } = props;
+  const { status, title, subtitle, children, onClose } = props;
 
   return (
     <Flex alignItems={"center"} flexDir="column" py={14} px={4} minH="full">
+      {onClose && (
+        <Box position={"absolute"} top={16} left={6} fontSize={"3xl"}>
+          <HiXMark onClick={onClose} />
+        </Box>
+      )}
       <Image
         src="/images/cje-logo.png"
         alt='Logo de carte "jeune engagé"'
