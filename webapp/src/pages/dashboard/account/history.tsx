@@ -92,13 +92,17 @@ export default function AccountHistory() {
             const currentCouponUsedAt = new Date(
               ("usedAt" in userHistoryItem
                 ? userHistoryItem.usedAt
+                  ? userHistoryItem.usedAt
+                  : userHistoryItem.assignUserAt
                 : userHistoryItem.createdAt) as string
             );
             const previousCoupon = history[index - 1];
             const previousCouponUsedAt = previousCoupon
               ? new Date(
-                  ("usedAt" in previousCoupon && previousCoupon.usedAt
+                  ("usedAt" in previousCoupon
                     ? previousCoupon.usedAt
+                      ? previousCoupon.usedAt
+                      : previousCoupon.assignUserAt
                     : previousCoupon.createdAt) as string
                 )
               : new Date();
