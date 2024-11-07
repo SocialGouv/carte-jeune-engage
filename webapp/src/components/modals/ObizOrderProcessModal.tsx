@@ -139,18 +139,18 @@ const ObizOfferVariableContent = ({
         <LayoutOrderStatus
           status="loading"
           title={`Vous allez payer ${formatter2Digits.format(amount - (amount * discount) / 100)}€`}
-          footer={
-            <Box mt="auto" textAlign="center">
-              <Icon as={HiMiniShieldCheck} color="primary" boxSize={6} />
-              <Text fontSize={12} fontWeight={700} mt={4}>
-                Tous les paiements et tous vos bons sont entièrement sécurisés
-              </Text>
-              <Text fontSize={12} fontWeight={700} mt={4}>
-                L’application carte “jeune engagé” est un dispositif de l’État.
-              </Text>
-            </Box>
-          }
-        />
+        >
+          {" "}
+          <Box mt="auto" textAlign="center">
+            <Icon as={HiMiniShieldCheck} color="primary" boxSize={6} />
+            <Text fontSize={12} fontWeight={700} mt={4}>
+              Tous les paiements et tous vos bons sont entièrement sécurisés
+            </Text>
+            <Text fontSize={12} fontWeight={700} mt={4}>
+              L’application carte “jeune engagé” est un dispositif de l’État.
+            </Text>
+          </Box>
+        </LayoutOrderStatus>
       );
   }
 };

@@ -1,11 +1,12 @@
-import { Box, Center, CircularProgress, Flex, Text } from "@chakra-ui/react";
+import { Box, CircularProgress, Flex, Icon, Text } from "@chakra-ui/react";
+import { HiCheckCircle } from "react-icons/hi2";
 import Image from "../ui/Image";
 
 type LayoutOrderStatusProps = {
-  status: "loading" | "success" | "error";
+  status: "loading" | "success" | "error" | "info";
   title: string;
   subtitle?: string;
-  footer: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 const LayoutOrderStatusIcon = ({
@@ -16,14 +17,16 @@ const LayoutOrderStatusIcon = ({
   switch (status) {
     case "loading":
       return <CircularProgress color="blackLight" isIndeterminate />;
+    case "info":
+      return <Icon as={HiCheckCircle} color="primary" fontSize="4xl" />;
   }
 };
 
 const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
-  const { status, title, subtitle, footer } = props;
+  const { status, title, subtitle, children } = props;
 
   return (
-    <Center display="flex" flexDir="column" py={14} px={10} minH="full">
+    <Flex alignItems={"center"} flexDir="column" py={14} px={4} minH="full">
       <Image
         src="/images/cje-logo.png"
         alt='Logo de carte "jeune engagé"'
@@ -43,12 +46,12 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
         {title}
       </Text>
       {subtitle && (
-        <Text fontSize="lg" color="blackLight" textAlign="center">
+        <Text fontSize="sm" color="blackLight" textAlign="center" mt={4}>
           {subtitle}
         </Text>
       )}
-      {footer}
-    </Center>
+      {children}
+    </Flex>
   );
 };
 

@@ -5,8 +5,14 @@ import {
   Divider,
   Flex,
   Heading,
+  Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
   Tag,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -14,6 +20,7 @@ import { HiExclamation } from "react-icons/hi";
 import {
   HiCheckCircle,
   HiClock,
+  HiEnvelope,
   HiExclamationCircle,
   HiEye,
   HiMinus,
@@ -23,6 +30,7 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { PiWarningFill } from "react-icons/pi";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
+import LayoutOrderStatus from "~/components/obiz/LayoutOrderStatus";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import { Typewriter } from "~/components/ui/Typewriter";
@@ -43,6 +51,12 @@ export default function OrderObizPage() {
 
   const [showDetails, setShowDetails] = useState(false);
   const [isSynchronizing, setIsSynchronizing] = useState(true);
+
+  const {
+    isOpen: isOpenModalSignalIssue,
+    onOpen: onOpenModalSignalIssue,
+    onClose: onCloseModalSignalIssue,
+  } = useDisclosure({});
 
   const {
     data: resultOrder,
@@ -111,7 +125,9 @@ export default function OrderObizPage() {
     }
   };
 
-  const signalIssueWithOrder = () => {};
+  const signalIssueWithOrder = () => {
+    onOpenModalSignalIssue();
+  };
 
   const getOrderContent = () => {
     if (!order.articles) return;
@@ -119,6 +135,60 @@ export default function OrderObizPage() {
     if (orderHasIssue) {
       return (
         <Flex direction={"column"} gap={8} mx={4}>
+          <Modal
+            isOpen={isOpenModalSignalIssue}
+            onClose={onCloseModalSignalIssue}
+            size="full"
+          >
+            <ModalOverlay />
+            <ModalContent h="100dvh">
+              <ModalBody display="flex" flexDir="column" px={8} h="100dvh">
+                <LayoutOrderStatus
+                  title="Votre problème est bien signalé Clémence"
+                  subtitle="Pour obtenir de l’aide vous pouvez contacter directement les coordonnées ci-dessous"
+                  status="info"
+                >
+                  <Flex mt={10} direction={"column"} gap={4} w="full">
+                    <Flex direction={"column"} gap={4} mx={4}>
+                      <Flex gap={2} alignItems={"center"} fontWeight={600}>
+                        <HiEnvelope />
+                        <Link
+                          href="mailto:serviceclient@reducce.fr"
+                          textDecor={"underline"}
+                        >
+                          serviceclient@reducce.fr
+                        </Link>
+                      </Flex>
+                      <Flex gap={2} alignItems={"center"} fontWeight={600}>
+                        <HiEnvelope />
+                        <Link href="telto:0472402828" textDecor={"underline"}>
+                          04 72 40 28 28
+                        </Link>
+                      </Flex>
+                    </Flex>
+                    <Divider my={4} />
+                    <Flex direction="column" gap={4} fontSize={"sm"} mx={8}>
+                      <Text textAlign={"center"} color="disabled">
+                        Horaires de réponses
+                      </Text>
+                      <Flex justifyContent={"space-between"}>
+                        <Text>Du lundi au vendredi</Text>
+                        <Text>
+                          9h00 - 12h30
+                          <br />
+                          14h00-17h30
+                        </Text>
+                      </Flex>
+                      <Flex justifyContent={"space-between"}>
+                        <Text>Samedi et dimanche</Text>
+                        <Text color="disabled">Indisponible</Text>
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                </LayoutOrderStatus>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
           <Flex direction={"column"} gap={4} alignItems={"center"}>
             <Box color="error" fontSize={"4xl"} mb={2}>
               <HiExclamationCircle />
