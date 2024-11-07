@@ -76,6 +76,9 @@ export default function OrderObizPage() {
 
   const { data: order } = resultOrder || {};
 
+  const { mutateAsync: mutateCreateSignal } =
+    api.order.createSignal.useMutation({});
+
   const amount = useMemo(() => {
     return formatter2Digits.format(
       order?.articles?.reduce((acc, curr) => {
@@ -126,6 +129,9 @@ export default function OrderObizPage() {
   };
 
   const signalIssueWithOrder = () => {
+    mutateCreateSignal({
+      id: order.id,
+    });
     onOpenModalSignalIssue();
   };
 

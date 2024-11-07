@@ -24,6 +24,7 @@ export interface Config {
     search_requests: SearchRequest;
     email_auth_tokens: EmailAuthToken;
     orders: Order;
+    ordersignals: Ordersignal;
     "payload-preferences": PayloadPreference;
     "payload-migrations": PayloadMigration;
   };
@@ -377,6 +378,16 @@ export interface Order {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ordersignals".
+ */
+export interface Ordersignal {
+  id: number;
+  order: number | Order;
   updatedAt: string;
   createdAt: string;
 }

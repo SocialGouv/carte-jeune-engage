@@ -356,4 +356,39 @@ export const orderRouter = createTRPCRouter({
 
       return { data: order as OrderIncluded };
     }),
+
+  createSignal: userProtectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+
+      const existingOrderSignals = await ctx.payload.find({
+        collection: "ordersignals",
+        where: {
+          order: { equals: id },
+        },
+      });
+      const existingOrderSignal = existingOrderSignals.docs[0];
+
+      if (!!existingOrderSignal) {
+        return {
+          data: existingOrderSignal,
+        };
+      }
+
+      const orderSignal = await ctx.payload.create({
+        collection: "ordersignals",
+        data: {
+          order: id,
+        },
+      });
+
+      return {
+        data: orderSignal,
+      };
+    }),
 });
