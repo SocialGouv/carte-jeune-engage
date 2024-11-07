@@ -1,3 +1,10 @@
+## [0.55.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.55.0...v0.55.1) (2024-11-07)
+
+
+### Bug Fixes
+
+* history mixed types issue ([9cf172d](https://github.com/SocialGouv/carte-jeune-engage/commit/9cf172de1fb396bf4b5cd6ff324a5cc3a6ca2fac))
+
 # [0.55.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.54.3...v0.55.0) (2024-11-07)
 
 
