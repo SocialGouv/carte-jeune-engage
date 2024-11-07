@@ -35,6 +35,18 @@ export const formatDateToDDMMYYYY = (isoDate: string | Date): string => {
   return `${day}/${month}/${year}`;
 };
 
+export const isOlderThan24Hours = (dateString: string): boolean => {
+  const inputDate = new Date(dateString);
+
+  const currentDate = new Date();
+
+  const diffInMs = currentDate.getTime() - inputDate.getTime();
+
+  const twentyFourHoursInMs = 86400000;
+
+  return diffInMs > twentyFourHoursInMs;
+};
+
 export const getTodayFrenchDate = () => {
   const date = new Date();
   const frenchDate = date.toLocaleDateString("fr-FR", {

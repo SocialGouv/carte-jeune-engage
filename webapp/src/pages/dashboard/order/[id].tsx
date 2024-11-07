@@ -10,21 +10,28 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+import { HiExclamation } from "react-icons/hi";
 import {
   HiCheckCircle,
   HiClock,
+  HiExclamationCircle,
   HiEye,
   HiMinus,
   HiPlus,
 } from "react-icons/hi2";
 import { MdOutlineFileDownload } from "react-icons/md";
+import { PiWarningFill } from "react-icons/pi";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import { Typewriter } from "~/components/ui/Typewriter";
 import { api } from "~/utils/api";
-import { formatDateToDDMMYYYY, formatter2Digits } from "~/utils/tools";
+import {
+  formatDateToDDMMYYYY,
+  formatter2Digits,
+  isOlderThan24Hours,
+} from "~/utils/tools";
 
 export default function OrderObizPage() {
   const router = useRouter();
@@ -35,6 +42,7 @@ export default function OrderObizPage() {
   };
 
   const [showDetails, setShowDetails] = useState(false);
+  const [isSynchronizing, setIsSynchronizing] = useState(true);
 
   const {
     data: resultOrder,
@@ -47,6 +55,7 @@ export default function OrderObizPage() {
   const { mutateAsync: mutateOrderSync, isLoading: isLoadingSyncOrder } =
     api.order.synchronizeOrder.useMutation({
       onSuccess: () => {
+        setIsSynchronizing(false);
         utils.order.getById.invalidate();
       },
     });
@@ -80,6 +89,11 @@ export default function OrderObizPage() {
     return;
   }
 
+  const orderHasIssue =
+    !isSynchronizing &&
+    order.status !== "delivered" &&
+    isOlderThan24Hours(order.createdAt);
+
   const showPDF = () => {
     if (order.ticket && typeof order.ticket === "object" && order.ticket.url) {
       window.open(order.ticket.url, "_blank", "noopener,noreferrer");
@@ -97,8 +111,60 @@ export default function OrderObizPage() {
     }
   };
 
+  const signalIssueWithOrder = () => {};
+
   const getOrderContent = () => {
     if (!order.articles) return;
+
+    if (orderHasIssue) {
+      return (
+        <Flex direction={"column"} gap={8} mx={4}>
+          <Flex direction={"column"} gap={4} alignItems={"center"}>
+            <Box color="error" fontSize={"4xl"} mb={2}>
+              <HiExclamationCircle />
+            </Box>
+            <Text
+              fontWeight={900}
+              fontSize={"2xl"}
+              textAlign={"center"}
+              color="error"
+            >
+              Nous rencontrons un problème avec ce bon d’achat
+            </Text>
+            <Text
+              fontWeight={500}
+              fontSize={"sm"}
+              textAlign={"center"}
+              color="disabled"
+            >
+              Signalez votre problème maintenant pour obtenir de l’aide.
+            </Text>
+            <Button
+              colorScheme="errorShades"
+              mt={4}
+              fontSize={"md"}
+              px={8}
+              onClick={signalIssueWithOrder}
+            >
+              Signaler mon problème
+            </Button>
+          </Flex>
+          <Divider />
+          <Flex gap={3}>
+            <Box color="primary" fontSize={"lg"} pt={1}>
+              <HiCheckCircle />
+            </Box>
+            <Text>Votre paiement a bien été enregistré</Text>
+          </Flex>
+          <Flex gap={3}>
+            <Box color="error" fontSize={"lg"} pt={1}>
+              <PiWarningFill />
+            </Box>
+            <Text>Votre bon d’achat n’est toujours pas arrivé</Text>
+          </Flex>
+        </Flex>
+      );
+    }
 
     if (order.status !== "delivered") {
       return (
@@ -249,10 +315,14 @@ export default function OrderObizPage() {
           shadow={"xl"}
           p={6}
         >
-          <Text>Valeur totale</Text>
-          <Text fontWeight={900} fontSize="3xl" mt={2}>
-            {amount}€
-          </Text>
+          {!orderHasIssue && (
+            <>
+              <Text>Valeur totale</Text>
+              <Text fontWeight={900} fontSize="3xl" mt={2}>
+                {amount}€
+              </Text>
+            </>
+          )}
           {getOrderContent()}
         </Flex>
         <Flex direction="column" bg="white" rounded={"2xl"} px={3} py={4}>
