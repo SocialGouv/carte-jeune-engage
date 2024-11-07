@@ -9,6 +9,7 @@ import fs from "fs/promises";
 import os from "os";
 import { Where } from "payload/types";
 import { PDFDocument } from "pdf-lib";
+import { getHtmlSignalOrder } from "~/utils/emailHtml";
 
 export interface OrderIncluded extends Order {
   offer: Offer & { partner: Partner & { icon: Media } } & { image: Media };
@@ -385,6 +386,23 @@ export const orderRouter = createTRPCRouter({
         data: {
           order: id,
         },
+      });
+
+      const users = await ctx.payload.find({
+        collection: "users",
+        limit: 1,
+        page: 1,
+        where: {
+          id: { equals: ctx.session.id },
+        },
+      });
+      const currentUser = users.docs[0];
+
+      ctx.payload.sendEmail({
+        from: process.env.SMTP_FROM_ADDRESS,
+        to: currentUser.userEmail,
+        subject: 'Signalement d\'une commande sur la carte "jeune engagé"',
+        html: getHtmlSignalOrder(currentUser),
       });
 
       return {
