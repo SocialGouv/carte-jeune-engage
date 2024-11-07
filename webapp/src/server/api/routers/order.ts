@@ -386,6 +386,7 @@ export const orderRouter = createTRPCRouter({
         data: {
           order: id,
         },
+        depth: 1,
       });
 
       const users = await ctx.payload.find({
@@ -401,8 +402,8 @@ export const orderRouter = createTRPCRouter({
       ctx.payload.sendEmail({
         from: process.env.SMTP_FROM_ADDRESS,
         to: currentUser.userEmail,
-        subject: 'Signalement d\'une commande sur la carte "jeune engagé"',
-        html: getHtmlSignalOrder(currentUser),
+        subject: "Signalement d'une commande défaillante",
+        html: getHtmlSignalOrder(currentUser, orderSignal.order as Order),
       });
 
       return {

@@ -1,5 +1,5 @@
 import { formatDateTime, getBaseUrl } from "./tools";
-import { User } from "~/payload/payload-types";
+import { Order, User } from "~/payload/payload-types";
 
 export const getHtmlLoginByEmail = (user: User, userAuthToken: string) => {
   return `
@@ -70,7 +70,7 @@ export const getHtmlLoginByEmail = (user: User, userAuthToken: string) => {
   `;
 };
 
-export const getHtmlSignalOrder = (user: User) => {
+export const getHtmlSignalOrder = (user: User, order: Order) => {
   const now = new Date();
   return `
     <!DOCTYPE html>
@@ -129,7 +129,10 @@ export const getHtmlSignalOrder = (user: User) => {
 
 					<hr/>
 
-					<p class="bottom-container"><b>Date de votre demande : ${formatDateTime(now)}</b> 
+					<p class="bottom-container">
+						<b>Numéro de commande :</b> ${order.number}<br/>
+						<b>Date de votre demande :</b> ${formatDateTime(now)}
+					</p> 
         </div>
       </body>
     </html>
