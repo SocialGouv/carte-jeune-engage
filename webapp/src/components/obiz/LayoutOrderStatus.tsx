@@ -43,12 +43,17 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
 
   return (
     <Flex alignItems="center" flexDir="column" py={14} px={4} minH="full">
-      <Center>
+      <Center position="relative" w="full">
         {onClose && (
-          <IconButton
-            aria-label="Close"
-            icon={<Icon as={HiXMark} w={8} h={8} />}
+          <Icon
+            as={HiXMark}
+            w={8}
+            h={8}
+            position="absolute"
+            left={-6}
+            top={0}
             onClick={onClose}
+            aria-label="Close"
           />
         )}
         <Image

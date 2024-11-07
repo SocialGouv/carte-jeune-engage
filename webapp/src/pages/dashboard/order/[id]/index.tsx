@@ -4,7 +4,6 @@ import {
   Center,
   Divider,
   Flex,
-  Heading,
   Link,
   Modal,
   ModalBody,
@@ -16,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { HiExclamation } from "react-icons/hi";
 import {
   HiCheckCircle,
   HiClock,
