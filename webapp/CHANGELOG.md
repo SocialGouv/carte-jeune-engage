@@ -1,3 +1,10 @@
+# [0.55.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.54.3...v0.55.0) (2024-11-07)
+
+
+### Features
+
+* handle merging multiple PDFs from order data ([e1d22c4](https://github.com/SocialGouv/carte-jeune-engage/commit/e1d22c4d5ab916c92dc28f87638d2c3a15f9879f))
+
 ## [0.54.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.54.2...v0.54.3) (2024-11-06)
 
 ### Bug Fixes
