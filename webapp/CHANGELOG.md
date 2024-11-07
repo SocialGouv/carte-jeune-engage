@@ -1,3 +1,10 @@
+## [0.55.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.55.1...v0.55.2) (2024-11-07)
+
+
+### Bug Fixes
+
+* add tooltip on the order detail page ([bde5490](https://github.com/SocialGouv/carte-jeune-engage/commit/bde5490aa52ab3605e001e53a7bead96e4a904a6))
+
 ## [0.55.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.55.0...v0.55.1) (2024-11-07)
 
 ### Bug Fixes
