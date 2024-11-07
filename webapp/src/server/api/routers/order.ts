@@ -8,6 +8,7 @@ import { payloadWhereOfferIsValid } from "~/utils/tools";
 import fs from "fs/promises";
 import os from "os";
 import { Where } from "payload/types";
+import { PDFDocument } from "pdf-lib";
 
 export interface OrderIncluded extends Order {
   offer: Offer & { partner: Partner & { icon: Media } } & { image: Media };
@@ -15,17 +16,37 @@ export interface OrderIncluded extends Order {
 }
 
 const createPdfMedia = async (
-  pdfData: string,
+  pdfData: string | string[],
   orderNumber: number,
   ctx: any
 ) => {
   try {
+    const pdfs = Array.isArray(pdfData) ? pdfData : [pdfData];
     const tempFileName = `ticket-${orderNumber}-${Date.now()}.pdf`;
     const tempFilePath = path.join(os.tmpdir(), tempFileName);
 
-    const pdfBuffer = Buffer.from(pdfData, "base64");
+    // If single PDF, process as before
+    if (pdfs.length === 1) {
+      const pdfBuffer = Buffer.from(pdfs[0], "base64");
+      await fs.writeFile(tempFilePath, pdfBuffer);
+    }
+    // If multiple PDFs, merge them
+    else {
+      const mergedPdf = await PDFDocument.create();
 
-    await fs.writeFile(tempFilePath, pdfBuffer);
+      for (const pdf of pdfs) {
+        const pdfBuffer = Buffer.from(pdf, "base64");
+        const pdfDoc = await PDFDocument.load(pdfBuffer);
+        const pages = await mergedPdf.copyPages(
+          pdfDoc,
+          pdfDoc.getPageIndices()
+        );
+        pages.forEach((page) => mergedPdf.addPage(page));
+      }
+
+      const mergedPdfBytes = await mergedPdf.save();
+      await fs.writeFile(tempFilePath, mergedPdfBytes);
+    }
 
     const pdfMedia = await ctx.payload.create({
       collection: "media",
@@ -36,7 +57,6 @@ const createPdfMedia = async (
     });
 
     await fs.unlink(tempFilePath);
-
     return pdfMedia;
   } catch (error) {
     console.error("Error processing PDF:", error);
@@ -229,13 +249,12 @@ export const orderRouter = createTRPCRouter({
           const resultGetTicketsObject =
             resultGetTickets.GET_BILLETSResult.diffgram.NewDataSet.Billets;
 
-          if (resultGetTicketsObject && resultGetTicketsObject.data) {
+          if (resultGetTicketsObject) {
             try {
-              const pdfMedia = await createPdfMedia(
-                resultGetTicketsObject.data,
-                order.number,
-                ctx
-              );
+              const data = Array.isArray(resultGetTicketsObject)
+                ? resultGetTicketsObject.map((rgto) => rgto.data)
+                : resultGetTicketsObject.data;
+              const pdfMedia = await createPdfMedia(data, order.number, ctx);
 
               await ctx.payload.update({
                 collection: "orders",

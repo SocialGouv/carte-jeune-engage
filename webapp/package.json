@@ -54,6 +54,7 @@
     "next": "13.5.6",
     "papaparse": "^5.4.1",
     "payload": "^2.10.0",
+    "pdf-lib": "^1.17.1",
     "react": "^18",
     "react-barcode": "^1.4.6",
     "react-csv-downloader": "^3.1.0",
