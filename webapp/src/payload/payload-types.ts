@@ -9,22 +9,22 @@
 export interface Config {
   collections: {
     admins: Admin;
-    apikeys: Apikey;
     users: User;
     supervisors: Supervisor;
     permissions: Permission;
-    media: Media;
+    apikeys: Apikey;
     categories: Category;
+    tags: Tag;
     partners: Partner;
+    media: Media;
     offers: Offer;
     coupons: Coupon;
+    orders: Order;
     savings: Saving;
+    ordersignals: Ordersignal;
     notifications: Notification;
-    tags: Tag;
     search_requests: SearchRequest;
     email_auth_tokens: EmailAuthToken;
-    orders: Order;
-    ordersignals: Ordersignal;
     "payload-preferences": PayloadPreference;
     "payload-migrations": PayloadMigration;
   };
@@ -55,16 +55,6 @@ export interface Admin {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "apikeys".
- */
-export interface Apikey {
-  id: number;
-  key: string;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -176,6 +166,16 @@ export interface Permission {
   phone_number: string;
   createdBy?: (number | null) | Supervisor;
   supervisorKind?: ("ML" | "SC" | "FT") | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apikeys".
+ */
+export interface Apikey {
+  id: number;
+  key: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -301,12 +301,51 @@ export interface Coupon {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  number: number;
+  user: number | User;
+  offer: number | Offer;
+  ticket?: number | Media | null;
+  status:
+    | "init"
+    | "awaiting_payment"
+    | "payment_completed"
+    | "delivered"
+    | "archived";
+  obiz_status?: string | null;
+  payment_url?: string | null;
+  articles?:
+    | {
+        article_reference: string;
+        article_quantity: number;
+        article_montant: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "savings".
  */
 export interface Saving {
   id: number;
   amount: number;
   coupon: number | Coupon;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ordersignals".
+ */
+export interface Ordersignal {
+  id: number;
+  order: number | Order;
   updatedAt: string;
   createdAt: string;
 }
@@ -354,40 +393,6 @@ export interface EmailAuthToken {
   user: number | User;
   token: string;
   expiration?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "orders".
- */
-export interface Order {
-  id: number;
-  number: number;
-  user: number | User;
-  offer: number | Offer;
-  ticket?: number | Media | null;
-  status: "awaiting_payment" | "payment_completed" | "delivered" | "archived";
-  obiz_status?: string | null;
-  payment_url?: string | null;
-  articles?:
-    | {
-        article_reference: string;
-        article_quantity: number;
-        article_montant: number;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ordersignals".
- */
-export interface Ordersignal {
-  id: number;
-  order: number | Order;
   updatedAt: string;
   createdAt: string;
 }

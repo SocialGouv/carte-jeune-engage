@@ -352,7 +352,11 @@ export default function OrderObizPage() {
       bg="bgGray"
     >
       <Flex direction={"column"} gap={10}>
-        <BackButton />
+        <BackButton
+          onClick={() => {
+            router.push("/dashboard/wallet");
+          }}
+        />
         <Flex
           alignItems={"center"}
           direction={"column"}

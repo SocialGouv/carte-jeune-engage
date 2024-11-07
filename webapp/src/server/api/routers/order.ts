@@ -112,9 +112,23 @@ export const orderRouter = createTRPCRouter({
         });
       }
 
+      const initialOrder = await ctx.payload.create({
+        collection: "orders",
+        data: {
+          number: 0,
+          user: user.id,
+          offer: offer.id,
+          status: "init",
+        },
+      });
+
       try {
         // CREATION DE LA COMMANDE
-        const create_order_payload = createOrderPayload(user, "CARTECADEAU");
+        const create_order_payload = createOrderPayload(
+          user,
+          initialOrder,
+          "CARTECADEAU"
+        );
         const [resultOrder] =
           await ctx.soapObizClient.CREATION_COMMANDE_ARRAYAsync({
             CE_ID: process.env.OBIZ_PARTNER_ID,
@@ -148,8 +162,9 @@ export const orderRouter = createTRPCRouter({
           Boolean(resultItemObject?.url_paiement);
 
         if (isOrderCompleted) {
-          const order = await ctx.payload.create({
+          const order = await ctx.payload.update({
             collection: "orders",
+            id: initialOrder.id,
             data: {
               number: orderNumber,
               user: user.id,
@@ -229,6 +244,7 @@ export const orderRouter = createTRPCRouter({
             break;
 
           case "PREPARATION":
+          case "RESTOCKING":
             newStatus = "payment_completed";
             break;
 
@@ -241,7 +257,6 @@ export const orderRouter = createTRPCRouter({
           case "BLOQUEE":
           case "ERREUR":
           case "TEST":
-          case "RESTOCKING":
             newStatus = "archived";
             break;
         }
@@ -314,7 +329,7 @@ export const orderRouter = createTRPCRouter({
       const { status } = input;
 
       let statusQuery: Where = {
-        status: { not_in: ["awaiting_payment", "archived"] },
+        status: { not_in: ["init", "awaiting_payment", "archived"] },
       };
 
       if (status) {

@@ -1,4 +1,4 @@
-import { User } from "~/payload/payload-types";
+import { Order, User } from "~/payload/payload-types";
 import {
   extractAddressInformations,
   getBaseUrl,
@@ -15,6 +15,7 @@ export const obiz_signature = crypto
 
 export const createOrderPayload = (
   user: User,
+  order: Order,
   kind: "CARTECADEAU" | "EBILLET"
 ) => {
   const { street_address, city, zip_code } = extractAddressInformations(
@@ -85,8 +86,8 @@ export const createOrderPayload = (
         city,
         "FRANCE",
         "",
-        "/dashboard/order/success", // url_retour_ok
-        "/dashboard/order/error", // url_retour_ko
+        `/dashboard/order/${order.id}/success`, // url_retour_ok
+        `/dashboard/order/${order.id}/error`, // url_retour_ko
         "",
         "",
         "",
