@@ -1,5 +1,9 @@
-import { User } from "~/payload/payload-types";
-import { extractAddressInformations, getTodayFrenchDate } from "./tools";
+import { Order, User } from "~/payload/payload-types";
+import {
+  extractAddressInformations,
+  getBaseUrl,
+  getTodayFrenchDate,
+} from "./tools";
 import { OfferArticle } from "~/server/types";
 
 var crypto = require("crypto");
@@ -11,6 +15,7 @@ export const obiz_signature = crypto
 
 export const createOrderPayload = (
   user: User,
+  order: Order,
   kind: "CARTECADEAU" | "EBILLET"
 ) => {
   const { street_address, city, zip_code } = extractAddressInformations(
@@ -81,8 +86,8 @@ export const createOrderPayload = (
         city,
         "FRANCE",
         "",
-        "", // url_retour_ok
-        "", // url_retour_ko
+        `/dashboard/order/${order.id}/success`, // url_retour_ok
+        `/dashboard/order/${order.id}/error`, // url_retour_ko
         "",
         "",
         "",

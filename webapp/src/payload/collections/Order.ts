@@ -20,7 +20,6 @@ export const Orders: CollectionConfig = {
       type: "number",
       label: "Numéro de commande",
       required: true,
-      unique: true,
     },
     {
       name: "user",
@@ -47,6 +46,7 @@ export const Orders: CollectionConfig = {
       type: "select",
       label: "État",
       options: [
+        { label: "Initialisée", value: "init" },
         { label: "En attente de paiement", value: "awaiting_payment" },
         { label: "Payée", value: "payment_completed" },
         { label: "Livrée", value: "delivered" },

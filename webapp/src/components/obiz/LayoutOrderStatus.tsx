@@ -1,11 +1,23 @@
-import { Box, Center, CircularProgress, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  CircularProgress,
+  Flex,
+  Icon,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
+import { HiCheckCircle, HiXMark } from "react-icons/hi2";
 import Image from "../ui/Image";
+import { HiExclamationCircle } from "react-icons/hi";
+import { useRouter } from "next/router";
 
-type LayoutOrderStatusProps = {
-  status: "loading" | "success" | "error";
+export type LayoutOrderStatusProps = {
+  status: "loading" | "success" | "error" | "info";
   title: string;
   subtitle?: string;
-  footer: React.ReactNode;
+  children?: React.ReactNode;
+  onClose?: () => void;
 };
 
 const LayoutOrderStatusIcon = ({
@@ -16,20 +28,41 @@ const LayoutOrderStatusIcon = ({
   switch (status) {
     case "loading":
       return <CircularProgress color="blackLight" isIndeterminate />;
+    case "info":
+      return <Icon as={HiCheckCircle} color="primary" fontSize="4xl" />;
+    case "success":
+      return <Icon as={HiCheckCircle} color="success" w={8} h={8} />;
+    case "error":
+      return <Icon as={HiExclamationCircle} color="error" w={8} h={8} />;
   }
 };
 
 const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
-  const { status, title, subtitle, footer } = props;
+  const { status, title, subtitle, children, onClose } = props;
+  const router = useRouter();
 
   return (
-    <Center display="flex" flexDir="column" py={14} px={10} minH="full">
-      <Image
-        src="/images/cje-logo.png"
-        alt='Logo de carte "jeune engagé"'
-        height={32}
-        width={60}
-      />
+    <Flex alignItems="center" flexDir="column" py={14} px={4} minH="full">
+      <Center position="relative" w="full">
+        {onClose && (
+          <Icon
+            as={HiXMark}
+            w={8}
+            h={8}
+            position="absolute"
+            left={-6}
+            top={0}
+            onClick={onClose}
+            aria-label="Close"
+          />
+        )}
+        <Image
+          src="/images/cje-logo.png"
+          alt='Logo de carte "jeune engagé"'
+          height={32}
+          width={60}
+        />
+      </Center>
       <Box mt={18}>
         <LayoutOrderStatusIcon status={status} />
       </Box>
@@ -43,12 +76,12 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
         {title}
       </Text>
       {subtitle && (
-        <Text fontSize="lg" color="blackLight" textAlign="center">
+        <Text fontSize="sm" color="blackLight" textAlign="center" mt={4}>
           {subtitle}
         </Text>
       )}
-      {footer}
-    </Center>
+      {children}
+    </Flex>
   );
 };
 

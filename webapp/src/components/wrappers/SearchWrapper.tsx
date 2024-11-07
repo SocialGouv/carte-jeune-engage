@@ -55,7 +55,7 @@ const SearchWrapper = ({
     ...offer.partner,
     link: fromWidget
       ? `/widget/offer/${offer.id}`
-      : `/dashboard/offer/cje/${offer.id}`,
+      : `/dashboard/offer/${offer.source}/${offer.id}`,
   }));
 
   const paginatedTags = paginateArray(tags, 6);

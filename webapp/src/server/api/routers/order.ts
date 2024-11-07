@@ -9,6 +9,7 @@ import fs from "fs/promises";
 import os from "os";
 import { Where } from "payload/types";
 import { PDFDocument } from "pdf-lib";
+import { getHtmlSignalOrder } from "~/utils/emailHtml";
 
 export interface OrderIncluded extends Order {
   offer: Offer & { partner: Partner & { icon: Media } } & { image: Media };
@@ -111,9 +112,23 @@ export const orderRouter = createTRPCRouter({
         });
       }
 
+      const initialOrder = await ctx.payload.create({
+        collection: "orders",
+        data: {
+          number: 0,
+          user: user.id,
+          offer: offer.id,
+          status: "init",
+        },
+      });
+
       try {
         // CREATION DE LA COMMANDE
-        const create_order_payload = createOrderPayload(user, "CARTECADEAU");
+        const create_order_payload = createOrderPayload(
+          user,
+          initialOrder,
+          "CARTECADEAU"
+        );
         const [resultOrder] =
           await ctx.soapObizClient.CREATION_COMMANDE_ARRAYAsync({
             CE_ID: process.env.OBIZ_PARTNER_ID,
@@ -147,8 +162,9 @@ export const orderRouter = createTRPCRouter({
           Boolean(resultItemObject?.url_paiement);
 
         if (isOrderCompleted) {
-          const order = await ctx.payload.create({
+          const order = await ctx.payload.update({
             collection: "orders",
+            id: initialOrder.id,
             data: {
               number: orderNumber,
               user: user.id,
@@ -168,6 +184,10 @@ export const orderRouter = createTRPCRouter({
           };
         } else {
           // Erreur dans la réponse SOAP
+          console.error(
+            "Error from obiz SOAP web service:",
+            JSON.stringify(resultItemObject)
+          );
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
             message: "An error occurred from obiz SOAP web service",
@@ -224,6 +244,7 @@ export const orderRouter = createTRPCRouter({
             break;
 
           case "PREPARATION":
+          case "RESTOCKING":
             newStatus = "payment_completed";
             break;
 
@@ -236,7 +257,6 @@ export const orderRouter = createTRPCRouter({
           case "BLOQUEE":
           case "ERREUR":
           case "TEST":
-          case "RESTOCKING":
             newStatus = "archived";
             break;
         }
@@ -309,7 +329,7 @@ export const orderRouter = createTRPCRouter({
       const { status } = input;
 
       let statusQuery: Where = {
-        status: { not_in: ["awaiting_payment", "archived"] },
+        status: { not_in: ["init", "awaiting_payment", "archived"] },
       };
 
       if (status) {
@@ -344,12 +364,72 @@ export const orderRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { id } = input;
 
-      const order = await ctx.payload.findByID({
+      const order = (await ctx.payload.findByID({
         collection: "orders",
         id,
         depth: 3,
+      })) as OrderIncluded;
+
+      if (order.user.id !== ctx.session.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not allowed to get this order.",
+        });
+      }
+
+      return { data: order };
+    }),
+
+  createSignal: userProtectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+
+      const existingOrderSignals = await ctx.payload.find({
+        collection: "ordersignals",
+        where: {
+          order: { equals: id },
+        },
+      });
+      const existingOrderSignal = existingOrderSignals.docs[0];
+
+      if (!!existingOrderSignal) {
+        return {
+          data: existingOrderSignal,
+        };
+      }
+
+      const orderSignal = await ctx.payload.create({
+        collection: "ordersignals",
+        data: {
+          order: id,
+        },
+        depth: 1,
       });
 
-      return { data: order as OrderIncluded };
+      const users = await ctx.payload.find({
+        collection: "users",
+        limit: 1,
+        page: 1,
+        where: {
+          id: { equals: ctx.session.id },
+        },
+      });
+      const currentUser = users.docs[0];
+
+      ctx.payload.sendEmail({
+        from: process.env.SMTP_FROM_ADDRESS,
+        to: currentUser.userEmail,
+        subject: "Signalement d'une commande défaillante",
+        html: getHtmlSignalOrder(currentUser, orderSignal.order as Order),
+      });
+
+      return {
+        data: orderSignal,
+      };
     }),
 });

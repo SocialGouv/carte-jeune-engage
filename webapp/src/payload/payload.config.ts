@@ -29,6 +29,7 @@ import { Tags } from "./collections/Tag";
 import { SearchRequests } from "./collections/SearchRequest";
 import { EmailAuthTokens } from "./collections/EmailAuthToken";
 import { Orders } from "./collections/Order";
+import { OrderSignals } from "./collections/OrderSignal";
 
 const adapter = s3Adapter({
   config: {
@@ -71,21 +72,22 @@ export default buildConfig({
   },
   collections: [
     Admins,
-    ApiKeys,
     Users,
     Supervisors,
     Permissions,
-    Media,
+    ApiKeys,
     Categories,
+    Tags,
     Partners,
+    Media,
     Offers,
     Coupons,
+    Orders,
     Savings,
+    OrderSignals,
     Notifications,
-    Tags,
     SearchRequests,
     EmailAuthTokens,
-    Orders,
   ],
   localization: {
     locales: ["fr"],

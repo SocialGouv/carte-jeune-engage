@@ -4,42 +4,65 @@ import {
   Center,
   Divider,
   Flex,
-  Heading,
+  Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
   Tag,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import {
   HiCheckCircle,
   HiClock,
+  HiEnvelope,
+  HiExclamationCircle,
   HiEye,
   HiMinus,
   HiPlus,
 } from "react-icons/hi2";
 import { MdOutlineFileDownload } from "react-icons/md";
+import { PiWarningFill } from "react-icons/pi";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
+import LayoutOrderStatus from "~/components/obiz/LayoutOrderStatus";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import { Typewriter } from "~/components/ui/Typewriter";
+import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
-import { formatDateToDDMMYYYY, formatter2Digits } from "~/utils/tools";
+import {
+  formatDateToDDMMYYYY,
+  formatter2Digits,
+  isOlderThan24Hours,
+} from "~/utils/tools";
 
 export default function OrderObizPage() {
   const router = useRouter();
   const utils = api.useUtils();
+  const { user } = useAuth();
 
   const { id } = router.query as {
     id: string;
   };
 
   const [showDetails, setShowDetails] = useState(false);
+  const [isSynchronizing, setIsSynchronizing] = useState(true);
+
+  const {
+    isOpen: isOpenModalSignalIssue,
+    onOpen: onOpenModalSignalIssue,
+    onClose: onCloseModalSignalIssue,
+  } = useDisclosure({});
 
   const {
     data: resultOrder,
     isLoading: isLoadingOrder,
     isRefetching: isRefetchingOrder,
+    error: errorOrder,
   } = api.order.getById.useQuery(
     { id: parseInt(id) },
     { enabled: id !== undefined }
@@ -47,11 +70,15 @@ export default function OrderObizPage() {
   const { mutateAsync: mutateOrderSync, isLoading: isLoadingSyncOrder } =
     api.order.synchronizeOrder.useMutation({
       onSuccess: () => {
+        setIsSynchronizing(false);
         utils.order.getById.invalidate();
       },
     });
 
   const { data: order } = resultOrder || {};
+
+  const { mutateAsync: mutateCreateSignal } =
+    api.order.createSignal.useMutation({});
 
   const amount = useMemo(() => {
     return formatter2Digits.format(
@@ -67,7 +94,7 @@ export default function OrderObizPage() {
     }
   }, [order?.status]);
 
-  if (isLoadingOrder || !router.isReady) {
+  if (isLoadingOrder || !user || !router.isReady) {
     return (
       <Center h="full">
         <LoadingLoader />
@@ -75,10 +102,15 @@ export default function OrderObizPage() {
     );
   }
 
-  if (!order || !order.articles) {
+  if (!order || !order.articles || errorOrder?.data?.httpStatus === 403) {
     router.replace("/dashboard");
     return;
   }
+
+  const orderHasIssue =
+    !isSynchronizing &&
+    order.status !== "delivered" &&
+    isOlderThan24Hours(order.createdAt);
 
   const showPDF = () => {
     if (order.ticket && typeof order.ticket === "object" && order.ticket.url) {
@@ -97,8 +129,120 @@ export default function OrderObizPage() {
     }
   };
 
+  const signalIssueWithOrder = () => {
+    mutateCreateSignal({
+      id: order.id,
+    });
+    onOpenModalSignalIssue();
+  };
+
   const getOrderContent = () => {
     if (!order.articles) return;
+
+    if (orderHasIssue) {
+      return (
+        <Flex direction={"column"} gap={8} mx={4}>
+          <Modal
+            isOpen={isOpenModalSignalIssue}
+            onClose={onCloseModalSignalIssue}
+            size="full"
+          >
+            <ModalOverlay />
+            <ModalContent h="100dvh">
+              <ModalBody display="flex" flexDir="column" px={8} h="100dvh">
+                <LayoutOrderStatus
+                  title={`Votre problème est bien signalé ${user?.firstName}`}
+                  subtitle="Pour obtenir de l’aide vous pouvez contacter directement les coordonnées ci-dessous"
+                  status="info"
+                  onClose={onCloseModalSignalIssue}
+                >
+                  <Flex mt={10} direction={"column"} gap={4} w="full">
+                    <Flex direction={"column"} gap={4} mx={4}>
+                      <Flex gap={2} alignItems={"center"} fontWeight={600}>
+                        <HiEnvelope />
+                        <Link
+                          href="mailto:serviceclient@reducce.fr"
+                          textDecor={"underline"}
+                        >
+                          serviceclient@reducce.fr
+                        </Link>
+                      </Flex>
+                      <Flex gap={2} alignItems={"center"} fontWeight={600}>
+                        <HiEnvelope />
+                        <Link href="telto:0472402828" textDecor={"underline"}>
+                          04 72 40 28 28
+                        </Link>
+                      </Flex>
+                    </Flex>
+                    <Divider my={4} />
+                    <Flex direction="column" gap={4} fontSize={"sm"} mx={8}>
+                      <Text textAlign={"center"} color="disabled">
+                        Horaires de réponses
+                      </Text>
+                      <Flex justifyContent={"space-between"}>
+                        <Text>Du lundi au vendredi</Text>
+                        <Text>
+                          9h00 - 12h30
+                          <br />
+                          14h00-17h30
+                        </Text>
+                      </Flex>
+                      <Flex justifyContent={"space-between"}>
+                        <Text>Samedi et dimanche</Text>
+                        <Text color="disabled">Indisponible</Text>
+                      </Flex>
+                    </Flex>
+                  </Flex>
+                </LayoutOrderStatus>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+          <Flex direction={"column"} gap={4} alignItems={"center"}>
+            <Box color="error" fontSize={"4xl"} mb={2}>
+              <HiExclamationCircle />
+            </Box>
+            <Text
+              fontWeight={900}
+              fontSize={"2xl"}
+              textAlign={"center"}
+              color="error"
+            >
+              Nous rencontrons un problème avec ce bon d’achat
+            </Text>
+            <Text
+              fontWeight={500}
+              fontSize={"sm"}
+              textAlign={"center"}
+              color="disabled"
+            >
+              Signalez votre problème maintenant pour obtenir de l’aide.
+            </Text>
+            <Button
+              colorScheme="errorShades"
+              mt={4}
+              fontSize={"md"}
+              px={8}
+              onClick={signalIssueWithOrder}
+            >
+              Signaler mon problème
+            </Button>
+          </Flex>
+          <Divider />
+          <Flex gap={3}>
+            <Box color="primary" fontSize={"lg"} pt={1}>
+              <HiCheckCircle />
+            </Box>
+            <Text>Votre paiement a bien été enregistré</Text>
+          </Flex>
+          <Flex gap={3}>
+            <Box color="error" fontSize={"lg"} pt={1}>
+              <PiWarningFill />
+            </Box>
+            <Text>Votre bon d’achat n’est toujours pas arrivé</Text>
+          </Flex>
+        </Flex>
+      );
+    }
 
     if (order.status !== "delivered") {
       return (
@@ -208,7 +352,11 @@ export default function OrderObizPage() {
       bg="bgGray"
     >
       <Flex direction={"column"} gap={10}>
-        <BackButton />
+        <BackButton
+          onClick={() => {
+            router.push("/dashboard/wallet");
+          }}
+        />
         <Flex
           alignItems={"center"}
           direction={"column"}
@@ -249,10 +397,14 @@ export default function OrderObizPage() {
           shadow={"xl"}
           p={6}
         >
-          <Text>Valeur totale</Text>
-          <Text fontWeight={900} fontSize="3xl" mt={2}>
-            {amount}€
-          </Text>
+          {!orderHasIssue && (
+            <>
+              <Text>Valeur totale</Text>
+              <Text fontWeight={900} fontSize="3xl" mt={2}>
+                {amount}€
+              </Text>
+            </>
+          )}
           {getOrderContent()}
         </Flex>
         <Flex direction="column" bg="white" rounded={"2xl"} px={3} py={4}>

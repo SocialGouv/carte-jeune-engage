@@ -35,6 +35,29 @@ export const formatDateToDDMMYYYY = (isoDate: string | Date): string => {
   return `${day}/${month}/${year}`;
 };
 
+export const formatDateTime = (date: Date) => {
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+
+  return `${day}/${month}/${year} à ${hours}:${minutes}:${seconds}`;
+};
+
+export const isOlderThan24Hours = (dateString: string): boolean => {
+  const inputDate = new Date(dateString);
+
+  const currentDate = new Date();
+
+  const diffInMs = currentDate.getTime() - inputDate.getTime();
+
+  const twentyFourHoursInMs = 86400000;
+
+  return diffInMs > twentyFourHoursInMs;
+};
+
 export const getTodayFrenchDate = () => {
   const date = new Date();
   const frenchDate = date.toLocaleDateString("fr-FR", {
