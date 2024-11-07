@@ -14,7 +14,6 @@ type OrderSuccessProps = {
 
 type Step = {
   status: LayoutOrderStatusProps["status"];
-  title: string;
   subtitle: string;
 };
 
@@ -25,7 +24,6 @@ export const OrderSuccess = ({ order_id }: OrderSuccessProps) => {
 
   const [stepInterval, setStepInterval] = useState<NodeJS.Timeout>();
   const [currentStep, setCurrentStep] = useState<Step>({
-    title: `Nous générons vos bons d'achat ${_.capitalize(user?.firstName ?? "")}...`,
     subtitle: "Validation du paiement...",
     status: "loading",
   });
@@ -37,7 +35,6 @@ export const OrderSuccess = ({ order_id }: OrderSuccessProps) => {
         utils.order.getById.invalidate({ id: parseInt(order_id) });
         setCurrentStep({
           status: "success",
-          title: "C'est prêt !",
           subtitle: "Tout est bon",
         });
         setTimeout(() => router.push(`/dashboard/order/${order_id}`), 1000);
@@ -58,7 +55,7 @@ export const OrderSuccess = ({ order_id }: OrderSuccessProps) => {
 
     const steps: Partial<Step>[] = [
       {
-        subtitle: "Créations des bons d'achat...",
+        subtitle: "Création des bons d'achat...",
       },
     ];
 
@@ -79,7 +76,18 @@ export const OrderSuccess = ({ order_id }: OrderSuccessProps) => {
     return () => clearInterval(interval);
   }, []);
 
-  return <LayoutOrderStatus {...currentStep} />;
+  if (!user) return;
+
+  return (
+    <LayoutOrderStatus
+      title={
+        currentStep.status === "success"
+          ? "C'est prêt !"
+          : `Nous générons vos bons d'achat ${_.capitalize(user?.firstName ?? "")}`
+      }
+      {...currentStep}
+    />
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {

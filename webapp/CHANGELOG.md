@@ -1,31 +1,28 @@
 # [0.56.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.55.2...v0.56.0) (2024-11-07)
 
-
 ### Bug Fixes
 
-* close icon modal ([20bea0f](https://github.com/SocialGouv/carte-jeune-engage/commit/20bea0fde7dfed3c5ecada1d3f45214aa8b9c1bb))
-* email wording ([bdaf8c6](https://github.com/SocialGouv/carte-jeune-engage/commit/bdaf8c60217084e83b11c85ff5daf506aa042aec))
-* merge ([4b900a5](https://github.com/SocialGouv/carte-jeune-engage/commit/4b900a522e72c25c6600fc57df733b9d736a673d))
-* on close modal option ([e030ddc](https://github.com/SocialGouv/carte-jeune-engage/commit/e030ddc03e3d32328234fc244128318b8ae2301f))
-* search access to obiz offer ([984a224](https://github.com/SocialGouv/carte-jeune-engage/commit/984a22482220d6876c6c7c2078c38c21e0746051))
-* security on  orders ([6c5c9ec](https://github.com/SocialGouv/carte-jeune-engage/commit/6c5c9ec3963a5ffc6e61ed96018fa9b5aeebe096))
-
+- close icon modal ([20bea0f](https://github.com/SocialGouv/carte-jeune-engage/commit/20bea0fde7dfed3c5ecada1d3f45214aa8b9c1bb))
+- email wording ([bdaf8c6](https://github.com/SocialGouv/carte-jeune-engage/commit/bdaf8c60217084e83b11c85ff5daf506aa042aec))
+- merge ([4b900a5](https://github.com/SocialGouv/carte-jeune-engage/commit/4b900a522e72c25c6600fc57df733b9d736a673d))
+- on close modal option ([e030ddc](https://github.com/SocialGouv/carte-jeune-engage/commit/e030ddc03e3d32328234fc244128318b8ae2301f))
+- search access to obiz offer ([984a224](https://github.com/SocialGouv/carte-jeune-engage/commit/984a22482220d6876c6c7c2078c38c21e0746051))
+- security on orders ([6c5c9ec](https://github.com/SocialGouv/carte-jeune-engage/commit/6c5c9ec3963a5ffc6e61ed96018fa9b5aeebe096))
 
 ### Features
 
-* adapt obizOrderProcessModal ([159f91d](https://github.com/SocialGouv/carte-jeune-engage/commit/159f91d55acd42f4fe89f83dcc27ab3d8aae4ac4))
-* add success and error page for order after payment success or error ([622ed5d](https://github.com/SocialGouv/carte-jeune-engage/commit/622ed5df483438d3ce230e94ac96fd4ba909075c))
-* create order init status & push order_id to monetic success/error urls ([2dc68dd](https://github.com/SocialGouv/carte-jeune-engage/commit/2dc68dd45d016c0cde3855e49c1b336215da8f52))
-* orderHasIssue status design ([1a576b9](https://github.com/SocialGouv/carte-jeune-engage/commit/1a576b97a5df8db927e69148216d3066985e2ac5))
-* OrderSignals collection et create once at button call ([7799dd5](https://github.com/SocialGouv/carte-jeune-engage/commit/7799dd5542f4c4ae14f0f9605a9851d8279b5b97))
-* send email at first signal on an order ([72096f0](https://github.com/SocialGouv/carte-jeune-engage/commit/72096f09594ab5a4155e234ff164895a256ef7f7))
+- adapt obizOrderProcessModal ([159f91d](https://github.com/SocialGouv/carte-jeune-engage/commit/159f91d55acd42f4fe89f83dcc27ab3d8aae4ac4))
+- add success and error page for order after payment success or error ([622ed5d](https://github.com/SocialGouv/carte-jeune-engage/commit/622ed5df483438d3ce230e94ac96fd4ba909075c))
+- create order init status & push order_id to monetic success/error urls ([2dc68dd](https://github.com/SocialGouv/carte-jeune-engage/commit/2dc68dd45d016c0cde3855e49c1b336215da8f52))
+- orderHasIssue status design ([1a576b9](https://github.com/SocialGouv/carte-jeune-engage/commit/1a576b97a5df8db927e69148216d3066985e2ac5))
+- OrderSignals collection et create once at button call ([7799dd5](https://github.com/SocialGouv/carte-jeune-engage/commit/7799dd5542f4c4ae14f0f9605a9851d8279b5b97))
+- send email at first signal on an order ([72096f0](https://github.com/SocialGouv/carte-jeune-engage/commit/72096f09594ab5a4155e234ff164895a256ef7f7))
 
 ## [0.55.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.55.1...v0.55.2) (2024-11-07)
 
-
 ### Bug Fixes
 
-* add tooltip on the order detail page ([bde5490](https://github.com/SocialGouv/carte-jeune-engage/commit/bde5490aa52ab3605e001e53a7bead96e4a904a6))
+- add tooltip on the order detail page ([bde5490](https://github.com/SocialGouv/carte-jeune-engage/commit/bde5490aa52ab3605e001e53a7bead96e4a904a6))
 
 ## [0.55.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.55.0...v0.55.1) (2024-11-07)
 
