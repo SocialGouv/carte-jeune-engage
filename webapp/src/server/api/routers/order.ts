@@ -168,6 +168,10 @@ export const orderRouter = createTRPCRouter({
           };
         } else {
           // Erreur dans la réponse SOAP
+          console.error(
+            "Error from obiz SOAP web service:",
+            JSON.stringify(resultItemObject)
+          );
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
             message: "An error occurred from obiz SOAP web service",

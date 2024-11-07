@@ -1,5 +1,9 @@
 import { User } from "~/payload/payload-types";
-import { extractAddressInformations, getTodayFrenchDate } from "./tools";
+import {
+  extractAddressInformations,
+  getBaseUrl,
+  getTodayFrenchDate,
+} from "./tools";
 import { OfferArticle } from "~/server/types";
 
 var crypto = require("crypto");
@@ -81,8 +85,8 @@ export const createOrderPayload = (
         city,
         "FRANCE",
         "",
-        "", // url_retour_ok
-        "", // url_retour_ko
+        "/dashboard/order/success", // url_retour_ok
+        "/dashboard/order/error", // url_retour_ko
         "",
         "",
         "",
