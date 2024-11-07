@@ -62,6 +62,7 @@ export default function OrderObizPage() {
     data: resultOrder,
     isLoading: isLoadingOrder,
     isRefetching: isRefetchingOrder,
+    error: errorOrder,
   } = api.order.getById.useQuery(
     { id: parseInt(id) },
     { enabled: id !== undefined }
@@ -93,7 +94,7 @@ export default function OrderObizPage() {
     }
   }, [order?.status]);
 
-  if (isLoadingOrder || !router.isReady) {
+  if (isLoadingOrder || !user || !router.isReady) {
     return (
       <Center h="full">
         <LoadingLoader />
@@ -101,7 +102,7 @@ export default function OrderObizPage() {
     );
   }
 
-  if (!order || !order.articles) {
+  if (!order || !order.articles || errorOrder?.data?.httpStatus === 403) {
     router.replace("/dashboard");
     return;
   }

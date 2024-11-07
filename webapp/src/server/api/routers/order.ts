@@ -349,13 +349,20 @@ export const orderRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { id } = input;
 
-      const order = await ctx.payload.findByID({
+      const order = (await ctx.payload.findByID({
         collection: "orders",
         id,
         depth: 3,
-      });
+      })) as OrderIncluded;
 
-      return { data: order as OrderIncluded };
+      if (order.user.id !== ctx.session.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not allowed to get this order.",
+        });
+      }
+
+      return { data: order };
     }),
 
   createSignal: userProtectedProcedure
