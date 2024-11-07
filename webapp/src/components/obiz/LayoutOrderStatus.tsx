@@ -1,8 +1,18 @@
-import { Box, CircularProgress, Flex, Icon, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  CircularProgress,
+  Flex,
+  Icon,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
 import { HiCheckCircle, HiXMark } from "react-icons/hi2";
 import Image from "../ui/Image";
+import { HiExclamationCircle } from "react-icons/hi";
+import { useRouter } from "next/router";
 
-type LayoutOrderStatusProps = {
+export type LayoutOrderStatusProps = {
   status: "loading" | "success" | "error" | "info";
   title: string;
   subtitle?: string;
@@ -20,25 +30,34 @@ const LayoutOrderStatusIcon = ({
       return <CircularProgress color="blackLight" isIndeterminate />;
     case "info":
       return <Icon as={HiCheckCircle} color="primary" fontSize="4xl" />;
+    case "success":
+      return <Icon as={HiCheckCircle} color="success" w={8} h={8} />;
+    case "error":
+      return <Icon as={HiExclamationCircle} color="error" w={8} h={8} />;
   }
 };
 
 const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
   const { status, title, subtitle, children, onClose } = props;
+  const router = useRouter();
 
   return (
-    <Flex alignItems={"center"} flexDir="column" py={14} px={4} minH="full">
-      {onClose && (
-        <Box position={"absolute"} top={16} left={6} fontSize={"3xl"}>
-          <HiXMark onClick={onClose} />
-        </Box>
-      )}
-      <Image
-        src="/images/cje-logo.png"
-        alt='Logo de carte "jeune engagé"'
-        height={32}
-        width={60}
-      />
+    <Flex alignItems="center" flexDir="column" py={14} px={4} minH="full">
+      <Center>
+        {onClose && (
+          <IconButton
+            aria-label="Close"
+            icon={<Icon as={HiXMark} w={8} h={8} />}
+            onClick={onClose}
+          />
+        )}
+        <Image
+          src="/images/cje-logo.png"
+          alt='Logo de carte "jeune engagé"'
+          height={32}
+          width={60}
+        />
+      </Center>
       <Box mt={18}>
         <LayoutOrderStatusIcon status={status} />
       </Box>
