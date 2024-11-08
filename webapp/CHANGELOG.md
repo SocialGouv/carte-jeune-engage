@@ -1,3 +1,11 @@
+## [0.56.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.0...v0.56.1) (2024-11-08)
+
+
+### Bug Fixes
+
+* index for offer relation on coupon - improving perfs ([c075360](https://github.com/SocialGouv/carte-jeune-engage/commit/c07536052e5939a7ef634b57e3cf3a72a6763760))
+* layout loading success ([dc69846](https://github.com/SocialGouv/carte-jeune-engage/commit/dc69846ad0291b62a5c8938c2f0ab70999493650))
+
 # [0.56.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.55.2...v0.56.0) (2024-11-07)
 
 ### Bug Fixes
