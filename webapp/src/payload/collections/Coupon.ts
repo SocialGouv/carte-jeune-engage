@@ -70,6 +70,7 @@ export const Coupons: CollectionConfig = {
       type: "relationship",
       label: "Offre",
       relationTo: "offers",
+      index: true,
       hasMany: false,
       required: true,
     },

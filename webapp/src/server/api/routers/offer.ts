@@ -303,8 +303,10 @@ export const offerRouter = createTRPCRouter({
         depth: 3,
       });
 
-      const couponCountOfOffersPromises = offers.docs.map((offer) =>
-        ctx.payload.find({
+      const couponCountOfOffersPromises = offers.docs.map((offer) => {
+        if (offer.source !== "cje") return Promise.resolve({ docs: [] });
+
+        return ctx.payload.find({
           collection: "coupons",
           limit: 1,
           where: {
@@ -314,8 +316,8 @@ export const offerRouter = createTRPCRouter({
             used: { equals: false },
             user: { exists: false },
           },
-        })
-      );
+        });
+      });
 
       const couponCountOfOffers = await Promise.all(
         couponCountOfOffersPromises
