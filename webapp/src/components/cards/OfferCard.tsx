@@ -9,6 +9,7 @@ import ConditionalLink from "../ConditionalLink";
 import ExpiryTag from "../offer/ExpiryTag";
 import { BsEyeFill } from "react-icons/bs";
 import Cookies from "js-cookie";
+import { ObizCard } from "./ObizCard";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
@@ -43,6 +44,10 @@ const OfferCard = ({
   const handleBookmarkOffer = async (offerId: number) => {
     if (!isBookmarked) await mutateAsyncCouponToUser({ offer_id: offerId });
   };
+
+  if (offer.source === "obiz") {
+    return <ObizCard offer={offer} />;
+  }
 
   return (
     <ConditionalLink
