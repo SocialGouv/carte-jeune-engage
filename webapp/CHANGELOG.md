@@ -1,3 +1,10 @@
+## [0.56.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.3...v0.56.4) (2024-11-08)
+
+
+### Bug Fixes
+
+* removeProtocol on baseUrl only for localhost ([6389e3d](https://github.com/SocialGouv/carte-jeune-engage/commit/6389e3d0cf2ab01177f9abfb168d35ba8e8832d8))
+
 ## [0.56.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.2...v0.56.3) (2024-11-08)
 
 ### Bug Fixes
