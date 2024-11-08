@@ -30,6 +30,8 @@ export const createOrderPayload = (
     )
     .digest("hex") as string;
 
+  const baseUrl = getBaseUrl();
+
   return {
     SIGNATURE: signature,
     TABLE_CE: {
@@ -87,8 +89,8 @@ export const createOrderPayload = (
         city,
         "FRANCE",
         "",
-        `${removeProtocolFromUrl(getBaseUrl())}/dashboard/order/${order.id}/success`, // url_retour_ok
-        `${removeProtocolFromUrl(getBaseUrl())}/dashboard/order/${order.id}/error`, // url_retour_ko
+        `${baseUrl.includes("localhost") ? removeProtocolFromUrl(baseUrl) : baseUrl}/dashboard/order/${order.id}/success`, // url_retour_ok
+        `${baseUrl.includes("localhost") ? removeProtocolFromUrl(baseUrl) : baseUrl}/dashboard/order/${order.id}/error`, // url_retour_ko
         "",
         "",
         "",
