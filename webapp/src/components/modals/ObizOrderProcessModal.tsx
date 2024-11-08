@@ -82,21 +82,30 @@ const ObizOfferVariableContent = ({
         );
       } else {
         if (!selectedArticles || !setSelectedArticles) return null;
+
+        const filteredArticles = articles
+          .filter((a) => a.kind === "fixed_price")
+          .sort((a, b) => {
+            if (a.publicPrice && b.publicPrice)
+              return a.publicPrice - b.publicPrice;
+            return 0;
+          });
+
         return (
           <>
-            <Box mt={10}>
+            <Box mt={10} mb={16}>
               <DiscountAmountBlock
                 kind="fixed_price"
                 amount={amount}
                 setAmount={setAmount}
-                articles={articles}
+                articles={filteredArticles}
                 selectedArticles={selectedArticles}
                 setSelectedArticles={setSelectedArticles}
               />
             </Box>
             <Button
               mt="auto"
-              mb={24}
+              mb={12}
               onClick={() => setStep("summary")}
               isDisabled={amount === 0}
               w="full"
@@ -197,8 +206,8 @@ export default function ObizOrderProcessModal(
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
       <ModalOverlay />
-      <ModalContent h="100dvh">
-        <ModalBody display="flex" flexDir="column" px={8} h="100dvh">
+      <ModalContent minH="full">
+        <ModalBody display="flex" flexDir="column" px={8} minH="full">
           {step !== "payment" && (
             <Box mt={8}>
               <BackButton
