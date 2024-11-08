@@ -1,3 +1,10 @@
+## [0.56.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.4...v0.56.5) (2024-11-08)
+
+
+### Bug Fixes
+
+* cookie strict issue ([9f4b4be](https://github.com/SocialGouv/carte-jeune-engage/commit/9f4b4be29da7ce9d59809b906bfaba14bae7cd24))
+
 ## [0.56.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.3...v0.56.4) (2024-11-08)
 
 
