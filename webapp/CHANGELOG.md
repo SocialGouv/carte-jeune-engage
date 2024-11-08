@@ -1,3 +1,15 @@
+# [0.58.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.57.1...v0.58.0) (2024-11-08)
+
+
+### Bug Fixes
+
+* send obiz offer in batches & do not modify title at update ([6ae8508](https://github.com/SocialGouv/carte-jeune-engage/commit/6ae850816b7c218bce9e1cd67dcd82d1f19f89a9))
+
+
+### Features
+
+* new whitelist obiz ([e5f0cb7](https://github.com/SocialGouv/carte-jeune-engage/commit/e5f0cb732eb212b7078bd3971debe4e871050aca))
+
 ## [0.57.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.57.0...v0.57.1) (2024-11-08)
 
 
