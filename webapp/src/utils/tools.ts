@@ -175,6 +175,16 @@ export const isStandalone = () => {
   );
 };
 
+export const removeProtocolFromUrl = (url: string) => {
+  if (url.startsWith("https://")) {
+    return url.slice(8);
+  }
+  if (url.startsWith("http://")) {
+    return url.slice(7);
+  }
+  return url;
+};
+
 export const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
   const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");

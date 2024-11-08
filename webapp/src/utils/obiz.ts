@@ -3,6 +3,7 @@ import {
   extractAddressInformations,
   getBaseUrl,
   getTodayFrenchDate,
+  removeProtocolFromUrl,
 } from "./tools";
 import { OfferArticle } from "~/server/types";
 
@@ -86,8 +87,8 @@ export const createOrderPayload = (
         city,
         "FRANCE",
         "",
-        `/dashboard/order/${order.id}/success`, // url_retour_ok
-        `/dashboard/order/${order.id}/error`, // url_retour_ko
+        `${removeProtocolFromUrl(getBaseUrl())}/dashboard/order/${order.id}/success`, // url_retour_ok
+        `${removeProtocolFromUrl(getBaseUrl())}/dashboard/order/${order.id}/error`, // url_retour_ko
         "",
         "",
         "",
