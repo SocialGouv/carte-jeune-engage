@@ -1,3 +1,10 @@
+## [0.58.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.1...v0.58.2) (2024-11-08)
+
+
+### Bug Fixes
+
+* change order error page path and redirect to error page on create order error ([e2cefb6](https://github.com/SocialGouv/carte-jeune-engage/commit/e2cefb68a88c7ff291c9bb897e7e4968f4722343))
+
 ## [0.58.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.0...v0.58.1) (2024-11-08)
 
 ### Bug Fixes
