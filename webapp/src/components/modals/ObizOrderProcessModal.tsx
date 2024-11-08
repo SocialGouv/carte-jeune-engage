@@ -18,6 +18,7 @@ import { api } from "~/utils/api";
 import LayoutOrderStatus from "../obiz/LayoutOrderStatus";
 import { HiMiniShieldCheck } from "react-icons/hi2";
 import { formatter2Digits } from "~/utils/tools";
+import { useRouter } from "next/router";
 
 const ObizOfferVariableContent = ({
   step,
@@ -176,6 +177,7 @@ export default function ObizOrderProcessModal(
   props: ObizOrderProcessModalProps
 ) {
   const { isOpen, onClose, offerId } = props;
+  const router = useRouter();
 
   const [amount, setAmount] = useState(0);
   const [step, setStep] = useState<Steps>("amount");
@@ -188,6 +190,7 @@ export default function ObizOrderProcessModal(
     onSuccess: ({ data: { payment_url } }) => {
       if (payment_url) window.location.href = payment_url;
     },
+    onError: () => router.push("/dashboard/order/error"),
   });
 
   const { data: offerResult } = api.offer.getById.useQuery({
