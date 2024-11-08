@@ -1,3 +1,25 @@
+## [0.58.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.1...v0.58.2) (2024-11-08)
+
+### Bug Fixes
+
+- change order error page path and redirect to error page on create order error ([e2cefb6](https://github.com/SocialGouv/carte-jeune-engage/commit/e2cefb68a88c7ff291c9bb897e7e4968f4722343))
+
+## [0.58.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.0...v0.58.1) (2024-11-08)
+
+### Bug Fixes
+
+- remove article variable if fixed case and fix height full on multiple article fixed ([a9b3d8c](https://github.com/SocialGouv/carte-jeune-engage/commit/a9b3d8ce9c1bdd580e51a792c9e04d8feed58687))
+
+# [0.58.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.57.1...v0.58.0) (2024-11-08)
+
+### Bug Fixes
+
+- send obiz offer in batches & do not modify title at update ([6ae8508](https://github.com/SocialGouv/carte-jeune-engage/commit/6ae850816b7c218bce9e1cd67dcd82d1f19f89a9))
+
+### Features
+
+- new whitelist obiz ([e5f0cb7](https://github.com/SocialGouv/carte-jeune-engage/commit/e5f0cb732eb212b7078bd3971debe4e871050aca))
+
 ## [0.57.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.57.0...v0.57.1) (2024-11-08)
 
 ### Bug Fixes

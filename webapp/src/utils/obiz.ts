@@ -90,7 +90,7 @@ export const createOrderPayload = (
         "FRANCE",
         "",
         `${baseUrl.includes("localhost") ? removeProtocolFromUrl(baseUrl) : baseUrl}/dashboard/order/${order.id}/success`, // url_retour_ok
-        `${baseUrl.includes("localhost") ? removeProtocolFromUrl(baseUrl) : baseUrl}/dashboard/order/${order.id}/error`, // url_retour_ko
+        `${baseUrl.includes("localhost") ? removeProtocolFromUrl(baseUrl) : baseUrl}/dashboard/order/error`, // url_retour_ko
         "",
         "",
         "",

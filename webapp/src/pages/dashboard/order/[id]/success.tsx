@@ -44,7 +44,7 @@ export const OrderSuccess = ({ order_id }: OrderSuccessProps) => {
       switch (error.data?.code) {
         case "FORBIDDEN":
         case "INTERNAL_SERVER_ERROR":
-          router.push(`/dashboard/order/${order_id}/error`);
+          router.push(`/dashboard/order/error`);
           break;
       }
     },
