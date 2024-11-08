@@ -1,3 +1,10 @@
+# [0.57.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.5...v0.57.0) (2024-11-08)
+
+
+### Features
+
+* add obiz card, add shuffle to list of availables and change list in home page ([b15e5c3](https://github.com/SocialGouv/carte-jeune-engage/commit/b15e5c33cf4290e4e8b1952e6731aec6d402ab00))
+
 ## [0.56.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.4...v0.56.5) (2024-11-08)
 
 ### Bug Fixes
