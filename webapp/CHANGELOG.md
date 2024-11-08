@@ -1,9 +1,8 @@
 ## [0.57.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.57.0...v0.57.1) (2024-11-08)
 
-
 ### Bug Fixes
 
-* variable offer amount with reduction ([e680d07](https://github.com/SocialGouv/carte-jeune-engage/commit/e680d0705c90f4a791b284c41c2869cf85ded91d))
+- variable offer amount with reduction ([e680d07](https://github.com/SocialGouv/carte-jeune-engage/commit/e680d0705c90f4a791b284c41c2869cf85ded91d))
 
 # [0.57.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.5...v0.57.0) (2024-11-08)
 
