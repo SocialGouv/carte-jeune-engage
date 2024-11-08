@@ -1,3 +1,10 @@
+## [0.58.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.0...v0.58.1) (2024-11-08)
+
+
+### Bug Fixes
+
+* remove article variable if fixed case and fix height full on multiple article fixed ([a9b3d8c](https://github.com/SocialGouv/carte-jeune-engage/commit/a9b3d8ce9c1bdd580e51a792c9e04d8feed58687))
+
 # [0.58.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.57.1...v0.58.0) (2024-11-08)
 
 ### Bug Fixes
