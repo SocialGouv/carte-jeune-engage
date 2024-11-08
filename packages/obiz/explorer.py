@@ -6,9 +6,9 @@ from finders.sousgenre import search_sousgenre_articles, print_sousgenre_details
 
 def main():
     file_paths = [
-        'inputs/reduccine.fr-preprod.json',
-        'inputs/reduckdo.fr-preprod.json',
-        'inputs/reducparc.fr-preprod.json'
+        'inputs/reduccine.fr.json',
+        'inputs/reduckdo.fr.json',
+        'inputs/reducparc.fr.json'
     ]
 
     try:

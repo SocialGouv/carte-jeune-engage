@@ -109,7 +109,7 @@ const SignupPage: React.FC = () => {
           setCookie(
             process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt",
             data.refreshedToken as string,
-            { expires: new Date((data.exp as number) * 1000) }
+            { expires: new Date((data.exp as number) * 1000), sameSite: "lax" }
           );
           refetchUser().then(() => {
             setIsSubmitting(false);

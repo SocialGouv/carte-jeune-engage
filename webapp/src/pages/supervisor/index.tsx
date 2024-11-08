@@ -40,6 +40,7 @@ export default function Home() {
   const storeUserCookie = (token?: string, exp?: number) => {
     setCookie(process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt", token || "", {
       expires: new Date((exp as number) * 1000),
+      sameSite: "lax",
     });
     router.push("/");
     router.reload();

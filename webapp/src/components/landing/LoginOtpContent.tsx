@@ -44,7 +44,7 @@ const LoginOtpContent = (props: LoginOtpContentProps) => {
         setCookie(
           process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt",
           data.token || "",
-          { expires: new Date((data.exp as number) * 1000) }
+          { expires: new Date((data.exp as number) * 1000), sameSite: "lax" }
         );
         router.reload();
         router.push("/dashboard");

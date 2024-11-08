@@ -1,9 +1,8 @@
 ## [0.56.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.2...v0.56.3) (2024-11-08)
 
-
 ### Bug Fixes
 
-* sql optimization for coupon check ([84a1759](https://github.com/SocialGouv/carte-jeune-engage/commit/84a175955486e935eb0782e7de6e20edf2f8c8f5))
+- sql optimization for coupon check ([84a1759](https://github.com/SocialGouv/carte-jeune-engage/commit/84a175955486e935eb0782e7de6e20edf2f8c8f5))
 
 ## [0.56.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.1...v0.56.2) (2024-11-08)
 
