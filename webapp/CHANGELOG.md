@@ -1,3 +1,10 @@
+## [0.56.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.1...v0.56.2) (2024-11-08)
+
+
+### Bug Fixes
+
+* soap obiz commande url with baseUrl and without protocol ([c1730f7](https://github.com/SocialGouv/carte-jeune-engage/commit/c1730f775c097b51b530f00eec426ffffb611f88))
+
 ## [0.56.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.56.0...v0.56.1) (2024-11-08)
 
 ### Bug Fixes
