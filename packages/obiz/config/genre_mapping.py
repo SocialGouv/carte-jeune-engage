@@ -54,7 +54,10 @@ class GenreMapper:
             "Parcs animaliers": Category.HOBBY,
             "Parcs aquatiques": Category.HOBBY,
             "Parcs culturels": Category.HOBBY,
-            "Parcs d'attractions": Category.HOBBY
+            "Parcs d'attractions": Category.HOBBY,
+
+            #other
+            "Nouveautés": Category.HOBBY
         }
 
     def get_category(self, genre: str) -> Optional[str]:
