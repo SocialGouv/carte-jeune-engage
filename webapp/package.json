@@ -41,7 +41,7 @@
     "aws-crt": "^1.20.1",
     "axios": "^1.7.7",
     "bowser": "^2.11.0",
-    "cookies-next": "^4.1.0",
+    "cookies-next": "^5.0.0",
     "crisp-sdk-web": "^1.0.21",
     "dotenv": "^16.3.1",
     "framer-motion": "^11.0.0",
