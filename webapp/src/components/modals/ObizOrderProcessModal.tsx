@@ -192,6 +192,8 @@ export default function ObizOrderProcessModal(
 
   if (availableArticles.length === 0) return;
 
+  const discount = availableArticles[0].reductionPercentage;
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
       <ModalOverlay />
@@ -223,7 +225,7 @@ export default function ObizOrderProcessModal(
                   article_references: [
                     { reference: availableArticles[0].reference, quantity: 1 },
                   ],
-                  input_value: amount,
+                  input_value: amount - (amount * discount) / 100,
                 });
               } else {
                 createTestOrder({

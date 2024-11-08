@@ -27,7 +27,8 @@ sousgenre_ids = [
     'bef3fd64-342f-4b3a-ab2d-edf708a77895',
     # Motoblouz
     '2d295a21-f52f-430d-a0be-0aad6df7d1aa',
-    
+    # Promod
+    'b99a4ff2-8c2c-4a1b-b46d-7b9ee63ca31a',
     # Spotify
     '16a6e1b8-73f3-4b43-8da5-4ee8b9e15f96',
     # Magasins U
