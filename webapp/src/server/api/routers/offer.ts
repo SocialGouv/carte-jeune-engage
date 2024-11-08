@@ -22,6 +22,7 @@ import { payloadWhereOfferIsValid } from "~/utils/tools";
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
+import _ from "lodash";
 
 export interface OfferIncluded extends Offer {
   image: Media;
@@ -95,6 +96,7 @@ export const offerRouter = createTRPCRouter({
           isCurrentUser: z.boolean().optional(),
           matchPreferences: z.boolean().optional(),
           searchOnPartner: z.string().optional(),
+          shuffle: z.boolean().optional(),
         })
       )
     )
@@ -110,6 +112,7 @@ export const offerRouter = createTRPCRouter({
         kinds,
         tagIds,
         searchOnPartner,
+        shuffle,
       } = input;
 
       let where = {
@@ -200,7 +203,7 @@ export const offerRouter = createTRPCRouter({
           (row: { offers_id: number }) => row.offers_id
         ) as number[];
 
-      const offersFiltered = (offers.docs as OfferIncludedWithUserCoupon[])
+      let offersFiltered = (offers.docs as OfferIncludedWithUserCoupon[])
         .map((offer) => {
           const myOfferCoupon = currentUserCoupons.docs.find(
             (coupon) => coupon.offer === offer.id
@@ -231,6 +234,10 @@ export const offerRouter = createTRPCRouter({
           return hasAvailableCoupons || !!myUnusedOfferCoupon;
         });
 
+      if (shuffle) {
+        offersFiltered = _.shuffle(offersFiltered);
+      }
+
       return {
         data: offersFiltered,
         metadata: { page, count: offers.docs.length },
@@ -255,6 +262,7 @@ export const offerRouter = createTRPCRouter({
             )
             .optional(),
           searchOnPartner: z.string().optional(),
+          shuffle: z.boolean().optional(),
         })
       )
     )
@@ -267,6 +275,7 @@ export const offerRouter = createTRPCRouter({
         perPage,
         page,
         sort,
+        shuffle,
       } = input;
 
       let where = {
@@ -327,7 +336,7 @@ export const offerRouter = createTRPCRouter({
           (row: { offers_id: number }) => row.offers_id
         ) as number[];
 
-      const offersFiltered = (
+      let offersFiltered = (
         offers.docs as OfferIncludedWithUserCoupon[]
       ).filter((offer, index) => {
         if (offer.source === "obiz")
@@ -341,6 +350,10 @@ export const offerRouter = createTRPCRouter({
         const hasAvailableCoupons = CJE_OfferIdsAvailable.includes(offer.id);
         return hasAvailableCoupons;
       });
+
+      if (shuffle) {
+        offersFiltered = _.shuffle(offersFiltered);
+      }
 
       return {
         data: offersFiltered,

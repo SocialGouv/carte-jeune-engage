@@ -1,36 +1,46 @@
-import { Box, Center, Divider, Grid, Heading, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Divider,
+  Grid,
+  Heading,
+  Icon,
+  Link,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
+import { HiMiniTag } from "react-icons/hi2";
 import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
 import SearchBar from "~/components/SearchBar";
 import OfferCard from "~/components/cards/OfferCard";
+import { BarcodeIcon } from "~/components/icons/barcode";
 import CategoriesList from "~/components/lists/CategoriesList";
 import TagsList from "~/components/lists/TagsList";
 import { api } from "~/utils/api";
 
 export default function Dashboard() {
-  const { data: resultOffersOnline, isLoading: isLoadingOffersOnline } =
+  const { data: resultOffersCje, isLoading: isLoadingOffersCje } =
     api.offer.getListOfAvailables.useQuery({
       page: 1,
       perPage: 100,
-      sort: "partner.name",
-      kinds: ["code", "code_space"],
+      shuffle: true,
+      kinds: ["code", "code_space", "voucher", "voucher_pass"],
     });
 
-  const { data: resultOffersInStore, isLoading: isLoadingOffersInStore } =
+  const { data: resultOffersObiz, isLoading: isLoadingOffersObiz } =
     api.offer.getListOfAvailables.useQuery({
       page: 1,
       perPage: 100,
-      sort: "partner.name",
-      kinds: ["voucher", "voucher_pass", "code_obiz"],
+      shuffle: true,
+      kinds: ["code_obiz"],
     });
 
-  const { data: offersOnline } = resultOffersOnline || {};
-  const { data: offersInStore } = resultOffersInStore || {};
+  const { data: offersCje } = resultOffersCje || {};
+  const { data: offersObiz } = resultOffersObiz || {};
 
-  const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
+  const allOffers = [...(offersCje ?? []), ...(offersObiz ?? [])];
 
-  if (isLoadingOffersOnline || isLoadingOffersInStore) {
+  if (isLoadingOffersCje || isLoadingOffersObiz) {
     return (
       <Box pt={12} px={8} h="full">
         <Center h="full" w="full">
@@ -68,10 +78,11 @@ export default function Dashboard() {
           matomoEvent={["Accueil", "Obtenir l'application"]}
         />
       </Box>
-      {offersOnline && offersOnline?.length > 0 && (
+      {offersObiz && offersObiz?.length > 0 && (
         <>
           <Heading as="h2" fontSize="2xl" fontWeight={800} mt={8} px={8}>
-            À utiliser en ligne
+            Les <BarcodeIcon color="primary" w={7} h={7} mb={0.5} /> bons
+            d'achat
           </Heading>
           <Grid
             templateColumns="repeat(auto-fit, 100%)"
@@ -88,7 +99,7 @@ export default function Dashboard() {
               },
             }}
           >
-            {offersOnline?.map((offer) => (
+            {offersObiz?.map((offer) => (
               <OfferCard
                 key={offer.id}
                 offer={offer}
@@ -102,10 +113,19 @@ export default function Dashboard() {
           </Grid>
         </>
       )}
-      {offersInStore && offersInStore?.length > 0 && (
+      {offersCje && offersCje?.length > 0 && (
         <>
           <Heading as="h2" fontSize="2xl" fontWeight={800} px={8}>
-            À utiliser en magasin
+            Les{" "}
+            <Icon
+              as={HiMiniTag}
+              color="primary"
+              w={6}
+              h={6}
+              mr={1.5}
+              mb={-0.5}
+            />
+            codes les plus utilisés
           </Heading>
           <Grid
             templateColumns="repeat(auto-fit, 100%)"
@@ -122,7 +142,7 @@ export default function Dashboard() {
               },
             }}
           >
-            {offersInStore?.map((offer) => (
+            {offersCje?.map((offer) => (
               <OfferCard
                 key={offer.id}
                 offer={offer}
