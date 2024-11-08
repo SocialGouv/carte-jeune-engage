@@ -465,7 +465,6 @@ export const offerRouter = createTRPCRouter({
 
           if (!!existingOffer) {
             let updatedData: {
-              title?: string;
               formatedTitle?: string;
               validityTo?: string;
               articles?: any[];
@@ -473,11 +472,6 @@ export const offerRouter = createTRPCRouter({
 
             if (existingOffer.validityTo !== obiz_offer.validityTo) {
               updatedData.validityTo = obiz_offer.validityTo;
-            }
-
-            if (existingOffer.title !== obiz_offer.title) {
-              updatedData.title = obiz_offer.title;
-              updatedData.formatedTitle = obiz_offer.formatedTitle;
             }
 
             for (const obiz_article of obiz_offer.articles) {

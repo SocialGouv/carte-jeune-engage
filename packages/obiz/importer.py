@@ -114,6 +114,29 @@ class DataImporter:
             print(f"Error getting file {file_name} from SFTP: {str(e)}")
             return None
 
+    def send_offers_in_batches(self, offers_by_id, batch_size=10):
+        """
+        Send offers to API in batches of specified size.
+
+        Args:
+            offers_by_id (dict): Dictionary of offers indexed by ID
+            batch_size (int): Size of each batch (default: 10)
+        """
+        offers = list(offers_by_id.values())
+        total_offers = len(offers)
+
+        if not offers:
+            print("No offers to send to API")
+            return
+
+        # Process offers in batches
+        for i in range(0, total_offers, batch_size):
+            batch = offers[i:i + batch_size]
+            print(f"\nSending batch {i // batch_size + 1} ({len(batch)} offers)...")
+            self.send_to_api(batch)
+
+        print(f"\nCompleted sending {total_offers} offers in {(total_offers + batch_size - 1) // batch_size} batches")
+
     def send_to_api(self, offers: List[Dict]) -> None:
         """
         Envoie les offres traitées à l'API
@@ -243,13 +266,7 @@ class DataImporter:
             except Exception as e:
                 print(f"Error processing file {file_name}: {str(e)}")
 
-        offers = list(offers_by_id.values())
-
-        if offers:
-            print(f"\nProcessed {len(offers)} offers, sending to API...")
-            self.send_to_api(offers)
-        else:
-            print("No offers to send to API")
+        self.send_offers_in_batches(offers_by_id, batch_size=10)
 
 
 def main():
