@@ -42,7 +42,14 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
   const router = useRouter();
 
   return (
-    <Flex alignItems="center" flexDir="column" py={14} px={4} minH="full">
+    <Flex
+      alignItems="center"
+      flexDir="column"
+      py={14}
+      px={4}
+      minH="full"
+      grow={1}
+    >
       <Center position="relative" w="full">
         {onClose && (
           <Icon

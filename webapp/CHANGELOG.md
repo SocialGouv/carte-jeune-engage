@@ -1,9 +1,8 @@
 ## [0.58.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.2...v0.58.3) (2024-11-08)
 
-
 ### Bug Fixes
 
-* float 2 digits for variable amounts ([21d4411](https://github.com/SocialGouv/carte-jeune-engage/commit/21d441143d782baa8ebac97aeecd00e94820f6ad))
+- float 2 digits for variable amounts ([21d4411](https://github.com/SocialGouv/carte-jeune-engage/commit/21d441143d782baa8ebac97aeecd00e94820f6ad))
 
 ## [0.58.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.1...v0.58.2) (2024-11-08)
 
