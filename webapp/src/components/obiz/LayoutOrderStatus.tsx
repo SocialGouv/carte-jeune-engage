@@ -57,7 +57,7 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
             w={8}
             h={8}
             position="absolute"
-            left={-6}
+            left={0}
             top={0}
             onClick={onClose}
             aria-label="Close"
