@@ -1,15 +1,13 @@
 # [0.59.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.4...v0.59.0) (2024-11-11)
 
-
 ### Bug Fixes
 
-* offer image obiz ([6378e84](https://github.com/SocialGouv/carte-jeune-engage/commit/6378e845f00ec581ba68914f6ad4e6eb2bf4af9e))
-* preferences remove undefined from localstorage ([5005a9c](https://github.com/SocialGouv/carte-jeune-engage/commit/5005a9c169bf38d37dfdc04072a49b67f34c154e))
-
+- offer image obiz ([6378e84](https://github.com/SocialGouv/carte-jeune-engage/commit/6378e845f00ec581ba68914f6ad4e6eb2bf4af9e))
+- preferences remove undefined from localstorage ([5005a9c](https://github.com/SocialGouv/carte-jeune-engage/commit/5005a9c169bf38d37dfdc04072a49b67f34c154e))
 
 ### Features
 
-* obiz offer image in obiz offer page ([07e8b6e](https://github.com/SocialGouv/carte-jeune-engage/commit/07e8b6e219518cbd0ab761d0ed9208bc63ac20a4))
+- obiz offer image in obiz offer page ([07e8b6e](https://github.com/SocialGouv/carte-jeune-engage/commit/07e8b6e219518cbd0ab761d0ed9208bc63ac20a4))
 
 ## [0.58.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.3...v0.58.4) (2024-11-09)
 

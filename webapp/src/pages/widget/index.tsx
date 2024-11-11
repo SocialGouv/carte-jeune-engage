@@ -1,5 +1,6 @@
 import {
   Box,
+  Center,
   Divider,
   Flex,
   Grid,
@@ -17,6 +18,7 @@ import { BarcodeIcon } from "~/components/icons/barcode";
 import Jumbotron from "~/components/landing/Jumbotron";
 import CategoriesList from "~/components/lists/CategoriesList";
 import TagsList from "~/components/lists/TagsList";
+import LoadingLoader from "~/components/LoadingLoader";
 import SearchBar from "~/components/SearchBar";
 import getPayloadClient from "~/payload/payloadClient";
 import { ZWidgetToken } from "~/server/types";
@@ -44,6 +46,16 @@ export default function Widget() {
   const { data: offersObiz } = resultOffersObiz || {};
 
   const allOffers = [...(offersCje ?? []), ...(offersObiz ?? [])];
+
+  if (isLoadingOffersCje || isLoadingOffersObiz) {
+    return (
+      <Box pt={12} px={8} h="full">
+        <Center h="full" w="full">
+          <LoadingLoader />
+        </Center>
+      </Box>
+    );
+  }
 
   return (
     <Flex
