@@ -1,10 +1,9 @@
 ## [0.58.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.3...v0.58.4) (2024-11-09)
 
-
 ### Bug Fixes
 
-* LayoutOrderStatus close modal position ([6be1f1d](https://github.com/SocialGouv/carte-jeune-engage/commit/6be1f1d15b87ef43566a8b3a273255765a134e30))
-* LayoutOrderStatus flexbox ([8fd9d96](https://github.com/SocialGouv/carte-jeune-engage/commit/8fd9d963fd499c950f9f3dacea9cd80b80255e5c))
+- LayoutOrderStatus close modal position ([6be1f1d](https://github.com/SocialGouv/carte-jeune-engage/commit/6be1f1d15b87ef43566a8b3a273255765a134e30))
+- LayoutOrderStatus flexbox ([8fd9d96](https://github.com/SocialGouv/carte-jeune-engage/commit/8fd9d963fd499c950f9f3dacea9cd80b80255e5c))
 
 ## [0.58.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.2...v0.58.3) (2024-11-08)
 
