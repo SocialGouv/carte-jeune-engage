@@ -6,15 +6,20 @@ import Image from "../ui/Image";
 
 type ObizCardProps = {
   offer: OfferIncluded;
+  fromWidget?: boolean;
 };
 
 export const ObizCard = (props: ObizCardProps) => {
-  const { offer } = props;
+  const { offer, fromWidget } = props;
 
   return (
     <Link
       as={NextLink}
-      href={`/dashboard/offer/${offer.source}/${offer.id}`}
+      href={
+        fromWidget
+          ? `/widget/offer/${offer.id}`
+          : `/dashboard/offer/${offer.source}/${offer.id}`
+      }
       _hover={{ textDecoration: "none" }}
       passHref
     >

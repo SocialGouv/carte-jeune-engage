@@ -1,9 +1,19 @@
-import { Box, Divider, Flex, Grid, Heading, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Flex,
+  Grid,
+  Heading,
+  Icon,
+  Link,
+} from "@chakra-ui/react";
 import jwt from "jsonwebtoken";
 import { GetServerSideProps } from "next";
 import NextImage from "next/image";
 import NextLink from "next/link";
+import { HiMiniTag } from "react-icons/hi2";
 import OfferCard from "~/components/cards/OfferCard";
+import { BarcodeIcon } from "~/components/icons/barcode";
 import Jumbotron from "~/components/landing/Jumbotron";
 import CategoriesList from "~/components/lists/CategoriesList";
 import TagsList from "~/components/lists/TagsList";
@@ -14,26 +24,26 @@ import { api } from "~/utils/api";
 import { decryptData } from "~/utils/tools";
 
 export default function Widget() {
-  const { data: resultOffersOnline } =
+  const { data: resultOffersCje, isLoading: isLoadingOffersCje } =
     api.offer.getWidgetListOfAvailables.useQuery({
       page: 1,
-      perPage: 10,
-      sort: "partner.name",
-      kinds: ["code", "code_obiz", "code_space"],
+      perPage: 100,
+      shuffle: true,
+      kinds: ["code", "code_space", "voucher", "voucher_pass"],
     });
 
-  const { data: resultOffersInStore } =
+  const { data: resultOffersObiz, isLoading: isLoadingOffersObiz } =
     api.offer.getWidgetListOfAvailables.useQuery({
       page: 1,
-      perPage: 10,
-      sort: "partner.name",
-      kinds: ["voucher", "voucher_pass"],
+      perPage: 100,
+      shuffle: true,
+      kinds: ["code_obiz"],
     });
 
-  const { data: offersOnline } = resultOffersOnline || {};
-  const { data: offersInStore } = resultOffersInStore || {};
+  const { data: offersCje } = resultOffersCje || {};
+  const { data: offersObiz } = resultOffersObiz || {};
 
-  const allOffers = [...(offersOnline ?? []), ...(offersInStore ?? [])];
+  const allOffers = [...(offersCje ?? []), ...(offersObiz ?? [])];
 
   return (
     <Flex
@@ -82,10 +92,11 @@ export default function Widget() {
       <Box mt={8}>
         <CategoriesList offers={allOffers} baseLink="/widget/category" />
       </Box>
-      {offersOnline && offersOnline?.length > 0 && (
+      {offersObiz && offersObiz?.length > 0 && (
         <>
           <Heading as="h2" fontSize="2xl" fontWeight={800} mt={8} px={8}>
-            À utiliser en ligne
+            Les <BarcodeIcon color="primary" w={7} h={7} mb={0.5} /> bons
+            d'achat
           </Heading>
           <Grid
             templateColumns="repeat(auto-fit, 100%)"
@@ -94,7 +105,7 @@ export default function Widget() {
             mt={6}
             px={8}
             gap={2}
-            pb={8}
+            pb={10}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
@@ -102,12 +113,12 @@ export default function Widget() {
               },
             }}
           >
-            {offersOnline?.map((offer) => (
+            {offersObiz?.map((offer) => (
               <OfferCard
                 key={offer.id}
                 offer={offer}
                 matomoEvent={[
-                  "Accueil",
+                  "Widget - Accueil",
                   "Pour vous",
                   `Offre - ${offer.partner.name} - ${offer.title} `,
                 ]}
@@ -117,19 +128,28 @@ export default function Widget() {
           </Grid>
         </>
       )}
-      {offersInStore && offersInStore?.length > 0 && (
+      {offersCje && offersCje?.length > 0 && (
         <>
           <Heading as="h2" fontSize="2xl" fontWeight={800} px={8}>
-            À utiliser en magasin
+            Les{" "}
+            <Icon
+              as={HiMiniTag}
+              color="primary"
+              w={6}
+              h={6}
+              mr={1.5}
+              mb={-0.5}
+            />
+            codes les plus utilisés
           </Heading>
           <Grid
             templateColumns="repeat(auto-fit, 100%)"
             gridAutoFlow="column"
             gridAutoColumns="100%"
-            mt={4}
+            mt={6}
             px={8}
-            gap={3}
-            pb={8}
+            gap={2}
+            pb={14}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
@@ -137,12 +157,12 @@ export default function Widget() {
               },
             }}
           >
-            {offersInStore?.map((offer) => (
+            {offersCje?.map((offer) => (
               <OfferCard
                 key={offer.id}
                 offer={offer}
                 matomoEvent={[
-                  "Accueil",
+                  "Widget - Accueil",
                   "Pour vous",
                   `Offre - ${offer.partner.name} - ${offer.title} `,
                 ]}
