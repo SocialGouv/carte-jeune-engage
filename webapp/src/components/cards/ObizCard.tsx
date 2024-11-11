@@ -31,10 +31,10 @@ export const ObizCard = (props: ObizCardProps) => {
           <Image
             src={offer.image.url as string}
             alt={offer.image.alt as string}
-            width={126}
+            width={115}
             height={70}
             imageStyle={{
-              width: "126px",
+              width: "115px",
               height: "70px",
               transform: "translateY(40%)",
               marginTop: "-2rem",
@@ -44,10 +44,10 @@ export const ObizCard = (props: ObizCardProps) => {
         )}
         <Flex
           alignItems="center"
-          borderRadius="lg"
+          borderRadius="md"
           border="1px solid"
           borderColor="bgGray"
-          p={1}
+          p={0.5}
           bg={"white"}
           overflow={"hidden"}
           zIndex={1}
@@ -57,11 +57,11 @@ export const ObizCard = (props: ObizCardProps) => {
           <Image
             src={offer.partner.icon.url as string}
             alt={offer.partner.icon.alt as string}
-            width={offer.partner.icon.width || 80}
-            height={offer.partner.icon.height || 35}
+            width={offer.partner.icon.width || 160}
+            height={offer.partner.icon.height || 62}
             imageStyle={{
               width: "100%",
-              maxHeight: "32px",
+              maxHeight: "31px",
               borderRadius: "5px",
               objectFit: "cover",
               objectPosition: "center",
