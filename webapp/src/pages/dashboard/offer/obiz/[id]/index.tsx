@@ -119,19 +119,19 @@ export default function OfferObizPage() {
               bg={"white"}
               overflow={"hidden"}
               zIndex={1}
-              height="35px"
-              maxWidth="80px"
+              height="56px"
+              maxWidth="56px"
             >
               <Image
                 src={offer.partner.icon.url as string}
                 alt={offer.partner.icon.alt as string}
-                width={offer.partner.icon.width || 160}
-                height={offer.partner.icon.height || 62}
+                width={offer.partner.icon.width || 56}
+                height={offer.partner.icon.height || 56}
                 imageStyle={{
-                  width: "100%",
-                  maxHeight: "31px",
+                  width: "56px",
+                  maxHeight: "56px",
                   borderRadius: "5px",
-                  // objectFit: "cover",
+                  objectFit: "cover",
                   objectPosition: "center",
                 }}
               />
