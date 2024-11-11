@@ -1,3 +1,11 @@
+## [0.59.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.2...v0.59.3) (2024-11-11)
+
+
+### Bug Fixes
+
+* cards obiz offer partner image display ([b8af2bc](https://github.com/SocialGouv/carte-jeune-engage/commit/b8af2bcce1f4986586edcd2f44142b8a5aae6fbf))
+* phone number login-widget to number field ([5187a3f](https://github.com/SocialGouv/carte-jeune-engage/commit/5187a3f96394c30c476399312e7a4f555506ee2d))
+
 ## [0.59.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.1...v0.59.2) (2024-11-11)
 
 ### Bug Fixes
