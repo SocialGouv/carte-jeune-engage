@@ -1,3 +1,10 @@
+## [0.59.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.1...v0.59.2) (2024-11-11)
+
+
+### Bug Fixes
+
+* add loader widget offers ([af58546](https://github.com/SocialGouv/carte-jeune-engage/commit/af58546dd2bc43b23483ce8cc830c1b3f58e047a))
+
 ## [0.59.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.0...v0.59.1) (2024-11-11)
 
 ### Bug Fixes
