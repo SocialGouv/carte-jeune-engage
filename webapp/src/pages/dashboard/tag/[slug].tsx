@@ -6,6 +6,7 @@ import OfferCard from "~/components/cards/OfferCard";
 import CategoryWrapper from "~/components/wrappers/CategoryWrapper";
 import { TagIncluded } from "~/server/api/routers/tag";
 import { api } from "~/utils/api";
+import { sortOffersObizFirst } from "~/utils/tools";
 
 export default function TagOfferList() {
   const router = useRouter();
@@ -79,7 +80,7 @@ export default function TagOfferList() {
       selectedTagIds={selectedTagIds}
       onSelectTag={handleOnSelectTag}
     >
-      {offers.map((offer) => (
+      {offers.sort(sortOffersObizFirst).map((offer) => (
         <OfferCard
           key={offer.id}
           offer={offer}

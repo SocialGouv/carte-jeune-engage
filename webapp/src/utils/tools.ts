@@ -2,6 +2,7 @@ import { ChakraProps, Link, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
 import crypto from "crypto";
 import { Where } from "payload/types";
+import { OfferIncluded } from "~/server/api/routers/offer";
 
 export const convertFrenchDateToEnglish = (
   frenchDate: string
@@ -307,3 +308,9 @@ export function extractAddressInformations(address: string) {
     zip_code: match[3],
   };
 }
+
+export const sortOffersObizFirst = (a: OfferIncluded, b: OfferIncluded) => {
+  if (a.source === "obiz" && b.source !== "obiz") return -1;
+  if (a.source !== "obiz" && b.source === "obiz") return 1;
+  return 0;
+};

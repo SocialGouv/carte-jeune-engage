@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import LoadingLoader from "~/components/LoadingLoader";
 import OfferCard from "~/components/cards/OfferCard";
 import CategoryWrapper from "~/components/wrappers/CategoryWrapper";
+import { OfferIncluded } from "~/server/api/routers/offer";
 import { TagIncluded } from "~/server/api/routers/tag";
 import { api } from "~/utils/api";
+import { sortOffersObizFirst } from "~/utils/tools";
 
 export default function CategoryOfferList() {
   const router = useRouter();
@@ -77,16 +79,18 @@ export default function CategoryOfferList() {
       selectedTagIds={selectedTagIds}
       onSelectTag={handleOnSelectTag}
     >
-      {offers?.map((offer) => (
-        <OfferCard
-          key={offer.id}
-          offer={offer}
-          matomoEvent={[
-            "Explorer",
-            `Catégories - ${category.label} - Offre - ${offer.partner.name} - ${offer.title}`,
-          ]}
-        />
-      ))}
+      {offers
+        ?.sort(sortOffersObizFirst)
+        .map((offer) => (
+          <OfferCard
+            key={offer.id}
+            offer={offer}
+            matomoEvent={[
+              "Explorer",
+              `Catégories - ${category.label} - Offre - ${offer.partner.name} - ${offer.title}`,
+            ]}
+          />
+        ))}
     </CategoryWrapper>
   );
 }
