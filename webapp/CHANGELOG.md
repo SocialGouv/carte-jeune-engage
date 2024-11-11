@@ -1,3 +1,10 @@
+## [0.59.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.0...v0.59.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* new home for widget & handle obizOffer cards ([9760db4](https://github.com/SocialGouv/carte-jeune-engage/commit/9760db40b08bcbf6d5e396ca79d569fd4ac1a4a0))
+
 # [0.59.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.4...v0.59.0) (2024-11-11)
 
 
