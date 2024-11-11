@@ -257,7 +257,7 @@ export const loginWidgetSchema = z.object({
       step: 1,
       autocomplete: "tel-national",
       label: "Votre téléphone",
-      kind: "text",
+      kind: "number",
       placeholder: "06 00 00 00 00",
     }
   ),
