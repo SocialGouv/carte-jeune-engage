@@ -1,3 +1,10 @@
+# [0.61.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.60.2...v0.61.0) (2024-11-12)
+
+
+### Features
+
+* re-design categories list on homepage ([66ce603](https://github.com/SocialGouv/carte-jeune-engage/commit/66ce603affc69c011745fe7081a401421f7532bc))
+
 ## [0.60.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.60.1...v0.60.2) (2024-11-12)
 
 ### Bug Fixes
