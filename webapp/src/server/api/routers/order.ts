@@ -348,13 +348,7 @@ export const orderRouter = createTRPCRouter({
         collection: "orders",
         depth: 3,
         where: {
-          and: [
-            { user: { equals: ctx.session.id } },
-            { ...statusQuery },
-            {
-              ...payloadWhereOfferIsValid("offer"),
-            },
-          ],
+          and: [{ user: { equals: ctx.session.id } }, { ...statusQuery }],
         },
       });
 

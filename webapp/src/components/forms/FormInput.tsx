@@ -89,6 +89,7 @@ const FormInput = ({
         {...restInputProps}
         autoFocus={autoFocus}
         type={kind}
+        {...(kind === "number" && { pattern: "[0-9]*" })}
         placeholder={placeholder}
         borderRadius={16}
         border="none"

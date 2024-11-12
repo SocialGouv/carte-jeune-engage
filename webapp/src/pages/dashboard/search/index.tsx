@@ -161,7 +161,7 @@ export default function DashboardSearch() {
               ))}
             </Box>
           )}
-          {!!debouncedSearch && (
+          {!!debouncedSearch && !partners.length && (
             <Box mt={12}>
               <Text color="disabled" textAlign="center" px={20}>
                 Nous n'avons pas
