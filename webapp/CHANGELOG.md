@@ -1,9 +1,8 @@
 ## [0.61.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.5...v0.61.6) (2024-11-12)
 
-
 ### Bug Fixes
 
-* slice first word of partner name for edge cases ([9cda3e9](https://github.com/SocialGouv/carte-jeune-engage/commit/9cda3e9973fdbf093bd9ef418328b5510b0feb48))
+- slice first word of partner name for edge cases ([9cda3e9](https://github.com/SocialGouv/carte-jeune-engage/commit/9cda3e9973fdbf093bd9ef418328b5510b0feb48))
 
 ## [0.61.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.4...v0.61.5) (2024-11-12)
 

@@ -262,6 +262,7 @@ export default function ObizOrderProcessModal(
                   input_value: parseFloat(
                     formatter2Digits.format(amount - (amount * discount) / 100)
                   ),
+                  input_value_public: amount,
                 });
               } else {
                 createTestOrder({

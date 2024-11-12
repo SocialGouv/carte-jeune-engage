@@ -81,10 +81,12 @@ export const orderRouter = createTRPCRouter({
           })
         ),
         input_value: z.number().optional(),
+        input_value_public: z.number().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { offer_id, article_references, input_value } = input;
+      const { offer_id, article_references, input_value, input_value_public } =
+        input;
 
       const user = await ctx.payload.findByID({
         collection: "users",
@@ -178,7 +180,7 @@ export const orderRouter = createTRPCRouter({
               articles: articles.map((article) => ({
                 article_reference: article.reference,
                 article_quantity: article.quantity,
-                article_montant: input_value || article.publicPrice || 0,
+                article_montant: input_value_public || article.publicPrice || 0,
               })),
             },
           });
