@@ -33,7 +33,7 @@ export default function SearchBar({
   return (
     <InputGroup
       alignItems="center"
-      background={"cje-gray.500"}
+      background="bgGray"
       borderRadius={"1.125rem"}
       padding={small ? "0.6rem 0.5rem" : "1rem 0.5rem"}
     >
