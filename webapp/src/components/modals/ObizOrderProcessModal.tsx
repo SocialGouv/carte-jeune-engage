@@ -118,12 +118,30 @@ const ObizOfferVariableContent = ({
       }
     case "summary":
       if (!offer) return null;
+
+      const [checkedCGV, setCheckedCGV] = useState(false);
+      const [error, setError] = useState<string>();
+
+      const handleCreateOrder = () => {
+        if (checkedCGV) {
+          createOrder();
+        } else {
+          setError(
+            "Acceptez les conditions pour continuer et passer au paiement"
+          );
+        }
+      };
+
       return (
         <>
           <Box mt={10}>
             {isVariablePrice ? (
               <RecapOrder
                 kind="variable_price"
+                checkedCGV={checkedCGV}
+                setCheckedCGV={setCheckedCGV}
+                formError={error}
+                setFormError={setError}
                 discount={articles[0].reductionPercentage}
                 amount={amount}
                 offer={offer}
@@ -131,6 +149,10 @@ const ObizOfferVariableContent = ({
             ) : (
               <RecapOrder
                 kind="fixed_price"
+                checkedCGV={checkedCGV}
+                setCheckedCGV={setCheckedCGV}
+                formError={error}
+                setFormError={setError}
                 discount={articles[0].reductionPercentage}
                 articles={selectedArticles}
                 amount={amount}
@@ -138,7 +160,7 @@ const ObizOfferVariableContent = ({
               />
             )}
           </Box>
-          <Button mt={10} onClick={() => createOrder()} w="full">
+          <Button mt={4} mb={12} onClick={handleCreateOrder} w="full">
             Passer au paiement
           </Button>
         </>
