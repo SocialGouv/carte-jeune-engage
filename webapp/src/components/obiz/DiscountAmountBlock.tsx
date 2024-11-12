@@ -209,6 +209,7 @@ const DiscountAmountBlock = (props: DiscountAmountBlockProps) => {
         >
           <Input
             type="number"
+            pattern="[0-9]*"
             variant="unstyled"
             bgColor={isInvalidDebounce ? "errorLight" : "bgGray"}
             borderRadius="2.5xl"
