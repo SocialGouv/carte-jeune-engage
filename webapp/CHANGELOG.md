@@ -1,3 +1,10 @@
+## [0.61.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.8...v0.61.9) (2024-11-12)
+
+
+### Bug Fixes
+
+* add public and discounted price in shopping cart in order ([9b2e9ff](https://github.com/SocialGouv/carte-jeune-engage/commit/9b2e9ff7732fa35a80d71fbd9d69693185ab4e57))
+
 ## [0.61.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.7...v0.61.8) (2024-11-12)
 
 ### Bug Fixes
