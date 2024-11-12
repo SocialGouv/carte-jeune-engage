@@ -1,3 +1,10 @@
+## [0.61.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.4...v0.61.5) (2024-11-12)
+
+
+### Bug Fixes
+
+* remove zoom passCard component to default image to prevent css zoom compability ([73fb35a](https://github.com/SocialGouv/carte-jeune-engage/commit/73fb35abd7189de911d8677229664482d9453ca2))
+
 ## [0.61.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.3...v0.61.4) (2024-11-12)
 
 ### Bug Fixes
