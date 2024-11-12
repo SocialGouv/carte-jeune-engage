@@ -1,9 +1,8 @@
 ## [0.61.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.0...v0.61.1) (2024-11-12)
 
-
 ### Bug Fixes
 
-* categories list avatar spacing and placement ([62f80a3](https://github.com/SocialGouv/carte-jeune-engage/commit/62f80a34d4fae11252e5c9419baf82aa3dbaee2c))
+- categories list avatar spacing and placement ([62f80a3](https://github.com/SocialGouv/carte-jeune-engage/commit/62f80a34d4fae11252e5c9419baf82aa3dbaee2c))
 
 # [0.61.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.60.2...v0.61.0) (2024-11-12)
 
