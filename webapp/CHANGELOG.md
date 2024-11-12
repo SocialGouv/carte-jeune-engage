@@ -1,3 +1,10 @@
+## [0.61.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.3...v0.61.4) (2024-11-12)
+
+
+### Bug Fixes
+
+* re-add borderWidth with background color on categories list component ([cbbbe90](https://github.com/SocialGouv/carte-jeune-engage/commit/cbbbe9001638190190707b0610e4e8cf0684e056))
+
 ## [0.61.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.2...v0.61.3) (2024-11-12)
 
 ### Bug Fixes
