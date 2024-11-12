@@ -1,3 +1,9 @@
+## [0.61.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.1...v0.61.2) (2024-11-12)
+
+### Bug Fixes
+
+- obizSync route for hooks ([cb6707c](https://github.com/SocialGouv/carte-jeune-engage/commit/cb6707c016400feb2bbd3f69103511fb4c70d40f))
+
 ## [0.61.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.0...v0.61.1) (2024-11-12)
 
 ### Bug Fixes

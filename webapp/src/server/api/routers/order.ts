@@ -2,7 +2,11 @@ import { TRPCError } from "@trpc/server";
 import path from "path";
 import { z } from "zod";
 import { Media, Offer, Order, Partner, User } from "~/payload/payload-types";
-import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  userProtectedProcedure,
+} from "~/server/api/trpc";
 import { createOrderPayload, insertItemPayload } from "~/utils/obiz";
 import { payloadWhereOfferIsValid } from "~/utils/tools";
 import fs from "fs/promises";
@@ -202,7 +206,7 @@ export const orderRouter = createTRPCRouter({
       }
     }),
 
-  synchronizeOrder: userProtectedProcedure
+  synchronizeOrder: publicProcedure
     .input(
       z.object({
         order_id: z.number(),
@@ -217,12 +221,12 @@ export const orderRouter = createTRPCRouter({
         depth: 0,
       });
 
-      if (order.user !== ctx.session.id) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: `Your are not able to synchronize this order`,
-        });
-      }
+      // if (order.user !== ctx.session.id) {
+      // 	throw new TRPCError({
+      // 		code: "FORBIDDEN",
+      // 		message: `Your are not able to synchronize this order`,
+      // 	});
+      // }
 
       try {
         const [resultOrderStatus] =
@@ -353,6 +357,37 @@ export const orderRouter = createTRPCRouter({
       });
 
       return { data: orders.docs as OrderIncluded[] };
+    }),
+
+  getIdByNumber: publicProcedure
+    .input(
+      z.object({
+        number: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { number } = input;
+
+      const orders = await ctx.payload.find({
+        collection: "orders",
+        where: {
+          number: { equals: number },
+        },
+        depth: 3,
+      });
+
+      const order = orders.docs[0];
+
+      if (!order) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Order not found.",
+        });
+      }
+
+      return {
+        data: order.id,
+      };
     }),
 
   getById: userProtectedProcedure
