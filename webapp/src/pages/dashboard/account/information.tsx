@@ -18,7 +18,7 @@ const userInformations = [
   { label: "Nom de famille", value: "lastName" },
   { label: "Numéro de téléphone", value: "phone_number" },
   { label: "Adresse email de récupération", value: "userEmail" },
-  { label: "Ma ville", value: "address" },
+  { label: "Mon adresse", value: "address" },
 ] as const;
 
 export default function AccountInformation() {
