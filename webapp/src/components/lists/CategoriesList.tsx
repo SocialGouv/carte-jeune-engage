@@ -62,6 +62,17 @@ const CategoriesList = (props: CategoriesListProps) => {
     const bgColor = category.color ?? "bgGray";
     const textColor = category.textWhite ? "white" : "black";
 
+    const seenFirstWordPartner = new Set<string>();
+
+    const filteredOffers = category.offers
+      .filter((offer) => {
+        const [firstWord] = offer.partner.name.split(" ");
+        return seenFirstWordPartner.has(firstWord)
+          ? false
+          : seenFirstWordPartner.add(firstWord);
+      })
+      .slice(0, 5);
+
     return (
       <Link
         as={NextLink}
@@ -105,18 +116,17 @@ const CategoriesList = (props: CategoriesListProps) => {
             {category.label}
           </Text>
           <AvatarGroup size="md" spacing={-6} alignSelf="start">
-            {category.offers
-              .slice(0, 5)
-              ?.map((offer) => (
-                <Avatar
-                  key={offer.id}
-                  src={offer.partner.icon.url as string}
-                  name={offer.partner.icon.alt as string}
-                  width="44px"
-                  height="44px"
-                  bg="white"
-                />
-              ))}
+            {filteredOffers.map((offer) => (
+              <Avatar
+                key={offer.id}
+                src={offer.partner.icon.url as string}
+                name={offer.partner.icon.alt as string}
+                width="44px"
+                height="44px"
+                bg="white"
+                borderWidth={0}
+              />
+            ))}
           </AvatarGroup>
         </Flex>
       </Link>
