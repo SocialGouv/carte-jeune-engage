@@ -67,9 +67,10 @@ const CategoriesList = (props: CategoriesListProps) => {
     const filteredOffers = category.offers
       .filter((offer) => {
         const [firstWord] = offer.partner.name.split(" ");
-        return seenFirstWordPartner.has(firstWord)
+        const formatedFirstWord = firstWord.toLowerCase().slice(0, 4);
+        return seenFirstWordPartner.has(formatedFirstWord)
           ? false
-          : seenFirstWordPartner.add(firstWord);
+          : seenFirstWordPartner.add(formatedFirstWord);
       })
       .slice(0, 5);
 
