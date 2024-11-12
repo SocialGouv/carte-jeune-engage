@@ -1,3 +1,10 @@
+## [0.61.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.6...v0.61.7) (2024-11-12)
+
+
+### Bug Fixes
+
+* put public price for price variable in order article ([efe60a0](https://github.com/SocialGouv/carte-jeune-engage/commit/efe60a04e9c089d213bc259d6013bffb7903f4c7))
+
 ## [0.61.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.5...v0.61.6) (2024-11-12)
 
 ### Bug Fixes
