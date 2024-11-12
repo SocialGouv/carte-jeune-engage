@@ -189,10 +189,15 @@ const CouponCodeCard = ({
             p={4}
             bgColor="white"
             borderRadius="2.5xl"
-            gap={6}
+            gap={5}
           >
-            <Box flex={1} shadow="default" borderRadius="2.5xl">
-              <PassCard embed />
+            <Box mb={-1.5}>
+              <Image
+                width={65}
+                height={100}
+                src="/images/dashboard/pass-card-fallback.png"
+                alt="Image Pass CJE de secours"
+              />
             </Box>
             <Flex flexDir="column">
               <Flex alignItems="center" gap={1}>

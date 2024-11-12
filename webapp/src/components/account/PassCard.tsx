@@ -15,16 +15,14 @@ import { useAuth } from "~/providers/Auth";
 import NewPassComponent from "../NewPassComponent";
 import Image from "next/image";
 import LoadingLoader from "../LoadingLoader";
-import { push } from "@socialgouv/matomo-next";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import _ from "lodash";
 
 type PropsPassCard = {
   offer?: OfferIncluded;
-  embed?: boolean;
 };
 
-const PassCard = ({ offer, embed = false }: PropsPassCard) => {
+const PassCard = ({ offer }: PropsPassCard) => {
   const { user } = useAuth();
 
   const {
@@ -51,7 +49,7 @@ const PassCard = ({ offer, embed = false }: PropsPassCard) => {
   return (
     <>
       <Flex flexDir="column">
-        {!embed && passCJEStatus && (
+        {passCJEStatus && (
           <Flex flexDir="column" borderRadius="2.5xl" bgColor="white" p={6}>
             <Flex alignItems="center" gap={1}>
               <Box
@@ -98,9 +96,8 @@ const PassCard = ({ offer, embed = false }: PropsPassCard) => {
           bgColor="white"
           borderRadius="2.5xl"
           pt={10}
-          mt={!embed && passCJEStatus ? 4 : 0}
-          shadow={!embed ? "default" : "none"}
-          style={{ zoom: embed ? 0.25 : 1 }}
+          mt={passCJEStatus ? 4 : 0}
+          shadow="default"
         >
           <Box borderRadius="full" overflow="hidden">
             {user.image && !passCJEStatus ? (
