@@ -112,20 +112,38 @@ export default function OrderObizPage() {
     order.status !== "delivered" &&
     isOlderThan24Hours(order.createdAt);
 
-  const showPDF = () => {
-    if (order.ticket && typeof order.ticket === "object" && order.ticket.url) {
-      window.open(order.ticket.url, "_blank", "noopener,noreferrer");
-    }
-  };
+  const handlePDFActions = async (isShare: boolean) => {
+    if (typeof order.ticket === "object" && order.ticket?.url) {
+      try {
+        const response = await fetch(order.ticket.url);
+        const blob = await response.blob();
+        const filename = `bon-${order.offer.partner.name}-${order.number}.pdf`;
 
-  const downloadPDF = () => {
-    if (order.ticket && typeof order.ticket === "object" && order.ticket.url) {
-      const link = document.createElement("a");
-      link.href = order.ticket.url;
-      link.download = "";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+        const file = new File([blob], filename, {
+          type: response.headers.get("content-type") || "application/pdf",
+        });
+
+        if (
+          isShare &&
+          navigator.share &&
+          navigator.canShare({ files: [file] })
+        ) {
+          await navigator.share({
+            files: [file],
+          });
+        } else {
+          const downloadUrl = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = downloadUrl;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(downloadUrl);
+        }
+      } catch (error) {
+        console.error("Error sharing file:", error);
+      }
     }
   };
 
@@ -316,7 +334,14 @@ export default function OrderObizPage() {
         </Flex>
         <Flex justifyContent={"center"} gap={8} mt={8}>
           <Box textAlign={"center"}>
-            <Button colorScheme="blackBtn" p={5} h="auto" onClick={showPDF}>
+            <Button
+              colorScheme="blackBtn"
+              p={5}
+              h="auto"
+              onClick={() => {
+                handlePDFActions(false);
+              }}
+            >
               <HiEye fontSize={24} />
             </Button>
             <Text fontWeight={900} fontSize="sm" mt={1}>
@@ -329,7 +354,9 @@ export default function OrderObizPage() {
               flexGrow={0}
               p={5}
               h="auto"
-              onClick={downloadPDF}
+              onClick={() => {
+                handlePDFActions(true);
+              }}
             >
               <MdOutlineFileDownload fontSize={24} />
             </Button>
