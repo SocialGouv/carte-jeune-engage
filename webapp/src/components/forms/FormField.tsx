@@ -36,6 +36,7 @@ const FormField = <TFormData extends FieldValues>({
     case "text":
     case "email":
     case "date":
+    case "number":
       return (
         <FormInput
           key={field.name}

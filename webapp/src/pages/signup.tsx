@@ -61,9 +61,23 @@ const SignupPage: React.FC = () => {
   const [steps, setSteps] = useState<FormStep[]>([]);
 
   const defaultValues = useMemo(() => {
-    return typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("cje-signup-form") as string)
-      : { preferences: [] };
+    if (typeof window !== "undefined") {
+      let existingFormValues = JSON.parse(
+        localStorage.getItem("cje-signup-form") as string
+      );
+
+      if (
+        existingFormValues?.preferences &&
+        Array.isArray(existingFormValues?.preferences)
+      ) {
+        existingFormValues.preferences = existingFormValues?.preferences.filter(
+          (p: string | undefined) => p !== undefined && p !== null
+        );
+      }
+
+      return existingFormValues;
+    }
+    return { preferences: [] };
   }, [typeof window !== "undefined"]);
 
   const methods = useForm({

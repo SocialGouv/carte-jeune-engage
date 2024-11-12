@@ -23,7 +23,7 @@ export default function Dashboard() {
     api.offer.getListOfAvailables.useQuery({
       page: 1,
       perPage: 100,
-      shuffle: true,
+      shuffle: false,
       kinds: ["code", "code_space", "voucher", "voucher_pass"],
     });
 
@@ -31,7 +31,7 @@ export default function Dashboard() {
     api.offer.getListOfAvailables.useQuery({
       page: 1,
       perPage: 100,
-      shuffle: true,
+      shuffle: false,
       kinds: ["code_obiz"],
     });
 

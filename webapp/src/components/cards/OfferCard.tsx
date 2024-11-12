@@ -46,7 +46,7 @@ const OfferCard = ({
   };
 
   if (offer.source === "obiz") {
-    return <ObizCard offer={offer} />;
+    return <ObizCard offer={offer} fromWidget={fromWidget} />;
   }
 
   return (

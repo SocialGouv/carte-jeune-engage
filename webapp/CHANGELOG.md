@@ -1,3 +1,59 @@
+# [0.60.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.3...v0.60.0) (2024-11-11)
+
+
+### Bug Fixes
+
+* image in offer obiz page ([9c652ef](https://github.com/SocialGouv/carte-jeune-engage/commit/9c652ef81a07d944de12740211510afac0673297))
+
+
+### Features
+
+* sort in tags & categories by offer obiz first ([c0c1980](https://github.com/SocialGouv/carte-jeune-engage/commit/c0c19804d1ca17c8dbbd7546635c238c36c6c61f))
+
+## [0.59.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.2...v0.59.3) (2024-11-11)
+
+
+### Bug Fixes
+
+* cards obiz offer partner image display ([b8af2bc](https://github.com/SocialGouv/carte-jeune-engage/commit/b8af2bcce1f4986586edcd2f44142b8a5aae6fbf))
+* phone number login-widget to number field ([5187a3f](https://github.com/SocialGouv/carte-jeune-engage/commit/5187a3f96394c30c476399312e7a4f555506ee2d))
+
+## [0.59.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.1...v0.59.2) (2024-11-11)
+
+### Bug Fixes
+
+- add loader widget offers ([af58546](https://github.com/SocialGouv/carte-jeune-engage/commit/af58546dd2bc43b23483ce8cc830c1b3f58e047a))
+
+## [0.59.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.0...v0.59.1) (2024-11-11)
+
+### Bug Fixes
+
+- new home for widget & handle obizOffer cards ([9760db4](https://github.com/SocialGouv/carte-jeune-engage/commit/9760db40b08bcbf6d5e396ca79d569fd4ac1a4a0))
+
+# [0.59.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.4...v0.59.0) (2024-11-11)
+
+### Bug Fixes
+
+- offer image obiz ([6378e84](https://github.com/SocialGouv/carte-jeune-engage/commit/6378e845f00ec581ba68914f6ad4e6eb2bf4af9e))
+- preferences remove undefined from localstorage ([5005a9c](https://github.com/SocialGouv/carte-jeune-engage/commit/5005a9c169bf38d37dfdc04072a49b67f34c154e))
+
+### Features
+
+- obiz offer image in obiz offer page ([07e8b6e](https://github.com/SocialGouv/carte-jeune-engage/commit/07e8b6e219518cbd0ab761d0ed9208bc63ac20a4))
+
+## [0.58.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.3...v0.58.4) (2024-11-09)
+
+### Bug Fixes
+
+- LayoutOrderStatus close modal position ([6be1f1d](https://github.com/SocialGouv/carte-jeune-engage/commit/6be1f1d15b87ef43566a8b3a273255765a134e30))
+- LayoutOrderStatus flexbox ([8fd9d96](https://github.com/SocialGouv/carte-jeune-engage/commit/8fd9d963fd499c950f9f3dacea9cd80b80255e5c))
+
+## [0.58.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.2...v0.58.3) (2024-11-08)
+
+### Bug Fixes
+
+- float 2 digits for variable amounts ([21d4411](https://github.com/SocialGouv/carte-jeune-engage/commit/21d441143d782baa8ebac97aeecd00e94820f6ad))
+
 ## [0.58.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.58.1...v0.58.2) (2024-11-08)
 
 ### Bug Fixes

@@ -42,7 +42,14 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
   const router = useRouter();
 
   return (
-    <Flex alignItems="center" flexDir="column" py={14} px={4} minH="full">
+    <Flex
+      alignItems="center"
+      flexDir="column"
+      py={14}
+      px={4}
+      minH="full"
+      grow={1}
+    >
       <Center position="relative" w="full">
         {onClose && (
           <Icon
@@ -50,7 +57,7 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
             w={8}
             h={8}
             position="absolute"
-            left={-6}
+            left={0}
             top={0}
             onClick={onClose}
             aria-label="Close"

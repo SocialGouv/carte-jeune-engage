@@ -4,7 +4,14 @@ import { z } from "zod";
 // Field metadata types
 export type FieldMetadata = {
   label?: string;
-  kind: "text" | "email" | "date" | "radio" | "checkbox" | "autocomplete";
+  kind:
+    | "text"
+    | "number"
+    | "email"
+    | "date"
+    | "radio"
+    | "checkbox"
+    | "autocomplete";
   description?: string;
   placeholder?: string;
   autocomplete?: string;
