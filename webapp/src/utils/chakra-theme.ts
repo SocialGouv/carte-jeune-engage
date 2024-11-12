@@ -5,8 +5,10 @@ import {
   theme as defaultTheme,
   defineStyle,
   defineStyleConfig,
+  Avatar,
 } from "@chakra-ui/react";
 import localFont from "next/font/local";
+import { avatarTheme } from "~/components/theme/avatar";
 import { checkboxTheme } from "~/components/theme/checkbox";
 import { modalTheme } from "~/components/theme/modal";
 import { textareaTheme } from "~/components/theme/textarea";
@@ -136,6 +138,7 @@ export const theme = extendTheme({
     Textarea: textareaTheme,
     Modal: modalTheme,
     Checkbox: checkboxTheme,
+    Avatar: avatarTheme,
   },
   styles: {
     global: () => ({

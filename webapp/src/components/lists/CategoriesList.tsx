@@ -1,4 +1,11 @@
-import { Flex, Box, Text, Grid, Link, Skeleton } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Link,
+  Skeleton,
+  AvatarGroup,
+  Avatar,
+} from "@chakra-ui/react";
 import { api } from "~/utils/api";
 import Image from "../ui/Image";
 import NextLink from "next/link";
@@ -52,7 +59,7 @@ const CategoriesList = (props: CategoriesListProps) => {
   );
 
   const renderCategory = (category: CategoryWithOffers) => {
-    const bgColor = category.color ?? "cje-gray.100";
+    const bgColor = category.color ?? "bgGray";
     const textColor = category.textWhite ? "white" : "black";
 
     return (
@@ -72,51 +79,43 @@ const CategoriesList = (props: CategoriesListProps) => {
           alignItems="center"
           bgColor={bgColor}
           borderRadius="20px"
-          p={4}
+          px={4}
+          pt={4}
+          pb={2}
           minW="160px"
           maxW="160px"
-          minH="196px"
-          height="100%"
         >
           <Image
             src={category.icon.url as string}
             alt={category.icon.alt as string}
-            width={40}
-            height={40}
+            width={32}
+            height={32}
           />
           <Text
             wordBreak="break-word"
             whiteSpace="normal"
-            fontSize="md"
+            lineHeight="normal"
             textAlign="center"
-            fontWeight="extrabold"
+            fontWeight={800}
             color={textColor}
             mb={5}
             noOfLines={2}
+            h="44px"
           >
             {category.label}
           </Text>
-          <Grid templateColumns="repeat(3, 1fr)" gap={2}>
+          <AvatarGroup size="md" max={6}>
             {category.offers?.map((offer) => (
-              <Flex
+              <Avatar
                 key={offer.id}
-                alignItems={"center"}
-                justifyContent={"center"}
-                borderRadius="50%"
-                overflow="hidden"
-                width="40px"
-                height="40px"
+                src={offer.partner.icon.url as string}
+                name={offer.partner.icon.alt as string}
+                width="44px"
+                height="44px"
                 bg="white"
-              >
-                <Image
-                  src={offer.partner.icon.url as string}
-                  alt={offer.partner.icon.alt as string}
-                  width={40}
-                  height={40}
-                />
-              </Flex>
+              />
             ))}
-          </Grid>
+          </AvatarGroup>
         </Flex>
       </Link>
     );
@@ -136,7 +135,7 @@ const CategoriesList = (props: CategoriesListProps) => {
         }}
         px={8}
       >
-        <Flex direction="column" gap={4}>
+        <Flex direction="column" gap={2}>
           {children}
         </Flex>
       </Flex>
@@ -146,15 +145,15 @@ const CategoriesList = (props: CategoriesListProps) => {
   if (isLoadingCategories) {
     return (
       <Layout>
-        <Flex gap={4}>
-          <Skeleton borderRadius="20px" h={48} w={40} />
-          <Skeleton borderRadius="20px" h={48} w={40} />
-          <Skeleton borderRadius="20px" h={48} w={40} />
+        <Flex gap={2}>
+          <Skeleton borderRadius="20px" h={40} w={40} />
+          <Skeleton borderRadius="20px" h={40} w={40} />
+          <Skeleton borderRadius="20px" h={40} w={40} />
         </Flex>
-        <Flex gap={4}>
-          <Skeleton borderRadius="20px" h={48} w={40} />
-          <Skeleton borderRadius="20px" h={48} w={40} />
-          <Skeleton borderRadius="20px" h={48} w={40} />
+        <Flex gap={2}>
+          <Skeleton borderRadius="20px" h={40} w={40} />
+          <Skeleton borderRadius="20px" h={40} w={40} />
+          <Skeleton borderRadius="20px" h={40} w={40} />
         </Flex>
       </Layout>
     );
@@ -162,8 +161,8 @@ const CategoriesList = (props: CategoriesListProps) => {
 
   return (
     <Layout>
-      <Flex gap={4}>{firstCategoryRow.map(renderCategory)}</Flex>
-      <Flex gap={4}>{secondCategoryRow.map(renderCategory)}</Flex>
+      <Flex gap={2}>{firstCategoryRow.map(renderCategory)}</Flex>
+      <Flex gap={2}>{secondCategoryRow.map(renderCategory)}</Flex>
     </Layout>
   );
 };
