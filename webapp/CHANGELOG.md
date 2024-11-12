@@ -1,3 +1,13 @@
+## [0.61.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.7...v0.61.8) (2024-11-12)
+
+
+### Bug Fixes
+
+* empty state search only if no results ([c6062c9](https://github.com/SocialGouv/carte-jeune-engage/commit/c6062c9643a67d41981b6ae48521d086a63a586d))
+* getList order do not consider offer availability ([e98cd60](https://github.com/SocialGouv/carte-jeune-engage/commit/e98cd605d011c1608bf063c2ab62bb59ac5dbeb7))
+* number input pattern for iOS ([37980fc](https://github.com/SocialGouv/carte-jeune-engage/commit/37980fc436ffb9e6b05129793cf113a8fbc3da55))
+* show & download pdf ([9f05f1d](https://github.com/SocialGouv/carte-jeune-engage/commit/9f05f1ddd421ee41cee6313bb03e622bb414fe83))
+
 ## [0.61.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.6...v0.61.7) (2024-11-12)
 
 
