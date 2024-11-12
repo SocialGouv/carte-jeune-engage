@@ -38,7 +38,7 @@ sousgenre_ids = [
     # Asos
     '0b8b6689-f035-48f2-8ecf-95c2edc0c1cf',
     # La Redoute
-    '0b8b6689-f035-48f2-8ecf-95c2edc0c1cf',
+    '42a2ee09-b9bc-414a-afb6-89a1b3cb3513',
     # Decathlon
     'cfd63f3d-30f1-4f14-96e3-55f0d33f32ad',
     # Fitness Park
@@ -52,7 +52,7 @@ sousgenre_ids = [
     # Disney Plus
     'bb8a35c1-f8d0-498e-baa1-1da471d31356',
     # IKEA
-    '03535a5a-610a-4e7f-8b8a-c233229076280',
+    '03535a5a-610a-4e7f-8b8a-c23322907628',
     # Castorama
     'be4cd39d-4fbd-4d3e-a4ba-a922fb61fe05',
     # Leroy Merlin
