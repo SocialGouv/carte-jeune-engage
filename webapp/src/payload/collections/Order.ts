@@ -97,7 +97,13 @@ export const Orders: CollectionConfig = {
         },
         {
           name: "article_montant",
-          label: "Montant TTC",
+          label: "Montant TTC (Public)",
+          type: "number",
+          required: true,
+        },
+        {
+          name: "article_montant_discounted",
+          label: "Montant TTC (Remisé)",
           type: "number",
           required: true,
         },

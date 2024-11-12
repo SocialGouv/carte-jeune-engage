@@ -181,6 +181,7 @@ export const orderRouter = createTRPCRouter({
                 article_reference: article.reference,
                 article_quantity: article.quantity,
                 article_montant: input_value_public || article.publicPrice || 0,
+                article_montant_discounted: input_value || article.price || 0,
               })),
             },
           });

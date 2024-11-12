@@ -322,6 +322,7 @@ export interface Order {
         article_reference: string;
         article_quantity: number;
         article_montant: number;
+        article_montant_discounted: number;
         id?: string | null;
       }[]
     | null;
