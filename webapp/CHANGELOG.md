@@ -1,10 +1,9 @@
 ## [0.61.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.2...v0.61.3) (2024-11-12)
 
-
 ### Bug Fixes
 
-* add cgv condition on recap order component ([b092543](https://github.com/SocialGouv/carte-jeune-engage/commit/b0925436081f7460a9d93b316baae5f61a822775))
-* remove border and filter similar partner on categories list component ([ea0d807](https://github.com/SocialGouv/carte-jeune-engage/commit/ea0d807d3ef0e5bbe3ec031613e576dcb5455994))
+- add cgv condition on recap order component ([b092543](https://github.com/SocialGouv/carte-jeune-engage/commit/b0925436081f7460a9d93b316baae5f61a822775))
+- remove border and filter similar partner on categories list component ([ea0d807](https://github.com/SocialGouv/carte-jeune-engage/commit/ea0d807d3ef0e5bbe3ec031613e576dcb5455994))
 
 ## [0.61.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.1...v0.61.2) (2024-11-12)
 

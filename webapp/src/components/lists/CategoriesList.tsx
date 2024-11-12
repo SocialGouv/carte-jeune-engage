@@ -124,7 +124,7 @@ const CategoriesList = (props: CategoriesListProps) => {
                 width="44px"
                 height="44px"
                 bg="white"
-                borderWidth={0}
+                borderColor="bgGray"
               />
             ))}
           </AvatarGroup>
