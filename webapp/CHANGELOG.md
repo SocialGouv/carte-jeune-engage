@@ -1,21 +1,20 @@
 # [0.61.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.60.2...v0.61.0) (2024-11-12)
 
-
 ### Features
 
-* re-design categories list on homepage ([66ce603](https://github.com/SocialGouv/carte-jeune-engage/commit/66ce603affc69c011745fe7081a401421f7532bc))
+- re-design categories list on homepage ([66ce603](https://github.com/SocialGouv/carte-jeune-engage/commit/66ce603affc69c011745fe7081a401421f7532bc))
 
 ## [0.60.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.60.1...v0.60.2) (2024-11-12)
 
 ### Bug Fixes
 
-* label address profile user ([8130471](https://github.com/SocialGouv/carte-jeune-engage/commit/81304717893fd244cd1d6c5ac49d118e885a7638))
+- label address profile user ([8130471](https://github.com/SocialGouv/carte-jeune-engage/commit/81304717893fd244cd1d6c5ac49d118e885a7638))
 
 ## [0.60.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.60.0...v0.60.1) (2024-11-12)
 
 ### Bug Fixes
 
-* correct sous-genre ids for IKEA & La Redoute ([52ce248](https://github.com/SocialGouv/carte-jeune-engage/commit/52ce248aa463f7a5ba8c40dba7926fda7cc09cf5))
+- correct sous-genre ids for IKEA & La Redoute ([52ce248](https://github.com/SocialGouv/carte-jeune-engage/commit/52ce248aa463f7a5ba8c40dba7926fda7cc09cf5))
 
 # [0.60.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.59.3...v0.60.0) (2024-11-11)
 
