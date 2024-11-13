@@ -1,3 +1,10 @@
+## [0.63.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.0...v0.63.1) (2024-11-13)
+
+
+### Bug Fixes
+
+* login-widget erase previous widgetToken from cookies ([62e5369](https://github.com/SocialGouv/carte-jeune-engage/commit/62e5369db8cf95ca63ca0c3370a576294a5c3a7c))
+
 # [0.63.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.4...v0.63.0) (2024-11-13)
 
 
