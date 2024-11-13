@@ -1,3 +1,10 @@
+## [0.62.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.3...v0.62.4) (2024-11-13)
+
+
+### Bug Fixes
+
+* Lax cookie not secure ([213172f](https://github.com/SocialGouv/carte-jeune-engage/commit/213172f834df7a69261024d66db29dd18cc97b29))
+
 ## [0.62.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.2...v0.62.3) (2024-11-13)
 
 ### Bug Fixes
