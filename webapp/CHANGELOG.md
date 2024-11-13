@@ -1,3 +1,10 @@
+## [0.61.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.9...v0.61.10) (2024-11-13)
+
+
+### Bug Fixes
+
+* add theme color to obiz offer page ([2618513](https://github.com/SocialGouv/carte-jeune-engage/commit/26185137cf95f38b8dd791d7fe5f7497c8b45d28))
+
 ## [0.61.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.8...v0.61.9) (2024-11-12)
 
 ### Bug Fixes
