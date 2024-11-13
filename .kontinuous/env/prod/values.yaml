@@ -1,3 +1,6 @@
+global:
+  host: "cje.fabrique.social.gouv.fr"
+  
 jobs:
   runs:
     build-app:
