@@ -10,12 +10,14 @@ import {
   Input,
   Text,
   Tooltip,
+  useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
 import { HiMiniMinus, HiMiniPlus } from "react-icons/hi2";
 import { useDebounceValue } from "usehooks-ts";
 import { OfferArticle } from "~/server/types";
+import ArticleDetailsModal from "../modals/ArticleDetailsModal";
 
 type DiscountArticleBlockProps = {
   article: OfferArticle;
@@ -39,6 +41,12 @@ const DiscountArticleBlock = ({
   let [isMaximumQuantity, setIsMaximumQuantity] = useState(false);
   let ref = useRef(null);
 
+  const {
+    isOpen: isOpenDetailsModal,
+    onOpen: onOpenDetailsModal,
+    onClose: onCloseDetailsModal,
+  } = useDisclosure();
+
   useOutsideClick({
     ref,
     handler: () => setIsMaximumQuantity(false),
@@ -58,7 +66,15 @@ const DiscountArticleBlock = ({
               year: "numeric",
             })}
           </Text>
-          <Text fontSize={14} fontWeight={700}>
+          <Text
+            color={article.description ? "inherit" : "disabled"}
+            textDecor={"underline"}
+            fontSize={14}
+            fontWeight={700}
+            onClick={() => {
+              onOpenDetailsModal();
+            }}
+          >
             Voir les infos
           </Text>
         </Flex>
@@ -128,6 +144,13 @@ const DiscountArticleBlock = ({
         borderColor="cje-gray.100"
         mt={quantity === 5 && isMaximumQuantity ? 8 : 2}
       />
+      {article.description && (
+        <ArticleDetailsModal
+          isOpen={isOpenDetailsModal}
+          onClose={onCloseDetailsModal}
+          article={article}
+        />
+      )}
     </Flex>
   );
 };
