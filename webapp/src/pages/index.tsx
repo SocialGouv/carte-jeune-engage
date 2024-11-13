@@ -229,7 +229,6 @@ export default function Home() {
         <PartnerSectionWithPhysics />
         <Flex
           id="who-can-benefit-section"
-          flexDir="column"
           bg="bgGray"
           w={{ base: "95%", lg: "full" }}
           mx="auto"
@@ -239,7 +238,7 @@ export default function Home() {
           px={{ lg: 44 }}
           pt={12}
         >
-          <Flex>
+          <Flex direction={"column"}>
             <Flex flex={1}>
               <Heading
                 fontSize={{ base: "2xl", lg: "5xl" }}
@@ -250,7 +249,6 @@ export default function Home() {
             </Flex>
             <Flex
               flex={1}
-              justify="end"
               align="center"
               display={{ base: "none", lg: "flex" }}
             >
