@@ -1,16 +1,14 @@
 ## [0.62.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.2...v0.62.3) (2024-11-13)
 
-
 ### Bug Fixes
 
-* cookie SameSite=Lax for login-widget ([ca90953](https://github.com/SocialGouv/carte-jeune-engage/commit/ca90953f97385559f8540f4d151a525597f2d649))
+- cookie SameSite=Lax for login-widget ([ca90953](https://github.com/SocialGouv/carte-jeune-engage/commit/ca90953f97385559f8540f4d151a525597f2d649))
 
 ## [0.62.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.1...v0.62.2) (2024-11-13)
 
-
 ### Bug Fixes
 
-* article image update ([1415808](https://github.com/SocialGouv/carte-jeune-engage/commit/1415808661682854d18a2e16f1e4833b3f031716))
+- article image update ([1415808](https://github.com/SocialGouv/carte-jeune-engage/commit/1415808661682854d18a2e16f1e4833b3f031716))
 
 ## [0.62.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.0...v0.62.1) (2024-11-13)
 
