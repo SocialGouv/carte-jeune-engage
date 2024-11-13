@@ -23,6 +23,7 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 import _ from "lodash";
+import image from "~/pages/api/image";
 
 export interface OfferIncluded extends Offer {
   image: Media;
@@ -508,16 +509,24 @@ export const offerRouter = createTRPCRouter({
                       !updateArticlesReferences.includes(article.reference)
                   ),
                   ...updatedData.articles,
-                ].sort((a, b) => {
-                  if (!a.validityTo && !b.validityTo) return 0;
-                  if (!a.validityTo) return 1;
-                  if (!b.validityTo) return -1;
+                ]
+                  .sort((a, b) => {
+                    if (!a.validityTo && !b.validityTo) return 0;
+                    if (!a.validityTo) return 1;
+                    if (!b.validityTo) return -1;
 
-                  return (
-                    new Date(a.validityTo).getTime() -
-                    new Date(b.validityTo).getTime()
-                  );
-                });
+                    return (
+                      new Date(a.validityTo).getTime() -
+                      new Date(b.validityTo).getTime()
+                    );
+                  })
+                  .map((article) => ({
+                    ...article,
+                    image:
+                      typeof article.image === "object"
+                        ? article.image.id
+                        : article.image,
+                  }));
               }
 
               const offer = await ctx.payload.update({

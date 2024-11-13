@@ -1,24 +1,21 @@
 ## [0.62.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.0...v0.62.1) (2024-11-13)
 
-
 ### Bug Fixes
 
-* hardcoded host for production ([ab1b499](https://github.com/SocialGouv/carte-jeune-engage/commit/ab1b4992cf52e8c21cab672d4ea0eb6b4f653bc4))
+- hardcoded host for production ([ab1b499](https://github.com/SocialGouv/carte-jeune-engage/commit/ab1b4992cf52e8c21cab672d4ea0eb6b4f653bc4))
 
 # [0.62.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.10...v0.62.0) (2024-11-13)
 
-
 ### Features
 
-* obiz cronjob & secrets prod ([1de1e29](https://github.com/SocialGouv/carte-jeune-engage/commit/1de1e298537e79854ae5f1779cef8b0304f423dd))
-* prod app-sealed-secrets ([1fcd2d1](https://github.com/SocialGouv/carte-jeune-engage/commit/1fcd2d1871dd6ba2e3485f922fdc8d397354dee8))
+- obiz cronjob & secrets prod ([1de1e29](https://github.com/SocialGouv/carte-jeune-engage/commit/1de1e298537e79854ae5f1779cef8b0304f423dd))
+- prod app-sealed-secrets ([1fcd2d1](https://github.com/SocialGouv/carte-jeune-engage/commit/1fcd2d1871dd6ba2e3485f922fdc8d397354dee8))
 
 ## [0.61.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.9...v0.61.10) (2024-11-13)
 
-
 ### Bug Fixes
 
-* add theme color to obiz offer page ([2618513](https://github.com/SocialGouv/carte-jeune-engage/commit/26185137cf95f38b8dd791d7fe5f7497c8b45d28))
+- add theme color to obiz offer page ([2618513](https://github.com/SocialGouv/carte-jeune-engage/commit/26185137cf95f38b8dd791d7fe5f7497c8b45d28))
 
 ## [0.61.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.8...v0.61.9) (2024-11-12)
 
