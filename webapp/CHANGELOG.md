@@ -1,3 +1,10 @@
+## [0.62.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.0...v0.62.1) (2024-11-13)
+
+
+### Bug Fixes
+
+* hardcoded host for production ([ab1b499](https://github.com/SocialGouv/carte-jeune-engage/commit/ab1b4992cf52e8c21cab672d4ea0eb6b4f653bc4))
+
 # [0.62.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.10...v0.62.0) (2024-11-13)
 
 
