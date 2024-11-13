@@ -1,3 +1,11 @@
+# [0.62.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.10...v0.62.0) (2024-11-13)
+
+
+### Features
+
+* obiz cronjob & secrets prod ([1de1e29](https://github.com/SocialGouv/carte-jeune-engage/commit/1de1e298537e79854ae5f1779cef8b0304f423dd))
+* prod app-sealed-secrets ([1fcd2d1](https://github.com/SocialGouv/carte-jeune-engage/commit/1fcd2d1871dd6ba2e3485f922fdc8d397354dee8))
+
 ## [0.61.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.61.9...v0.61.10) (2024-11-13)
 
 
