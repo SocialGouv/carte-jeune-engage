@@ -60,9 +60,13 @@ const FAQSectionAccordionItem = ({
             )}
           </AccordionButton>
           <AccordionPanel px={0}>
-            <Text textAlign="left" fontWeight="medium">
-              {content}
-            </Text>
+            <Text
+              textAlign="left"
+              fontWeight="medium"
+              dangerouslySetInnerHTML={{
+                __html: content.replaceAll("\n", "<br/>"),
+              }}
+            />
           </AccordionPanel>
         </Box>
       )}
