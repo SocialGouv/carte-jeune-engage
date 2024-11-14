@@ -145,6 +145,13 @@ export const orderRouter = createTRPCRouter({
             .Commande;
         const orderNumber = resultOrderObject.commandes_numero;
 
+        if (!orderNumber || orderNumber === "0") {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Failed to create order: ${resultOrderObject.message_erreur || "Unknown error"}`,
+          });
+        }
+
         // INSERTION DE L'ARTICLE
         const insert_item_payload = insertItemPayload(
           orderNumber,
