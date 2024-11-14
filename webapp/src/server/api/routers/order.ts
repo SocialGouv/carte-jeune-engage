@@ -158,7 +158,7 @@ export const orderRouter = createTRPCRouter({
           user,
           articles,
           "CARTECADEAU",
-          input_value
+          { amount: input_value_public, amount_discounted: input_value }
         );
         const [resultItem] =
           await ctx.soapObizClient.INSERTION_LIGNE_COMMANDE_ARRAY_V4Async({
