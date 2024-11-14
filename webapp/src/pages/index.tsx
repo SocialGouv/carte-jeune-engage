@@ -229,7 +229,6 @@ export default function Home() {
         <PartnerSectionWithPhysics />
         <Flex
           id="who-can-benefit-section"
-          flexDir="column"
           bg="bgGray"
           w={{ base: "95%", lg: "full" }}
           mx="auto"
@@ -239,7 +238,7 @@ export default function Home() {
           px={{ lg: 44 }}
           pt={12}
         >
-          <Flex>
+          <Flex direction={"column"}>
             <Flex flex={1}>
               <Heading
                 fontSize={{ base: "2xl", lg: "5xl" }}
@@ -250,7 +249,6 @@ export default function Home() {
             </Flex>
             <Flex
               flex={1}
-              justify="end"
               align="center"
               display={{ base: "none", lg: "flex" }}
             >
@@ -288,29 +286,6 @@ export default function Home() {
               >
                 <Text>Pour les</Text>
                 <Text fontWeight={{ lg: "extrabold" }}>16-25 ans</Text>
-              </Flex>
-              <Flex
-                flex={1}
-                flexDir="column"
-                bg="white"
-                rounded="2.5xl"
-                p={{ base: 4, lg: 8 }}
-              >
-                <Image
-                  src="/images/landing/location.png"
-                  fit={"none"}
-                  boxSize={"min-content"}
-                />
-                <Text
-                  fontWeight={{ base: "medium", lg: "extrabold" }}
-                  fontSize={{ lg: "2xl" }}
-                  mt={2}
-                >
-                  En Val d'Oise
-                </Text>
-                <Text fontSize={{ base: "xs", lg: "md" }}>
-                  uniquement pour la phase d’expérimentation
-                </Text>
               </Flex>
             </Flex>
             <Flex
@@ -517,19 +492,6 @@ export default function Home() {
             <Text mt={2} fontWeight={500}>
               Choisissez la situation qui vous correspond le mieux
             </Text>
-            <Flex
-              flexDir="column"
-              p={4}
-              borderRadius="2.5xl"
-              gap={2}
-              bgColor="bgGray"
-              textAlign="start"
-            >
-              <Image src="/images/landing/location.png" boxSize="min-content" />
-              <Text fontWeight={500}>
-                En Val d’Oise uniquement pour la phase d’expérimentation
-              </Text>
-            </Flex>
             <Flex flexDir="column">
               {referentItems.map(({ name, image }, index) => (
                 <>
@@ -647,18 +609,6 @@ export default function Home() {
               smartphone 📱
             </Text>
           </Center>
-          <Flex flexDir="column" bgColor="bgGray" borderRadius="2.5xl" p={4}>
-            <Icon as={HiInformationCircle} w={6} h={6} color="primary" />
-            <Text fontSize={14} fontWeight={500} mt={2}>
-              Dispotif disponible
-              <br />
-              uniquement dans le
-              <br />
-              département du Val
-              <br />
-              d'Oise (95)
-            </Text>
-          </Flex>
         </Flex>
       )}
     </>
