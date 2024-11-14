@@ -1,3 +1,18 @@
+## [0.63.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.5...v0.63.6) (2024-11-14)
+
+
+### Bug Fixes
+
+* add contact help on bottom page of order and fix styles on help modal ([8fae675](https://github.com/SocialGouv/carte-jeune-engage/commit/8fae67552ef47cb6226bf2e8ec56803099b89496))
+* add obiz cgv link on order recap ([f97a7b5](https://github.com/SocialGouv/carte-jeune-engage/commit/f97a7b56f7115fa3d310a55ec6d9c60bb292ee85))
+* add OfferKindBadge on partners search results ([fcbb7ab](https://github.com/SocialGouv/carte-jeune-engage/commit/fcbb7aba4963164592afbebc26283590a425ab9a))
+* add splash screen modal on second login and refetch user on cookie setting ([6bebd25](https://github.com/SocialGouv/carte-jeune-engage/commit/6bebd2570854412a856c5b2708a99b8bbe91e48f))
+* change design for help page and add correct mailto with subject on account informations page for modify / delete ([46c9f43](https://github.com/SocialGouv/carte-jeune-engage/commit/46c9f434337a06053a7e12e1431d7a28b86f4f40))
+* change second login from magic link to otp code in mail ([3c13d88](https://github.com/SocialGouv/carte-jeune-engage/commit/3c13d88dcd7f4fbdfed07fc4189508e9d269e1fb))
+* create PartnerImage component for constant pattern ([01583fc](https://github.com/SocialGouv/carte-jeune-engage/commit/01583fc1721b57342c4a2dd52fe3d4880d1b83d2))
+* increase property nbSeen for cje and obiz offer user read ([6fc84bd](https://github.com/SocialGouv/carte-jeune-engage/commit/6fc84bdc0c5e30f5f83e70b391890e6826543191))
+* only display need help block if order is not delivered ([bd93b2d](https://github.com/SocialGouv/carte-jeune-engage/commit/bd93b2dd43c37d54519bd5934bfe4b4a907d5e1c))
+
 ## [0.63.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.4...v0.63.5) (2024-11-14)
 
 ### Bug Fixes
