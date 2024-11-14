@@ -1,3 +1,10 @@
+## [0.63.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.4...v0.63.5) (2024-11-14)
+
+
+### Bug Fixes
+
+* obiz variable amount issue ([ee0be93](https://github.com/SocialGouv/carte-jeune-engage/commit/ee0be9359fd9ef6fd13c0d1cd84b49a297032f58))
+
 ## [0.63.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.3...v0.63.4) (2024-11-14)
 
 ### Bug Fixes
