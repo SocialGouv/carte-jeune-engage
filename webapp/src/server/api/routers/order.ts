@@ -252,11 +252,11 @@ export const orderRouter = createTRPCRouter({
 
         let newStatus = order.status;
         switch (resultOrderStatusObject.etats_statut) {
-          case "NON FINALISEE":
           case "EN ATTENTE":
             newStatus = "awaiting_payment";
             break;
 
+          case "NON FINALISEE":
           case "PREPARATION":
           case "RESTOCKING":
             newStatus = "payment_completed";
