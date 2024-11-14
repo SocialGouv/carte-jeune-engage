@@ -27,6 +27,7 @@ import ConditionalLink from "~/components/ConditionalLink";
 import LoginOtpContent from "~/components/landing/LoginOtpContent";
 import Jumbotron from "~/components/landing/Jumbotron";
 import PartnerSectionWithPhysics from "~/components/landing/PartnerSectionWithPhysics";
+import { getAfterTextMessageTriangle } from "~/utils/tools";
 
 const defaultTimeToResend = 30;
 
@@ -235,25 +236,21 @@ export default function Home() {
           rounded="5xl"
           mt={20}
           p={{ base: 8, lg: 20 }}
-          px={{ lg: 44 }}
+          px={{ lg: 40 }}
           pt={12}
+          gap={44}
         >
-          <Flex direction={"column"}>
-            <Flex flex={1}>
+          <Flex direction={"column"} w="50%" justifyContent={"center"} gap={6}>
+            <Flex>
               <Heading
-                fontSize={{ base: "2xl", lg: "5xl" }}
+                fontSize={{ base: "2xl", lg: "4xl" }}
                 fontWeight="extrabold"
               >
-                Comme une carte étudiant, même si on est pas étudiant.
+                Comme une carte étudiant, même quand on est pas étudiant.
               </Heading>
             </Flex>
-            <Flex
-              flex={1}
-              align="center"
-              display={{ base: "none", lg: "flex" }}
-            >
+            <Flex align="center" display={{ base: "none", lg: "flex" }}>
               <Text
-                mt={6}
                 textDecor="underline"
                 fontWeight={{ base: "bold", lg: "extrabold" }}
                 fontSize={{ lg: "lg" }}
@@ -268,91 +265,73 @@ export default function Home() {
             flexDir={{ base: "column", lg: "row-reverse" }}
             mt={{ base: 5, lg: 6 }}
             gap={{ base: 3, lg: 5 }}
+            w="50%"
           >
-            <Flex
-              flexDir={{ base: "row", lg: "column-reverse" }}
-              flex={2}
-              gap={{ base: 3, lg: 5 }}
-            >
-              <Flex
-                flex={1}
-                flexDir="column"
-                alignSelf={{ base: "end", lg: "start" }}
+            <Flex flexDirection={"column"} w="full" gap={4}>
+              <Text
+                _after={getAfterTextMessageTriangle("white", "left")}
+                position="relative"
                 bg="white"
+                w="full"
                 rounded="2.5xl"
-                p={{ base: 4, lg: 6 }}
-                fontSize={{ lg: "2xl" }}
-                fontWeight={{ base: "medium" }}
-              >
-                <Text>Pour les</Text>
-                <Text fontWeight={{ lg: "extrabold" }}>16-25 ans</Text>
-              </Flex>
-            </Flex>
-            <Flex
-              flex={3}
-              flexDir="column"
-              alignSelf={{ lg: "start" }}
-              bg="white"
-              rounded="2.5xl"
-              p={{ base: 4, lg: 8 }}
-            >
-              <Flex
-                h={{ base: 16, lg: 28 }}
+                pl={5}
+                pr={18}
+                py={3}
+                fontWeight={500}
+                fontSize={"lg"}
                 mb={4}
-                justify={{ base: "center", lg: "start" }}
               >
-                {forWhoList.map((item, index) => {
-                  return (
-                    <Flex
-                      justify="center"
-                      align="center"
-                      alignSelf={index % 2 === 0 ? "start" : "end"}
-                      bg="white"
-                      w={{ base: 14, lg: 24 }}
-                      h={{ base: 14, lg: 24 }}
-                      p={2}
-                      mr={{ base: -1, lg: -4 }}
-                      zIndex={index % 2 === 0 ? 1 : 2}
-                      rounded={{ base: "2xl", lg: "3xl" }}
-                      boxShadow="0px 14px 10px -5px #F2F2F8"
-                      transform={`rotate(${item.rotationAngle}deg)`}
-                    >
-                      <Image src={item.img} alt={`Logo de ${item.name}`} />
-                    </Flex>
-                  );
-                })}
-              </Flex>
-              <Text fontWeight={{ base: "medium" }} fontSize={{ lg: "2xl" }}>
-                inscrit à France travail
-                <Text as="br" display={{ base: "inline-block", lg: "none" }} />
-                <Text display={{ base: "none", lg: "inline-block" }}>
-                  ,&nbsp;
-                </Text>
-                en Mission locale
-                <Text as="br" display={{ base: "inline-block", lg: "none" }} />
-                <Text
-                  as={"span"}
-                  display={{ base: "none", lg: "inline-block" }}
-                >
-                  ,&nbsp;
-                </Text>
-                en Service civique
-                <Text as="br" display={{ base: "inline-block", lg: "none" }} />
-                <Text
-                  as={"span"}
-                  display={{ base: "none", lg: "inline-block" }}
-                >
-                  ,&nbsp;
-                </Text>
-                en EPIDE
-                <Text as="br" display={{ base: "inline-block", lg: "none" }} />
-                <Text
-                  as={"span"}
-                  display={{ base: "none", lg: "inline-block" }}
-                >
-                  ,&nbsp;
-                </Text>
-                en École de la 2nde chance
+                Qui peut avoir une carte “jeune engagé” ?
+              </Text>
+              <Text
+                w="60%"
+                alignSelf="end"
+                bg="primary"
+                color="white"
+                rounded="2.5xl"
+                pl={5}
+                pr={10}
+                py={3}
+                fontWeight={500}
+                fontSize={"lg"}
+              >
+                Pour les 16-25 ans
+              </Text>
+              <Text
+                _after={getAfterTextMessageTriangle("primary", "right")}
+                position="relative"
+                bg="primary"
+                color="white"
+                w="full"
+                rounded="2.5xl"
+                px={5}
+                py={3}
+                fontWeight={500}
+                fontSize={"lg"}
+              >
+                Pour les jeunes engagés inscrits à France travail, en Mission
+                locale, en Service civique, en EPIDE, en École de la 2nde chance
+                <Flex mt={4} justify={"space-between"}>
+                  {forWhoList.map((item, index) => {
+                    return (
+                      <Flex
+                        justify="center"
+                        align="center"
+                        bg="white"
+                        w={{ base: 14, lg: 14 }}
+                        h={{ base: 14, lg: 14 }}
+                        p={2}
+                        mt={index % 2 === 0 ? 0 : 2}
+                        zIndex={index % 2 === 0 ? 1 : 2}
+                        rounded={{ base: "2xl", lg: "xl" }}
+                        boxShadow="0px 14px 10px -5px #0F172A5E"
+                        transform={`rotate(${item.rotationAngle}deg)`}
+                      >
+                        <Image src={item.img} alt={`Logo de ${item.name}`} />
+                      </Flex>
+                    );
+                  })}
+                </Flex>
               </Text>
             </Flex>
           </Flex>
