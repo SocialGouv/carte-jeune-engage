@@ -312,7 +312,10 @@ export const orderRouter = createTRPCRouter({
           }
         }
 
-        if (newStatus !== order.status) {
+        if (
+          newStatus !== order.status ||
+          resultOrderStatusObject.etats_statut !== order.obiz_status
+        ) {
           order = await ctx.payload.update({
             id: order_id,
             collection: "orders",

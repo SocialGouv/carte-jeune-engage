@@ -39,9 +39,15 @@ const ObizSync = async (req: NextApiRequest, res: NextApiResponse) => {
       number: parseInt(numero),
     });
 
-    caller.order.synchronizeOrder({
-      order_id: orderId.data,
-    });
+    caller.order
+      .synchronizeOrder({
+        order_id: orderId.data,
+      })
+      .then((order) => {
+        console.log(
+          `Finish synchronizing obiz order : [numero: ${numero} / obiz status : ${order.data.obiz_status} / cje status : ${order.data.status}]`
+        );
+      });
 
     return res.status(200).json({ data: "ok" });
   } catch (error) {
