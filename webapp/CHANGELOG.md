@@ -1,3 +1,27 @@
+## [0.63.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.0...v0.63.1) (2024-11-13)
+
+### Bug Fixes
+
+- login-widget erase previous widgetToken from cookies ([62e5369](https://github.com/SocialGouv/carte-jeune-engage/commit/62e5369db8cf95ca63ca0c3370a576294a5c3a7c))
+
+# [0.63.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.4...v0.63.0) (2024-11-13)
+
+### Features
+
+- modal articles details ([a452f86](https://github.com/SocialGouv/carte-jeune-engage/commit/a452f86ac8bc1f9c305b9024172b0122579c8524))
+
+## [0.62.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.3...v0.62.4) (2024-11-13)
+
+### Bug Fixes
+
+- Lax cookie not secure ([213172f](https://github.com/SocialGouv/carte-jeune-engage/commit/213172f834df7a69261024d66db29dd18cc97b29))
+
+## [0.62.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.2...v0.62.3) (2024-11-13)
+
+### Bug Fixes
+
+- cookie SameSite=Lax for login-widget ([ca90953](https://github.com/SocialGouv/carte-jeune-engage/commit/ca90953f97385559f8540f4d151a525597f2d649))
+
 ## [0.62.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.62.1...v0.62.2) (2024-11-13)
 
 ### Bug Fixes

@@ -153,16 +153,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       process.env.WIDGET_SECRET_DATA_ENCRYPTION!
     );
 
-    if (!context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!]) {
-      context.res.setHeader(
-        "Set-Cookie",
-        `${process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME}=${widgetToken}; Expires=${new Date(
-          new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-        ).toUTCString()}; Path=/; SameSite=None; Secure`
-      );
-      context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!] =
-        widgetToken;
-    }
+    context.res.setHeader(
+      "Set-Cookie",
+      `${process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME}=${widgetToken}; Expires=${new Date(
+        new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+      ).toUTCString()}; Path=/; SameSite=Lax;`
+    );
+    context.req.cookies[process.env.NEXT_PUBLIC_WIDGET_TOKEN_NAME!] =
+      widgetToken;
 
     const payload = await getPayloadClient({ seed: false });
 
@@ -203,7 +201,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       "Set-Cookie",
       `${process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"}=${userSession.token}; Expires=${new Date(
         (userSession.exp as number) * 1000
-      ).toUTCString()}; Path=/; SameSite=None; Secure`
+      ).toUTCString()}; Path=/; SameSite=Lax;`
     );
 
     return {
