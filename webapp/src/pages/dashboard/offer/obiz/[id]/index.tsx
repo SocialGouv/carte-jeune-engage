@@ -12,6 +12,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -28,7 +29,11 @@ import { api } from "~/utils/api";
 import ReactIcon from "~/utils/dynamicIcon";
 import { cleanHtml } from "~/utils/tools";
 
-export default function OfferObizPage() {
+type OfferObizPageProps = {
+  order_id: string;
+};
+
+export default function OfferObizPage({ order_id }: OfferObizPageProps) {
   const router = useRouter();
 
   const {
@@ -40,18 +45,11 @@ export default function OfferObizPage() {
   const [isOfferNbSeenMutated, setIsOfferNbSeenMutated] = useState(false);
   const [isDescriptionCollapsed, setIsDescriptionCollapsed] = useState(true);
 
-  const { id } = router.query as {
-    id: string;
-  };
-
   const { mutateAsync: increaseNbSeen } =
     api.offer.increaseNbSeen.useMutation();
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
-    api.offer.getById.useQuery(
-      { id: parseInt(id), source: "obiz" },
-      { enabled: id !== undefined }
-    );
+    api.offer.getById.useQuery({ id: parseInt(order_id), source: "obiz" });
 
   const { data: offer } = resultOffer || {};
 
@@ -67,7 +65,7 @@ export default function OfferObizPage() {
 
   useEffect(() => {
     const mutateData = async () => {
-      const { data } = await increaseNbSeen({ offer_id: parseInt(id) });
+      const { data } = await increaseNbSeen({ offer_id: parseInt(order_id) });
       setIsOfferNbSeenMutated(data);
     };
 
@@ -303,9 +301,16 @@ export default function OfferObizPage() {
         <ObizOrderProcessModal
           isOpen={isOpenOrderProcessModal}
           onClose={onCloseOrderProcessModal}
-          offerId={parseInt(id)}
+          offerId={parseInt(order_id)}
         />
       </Flex>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const order_id = query.id;
+  return {
+    props: { order_id },
+  };
+};
