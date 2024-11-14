@@ -13,7 +13,14 @@ const { version } = require("./package.json");
 const nextOptions = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: (process.env.S3_ENDPOINT || "").replaceAll("https://", ""),
+        port: "",
+        pathname: `/${process.env.S3_BUCKET_NAME}/**`,
+      },
+    ],
     minimumCacheTTL: 604800,
   },
   env: {
