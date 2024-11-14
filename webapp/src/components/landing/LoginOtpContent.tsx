@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import BigLoader from "../BigLoader";
 import { SubmitHandler } from "react-hook-form";
 import { LoginForm } from "./PhoneNumberCTA";
+import { useAuth } from "~/providers/Auth";
 
 type LoginOtpContentProps = {
   otpKind: "otp" | "email";
@@ -14,6 +15,7 @@ type LoginOtpContentProps = {
 };
 
 const LoginOtpContent = (props: LoginOtpContentProps) => {
+  const { refetchUser, setShowSplashScreenModal } = useAuth();
   const { currentPhoneNumber, otpKind, handleGenerateOtp } = props;
   const router = useRouter();
 
@@ -30,8 +32,12 @@ const LoginOtpContent = (props: LoginOtpContentProps) => {
           data.token || "",
           { expires: new Date((data.exp as number) * 1000), sameSite: "lax" }
         );
-        router.reload();
-        router.push("/dashboard");
+        await refetchUser();
+        if (!data.user.userEmail) {
+          router.push("/signup");
+        } else {
+          setShowSplashScreenModal(true);
+        }
       },
       onError: async ({ data }) => {
         if (data?.httpStatus === 401 || data?.httpStatus === 404) {
