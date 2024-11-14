@@ -322,13 +322,13 @@ export const getAfterTextMessageTriangle = (
   return {
     content: '""',
     position: "absolute",
-    bottom: "-10px",
+    bottom: "-16px",
     [placement]: "24px",
     width: "0",
     height: "0",
-    borderLeft: "10px solid transparent",
-    borderRight: "10px solid transparent",
-    borderTop: "10px solid",
+    borderLeft: "8px solid transparent",
+    borderRight: "8px solid transparent",
+    borderTop: "16px solid",
     borderTopColor: color,
   };
 };
