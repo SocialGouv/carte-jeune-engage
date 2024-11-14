@@ -28,6 +28,7 @@ import LoginOtpContent from "~/components/landing/LoginOtpContent";
 import Jumbotron from "~/components/landing/Jumbotron";
 import PartnerSectionWithPhysics from "~/components/landing/PartnerSectionWithPhysics";
 import { getAfterTextMessageTriangle } from "~/utils/tools";
+import { useRouter } from "next/router";
 
 const defaultTimeToResend = 30;
 
@@ -119,6 +120,8 @@ export default function Home() {
     showDesktopQRCode,
     setShowDesktopEligibleModal,
   } = useAuth();
+
+  const router = useRouter();
 
   const isDesktop = useBreakpointValue({ base: false, lg: true });
 
@@ -230,6 +233,7 @@ export default function Home() {
         <PartnerSectionWithPhysics />
         <Flex
           id="who-can-benefit-section"
+          direction={{ base: "column", lg: "row" }}
           bg="bgGray"
           w={{ base: "95%", lg: "full" }}
           mx="auto"
@@ -237,10 +241,15 @@ export default function Home() {
           mt={20}
           p={{ base: 8, lg: 20 }}
           px={{ lg: 40 }}
-          pt={12}
-          gap={44}
+          pt={{ base: 8, lg: 12 }}
+          gap={{ base: 4, lg: 44 }}
         >
-          <Flex direction={"column"} w="50%" justifyContent={"center"} gap={6}>
+          <Flex
+            direction={"column"}
+            w={{ base: "full", lg: "50%" }}
+            justifyContent={"center"}
+            gap={6}
+          >
             <Flex>
               <Heading
                 fontSize={{ base: "2xl", lg: "4xl" }}
@@ -252,8 +261,8 @@ export default function Home() {
             <Flex align="center" display={{ base: "none", lg: "flex" }}>
               <Text
                 textDecor="underline"
-                fontWeight={{ base: "bold", lg: "extrabold" }}
-                fontSize={{ lg: "lg" }}
+                fontWeight="extrabold"
+                fontSize="lg"
                 cursor="pointer"
                 onClick={() => setShowDesktopEligibleModal(true)}
               >
@@ -265,7 +274,7 @@ export default function Home() {
             flexDir={{ base: "column", lg: "row-reverse" }}
             mt={{ base: 5, lg: 6 }}
             gap={{ base: 3, lg: 5 }}
-            w="50%"
+            w={{ base: "full", lg: "50%" }}
           >
             <Flex flexDirection={"column"} w="full" gap={4}>
               <Text
@@ -334,6 +343,18 @@ export default function Home() {
                 </Flex>
               </Text>
             </Flex>
+          </Flex>
+          <Flex align="center" display={{ base: "flex", lg: "none" }} mt={4}>
+            <Text
+              textDecor="underline"
+              fontWeight="extrabold"
+              cursor="pointer"
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
+              Je suis éligible, je crée mon compte →
+            </Text>
           </Flex>
         </Flex>
         <Flex
