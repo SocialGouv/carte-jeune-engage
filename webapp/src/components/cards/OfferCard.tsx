@@ -10,6 +10,7 @@ import ExpiryTag from "../offer/ExpiryTag";
 import { BsEyeFill } from "react-icons/bs";
 import Cookies from "js-cookie";
 import { ObizCard } from "./ObizCard";
+import PartnerImage from "../ui/PartnerImage";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
@@ -119,21 +120,7 @@ const OfferCard = ({
             zIndex={2}
           >
             <Flex align="center" gap={3}>
-              <Flex
-                alignItems="center"
-                borderRadius="2xl"
-                overflow={"hidden"}
-                w={"40px"}
-                h={"40px"}
-                bgColor="white"
-              >
-                <Image
-                  src={offer.partner.icon.url ?? ""}
-                  alt={offer.partner.icon.alt ?? ""}
-                  width={40}
-                  height={40}
-                />
-              </Flex>
+              <PartnerImage partner={offer.partner} width={48} height={48} />
               <Text fontSize="xl" fontWeight="bold" color="white">
                 {offer.partner.name}
               </Text>

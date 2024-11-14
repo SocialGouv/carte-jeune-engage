@@ -34,6 +34,7 @@ import LoadingLoader from "~/components/LoadingLoader";
 import LayoutOrderStatus from "~/components/obiz/LayoutOrderStatus";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
+import PartnerImage from "~/components/ui/PartnerImage";
 import { Typewriter } from "~/components/ui/Typewriter";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
@@ -339,20 +340,11 @@ export default function OrderObizPage() {
             mx={4}
           >
             <Flex alignItems={"center"} gap={2}>
-              <Box
-                bg="white"
-                rounded={"2xl"}
-                borderWidth={1}
-                borderColor={"bgGray"}
-                overflow={"hidden"}
-              >
-                <Image
-                  src={order.offer.partner.icon.url || ""}
-                  width={60}
-                  height={order.offer.partner.icon.height || 50}
-                  alt={`Logo ${order.offer.partner.name}`}
-                />
-              </Box>
+              <PartnerImage
+                partner={order.offer.partner}
+                width={52}
+                height={52}
+              />
               <Text fontWeight={700} fontSize={"xl"}>
                 {order.offer.partner.name}
               </Text>

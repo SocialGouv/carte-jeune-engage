@@ -21,6 +21,7 @@ import ObizOrderProcessModal from "~/components/modals/ObizOrderProcessModal";
 import { StackItem } from "~/components/offer/StackItems";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
+import PartnerImage from "~/components/ui/PartnerImage";
 import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { api } from "~/utils/api";
@@ -114,32 +115,7 @@ export default function OfferObizPage() {
                   }}
                 />
               )}
-              <Flex
-                alignItems="center"
-                borderRadius="md"
-                border="1px solid"
-                borderColor="bgGray"
-                p={0.5}
-                bg={"white"}
-                overflow={"hidden"}
-                zIndex={1}
-                height="56px"
-                maxWidth="56px"
-              >
-                <Image
-                  src={offer.partner.icon.url as string}
-                  alt={offer.partner.icon.alt as string}
-                  width={offer.partner.icon.width || 56}
-                  height={offer.partner.icon.height || 56}
-                  imageStyle={{
-                    width: "56px",
-                    maxHeight: "56px",
-                    borderRadius: "5px",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
-                />
-              </Flex>
+              <PartnerImage partner={offer.partner} width={50} height={50} />
               <Text fontWeight={700} fontSize={"xl"}>
                 {offer.partner.name}
               </Text>
