@@ -12,22 +12,28 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
 import ObizOrderProcessModal from "~/components/modals/ObizOrderProcessModal";
 import { StackItem } from "~/components/offer/StackItems";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
+import PartnerImage from "~/components/ui/PartnerImage";
 import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { api } from "~/utils/api";
 import ReactIcon from "~/utils/dynamicIcon";
 import { cleanHtml } from "~/utils/tools";
 
-export default function OfferObizPage() {
+type OfferObizPageProps = {
+  order_id: string;
+};
+
+export default function OfferObizPage({ order_id }: OfferObizPageProps) {
   const router = useRouter();
 
   const {
@@ -36,17 +42,14 @@ export default function OfferObizPage() {
     onClose: onCloseOrderProcessModal,
   } = useDisclosure();
 
+  const [isOfferNbSeenMutated, setIsOfferNbSeenMutated] = useState(false);
   const [isDescriptionCollapsed, setIsDescriptionCollapsed] = useState(true);
 
-  const { id } = router.query as {
-    id: string;
-  };
+  const { mutateAsync: increaseNbSeen } =
+    api.offer.increaseNbSeen.useMutation();
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
-    api.offer.getById.useQuery(
-      { id: parseInt(id), source: "obiz" },
-      { enabled: id !== undefined }
-    );
+    api.offer.getById.useQuery({ id: parseInt(order_id), source: "obiz" });
 
   const { data: offer } = resultOffer || {};
 
@@ -59,6 +62,15 @@ export default function OfferObizPage() {
     if (!offer) return [];
     return getItemsConditionBlocks(offer.kind) as StackItem[];
   }, [offer]);
+
+  useEffect(() => {
+    const mutateData = async () => {
+      const { data } = await increaseNbSeen({ offer_id: parseInt(order_id) });
+      setIsOfferNbSeenMutated(data);
+    };
+
+    if (!isOfferNbSeenMutated) mutateData();
+  }, []);
 
   if (isLoadingOffer || !router.isReady) {
     return (
@@ -114,32 +126,7 @@ export default function OfferObizPage() {
                   }}
                 />
               )}
-              <Flex
-                alignItems="center"
-                borderRadius="md"
-                border="1px solid"
-                borderColor="bgGray"
-                p={0.5}
-                bg={"white"}
-                overflow={"hidden"}
-                zIndex={1}
-                height="56px"
-                maxWidth="56px"
-              >
-                <Image
-                  src={offer.partner.icon.url as string}
-                  alt={offer.partner.icon.alt as string}
-                  width={offer.partner.icon.width || 56}
-                  height={offer.partner.icon.height || 56}
-                  imageStyle={{
-                    width: "56px",
-                    maxHeight: "56px",
-                    borderRadius: "5px",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
-                />
-              </Flex>
+              <PartnerImage partner={offer.partner} width={50} height={50} />
               <Text fontWeight={700} fontSize={"xl"}>
                 {offer.partner.name}
               </Text>
@@ -314,9 +301,16 @@ export default function OfferObizPage() {
         <ObizOrderProcessModal
           isOpen={isOpenOrderProcessModal}
           onClose={onCloseOrderProcessModal}
-          offerId={parseInt(id)}
+          offerId={parseInt(order_id)}
         />
       </Flex>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const order_id = query.id;
+  return {
+    props: { order_id },
+  };
+};

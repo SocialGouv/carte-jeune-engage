@@ -1,17 +1,17 @@
 import {
-  Button,
   Center,
   Divider,
   Flex,
   Heading,
   Icon,
+  Link,
   Text,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useAuth } from "~/providers/Auth";
 import LoadingLoader from "~/components/LoadingLoader";
 import BackButton from "~/components/ui/BackButton";
 import { HiPencil, HiTrash } from "react-icons/hi2";
+import NextLink from "next/link";
 
 const userInformations = [
   { label: "Prénom", value: "firstName" },
@@ -22,7 +22,6 @@ const userInformations = [
 ] as const;
 
 export default function AccountInformation() {
-  const router = useRouter();
   const { user } = useAuth();
 
   if (!user)
@@ -54,28 +53,40 @@ export default function AccountInformation() {
       </Flex>
       <Flex flexDir="column" mt="auto" gap={4} mb={20}>
         <Divider bgColor="disabled" />
-        <Flex alignItems="center" gap={2}>
-          <Icon as={HiPencil} w={5} h={5} mt="1px" />
-          <Text
-            fontWeight={800}
-            textDecoration="underline"
-            textDecorationThickness="2px"
-            textUnderlineOffset={2}
-          >
-            Modifier mes informations
-          </Text>
-        </Flex>
-        <Flex alignItems="center" gap={2} color="disabled" mt={1}>
-          <Icon as={HiTrash} w={5} h={5} mt="1px" />
-          <Text
-            fontWeight={800}
-            textDecoration="underline"
-            textDecorationThickness="2px"
-            textUnderlineOffset={2}
-          >
-            Supprimer mes informations
-          </Text>
-        </Flex>
+        <Link
+          as={NextLink}
+          href="mailto:cje@fabrique.social.gouv.fr?subject=Modifications d’information carte “jeune engagé”"
+          passHref
+        >
+          <Flex alignItems="center" gap={2}>
+            <Icon as={HiPencil} w={5} h={5} mt="1px" />
+            <Text
+              fontWeight={800}
+              textDecoration="underline"
+              textDecorationThickness="2px"
+              textUnderlineOffset={2}
+            >
+              Modifier mes informations
+            </Text>
+          </Flex>
+        </Link>
+        <Link
+          as={NextLink}
+          href="mailto:cje@fabrique.social.gouv.fr?subject=Modifications d’information carte “jeune engagé”"
+          passHref
+        >
+          <Flex alignItems="center" gap={2} color="disabled" mt={1}>
+            <Icon as={HiTrash} w={5} h={5} mt="1px" />
+            <Text
+              fontWeight={800}
+              textDecoration="underline"
+              textDecorationThickness="2px"
+              textUnderlineOffset={2}
+            >
+              Supprimer mes informations
+            </Text>
+          </Flex>
+        </Link>
       </Flex>
     </Flex>
   );

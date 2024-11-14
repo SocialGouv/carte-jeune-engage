@@ -6,10 +6,11 @@ import {
   ModalContent,
   Text,
 } from "@chakra-ui/react";
-import { useAuth } from "~/providers/Auth";
 import Image from "next/image";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { UserIncluded } from "~/server/api/routers/user";
+import { useAuth } from "~/providers/Auth";
 
 const SplashScreenModal = ({
   onClose,
@@ -18,8 +19,8 @@ const SplashScreenModal = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const router = useRouter();
   const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     const cjeRedirectionOfferId = localStorage.getItem(
@@ -67,9 +68,15 @@ const SplashScreenModal = ({
                 height={75}
               />
               <Text fontWeight="extrabold" color="white" mt={20} fontSize={32}>
-                Ca y est {user?.firstName} !
-                <br />
-                Les réductions sont à vous
+                {user?.userEmail ? (
+                  <>De nouvelles réductions vous attendent !</>
+                ) : (
+                  <>
+                    Ca y est {user?.firstName} !
+                    <br />
+                    Les réductions sont à vous
+                  </>
+                )}
               </Text>
             </Flex>
           </Center>

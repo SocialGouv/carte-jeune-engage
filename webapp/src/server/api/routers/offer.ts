@@ -417,10 +417,10 @@ export const offerRouter = createTRPCRouter({
           },
         });
 
-        return { data: "Offer nbSeen increased" };
+        return { data: true };
       }
 
-      return { data: "Offer not found" };
+      return { data: false };
     }),
 
   insertObizOffers: publicProcedure
