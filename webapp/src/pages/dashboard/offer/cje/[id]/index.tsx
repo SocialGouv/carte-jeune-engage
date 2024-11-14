@@ -20,6 +20,8 @@ const flipVariants = {
 export default function OfferCjePage() {
   const router = useRouter();
 
+  const [isOfferNbSeenMutated, setIsOfferNbSeenMutated] = useState(false);
+
   const { id } = router.query as {
     id: string;
   };
@@ -41,6 +43,9 @@ export default function OfferCjePage() {
 
   const { data: offer } = resultOffer || {};
   const { data: coupon } = resultCoupon || {};
+
+  const { mutateAsync: increaseNbSeen } =
+    api.offer.increaseNbSeen.useMutation();
 
   const {
     mutateAsync: mutateAsyncCouponToUser,
@@ -122,6 +127,15 @@ export default function OfferCjePage() {
       clearTimeout(timeoutIdExternalLink);
     },
   });
+
+  useEffect(() => {
+    const mutateData = async () => {
+      const { data } = await increaseNbSeen({ offer_id: parseInt(id) });
+      setIsOfferNbSeenMutated(data);
+    };
+
+    if (!isOfferNbSeenMutated) mutateData();
+  }, []);
 
   useEffect(() => {
     if (

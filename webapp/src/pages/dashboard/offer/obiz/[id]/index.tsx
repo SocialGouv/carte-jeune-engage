@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
 import ObizOrderProcessModal from "~/components/modals/ObizOrderProcessModal";
@@ -37,11 +37,15 @@ export default function OfferObizPage() {
     onClose: onCloseOrderProcessModal,
   } = useDisclosure();
 
+  const [isOfferNbSeenMutated, setIsOfferNbSeenMutated] = useState(false);
   const [isDescriptionCollapsed, setIsDescriptionCollapsed] = useState(true);
 
   const { id } = router.query as {
     id: string;
   };
+
+  const { mutateAsync: increaseNbSeen } =
+    api.offer.increaseNbSeen.useMutation();
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
     api.offer.getById.useQuery(
@@ -60,6 +64,15 @@ export default function OfferObizPage() {
     if (!offer) return [];
     return getItemsConditionBlocks(offer.kind) as StackItem[];
   }, [offer]);
+
+  useEffect(() => {
+    const mutateData = async () => {
+      const { data } = await increaseNbSeen({ offer_id: parseInt(id) });
+      setIsOfferNbSeenMutated(data);
+    };
+
+    if (!isOfferNbSeenMutated) mutateData();
+  }, []);
 
   if (isLoadingOffer || !router.isReady) {
     return (
