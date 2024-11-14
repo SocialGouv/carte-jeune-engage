@@ -60,7 +60,7 @@ export default buildConfig({
           adapter: adapter,
           disableLocalStorage: true,
           disablePayloadAccessControl: true,
-          generateFileURL: (file) => `/api/image?filename=${file.filename}`,
+          prefix: "public",
         },
       },
     }),

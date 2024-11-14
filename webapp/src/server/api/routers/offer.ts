@@ -23,7 +23,6 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 import _ from "lodash";
-import image from "~/pages/api/image";
 
 export interface OfferIncluded extends Offer {
   image: Media;
