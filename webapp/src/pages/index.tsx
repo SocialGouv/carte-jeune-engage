@@ -315,23 +315,26 @@ export default function Home() {
                 rounded="2.5xl"
                 px={5}
                 py={3}
+                pb={{ base: 4, lg: 3 }}
                 fontWeight={500}
                 fontSize={"lg"}
               >
                 Pour les jeunes engagés inscrits à France travail, en Mission
                 locale, en Service civique, en EPIDE, en École de la 2nde chance
-                <Flex mt={4} justify={"space-between"}>
+                <Flex mt={4} px={4} justify={"space-between"}>
                   {forWhoList.map((item, index) => {
                     return (
                       <Flex
                         justify="center"
                         align="center"
                         bg="white"
-                        w={{ base: 14, lg: 14 }}
-                        h={{ base: 14, lg: 14 }}
+                        w={{ base: 18, lg: 14 }}
+                        h={{ base: 18, lg: 14 }}
                         p={2}
                         mt={index % 2 === 0 ? 0 : 2}
                         zIndex={index % 2 === 0 ? 1 : 2}
+                        mr={{ base: index % 2 === 0 ? -4 : 0, lg: 0 }}
+                        ml={{ base: index % 2 === 0 ? -4 : 0, lg: 0 }}
                         rounded={{ base: "2xl", lg: "xl" }}
                         boxShadow="0px 14px 10px -5px #0F172A5E"
                         transform={`rotate(${item.rotationAngle}deg)`}
