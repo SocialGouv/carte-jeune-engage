@@ -434,33 +434,35 @@ export default function OrderObizPage() {
             >
               Voir les conditions détaillées
             </Text>
-            <Flex
-              mt={14}
-              px={6}
-              py={4}
-              alignItems="center"
-              bgColor="white"
-              borderRadius="2.5xl"
-              cursor="pointer"
-              onClick={onOpenModalSignalIssue}
-            >
-              <Icon
-                as={HiMiniChatBubbleLeftEllipsis}
-                color="blackLight"
-                mr={4}
-                w={5}
-                h={5}
-                mb={-0.5}
-              />
-              <Text
-                fontWeight={700}
-                textDecor="underline"
-                textDecorationThickness="2px"
-                textUnderlineOffset={2}
+            {order.status !== "delivered" && (
+              <Flex
+                mt={14}
+                px={6}
+                py={4}
+                alignItems="center"
+                bgColor="white"
+                borderRadius="2.5xl"
+                cursor="pointer"
+                onClick={onOpenModalSignalIssue}
               >
-                Besoin d’aide ?
-              </Text>
-            </Flex>
+                <Icon
+                  as={HiMiniChatBubbleLeftEllipsis}
+                  color="blackLight"
+                  mr={4}
+                  w={5}
+                  h={5}
+                  mb={-0.5}
+                />
+                <Text
+                  fontWeight={700}
+                  textDecor="underline"
+                  textDecorationThickness="2px"
+                  textUnderlineOffset={2}
+                >
+                  Besoin d’aide ?
+                </Text>
+              </Flex>
+            )}
           </Flex>
         </Flex>
       </Flex>
