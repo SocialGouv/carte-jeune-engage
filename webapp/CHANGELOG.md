@@ -1,3 +1,10 @@
+## [0.63.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.3...v0.63.4) (2024-11-14)
+
+
+### Bug Fixes
+
+* add OBIZ_SOAP_HOST env to init soap client ([0b733fb](https://github.com/SocialGouv/carte-jeune-engage/commit/0b733fbdc3ed04ed1cd42d231336be0c43c18247))
+
 ## [0.63.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.2...v0.63.3) (2024-11-14)
 
 
