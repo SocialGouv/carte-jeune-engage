@@ -1,11 +1,19 @@
-## [0.63.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.3...v0.63.4) (2024-11-14)
+## [0.63.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.4...v0.63.5) (2024-11-14)
 
 ### Bug Fixes
 
 - login-widget erase previous widgetToken from cookies ([62e5369](https://github.com/SocialGouv/carte-jeune-engage/commit/62e5369db8cf95ca63ca0c3370a576294a5c3a7c))
 - add OBIZ_SOAP_HOST env to init soap client ([0b733fb](https://github.com/SocialGouv/carte-jeune-engage/commit/0b733fbdc3ed04ed1cd42d231336be0c43c18247))
+- obiz variable amount issue ([ee0be93](https://github.com/SocialGouv/carte-jeune-engage/commit/ee0be9359fd9ef6fd13c0d1cd84b49a297032f58))
+
+## [0.63.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.3...v0.63.4) (2024-11-14)
+
+### Bug Fixes
+
+- add OBIZ_SOAP_HOST env to init soap client ([0b733fb](https://github.com/SocialGouv/carte-jeune-engage/commit/0b733fbdc3ed04ed1cd42d231336be0c43c18247))
 
 ## [0.63.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.2...v0.63.3) (2024-11-14)
+
 
 ### Bug Fixes
 

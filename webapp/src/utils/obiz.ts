@@ -107,7 +107,7 @@ export const insertItemPayload = (
   user: User,
   articles: (OfferArticle & { quantity: number })[],
   kind: "CARTECADEAU" | "EBILLET",
-  amount?: number
+  { amount, amount_discounted }: { amount?: number; amount_discounted?: number }
 ) => {
   const signature = crypto
     .createHash("sha512")
@@ -125,7 +125,7 @@ export const insertItemPayload = (
       string: articles.flatMap((article) => [
         article.reference,
         article.quantity,
-        amount || article.price || 0,
+        amount_discounted || article.price || 0,
         "",
         "",
         "",
