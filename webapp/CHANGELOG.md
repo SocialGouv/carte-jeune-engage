@@ -1,3 +1,11 @@
+## [0.63.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.1...v0.63.2) (2024-11-14)
+
+
+### Bug Fixes
+
+* obiz error soap trpc throw error ([bf3f907](https://github.com/SocialGouv/carte-jeune-engage/commit/bf3f9077ca34c83e621e30bd397cc32203eb94e0))
+* remove val d'oise & interpret \n in faq ([7d03f27](https://github.com/SocialGouv/carte-jeune-engage/commit/7d03f273bc14bc6c7431be8315334d0247dd0ea1))
+
 ## [0.63.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.0...v0.63.1) (2024-11-13)
 
 ### Bug Fixes
