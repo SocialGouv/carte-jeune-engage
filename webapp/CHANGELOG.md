@@ -1,3 +1,17 @@
+# [0.65.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.64.1...v0.65.0) (2024-11-15)
+
+
+### Bug Fixes
+
+* landing block description mobile ([ba76412](https://github.com/SocialGouv/carte-jeune-engage/commit/ba76412db59df5edcb3c8706943a8ba909066cb1))
+* message triangle ([1e8f9df](https://github.com/SocialGouv/carte-jeune-engage/commit/1e8f9dfe488771b3c3e825b45a9dff106e7f650a))
+* mobile logos ([8efae7e](https://github.com/SocialGouv/carte-jeune-engage/commit/8efae7e6c4d61c3cbbf7c4119f0e8f701a5447ab))
+
+
+### Features
+
+* landing block description desktop ([a124c89](https://github.com/SocialGouv/carte-jeune-engage/commit/a124c892c3e21ab22478c7eca8b2a0725f740ebe))
+
 ## [0.64.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.64.0...v0.64.1) (2024-11-15)
 
 
