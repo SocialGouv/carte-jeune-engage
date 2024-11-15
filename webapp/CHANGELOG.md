@@ -1,3 +1,10 @@
+## [0.65.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.1...v0.65.2) (2024-11-15)
+
+
+### Bug Fixes
+
+* add total_amount_to_pay for acompte in CREATION_COMMANDE obiz ([0d84e64](https://github.com/SocialGouv/carte-jeune-engage/commit/0d84e64fa377470466cfb04481012f2b414eac82))
+
 ## [0.65.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.0...v0.65.1) (2024-11-15)
 
 
