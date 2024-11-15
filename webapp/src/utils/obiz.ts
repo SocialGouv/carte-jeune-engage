@@ -17,7 +17,8 @@ export const obiz_signature = crypto
 export const createOrderPayload = (
   user: User,
   order: Order,
-  kind: "CARTECADEAU" | "EBILLET"
+  kind: "CARTECADEAU" | "EBILLET",
+  total_amount_to_pay: number
 ) => {
   const { street_address, city, zip_code } = extractAddressInformations(
     user.address || ""
@@ -91,7 +92,7 @@ export const createOrderPayload = (
         "",
         `${baseUrl.includes("localhost") ? removeProtocolFromUrl(baseUrl) : baseUrl}/dashboard/order/${order.id}/success`, // url_retour_ok
         `${baseUrl.includes("localhost") ? removeProtocolFromUrl(baseUrl) : baseUrl}/dashboard/order/error`, // url_retour_ko
-        "",
+        total_amount_to_pay,
         "",
         "",
         "",

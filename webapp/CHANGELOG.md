@@ -1,9 +1,8 @@
 ## [0.63.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.12...v0.63.13) (2024-11-15)
 
-
 ### Bug Fixes
 
-* return init state offer after payment redirect ([c88def7](https://github.com/SocialGouv/carte-jeune-engage/commit/c88def7526e8664c5935a8b1c8d6212a66c5001c))
+- return init state offer after payment redirect ([c88def7](https://github.com/SocialGouv/carte-jeune-engage/commit/c88def7526e8664c5935a8b1c8d6212a66c5001c))
 
 ## [0.63.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.11...v0.63.12) (2024-11-15)
 

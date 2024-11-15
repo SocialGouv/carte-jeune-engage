@@ -129,11 +129,30 @@ export const orderRouter = createTRPCRouter({
       });
 
       try {
+        const total_amount_to_pay = articles.reduce((acc, currentArticle) => {
+          const articleReference = article_references.find(
+            (ar) => ar.reference === currentArticle.reference
+          );
+
+          if (articleReference) {
+            if (currentArticle.kind === "fixed_price" && currentArticle.price) {
+              return acc + currentArticle.price * articleReference.quantity;
+            } else if (
+              currentArticle.kind === "variable_price" &&
+              input_value
+            ) {
+              return acc + input_value * articleReference.quantity;
+            }
+          }
+          return acc;
+        }, 0);
+
         // CREATION DE LA COMMANDE
         const create_order_payload = createOrderPayload(
           user,
           initialOrder,
-          "CARTECADEAU"
+          "CARTECADEAU",
+          total_amount_to_pay
         );
         const [resultOrder] =
           await ctx.soapObizClient.CREATION_COMMANDE_ARRAYAsync({
