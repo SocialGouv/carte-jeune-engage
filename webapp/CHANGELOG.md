@@ -1,3 +1,10 @@
+## [0.63.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.10...v0.63.11) (2024-11-15)
+
+
+### Bug Fixes
+
+* add app replicas ([e559908](https://github.com/SocialGouv/carte-jeune-engage/commit/e559908312b1975f9007d0809f4207eb694e19e0))
+
 ## [0.63.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.9...v0.63.10) (2024-11-15)
 
 
