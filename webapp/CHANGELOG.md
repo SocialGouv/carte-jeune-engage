@@ -12,6 +12,7 @@
 
 ## [0.64.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.64.0...v0.64.1) (2024-11-15)
 
+
 ### Bug Fixes
 
 - margin between blocs home ([92214ff](https://github.com/SocialGouv/carte-jeune-engage/commit/92214ff61bc23c50549ace6ac968403193a65fbd))
