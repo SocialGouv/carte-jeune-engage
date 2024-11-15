@@ -1,5 +1,4 @@
 import { TRPCError } from "@trpc/server";
-import { File } from "payload/dist/uploads/types";
 import { Where } from "payload/types";
 import { z } from "zod";
 import {
@@ -23,7 +22,6 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 import _ from "lodash";
-import image from "~/pages/api/image";
 
 export interface OfferIncluded extends Offer {
   image: Media;

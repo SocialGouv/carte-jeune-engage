@@ -116,19 +116,38 @@ const CategoriesList = (props: CategoriesListProps) => {
           >
             {category.label}
           </Text>
-          <AvatarGroup size="md" spacing={-6} alignSelf="start">
-            {filteredOffers.map((offer) => (
-              <Avatar
+          <Flex w="full">
+            {filteredOffers.map((offer, index) => (
+              <Flex
                 key={offer.id}
-                src={offer.partner.icon.url as string}
-                name={offer.partner.icon.alt as string}
-                width="44px"
-                height="44px"
+                rounded={"full"}
+                alignItems={"center"}
+                overflow={"hidden"}
                 bg="white"
+                borderWidth={2}
                 borderColor="bgGray"
-              />
+                width={"44px"}
+                height={"44px"}
+                marginLeft={index !== 0 ? -6 : 0}
+              >
+                <Image
+                  src={offer.partner.icon.url as string}
+                  alt={offer.partner.icon.alt as string}
+                  width={44}
+                  height={44}
+                  boxStyle={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  imageStyle={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Flex>
             ))}
-          </AvatarGroup>
+          </Flex>
         </Flex>
       </Link>
     );

@@ -8,12 +8,12 @@ import {
   userProtectedProcedure,
 } from "~/server/api/trpc";
 import { createOrderPayload, insertItemPayload } from "~/utils/obiz";
-import { payloadWhereOfferIsValid } from "~/utils/tools";
 import fs from "fs/promises";
 import os from "os";
 import { Where } from "payload/types";
 import { PDFDocument } from "pdf-lib";
-import { getHtmlSignalOrder } from "~/utils/emailHtml";
+import { getHtmlRecapOrder, getHtmlSignalOrder } from "~/utils/emailHtml";
+import { OfferIncluded } from "./offer";
 
 export interface OrderIncluded extends Order {
   offer: Offer & { partner: Partner & { icon: Media } } & { image: Media };
@@ -335,6 +335,7 @@ export const orderRouter = createTRPCRouter({
           newStatus !== order.status ||
           resultOrderStatusObject.etats_statut !== order.obiz_status
         ) {
+          const oldStatus = order.status;
           order = await ctx.payload.update({
             id: order_id,
             collection: "orders",
@@ -343,6 +344,27 @@ export const orderRouter = createTRPCRouter({
               obiz_status: resultOrderStatusObject.etats_statut,
             },
           });
+
+          if (newStatus !== oldStatus && newStatus === "payment_completed") {
+            const currentUser = await ctx.payload.findByID({
+              collection: "users",
+              id: order.user as number,
+              depth: 0,
+            });
+
+            const offer = (await ctx.payload.findByID({
+              collection: "offers",
+              id: order.offer as number,
+              depth: 2,
+            })) as OfferIncluded;
+
+            ctx.payload.sendEmail({
+              from: process.env.SMTP_FROM_ADDRESS,
+              to: currentUser.userEmail,
+              subject: "Récapitulatif de votre commande",
+              html: getHtmlRecapOrder(currentUser, order, offer),
+            });
+          }
         }
 
         return { data: order };
