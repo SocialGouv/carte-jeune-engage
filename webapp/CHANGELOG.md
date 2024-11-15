@@ -1,3 +1,10 @@
+## [0.63.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.13...v0.63.14) (2024-11-15)
+
+
+### Bug Fixes
+
+* wait 5sc before reseting offer state after payment link ([81b18e8](https://github.com/SocialGouv/carte-jeune-engage/commit/81b18e8998212598e49c192b20b8b83d6f6aa388))
+
 ## [0.63.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.12...v0.63.13) (2024-11-15)
 
 
