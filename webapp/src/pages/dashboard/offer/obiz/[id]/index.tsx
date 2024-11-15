@@ -42,7 +42,6 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
     onClose: onCloseOrderProcessModal,
   } = useDisclosure();
 
-  const [isOfferNbSeenMutated, setIsOfferNbSeenMutated] = useState(false);
   const [isDescriptionCollapsed, setIsDescriptionCollapsed] = useState(true);
 
   const { mutateAsync: increaseNbSeen } =
@@ -65,11 +64,10 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
 
   useEffect(() => {
     const mutateData = async () => {
-      const { data } = await increaseNbSeen({ offer_id: parseInt(offer_id) });
-      setIsOfferNbSeenMutated(data);
+      await increaseNbSeen({ offer_id: parseInt(offer_id) });
     };
 
-    if (!isOfferNbSeenMutated) mutateData();
+    mutateData();
   }, []);
 
   if (isLoadingOffer || !router.isReady) {

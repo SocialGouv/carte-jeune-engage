@@ -25,8 +25,6 @@ type OfferCjePageProps = {
 export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
   const router = useRouter();
 
-  const [isOfferNbSeenMutated, setIsOfferNbSeenMutated] = useState(false);
-
   const { data: resultOffer, isLoading: isLoadingOffer } =
     api.offer.getById.useQuery({ id: parseInt(offer_id), source: "cje" });
 
@@ -125,11 +123,10 @@ export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
 
   useEffect(() => {
     const mutateData = async () => {
-      const { data } = await increaseNbSeen({ offer_id: parseInt(offer_id) });
-      setIsOfferNbSeenMutated(data);
+      await increaseNbSeen({ offer_id: parseInt(offer_id) });
     };
 
-    if (!isOfferNbSeenMutated) mutateData();
+    mutateData();
   }, []);
 
   useEffect(() => {
