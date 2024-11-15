@@ -1,3 +1,10 @@
+## [0.63.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.8...v0.63.9) (2024-11-15)
+
+
+### Bug Fixes
+
+* getServerSideProps on offer cje and obiz name ([6c85714](https://github.com/SocialGouv/carte-jeune-engage/commit/6c85714d4580a3006eb93a0507f563182fd6e41c))
+
 ## [0.63.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.7...v0.63.8) (2024-11-15)
 
 ### Bug Fixes
