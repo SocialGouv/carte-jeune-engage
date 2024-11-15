@@ -30,10 +30,10 @@ import ReactIcon from "~/utils/dynamicIcon";
 import { cleanHtml } from "~/utils/tools";
 
 type OfferObizPageProps = {
-  order_id: string;
+  offer_id: string;
 };
 
-export default function OfferObizPage({ order_id }: OfferObizPageProps) {
+export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
   const router = useRouter();
 
   const {
@@ -49,7 +49,7 @@ export default function OfferObizPage({ order_id }: OfferObizPageProps) {
     api.offer.increaseNbSeen.useMutation();
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
-    api.offer.getById.useQuery({ id: parseInt(order_id), source: "obiz" });
+    api.offer.getById.useQuery({ id: parseInt(offer_id), source: "obiz" });
 
   const { data: offer } = resultOffer || {};
 
@@ -65,7 +65,7 @@ export default function OfferObizPage({ order_id }: OfferObizPageProps) {
 
   useEffect(() => {
     const mutateData = async () => {
-      const { data } = await increaseNbSeen({ offer_id: parseInt(order_id) });
+      const { data } = await increaseNbSeen({ offer_id: parseInt(offer_id) });
       setIsOfferNbSeenMutated(data);
     };
 
@@ -301,7 +301,7 @@ export default function OfferObizPage({ order_id }: OfferObizPageProps) {
         <ObizOrderProcessModal
           isOpen={isOpenOrderProcessModal}
           onClose={onCloseOrderProcessModal}
-          offerId={parseInt(order_id)}
+          offerId={parseInt(offer_id)}
         />
       </Flex>
     </>
@@ -309,8 +309,8 @@ export default function OfferObizPage({ order_id }: OfferObizPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const order_id = query.id;
+  const offer_id = query.id;
   return {
-    props: { order_id },
+    props: { offer_id },
   };
 };

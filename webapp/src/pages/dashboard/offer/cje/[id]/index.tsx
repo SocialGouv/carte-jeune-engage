@@ -34,7 +34,7 @@ export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
     data: resultCoupon,
     isLoading: isLoadingCoupon,
     refetch: refetchCoupon,
-  } = api.coupon.getOne.useQuery({ offer_id: parseInt(offer_id as string) });
+  } = api.coupon.getOne.useQuery({ offer_id: parseInt(offer_id) });
 
   const { data: offer } = resultOffer || {};
   const { data: coupon } = resultCoupon || {};
@@ -233,8 +233,8 @@ export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const order_id = query.id;
+  const offer_id = query.id;
   return {
-    props: { order_id },
+    props: { offer_id },
   };
 };
