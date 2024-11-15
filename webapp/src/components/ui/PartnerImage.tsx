@@ -21,7 +21,7 @@ const PartnerImage = ({
       overflow="hidden"
       zIndex={1}
       height={`${height}px`}
-      width={`${width}px`}
+      minWidth={`${width}px`}
     >
       <Image
         src={partner.icon.url as string}
@@ -31,7 +31,7 @@ const PartnerImage = ({
         imageStyle={{
           width: `${width}px`,
           height: `${height}px`,
-          borderRadius: "20px",
+          borderRadius: width <= 40 ? "16px" : "20px",
           objectFit: "contain",
           objectPosition: "center",
         }}
