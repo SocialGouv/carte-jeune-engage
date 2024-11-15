@@ -1,10 +1,9 @@
 ## [0.63.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.6...v0.63.7) (2024-11-14)
 
-
 ### Bug Fixes
 
-* log obyzSync to track status ([58ad53e](https://github.com/SocialGouv/carte-jeune-engage/commit/58ad53e80666a30313324f2c9344e5375417e37d))
-* switch obiz status NON FINALISEE to payment_completed ([30b3e7f](https://github.com/SocialGouv/carte-jeune-engage/commit/30b3e7f953448b750973ff5748d28e88f23c1b63))
+- log obyzSync to track status ([58ad53e](https://github.com/SocialGouv/carte-jeune-engage/commit/58ad53e80666a30313324f2c9344e5375417e37d))
+- switch obiz status NON FINALISEE to payment_completed ([30b3e7f](https://github.com/SocialGouv/carte-jeune-engage/commit/30b3e7f953448b750973ff5748d28e88f23c1b63))
 
 ## [0.63.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.5...v0.63.6) (2024-11-14)
 

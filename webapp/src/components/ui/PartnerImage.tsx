@@ -17,7 +17,6 @@ const PartnerImage = ({
       borderRadius={width <= 40 ? "2xl" : "2.5xl"}
       border="1px solid"
       borderColor="bgGray"
-      p={0.5}
       bg="white"
       overflow="hidden"
       zIndex={1}
