@@ -1,3 +1,10 @@
+## [0.65.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.2...v0.65.3) (2024-11-15)
+
+
+### Bug Fixes
+
+* add depth 0 on order update for recap mail get of user and offer ([b1241a1](https://github.com/SocialGouv/carte-jeune-engage/commit/b1241a1301f4000bf5428453a37b712d7ba093f7))
+
 ## [0.65.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.1...v0.65.2) (2024-11-15)
 
 ### Bug Fixes
