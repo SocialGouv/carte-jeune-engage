@@ -2,6 +2,17 @@ global:
   host: "cje-preprod.ovh.fabrique.social.gouv.fr"
 
 app:
+  autoscale:
+    minReplicas: 2
+    maxReplicas: 4
+    enabled: true
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2048Mi
+    requests:
+      cpu: 500m
+      memory: 2048Mi
   envFrom:
     - secretRef:
         name: pg-app

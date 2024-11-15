@@ -1,3 +1,40 @@
+## [0.63.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.14...v0.63.15) (2024-11-15)
+
+
+### Bug Fixes
+
+* AvatarGroup to Image for load optimizations ([c41fbfa](https://github.com/SocialGouv/carte-jeune-engage/commit/c41fbfa44f106fec0b2800b649d5bf287a7a39c8))
+
+## [0.63.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.13...v0.63.14) (2024-11-15)
+
+### Bug Fixes
+
+- wait 5sc before reseting offer state after payment link ([81b18e8](https://github.com/SocialGouv/carte-jeune-engage/commit/81b18e8998212598e49c192b20b8b83d6f6aa388))
+
+## [0.63.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.12...v0.63.13) (2024-11-15)
+
+### Bug Fixes
+
+- return init state offer after payment redirect ([c88def7](https://github.com/SocialGouv/carte-jeune-engage/commit/c88def7526e8664c5935a8b1c8d6212a66c5001c))
+
+## [0.63.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.11...v0.63.12) (2024-11-15)
+
+### Bug Fixes
+
+- app cpu limit ([776aada](https://github.com/SocialGouv/carte-jeune-engage/commit/776aada009eae79f6e51aa2d0eea300fa00a8ca5))
+
+## [0.63.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.10...v0.63.11) (2024-11-15)
+
+### Bug Fixes
+
+- add app replicas ([e559908](https://github.com/SocialGouv/carte-jeune-engage/commit/e559908312b1975f9007d0809f4207eb694e19e0))
+
+## [0.63.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.9...v0.63.10) (2024-11-15)
+
+### Bug Fixes
+
+- swap the obiz and cje offers on home page ([6ab73aa](https://github.com/SocialGouv/carte-jeune-engage/commit/6ab73aa7a6dfdec437752d58e0107d159e212e73))
+
 ## [0.63.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.8...v0.63.9) (2024-11-15)
 
 ### Bug Fixes

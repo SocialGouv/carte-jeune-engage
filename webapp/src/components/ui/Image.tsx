@@ -4,13 +4,14 @@ import { CSSProperties, useState } from "react";
 
 interface ImageProps extends NextImageProps {
   imageStyle?: CSSProperties;
+  boxStyle?: CSSProperties;
 }
 
 const Image = (props: ImageProps) => {
-  const { imageStyle, ...nextImageProps } = props;
+  const { imageStyle, boxStyle, ...nextImageProps } = props;
 
   return (
-    <Box>
+    <Box style={boxStyle}>
       <NextImage
         {...nextImageProps}
         placeholder="blur"

@@ -190,6 +190,7 @@ const ObizOfferVariableContent = ({
 type ObizOrderProcessModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onRedirectPayment: () => void;
   offerId: number;
 };
 
@@ -198,7 +199,7 @@ type Steps = "amount" | "summary" | "payment";
 export default function ObizOrderProcessModal(
   props: ObizOrderProcessModalProps
 ) {
-  const { isOpen, onClose, offerId } = props;
+  const { isOpen, onClose, onRedirectPayment, offerId } = props;
   const router = useRouter();
 
   const [amount, setAmount] = useState(0);
@@ -210,7 +211,13 @@ export default function ObizOrderProcessModal(
   const { mutate: createTestOrder } = api.order.createOrder.useMutation({
     onMutate: () => setStep("payment"),
     onSuccess: ({ data: { payment_url } }) => {
-      if (payment_url) window.location.href = payment_url;
+      if (payment_url) {
+        window.location.href = payment_url;
+        setTimeout(() => {
+          onRedirectPayment();
+          setStep("amount");
+        }, 5000);
+      }
     },
     onError: () => router.push("/dashboard/order/error"),
   });
