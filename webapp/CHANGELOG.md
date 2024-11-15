@@ -1,3 +1,11 @@
+## [0.63.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.7...v0.63.8) (2024-11-15)
+
+
+### Bug Fixes
+
+* partner image component minWidth and borderRadius on image ([1ad4b1a](https://github.com/SocialGouv/carte-jeune-engage/commit/1ad4b1a44067697048aaca586ac04c113093cd70))
+* remove padding from partner image ([b962b6c](https://github.com/SocialGouv/carte-jeune-engage/commit/b962b6cb1112224aceb672b31b50f85f4c6c19bd))
+
 ## [0.63.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.6...v0.63.7) (2024-11-14)
 
 ### Bug Fixes
