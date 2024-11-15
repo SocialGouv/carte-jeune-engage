@@ -251,6 +251,7 @@ export const theme = extendTheme({
     "2.5xl": "1.25rem",
     "3xl": "1.875rem",
     "4xl": "2rem",
+    "4.5xl": "2.25rem",
     "5xl": "2.5rem",
   },
   fonts: {
