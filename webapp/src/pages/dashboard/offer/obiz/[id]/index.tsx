@@ -63,6 +63,10 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
     return getItemsConditionBlocks(offer.kind) as StackItem[];
   }, [offer]);
 
+  const onRedirectPayment = () => {
+    onCloseOrderProcessModal();
+  };
+
   useEffect(() => {
     const mutateData = async () => {
       const { data } = await increaseNbSeen({ offer_id: parseInt(offer_id) });
@@ -301,6 +305,7 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
         <ObizOrderProcessModal
           isOpen={isOpenOrderProcessModal}
           onClose={onCloseOrderProcessModal}
+          onRedirectPayment={onRedirectPayment}
           offerId={parseInt(offer_id)}
         />
       </Flex>

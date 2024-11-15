@@ -1,9 +1,8 @@
 ## [0.63.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.9...v0.63.10) (2024-11-15)
 
-
 ### Bug Fixes
 
-* swap the obiz and cje offers on home page ([6ab73aa](https://github.com/SocialGouv/carte-jeune-engage/commit/6ab73aa7a6dfdec437752d58e0107d159e212e73))
+- swap the obiz and cje offers on home page ([6ab73aa](https://github.com/SocialGouv/carte-jeune-engage/commit/6ab73aa7a6dfdec437752d58e0107d159e212e73))
 
 ## [0.63.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.8...v0.63.9) (2024-11-15)
 
