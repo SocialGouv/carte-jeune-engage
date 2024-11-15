@@ -1,18 +1,16 @@
 ## [0.65.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.1...v0.65.2) (2024-11-15)
 
-
 ### Bug Fixes
 
-* add total_amount_to_pay for acompte in CREATION_COMMANDE obiz ([0d84e64](https://github.com/SocialGouv/carte-jeune-engage/commit/0d84e64fa377470466cfb04481012f2b414eac82))
+- add total_amount_to_pay for acompte in CREATION_COMMANDE obiz ([0d84e64](https://github.com/SocialGouv/carte-jeune-engage/commit/0d84e64fa377470466cfb04481012f2b414eac82))
 
 ## [0.65.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.0...v0.65.1) (2024-11-15)
 
-
 ### Bug Fixes
 
-* avoid navbar item text to be selected ([a31ace9](https://github.com/SocialGouv/carte-jeune-engage/commit/a31ace93e6816648b6c93c8629bbcb1153e116e2))
-* check oldStatus of order to send sync email ([e708974](https://github.com/SocialGouv/carte-jeune-engage/commit/e708974f6ab83bf34061e6c5e2b2140b43efbc11))
-* launch timeout callback before changing location ([ab8a8e2](https://github.com/SocialGouv/carte-jeune-engage/commit/ab8a8e2f643ddc1d15bc7a8e926d0815152b148f))
+- avoid navbar item text to be selected ([a31ace9](https://github.com/SocialGouv/carte-jeune-engage/commit/a31ace93e6816648b6c93c8629bbcb1153e116e2))
+- check oldStatus of order to send sync email ([e708974](https://github.com/SocialGouv/carte-jeune-engage/commit/e708974f6ab83bf34061e6c5e2b2140b43efbc11))
+- launch timeout callback before changing location ([ab8a8e2](https://github.com/SocialGouv/carte-jeune-engage/commit/ab8a8e2f643ddc1d15bc7a8e926d0815152b148f))
 
 # [0.65.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.64.1...v0.65.0) (2024-11-15)
 
@@ -27,7 +25,6 @@
 - landing block description desktop ([a124c89](https://github.com/SocialGouv/carte-jeune-engage/commit/a124c892c3e21ab22478c7eca8b2a0725f740ebe))
 
 ## [0.64.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.64.0...v0.64.1) (2024-11-15)
-
 
 ### Bug Fixes
 

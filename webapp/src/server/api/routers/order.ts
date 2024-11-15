@@ -343,6 +343,7 @@ export const orderRouter = createTRPCRouter({
               status: newStatus,
               obiz_status: resultOrderStatusObject.etats_statut,
             },
+            depth: 0,
           });
 
           if (newStatus !== oldStatus && newStatus === "payment_completed") {
