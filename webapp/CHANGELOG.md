@@ -1,16 +1,14 @@
 ## [0.63.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.11...v0.63.12) (2024-11-15)
 
-
 ### Bug Fixes
 
-* app cpu limit ([776aada](https://github.com/SocialGouv/carte-jeune-engage/commit/776aada009eae79f6e51aa2d0eea300fa00a8ca5))
+- app cpu limit ([776aada](https://github.com/SocialGouv/carte-jeune-engage/commit/776aada009eae79f6e51aa2d0eea300fa00a8ca5))
 
 ## [0.63.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.10...v0.63.11) (2024-11-15)
 
-
 ### Bug Fixes
 
-* add app replicas ([e559908](https://github.com/SocialGouv/carte-jeune-engage/commit/e559908312b1975f9007d0809f4207eb694e19e0))
+- add app replicas ([e559908](https://github.com/SocialGouv/carte-jeune-engage/commit/e559908312b1975f9007d0809f4207eb694e19e0))
 
 ## [0.63.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.9...v0.63.10) (2024-11-15)
 

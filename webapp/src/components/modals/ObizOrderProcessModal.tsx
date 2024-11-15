@@ -216,7 +216,7 @@ export default function ObizOrderProcessModal(
         setTimeout(() => {
           onRedirectPayment();
           setStep("amount");
-        }, 1000);
+        }, 5000);
       }
     },
     onError: () => router.push("/dashboard/order/error"),
