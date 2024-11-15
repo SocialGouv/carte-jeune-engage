@@ -1,23 +1,20 @@
 ## [0.64.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.64.0...v0.64.1) (2024-11-15)
 
-
 ### Bug Fixes
 
-* margin between blocs home ([92214ff](https://github.com/SocialGouv/carte-jeune-engage/commit/92214ff61bc23c50549ace6ac968403193a65fbd))
+- margin between blocs home ([92214ff](https://github.com/SocialGouv/carte-jeune-engage/commit/92214ff61bc23c50549ace6ac968403193a65fbd))
 
 # [0.64.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.15...v0.64.0) (2024-11-15)
 
-
 ### Features
 
-* add recap order email on payment_completed and fix cje logo on login email ([ef31a2a](https://github.com/SocialGouv/carte-jeune-engage/commit/ef31a2a730b3bb653e175fc193ee5106a48380cc))
+- add recap order email on payment_completed and fix cje logo on login email ([ef31a2a](https://github.com/SocialGouv/carte-jeune-engage/commit/ef31a2a730b3bb653e175fc193ee5106a48380cc))
 
 ## [0.63.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.14...v0.63.15) (2024-11-15)
 
-
 ### Bug Fixes
 
-* AvatarGroup to Image for load optimizations ([c41fbfa](https://github.com/SocialGouv/carte-jeune-engage/commit/c41fbfa44f106fec0b2800b649d5bf287a7a39c8))
+- AvatarGroup to Image for load optimizations ([c41fbfa](https://github.com/SocialGouv/carte-jeune-engage/commit/c41fbfa44f106fec0b2800b649d5bf287a7a39c8))
 
 ## [0.63.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.13...v0.63.14) (2024-11-15)
 

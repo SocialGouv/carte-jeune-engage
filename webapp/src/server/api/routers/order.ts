@@ -316,6 +316,7 @@ export const orderRouter = createTRPCRouter({
           newStatus !== order.status ||
           resultOrderStatusObject.etats_statut !== order.obiz_status
         ) {
+          const oldStatus = order.status;
           order = await ctx.payload.update({
             id: order_id,
             collection: "orders",
@@ -325,7 +326,7 @@ export const orderRouter = createTRPCRouter({
             },
           });
 
-          if (newStatus !== order.status && newStatus === "payment_completed") {
+          if (newStatus !== oldStatus && newStatus === "payment_completed") {
             const currentUser = await ctx.payload.findByID({
               collection: "users",
               id: order.user as number,
