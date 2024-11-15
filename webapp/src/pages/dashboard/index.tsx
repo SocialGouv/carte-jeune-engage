@@ -99,7 +99,7 @@ export default function Dashboard() {
             mt={6}
             px={8}
             gap={2}
-            pb={14}
+            pb={10}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
@@ -134,7 +134,7 @@ export default function Dashboard() {
             mt={6}
             px={8}
             gap={2}
-            pb={10}
+            pb={14}
             overflowX="auto"
             sx={{
               "::-webkit-scrollbar": {
