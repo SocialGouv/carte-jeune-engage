@@ -1,3 +1,10 @@
+# [0.64.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.15...v0.64.0) (2024-11-15)
+
+
+### Features
+
+* add recap order email on payment_completed and fix cje logo on login email ([ef31a2a](https://github.com/SocialGouv/carte-jeune-engage/commit/ef31a2a730b3bb653e175fc193ee5106a48380cc))
+
 ## [0.63.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.14...v0.63.15) (2024-11-15)
 
 
