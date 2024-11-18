@@ -22,7 +22,7 @@ const nextOptions = {
             ""
           ),
         port: "",
-        pathname: `/${process.env.S3_BUCKET_NAME}/**`,
+        pathname: `/**`,
       },
     ],
     minimumCacheTTL: 604800,

@@ -1,5 +1,5 @@
 import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "../components/ui/Image";
 import RedirectionSectionBlock from "~/components/landing/RedirectionSectionBlock";
 import { PartnerIncluded } from "~/server/api/routers/partner";
 import { api } from "~/utils/api";
