@@ -78,9 +78,44 @@ export default function Dashboard() {
           matomoEvent={["Accueil", "Obtenir l'application"]}
         />
       </Box>
-      {offersCje && offersCje?.length > 0 && (
+      {offersObiz && offersObiz?.length > 0 && (
         <>
           <Heading as="h2" fontSize="2xl" fontWeight={800} px={8} mt={8}>
+            Les <BarcodeIcon color="primary" w={7} h={7} mb={0.5} /> bons
+            d'achat
+          </Heading>
+          <Grid
+            templateColumns="repeat(auto-fit, 100%)"
+            gridAutoFlow="column"
+            gridAutoColumns="100%"
+            mt={6}
+            px={8}
+            gap={2}
+            pb={10}
+            overflowX="auto"
+            sx={{
+              "::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+          >
+            {offersObiz?.map((offer) => (
+              <OfferCard
+                key={offer.id}
+                offer={offer}
+                matomoEvent={[
+                  "Accueil",
+                  "Pour vous",
+                  `Offre - ${offer.partner.name} - ${offer.title} `,
+                ]}
+              />
+            ))}
+          </Grid>
+        </>
+      )}
+      {offersCje && offersCje?.length > 0 && (
+        <>
+          <Heading as="h2" fontSize="2xl" fontWeight={800} px={8}>
             Les{" "}
             <Icon
               as={HiMiniTag}
@@ -99,41 +134,6 @@ export default function Dashboard() {
             mt={6}
             px={8}
             gap={2}
-            pb={10}
-            overflowX="auto"
-            sx={{
-              "::-webkit-scrollbar": {
-                display: "none",
-              },
-            }}
-          >
-            {offersCje?.map((offer) => (
-              <OfferCard
-                key={offer.id}
-                offer={offer}
-                matomoEvent={[
-                  "Accueil",
-                  "Pour vous",
-                  `Offre - ${offer.partner.name} - ${offer.title} `,
-                ]}
-              />
-            ))}
-          </Grid>
-        </>
-      )}
-      {offersObiz && offersObiz?.length > 0 && (
-        <>
-          <Heading as="h2" fontSize="2xl" fontWeight={800} px={8}>
-            Les <BarcodeIcon color="primary" w={7} h={7} mb={0.5} /> bons
-            d'achat
-          </Heading>
-          <Grid
-            templateColumns="repeat(auto-fit, 100%)"
-            gridAutoFlow="column"
-            gridAutoColumns="100%"
-            mt={6}
-            px={8}
-            gap={2}
             pb={14}
             overflowX="auto"
             sx={{
@@ -142,7 +142,7 @@ export default function Dashboard() {
               },
             }}
           >
-            {offersObiz?.map((offer) => (
+            {offersCje?.map((offer) => (
               <OfferCard
                 key={offer.id}
                 offer={offer}

@@ -1,3 +1,22 @@
+## [0.66.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.2...v0.66.3) (2024-11-18)
+
+
+### Bug Fixes
+
+* rows order home ([ebd0b41](https://github.com/SocialGouv/carte-jeune-engage/commit/ebd0b41ca7f8af775577988cf22ec520635851df))
+
+## [0.66.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.1...v0.66.2) (2024-11-18)
+
+### Bug Fixes
+
+- increase pg resources ([c327bd8](https://github.com/SocialGouv/carte-jeune-engage/commit/c327bd8777b40389b2f743091850cc5b88a5b15e))
+
+## [0.66.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.0...v0.66.1) (2024-11-18)
+
+### Bug Fixes
+
+- import coupon loader & concurrency handling ([c37ba40](https://github.com/SocialGouv/carte-jeune-engage/commit/c37ba40b720044e8fcc4aa14673902cb00f8e1ca))
+
 # [0.66.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.6...v0.66.0) (2024-11-18)
 
 ### Features
