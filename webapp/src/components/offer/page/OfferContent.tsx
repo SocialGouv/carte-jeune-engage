@@ -21,6 +21,7 @@ import { dottedPattern } from "~/utils/chakra-theme";
 import InStoreSection from "../InStoreSection";
 import TextWithLinks from "../TextWithLinks";
 import ConditionBlocksSection from "../ConditionBlocksSection";
+import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 
 type OfferContentProps = {
   offer: OfferIncluded;
@@ -39,11 +40,20 @@ const OfferContent = (props: OfferContentProps) => {
   const conditionsRef = useRef<HTMLUListElement>(null);
   const [isConditionsOpen, setIsConditionsOpen] = useState(false);
 
-  const offerConditionBlocksSlugs = useMemo(() => {
+  const offerConditionBlocks = useMemo(() => {
     if (!offer) return [];
-    return (
-      offer.conditionBlocks?.map((conditionBlock) => conditionBlock.slug) ?? []
-    );
+    return getItemsConditionBlocks(offer.source)
+      .filter((conditionBlock) =>
+        offer.conditionBlocks
+          ?.map((cb) => cb.slug)
+          .includes(conditionBlock.slug)
+      )
+      .map((conditionBlock) => ({
+        ...conditionBlock,
+        isCrossed:
+          offer.conditionBlocks?.find((cb) => cb.slug === conditionBlock.slug)
+            ?.isCrossed ?? false,
+      }));
   }, [offer]);
 
   const itemsTermsOfUse = useMemo(() => {
@@ -90,10 +100,10 @@ const OfferContent = (props: OfferContentProps) => {
           </Button>
         )}
       </Box>
-      {offerConditionBlocksSlugs.length > 0 && (
+      {offerConditionBlocks.length > 0 && (
         <Box mt={8}>
           <ConditionBlocksSection
-            offerConditionBlocksSlugs={offerConditionBlocksSlugs}
+            offerConditionBlocks={offerConditionBlocks}
             offerSource={offer.source}
           />
         </Box>

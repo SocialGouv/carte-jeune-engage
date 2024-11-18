@@ -8,25 +8,24 @@ import ReactIcon from "~/utils/dynamicIcon";
 const disabledColor = theme.colors["disabled"] as string;
 
 type ConditionBlocksSectionProps = {
-  offerConditionBlocksSlugs: string[]; // selected condition blocks slugs
+  offerConditionBlocks: { text: string; icon: string; isCrossed: boolean }[];
   offerSource: Offer["source"];
 };
 
 const ConditionBlocksSection = ({
-  offerConditionBlocksSlugs,
+  offerConditionBlocks,
   offerSource,
 }: ConditionBlocksSectionProps) => {
   return (
     <Flex flexDir="column" gap={4} w="full" px={4}>
-      {getItemsConditionBlocks(offerSource).map(({ text, icon, slug }) => {
-        const isConditionBlockActive = offerConditionBlocksSlugs.includes(slug);
+      {offerConditionBlocks.map(({ text, icon, isCrossed }) => {
         return (
           <Flex key={text} alignItems="center" w="full">
             {typeof icon === "string" && (
               <ReactIcon
                 icon={icon}
                 size={20}
-                color={isConditionBlockActive ? "black" : disabledColor}
+                color={!isCrossed ? "black" : disabledColor}
               />
             )}
             <Text
@@ -34,16 +33,16 @@ const ConditionBlocksSection = ({
               textAlign="start"
               ml={4}
               w="70%"
-              color={isConditionBlockActive ? "black" : "disabled"}
-              textDecor={isConditionBlockActive ? "none" : "line-through"}
+              color={!isCrossed ? "black" : "disabled"}
+              textDecor={!isCrossed ? "none" : "line-through"}
             >
               {text}
             </Text>
             <Icon
-              as={isConditionBlockActive ? HiCheckCircle : HiXCircle}
+              as={!isCrossed ? HiCheckCircle : HiXCircle}
               w={5}
               h={5}
-              color={isConditionBlockActive ? "primary" : "error"}
+              color={!isCrossed ? "primary" : "error"}
               ml="auto"
             />
           </Flex>

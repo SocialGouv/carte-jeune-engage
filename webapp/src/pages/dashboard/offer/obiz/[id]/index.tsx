@@ -22,6 +22,7 @@ import ConditionBlocksSection from "~/components/offer/ConditionBlocksSection";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import PartnerImage from "~/components/ui/PartnerImage";
+import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { api } from "~/utils/api";
 import { cleanHtml } from "~/utils/tools";
@@ -49,11 +50,20 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
 
   const { data: offer } = resultOffer || {};
 
-  const offerConditionBlocksSlugs = useMemo(() => {
+  const offerConditionBlocks = useMemo(() => {
     if (!offer) return [];
-    return (
-      offer.conditionBlocks?.map((conditionBlock) => conditionBlock.slug) ?? []
-    );
+    return getItemsConditionBlocks(offer.source)
+      .filter((conditionBlock) =>
+        offer.conditionBlocks
+          ?.map((cb) => cb.slug)
+          .includes(conditionBlock.slug)
+      )
+      .map((conditionBlock) => ({
+        ...conditionBlock,
+        isCrossed:
+          offer.conditionBlocks?.find((cb) => cb.slug === conditionBlock.slug)
+            ?.isCrossed ?? false,
+      }));
   }, [offer]);
 
   const itemsTermsOfUse = useMemo(() => {
@@ -153,7 +163,7 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
           </Button>
         </Flex>
         <ConditionBlocksSection
-          offerConditionBlocksSlugs={offerConditionBlocksSlugs}
+          offerConditionBlocks={offerConditionBlocks}
           offerSource={offer.source}
         />
         <Flex direction={"column"} px={4} pb={8} gap={8}>

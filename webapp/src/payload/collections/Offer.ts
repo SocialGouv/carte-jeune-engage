@@ -297,7 +297,11 @@ export const Offers: CollectionConfig = {
               Field: CustomSelectConditionBlocks,
             },
           },
-          required: true,
+        },
+        {
+          name: "isCrossed",
+          type: "checkbox",
+          label: "Barré",
         },
       ],
     },
