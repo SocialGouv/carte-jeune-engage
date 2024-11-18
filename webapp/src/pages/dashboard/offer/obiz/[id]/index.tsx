@@ -286,7 +286,6 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
           position={"sticky"}
           bottom={0}
           p={4}
-          pb={6}
           bg="white"
           borderTopWidth={1}
           borderTopColor={"gray.200"}

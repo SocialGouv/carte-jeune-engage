@@ -1,9 +1,8 @@
 ## [0.66.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.2...v0.66.3) (2024-11-18)
 
-
 ### Bug Fixes
 
-* rows order home ([ebd0b41](https://github.com/SocialGouv/carte-jeune-engage/commit/ebd0b41ca7f8af775577988cf22ec520635851df))
+- rows order home ([ebd0b41](https://github.com/SocialGouv/carte-jeune-engage/commit/ebd0b41ca7f8af775577988cf22ec520635851df))
 
 ## [0.66.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.1...v0.66.2) (2024-11-18)
 

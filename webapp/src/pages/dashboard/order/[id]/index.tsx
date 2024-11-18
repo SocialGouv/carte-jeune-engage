@@ -327,7 +327,7 @@ export default function OrderObizPage() {
         minH="full"
         direction={"column"}
         position="relative"
-        pt={16}
+        pt={8}
         pb={9}
         px={6}
         bg="bgGray"
@@ -341,6 +341,7 @@ export default function OrderObizPage() {
             rounded={"2xl"}
             gap={3}
             mx={4}
+            mt={-6}
           >
             <Flex alignItems={"center"} gap={2}>
               <PartnerImage
@@ -421,14 +422,14 @@ export default function OrderObizPage() {
               <Text>{formatDateToDDMMYYYY(order.createdAt)}</Text>
             </Flex>
             <Divider my={4} />
-            <Text
+            {/* <Text
               fontWeight={700}
               textDecor="underline"
               textDecorationThickness="2px"
               textUnderlineOffset={2}
             >
               Voir les conditions détaillées
-            </Text>
+            </Text> */}
             {order.status !== "delivered" && (
               <Flex
                 mt={14}
