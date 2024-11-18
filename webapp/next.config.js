@@ -16,7 +16,9 @@ const nextOptions = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: (process.env.S3_ENDPOINT || "").replace(/^(https?:\/\/)/, ""),
+        hostname: (
+          process.env.S3_ENDPOINT || "https://s3.endpoint.loc"
+        ).replace(/^(https?:\/\/)/, ""),
         port: "",
         pathname: `/${process.env.S3_BUCKET_NAME}/**`,
       },
