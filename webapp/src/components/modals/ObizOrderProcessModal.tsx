@@ -107,6 +107,7 @@ const ObizOfferVariableContent = ({
             <Box
               position={"fixed"}
               p={4}
+              pb={6}
               bg="white"
               bottom={0}
               left={0}
