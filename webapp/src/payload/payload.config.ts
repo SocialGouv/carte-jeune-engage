@@ -31,7 +31,7 @@ import { EmailAuthTokens } from "./collections/EmailAuthToken";
 import { Orders } from "./collections/Order";
 import { OrderSignals } from "./collections/OrderSignal";
 
-const adapter = s3Adapter({
+const publicAdapter = s3Adapter({
   config: {
     endpoint: process.env.S3_ENDPOINT,
     credentials: {
@@ -40,6 +40,7 @@ const adapter = s3Adapter({
     },
     region: process.env.S3_REGION ?? "",
   },
+  acl: "public-read",
   bucket: process.env.S3_BUCKET_NAME ?? "",
 });
 
@@ -57,7 +58,7 @@ export default buildConfig({
     cloudStorage({
       collections: {
         media: {
-          adapter: adapter,
+          adapter: publicAdapter,
           disableLocalStorage: true,
           disablePayloadAccessControl: true,
           prefix: "public",
