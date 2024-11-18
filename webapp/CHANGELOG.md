@@ -1,3 +1,17 @@
+# [0.66.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.6...v0.66.0) (2024-11-18)
+
+
+### Features
+
+* increase prod config ([6f68cbe](https://github.com/SocialGouv/carte-jeune-engage/commit/6f68cbea8b76769ca66e6a3665ccdb111dbcc5bc))
+
+## [0.65.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.5...v0.65.6) (2024-11-18)
+
+
+### Bug Fixes
+
+* path on next.config images ([9d3266f](https://github.com/SocialGouv/carte-jeune-engage/commit/9d3266f8f2f38055138f316eb32e8e04202a1515))
+
 ## [0.65.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.4...v0.65.5) (2024-11-18)
 
 ### Bug Fixes
