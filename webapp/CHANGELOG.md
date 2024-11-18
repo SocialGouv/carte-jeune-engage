@@ -1,15 +1,14 @@
 ## [0.65.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.3...v0.65.4) (2024-11-18)
 
-
 ### Bug Fixes
 
-* acl to public-read & auto-fill existing records with prefix ([fd9e0b7](https://github.com/SocialGouv/carte-jeune-engage/commit/fd9e0b77fee219a98836660aaec42adddce3b104))
-* configure cache images remote pattern ([9db4441](https://github.com/SocialGouv/carte-jeune-engage/commit/9db44412e52cf02e71f455cd0d6ee3989a84008b))
-* default removePatterns images hostname value ([b775ff9](https://github.com/SocialGouv/carte-jeune-engage/commit/b775ff9284f4e9efdc832d66e5b4d56e141c6309))
-* generate well structured s3 file url ([d85c4bd](https://github.com/SocialGouv/carte-jeune-engage/commit/d85c4bd37aa7f2f1c91c5ea76e6606a407a1bff2))
-* image load to s3 directly ([b618a34](https://github.com/SocialGouv/carte-jeune-engage/commit/b618a346afbed1dda9f5d707136ec047294d7037))
-* payload migration add prefix to media ([27b91ab](https://github.com/SocialGouv/carte-jeune-engage/commit/27b91ab76851178e765ed31a56d25db9f85b2861))
-* remove https to regex ([8382462](https://github.com/SocialGouv/carte-jeune-engage/commit/83824626c69f343609c6999e2bbf0a56972e4d26))
+- acl to public-read & auto-fill existing records with prefix ([fd9e0b7](https://github.com/SocialGouv/carte-jeune-engage/commit/fd9e0b77fee219a98836660aaec42adddce3b104))
+- configure cache images remote pattern ([9db4441](https://github.com/SocialGouv/carte-jeune-engage/commit/9db44412e52cf02e71f455cd0d6ee3989a84008b))
+- default removePatterns images hostname value ([b775ff9](https://github.com/SocialGouv/carte-jeune-engage/commit/b775ff9284f4e9efdc832d66e5b4d56e141c6309))
+- generate well structured s3 file url ([d85c4bd](https://github.com/SocialGouv/carte-jeune-engage/commit/d85c4bd37aa7f2f1c91c5ea76e6606a407a1bff2))
+- image load to s3 directly ([b618a34](https://github.com/SocialGouv/carte-jeune-engage/commit/b618a346afbed1dda9f5d707136ec047294d7037))
+- payload migration add prefix to media ([27b91ab](https://github.com/SocialGouv/carte-jeune-engage/commit/27b91ab76851178e765ed31a56d25db9f85b2861))
+- remove https to regex ([8382462](https://github.com/SocialGouv/carte-jeune-engage/commit/83824626c69f343609c6999e2bbf0a56972e4d26))
 
 ## [0.65.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.2...v0.65.3) (2024-11-15)
 
