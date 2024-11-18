@@ -1,3 +1,11 @@
+## [0.66.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.3...v0.66.4) (2024-11-18)
+
+
+### Bug Fixes
+
+* add route API image for public folder & fetch pdf ([77126e9](https://github.com/SocialGouv/carte-jeune-engage/commit/77126e93abf830e6c48dac9fc521f83060c81242))
+* add route image api ([5962d2a](https://github.com/SocialGouv/carte-jeune-engage/commit/5962d2a8cea7aafb23503bbfa2df4d917a617496))
+
 ## [0.66.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.2...v0.66.3) (2024-11-18)
 
 ### Bug Fixes
