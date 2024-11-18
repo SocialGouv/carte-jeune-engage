@@ -22,7 +22,6 @@ import ConditionBlocksSection from "~/components/offer/ConditionBlocksSection";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import PartnerImage from "~/components/ui/PartnerImage";
-import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { api } from "~/utils/api";
 import { cleanHtml } from "~/utils/tools";
