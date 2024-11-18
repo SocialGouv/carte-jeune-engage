@@ -1,34 +1,26 @@
 import {
   Box,
   Button,
-  Center,
   Divider,
   Flex,
   HStack,
   Icon,
   ListItem,
   OrderedList,
-  Tag,
   Text,
   UnorderedList,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
-import { HiArrowRight } from "react-icons/hi";
 import { HiBookmark, HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
-import ConfirmModal from "~/components/modals/ConfirmModal";
-import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
-import { api } from "~/utils/api";
 import { dottedPattern } from "~/utils/chakra-theme";
-import ReactIcon from "~/utils/dynamicIcon";
 import InStoreSection from "../InStoreSection";
-import { StackItem } from "../StackItems";
 import TextWithLinks from "../TextWithLinks";
+import ConditionBlocksSection from "../ConditionBlocksSection";
 
 type OfferContentProps = {
   offer: OfferIncluded;
@@ -47,13 +39,11 @@ const OfferContent = (props: OfferContentProps) => {
   const conditionsRef = useRef<HTMLUListElement>(null);
   const [isConditionsOpen, setIsConditionsOpen] = useState(false);
 
-  const offerConditionBlocks = useMemo(() => {
+  const offerConditionBlocksSlugs = useMemo(() => {
     if (!offer) return [];
-    return getItemsConditionBlocks(offer.kind).filter((item) =>
-      offer.conditionBlocks
-        ?.map((conditionBlock) => conditionBlock.slug)
-        .includes(item.slug)
-    ) as StackItem[];
+    return (
+      offer.conditionBlocks?.map((conditionBlock) => conditionBlock.slug) ?? []
+    );
   }, [offer]);
 
   const itemsTermsOfUse = useMemo(() => {
@@ -100,78 +90,13 @@ const OfferContent = (props: OfferContentProps) => {
           </Button>
         )}
       </Box>
-      {offerConditionBlocks.length > 0 && (
-        <Flex
-          gap={3}
-          mt={7}
-          w="full"
-          h="max-content"
-          py={1}
-          pl={4}
-          overflowX="scroll"
-          sx={{
-            "&::-webkit-scrollbar": {
-              display: "none",
-            },
-          }}
-        >
-          {offerConditionBlocks.map(({ text, icon }, index) => (
-            <Flex
-              key={text}
-              position="relative"
-              minW="43%"
-              flexDir="column"
-              alignItems="center"
-              justifyContent="center"
-              py={4}
-              px={6}
-            >
-              <Box
-                position="absolute"
-                inset={0}
-                bg="bgGray"
-                zIndex={1}
-                borderRadius="3xl"
-                transform={`rotate(${index % 2 === 0 ? 3 : -2}deg)`}
-              />
-              <Box p={4} bg="white" borderRadius="full" zIndex={2}>
-                {typeof icon === "string" && (
-                  <ReactIcon icon={icon} size={24} color="inherit" />
-                )}
-              </Box>
-              <Text fontWeight={500} textAlign="center" mt={2} zIndex={2}>
-                {text}
-              </Text>
-            </Flex>
-          ))}
-          <Center minW="43%" mr={4} key="read-all-conditions">
-            <Text
-              fontWeight={800}
-              color="blackLight"
-              textDecor="underline"
-              textDecorationThickness="2px"
-              textUnderlineOffset={2}
-              onClick={() => {
-                setIsConditionsOpen(true);
-                conditionsRef.current?.scrollIntoView({
-                  behavior: "smooth",
-                });
-              }}
-            >
-              Lire toutes
-              <br />
-              les conditions{" "}
-              <Icon
-                as={HiArrowRight}
-                w={4}
-                h={4}
-                borderBottom="2px solid black"
-                pb="1px"
-                mb={-1}
-              />
-            </Text>
-          </Center>
-        </Flex>
+      {offerConditionBlocksSlugs.length > 0 && (
+        <Box mt={8}>
+          <ConditionBlocksSection
+            offerConditionBlocksSlugs={offerConditionBlocksSlugs}
+            offerSource={offer.source}
+          />
+        </Box>
       )}
       {offer.kind.startsWith("voucher") && (
         <Box mt={8} px={4} w="full">
