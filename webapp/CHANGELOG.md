@@ -1,7 +1,40 @@
+# [0.66.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.6...v0.66.0) (2024-11-18)
+
+
+### Features
+
+* increase prod config ([6f68cbe](https://github.com/SocialGouv/carte-jeune-engage/commit/6f68cbea8b76769ca66e6a3665ccdb111dbcc5bc))
+
+## [0.65.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.5...v0.65.6) (2024-11-18)
+
+
+### Bug Fixes
+
+* path on next.config images ([9d3266f](https://github.com/SocialGouv/carte-jeune-engage/commit/9d3266f8f2f38055138f316eb32e8e04202a1515))
+
+## [0.65.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.4...v0.65.5) (2024-11-18)
+
+### Bug Fixes
+
+* hostname images remotePattern config ([04bd7ad](https://github.com/SocialGouv/carte-jeune-engage/commit/04bd7add6e4f88269a04dbbddeb72583595f94ae))
+
+## [0.65.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.3...v0.65.4) (2024-11-18)
+
+### Bug Fixes
+
+- acl to public-read & auto-fill existing records with prefix ([fd9e0b7](https://github.com/SocialGouv/carte-jeune-engage/commit/fd9e0b77fee219a98836660aaec42adddce3b104))
+- configure cache images remote pattern ([9db4441](https://github.com/SocialGouv/carte-jeune-engage/commit/9db44412e52cf02e71f455cd0d6ee3989a84008b))
+- default removePatterns images hostname value ([b775ff9](https://github.com/SocialGouv/carte-jeune-engage/commit/b775ff9284f4e9efdc832d66e5b4d56e141c6309))
+- generate well structured s3 file url ([d85c4bd](https://github.com/SocialGouv/carte-jeune-engage/commit/d85c4bd37aa7f2f1c91c5ea76e6606a407a1bff2))
+- image load to s3 directly ([b618a34](https://github.com/SocialGouv/carte-jeune-engage/commit/b618a346afbed1dda9f5d707136ec047294d7037))
+- payload migration add prefix to media ([27b91ab](https://github.com/SocialGouv/carte-jeune-engage/commit/27b91ab76851178e765ed31a56d25db9f85b2861))
+- remove https to regex ([8382462](https://github.com/SocialGouv/carte-jeune-engage/commit/83824626c69f343609c6999e2bbf0a56972e4d26))
+
 ## [0.65.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.2...v0.65.3) (2024-11-15)
 
 ### Bug Fixes
 
+- login-widget erase previous widgetToken from cookies ([62e5369](https://github.com/SocialGouv/carte-jeune-engage/commit/62e5369db8cf95ca63ca0c3370a576294a5c3a7c))
 - add depth 0 on order update for recap mail get of user and offer ([b1241a1](https://github.com/SocialGouv/carte-jeune-engage/commit/b1241a1301f4000bf5428453a37b712d7ba093f7))
 
 ## [0.65.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.1...v0.65.2) (2024-11-15)
