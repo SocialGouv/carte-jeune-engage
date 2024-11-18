@@ -4,6 +4,7 @@ import {
   Center,
   Divider,
   Flex,
+  Icon,
   Link,
   Modal,
   ModalBody,
@@ -21,7 +22,9 @@ import {
   HiEnvelope,
   HiExclamationCircle,
   HiEye,
+  HiMiniChatBubbleLeftEllipsis,
   HiMinus,
+  HiPhone,
   HiPlus,
 } from "react-icons/hi2";
 import { MdOutlineFileDownload } from "react-icons/md";
@@ -31,6 +34,7 @@ import LoadingLoader from "~/components/LoadingLoader";
 import LayoutOrderStatus from "~/components/obiz/LayoutOrderStatus";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
+import PartnerImage from "~/components/ui/PartnerImage";
 import { Typewriter } from "~/components/ui/Typewriter";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
@@ -56,7 +60,7 @@ export default function OrderObizPage() {
     isOpen: isOpenModalSignalIssue,
     onOpen: onOpenModalSignalIssue,
     onClose: onCloseModalSignalIssue,
-  } = useDisclosure({});
+  } = useDisclosure();
 
   const {
     data: resultOrder,
@@ -160,61 +164,6 @@ export default function OrderObizPage() {
     if (orderHasIssue) {
       return (
         <Flex direction={"column"} gap={8} mx={4}>
-          <Modal
-            isOpen={isOpenModalSignalIssue}
-            onClose={onCloseModalSignalIssue}
-            size="full"
-          >
-            <ModalOverlay />
-            <ModalContent h="100dvh">
-              <ModalBody display="flex" flexDir="column" px={8} h="100dvh">
-                <LayoutOrderStatus
-                  title={`Votre problème est bien signalé ${user?.firstName}`}
-                  subtitle="Pour obtenir de l’aide vous pouvez contacter directement les coordonnées ci-dessous"
-                  status="info"
-                  onClose={onCloseModalSignalIssue}
-                >
-                  <Flex mt={10} direction={"column"} gap={4} w="full">
-                    <Flex direction={"column"} gap={4} mx={4}>
-                      <Flex gap={2} alignItems={"center"} fontWeight={600}>
-                        <HiEnvelope />
-                        <Link
-                          href="mailto:serviceclient@reducce.fr"
-                          textDecor={"underline"}
-                        >
-                          serviceclient@reducce.fr
-                        </Link>
-                      </Flex>
-                      <Flex gap={2} alignItems={"center"} fontWeight={600}>
-                        <HiEnvelope />
-                        <Link href="telto:0472402828" textDecor={"underline"}>
-                          04 72 40 28 28
-                        </Link>
-                      </Flex>
-                    </Flex>
-                    <Divider my={4} />
-                    <Flex direction="column" gap={4} fontSize={"sm"} mx={8}>
-                      <Text textAlign={"center"} color="disabled">
-                        Horaires de réponses
-                      </Text>
-                      <Flex justifyContent={"space-between"}>
-                        <Text>Du lundi au vendredi</Text>
-                        <Text>
-                          9h00 - 12h30
-                          <br />
-                          14h00-17h30
-                        </Text>
-                      </Flex>
-                      <Flex justifyContent={"space-between"}>
-                        <Text>Samedi et dimanche</Text>
-                        <Text color="disabled">Indisponible</Text>
-                      </Flex>
-                    </Flex>
-                  </Flex>
-                </LayoutOrderStatus>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
           <Flex direction={"column"} gap={4} alignItems={"center"}>
             <Box color="error" fontSize={"4xl"} mb={2}>
               <HiExclamationCircle />
@@ -370,118 +319,211 @@ export default function OrderObizPage() {
   };
 
   return (
-    <Flex
-      minH="full"
-      direction={"column"}
-      position="relative"
-      pt={16}
-      px={6}
-      bg="bgGray"
-    >
-      <Flex direction={"column"} gap={10}>
-        <BackButton
-          onClick={() => {
-            router.push("/dashboard/wallet");
-          }}
-        />
-        <Flex
-          alignItems={"center"}
-          direction={"column"}
-          px={4}
-          rounded={"2xl"}
-          gap={3}
-          mx={4}
-        >
-          <Flex alignItems={"center"} gap={2}>
-            <Box
-              bg="white"
-              rounded={"2xl"}
-              borderWidth={1}
-              borderColor={"bgGray"}
-              overflow={"hidden"}
-            >
-              <Image
-                src={order.offer.partner.icon.url || ""}
-                width={60}
-                height={order.offer.partner.icon.height || 50}
-                alt={`Logo ${order.offer.partner.name}`}
-              />
-            </Box>
-            <Text fontWeight={700} fontSize={"xl"}>
-              {order.offer.partner.name}
-            </Text>
-          </Flex>
-          <Tag bg="white" fontWeight={700}>
-            <BarcodeIcon mr={1} /> Bon d'achat
-          </Tag>
-        </Flex>
-        <Flex
-          direction={"column"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          bg="white"
-          rounded={"2xl"}
-          shadow={"xl"}
-          p={6}
-        >
-          {!orderHasIssue && (
-            <>
-              <Text>Valeur totale</Text>
-              <Text fontWeight={900} fontSize="3xl" mt={2}>
-                {amount}€
-              </Text>
-            </>
-          )}
-          {getOrderContent()}
-        </Flex>
-        <Flex direction="column" bg="white" rounded={"2xl"} px={3} py={4}>
-          <Flex justifyContent={"space-between"}>
-            <Text fontWeight={900}>Valeur totale</Text>
-            <Text fontWeight={700}>{amount}€</Text>
-          </Flex>
-          <Divider my={4} />
+    <>
+      <Flex
+        minH="full"
+        direction={"column"}
+        position="relative"
+        pt={16}
+        pb={9}
+        px={6}
+        bg="bgGray"
+      >
+        <Flex direction={"column"} gap={10}>
+          <BackButton onClick={() => router.push("/dashboard/wallet")} />
           <Flex
-            justifyContent={"space-between"}
-            onClick={() => setShowDetails(!showDetails)}
+            alignItems={"center"}
+            direction={"column"}
+            px={4}
+            rounded={"2xl"}
+            gap={3}
+            mx={4}
           >
-            <Text textDecor={"underline"} fontWeight={700}>
-              Voir le détail
-            </Text>
-            <Text fontSize={"2xl"}>
-              {showDetails ? <HiMinus /> : <HiPlus />}
-            </Text>
-          </Flex>
-          {showDetails && (
-            <Flex direction={"column"} gap={1} fontSize={"sm"} mt={4}>
-              {order.articles.map((article) => (
-                <>
-                  <Flex justifyContent={"space-between"}>
-                    <Text>Bon d'achat de {article.article_montant}€</Text>
-                    <Text fontWeight={700}>x{article?.article_quantity}</Text>
-                  </Flex>
-                  <Divider borderStyle={"dashed"} />
-                </>
-              ))}
-              <Flex justifyContent={"space-between"}>
-                <Text>Total valeur bon d'achat</Text>
-                <Text fontWeight={700}>{amount}€</Text>
-              </Flex>
+            <Flex alignItems={"center"} gap={2}>
+              <PartnerImage
+                partner={order.offer.partner}
+                width={52}
+                height={52}
+              />
+              <Text fontWeight={700} fontSize={"xl"}>
+                {order.offer.partner.name}
+              </Text>
             </Flex>
-          )}
-        </Flex>
-        <Flex direction="column" rounded={"2xl"} px={2}>
-          <Flex justifyContent={"space-between"}>
-            <Text>Valable jusqu'au</Text>
-            <Text color="disabled">Voir sur le PDF</Text>
+            <Tag bg="white" fontWeight={700}>
+              <BarcodeIcon mr={1} /> Bon d'achat
+            </Tag>
           </Flex>
-          <Divider my={4} />
-          <Flex justifyContent={"space-between"}>
-            <Text>Date de commande</Text>
-            <Text>{formatDateToDDMMYYYY(order.createdAt)}</Text>
+          <Flex
+            direction={"column"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            bg="white"
+            rounded={"2xl"}
+            shadow={"xl"}
+            p={6}
+          >
+            {!orderHasIssue && (
+              <>
+                <Text>Valeur totale</Text>
+                <Text fontWeight={900} fontSize="3xl" mt={2}>
+                  {amount}€
+                </Text>
+              </>
+            )}
+            {getOrderContent()}
           </Flex>
-          <Divider my={4} />
+          <Flex direction="column" bg="white" rounded={"2xl"} px={3} py={4}>
+            <Flex justifyContent={"space-between"}>
+              <Text fontWeight={900}>Valeur totale</Text>
+              <Text fontWeight={700}>{amount}€</Text>
+            </Flex>
+            <Divider my={4} />
+            <Flex
+              justifyContent={"space-between"}
+              onClick={() => setShowDetails(!showDetails)}
+            >
+              <Text textDecor={"underline"} fontWeight={700}>
+                Voir le détail
+              </Text>
+              <Text fontSize={"2xl"}>
+                {showDetails ? <HiMinus /> : <HiPlus />}
+              </Text>
+            </Flex>
+            {showDetails && (
+              <Flex direction={"column"} gap={1} fontSize={"sm"} mt={4}>
+                {order.articles.map((article) => (
+                  <>
+                    <Flex justifyContent={"space-between"}>
+                      <Text>Bon d'achat de {article.article_montant}€</Text>
+                      <Text fontWeight={700}>x{article?.article_quantity}</Text>
+                    </Flex>
+                    <Divider borderStyle={"dashed"} />
+                  </>
+                ))}
+                <Flex justifyContent={"space-between"}>
+                  <Text>Total valeur bon d'achat</Text>
+                  <Text fontWeight={700}>{amount}€</Text>
+                </Flex>
+              </Flex>
+            )}
+          </Flex>
+          <Flex direction="column" rounded={"2xl"} px={2}>
+            <Flex justifyContent={"space-between"}>
+              <Text>Valable jusqu'au</Text>
+              <Text color="disabled">Voir sur le PDF</Text>
+            </Flex>
+            <Divider my={4} />
+            <Flex justifyContent={"space-between"}>
+              <Text>Date de commande</Text>
+              <Text>{formatDateToDDMMYYYY(order.createdAt)}</Text>
+            </Flex>
+            <Divider my={4} />
+            <Text
+              fontWeight={700}
+              textDecor="underline"
+              textDecorationThickness="2px"
+              textUnderlineOffset={2}
+            >
+              Voir les conditions détaillées
+            </Text>
+            {order.status !== "delivered" && (
+              <Flex
+                mt={14}
+                px={6}
+                py={4}
+                alignItems="center"
+                bgColor="white"
+                borderRadius="2.5xl"
+                cursor="pointer"
+                onClick={onOpenModalSignalIssue}
+              >
+                <Icon
+                  as={HiMiniChatBubbleLeftEllipsis}
+                  color="blackLight"
+                  mr={4}
+                  w={5}
+                  h={5}
+                  mb={-0.5}
+                />
+                <Text
+                  fontWeight={700}
+                  textDecor="underline"
+                  textDecorationThickness="2px"
+                  textUnderlineOffset={2}
+                >
+                  Besoin d’aide ?
+                </Text>
+              </Flex>
+            )}
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+      <Modal
+        isOpen={isOpenModalSignalIssue}
+        onClose={onCloseModalSignalIssue}
+        size="full"
+      >
+        <ModalOverlay />
+        <ModalContent h="100dvh">
+          <ModalBody display="flex" flexDir="column" px={4} h="100dvh">
+            <LayoutOrderStatus
+              title={
+                orderHasIssue
+                  ? `Votre problème est bien signalé ${user?.firstName}`
+                  : "Contactez le service d’aide pour les bons d’achat"
+              }
+              subtitle="Pour obtenir de l’aide vous pouvez contacter directement les coordonnées ci-dessous"
+              status="info"
+              onClose={onCloseModalSignalIssue}
+            >
+              <Flex mt={10} direction={"column"} gap={4} w="full">
+                <Flex direction={"column"} gap={4} mx={4}>
+                  <Flex gap={4} alignItems="center" fontWeight={600}>
+                    <Icon as={HiEnvelope} w={5} h={5} mb={-0.5} />
+                    <Link
+                      href="mailto:serviceclient@reducce.fr"
+                      textDecor="underline"
+                      textDecorationThickness="2px"
+                      textUnderlineOffset={2}
+                    >
+                      serviceclient@reducce.fr
+                    </Link>
+                  </Flex>
+                  <Flex gap={4} alignItems="center" fontWeight={600}>
+                    <Icon as={HiPhone} w={5} h={5} mb={-0.5} />
+                    <Link
+                      href="telto:0472402828"
+                      textDecor="underline"
+                      textDecorationThickness="2px"
+                      textUnderlineOffset={2}
+                    >
+                      04 72 40 28 28
+                    </Link>
+                  </Flex>
+                </Flex>
+                <Divider my={4} />
+                <Flex direction="column" gap={4} fontSize={"sm"} mx={8}>
+                  <Text textAlign="center" color="disabled">
+                    Horaires de réponses
+                  </Text>
+                  <Flex justifyContent="space-between">
+                    <Text>Du lundi au vendredi</Text>
+                    <Text textAlign="end">
+                      9h00 - 12h30
+                      <br />
+                      14h00 - 17h30
+                    </Text>
+                  </Flex>
+                  <Flex justifyContent="space-between">
+                    <Text>Samedi et dimanche</Text>
+                    <Text color="disabled">Indisponible</Text>
+                  </Flex>
+                </Flex>
+              </Flex>
+            </LayoutOrderStatus>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

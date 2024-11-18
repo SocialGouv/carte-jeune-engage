@@ -8,12 +8,12 @@ import {
   userProtectedProcedure,
 } from "~/server/api/trpc";
 import { createOrderPayload, insertItemPayload } from "~/utils/obiz";
-import { payloadWhereOfferIsValid } from "~/utils/tools";
 import fs from "fs/promises";
 import os from "os";
 import { Where } from "payload/types";
 import { PDFDocument } from "pdf-lib";
-import { getHtmlSignalOrder } from "~/utils/emailHtml";
+import { getHtmlRecapOrder, getHtmlSignalOrder } from "~/utils/emailHtml";
+import { OfferIncluded } from "./offer";
 
 export interface OrderIncluded extends Order {
   offer: Offer & { partner: Partner & { icon: Media } } & { image: Media };
@@ -129,11 +129,30 @@ export const orderRouter = createTRPCRouter({
       });
 
       try {
+        const total_amount_to_pay = articles.reduce((acc, currentArticle) => {
+          const articleReference = article_references.find(
+            (ar) => ar.reference === currentArticle.reference
+          );
+
+          if (articleReference) {
+            if (currentArticle.kind === "fixed_price" && currentArticle.price) {
+              return acc + currentArticle.price * articleReference.quantity;
+            } else if (
+              currentArticle.kind === "variable_price" &&
+              input_value
+            ) {
+              return acc + input_value * articleReference.quantity;
+            }
+          }
+          return acc;
+        }, 0);
+
         // CREATION DE LA COMMANDE
         const create_order_payload = createOrderPayload(
           user,
           initialOrder,
-          "CARTECADEAU"
+          "CARTECADEAU",
+          total_amount_to_pay
         );
         const [resultOrder] =
           await ctx.soapObizClient.CREATION_COMMANDE_ARRAYAsync({
@@ -145,13 +164,20 @@ export const orderRouter = createTRPCRouter({
             .Commande;
         const orderNumber = resultOrderObject.commandes_numero;
 
+        if (!orderNumber || orderNumber === "0") {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Failed to create order: ${resultOrderObject.message_erreur || "Unknown error"}`,
+          });
+        }
+
         // INSERTION DE L'ARTICLE
         const insert_item_payload = insertItemPayload(
           orderNumber,
           user,
           articles,
           "CARTECADEAU",
-          input_value
+          { amount: input_value_public, amount_discounted: input_value }
         );
         const [resultItem] =
           await ctx.soapObizClient.INSERTION_LIGNE_COMMANDE_ARRAY_V4Async({
@@ -245,11 +271,11 @@ export const orderRouter = createTRPCRouter({
 
         let newStatus = order.status;
         switch (resultOrderStatusObject.etats_statut) {
-          case "NON FINALISEE":
           case "EN ATTENTE":
             newStatus = "awaiting_payment";
             break;
 
+          case "NON FINALISEE":
           case "PREPARATION":
           case "RESTOCKING":
             newStatus = "payment_completed";
@@ -305,7 +331,11 @@ export const orderRouter = createTRPCRouter({
           }
         }
 
-        if (newStatus !== order.status) {
+        if (
+          newStatus !== order.status ||
+          resultOrderStatusObject.etats_statut !== order.obiz_status
+        ) {
+          const oldStatus = order.status;
           order = await ctx.payload.update({
             id: order_id,
             collection: "orders",
@@ -313,7 +343,29 @@ export const orderRouter = createTRPCRouter({
               status: newStatus,
               obiz_status: resultOrderStatusObject.etats_statut,
             },
+            depth: 0,
           });
+
+          if (newStatus !== oldStatus && newStatus === "payment_completed") {
+            const currentUser = await ctx.payload.findByID({
+              collection: "users",
+              id: order.user as number,
+              depth: 0,
+            });
+
+            const offer = (await ctx.payload.findByID({
+              collection: "offers",
+              id: order.offer as number,
+              depth: 2,
+            })) as OfferIncluded;
+
+            ctx.payload.sendEmail({
+              from: process.env.SMTP_FROM_ADDRESS,
+              to: currentUser.userEmail,
+              subject: "Récapitulatif de votre commande",
+              html: getHtmlRecapOrder(currentUser, order, offer),
+            });
+          }
         }
 
         return { data: order };

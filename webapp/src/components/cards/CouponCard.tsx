@@ -30,6 +30,7 @@ import { HiMiniArrowDown, HiMiniArrowsPointingOut } from "react-icons/hi2";
 import PassCard from "../account/PassCard";
 import { useMemo } from "react";
 import { useAuth } from "~/providers/Auth";
+import PartnerImage from "../ui/PartnerImage";
 
 const BasicExternalCard = ({
   title,
@@ -309,23 +310,22 @@ const CouponCard = ({
             position="relative"
             sx={{ ...dottedPattern("#ffffff") }}
           >
-            <Flex
-              alignItems="center"
-              borderRadius="2.5xl"
-              p={1.5}
-              bgColor="white"
-            >
-              {coupon ? (
-                <Image
-                  src={coupon.offer.partner.icon.url ?? ""}
-                  alt={coupon.offer.partner.icon.alt ?? ""}
-                  width={34}
-                  height={34}
-                />
-              ) : (
+            {coupon ? (
+              <PartnerImage
+                partner={coupon?.offer.partner as any}
+                width={40}
+                height={40}
+              />
+            ) : (
+              <Flex
+                alignItems="center"
+                borderRadius="2.5xl"
+                p={1.5}
+                bgColor="white"
+              >
                 <Box w={8} h={8} bgColor="white" borderRadius="2.5xl" />
-              )}
-            </Flex>
+              </Flex>
+            )}
             {coupon ? (
               <Text color="white" fontSize={20} fontWeight={700}>
                 {coupon.offer.partner.name}

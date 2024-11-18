@@ -5,6 +5,7 @@ import { BarcodeIcon } from "../icons/barcode";
 import ConditionalLink from "../ConditionalLink";
 import { useMemo } from "react";
 import { formatter2Digits } from "~/utils/tools";
+import PartnerImage from "../ui/PartnerImage";
 
 type OrderCardProps = {
   order: OrderIncluded;
@@ -43,20 +44,11 @@ const OrderCard = (props: OrderCardProps) => {
       >
         {order.offer.partner.icon.url && (
           <Flex alignItems={"center"} gap={2}>
-            <Box
-              flexGrow={0}
-              rounded={"2xl"}
-              borderWidth={1}
-              borderColor={"bgGray"}
-              overflow={"hidden"}
-            >
-              <Image
-                src={order.offer.partner.icon.url}
-                alt={order.offer.partner.icon.alt || ""}
-                width={40}
-                height={40}
-              />
-            </Box>
+            <PartnerImage
+              partner={order.offer.partner}
+              width={40}
+              height={40}
+            />
             <Text fontWeight={700}>{order.offer.partner.name}</Text>
           </Flex>
         )}

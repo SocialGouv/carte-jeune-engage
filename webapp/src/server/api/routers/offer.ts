@@ -1,5 +1,4 @@
 import { TRPCError } from "@trpc/server";
-import { File } from "payload/dist/uploads/types";
 import { Where } from "payload/types";
 import { z } from "zod";
 import {
@@ -416,10 +415,10 @@ export const offerRouter = createTRPCRouter({
           },
         });
 
-        return { data: "Offer nbSeen increased" };
+        return { data: true };
       }
 
-      return { data: "Offer not found" };
+      return { data: false };
     }),
 
   insertObizOffers: publicProcedure

@@ -13,7 +13,7 @@ function parseMultipartResponse(data: string) {
 
 export const obiz_soap_client_options: IOptions = {
   forceSoap12Headers: false,
-  endpoint: "https://webservices-test.reducce.fr/Partenaire.svc/Partenaire.svc",
+  endpoint: `https://${process.env.OBIZ_SOAP_HOST}/Partenaire.svc/Partenaire.svc`,
   httpClient: {
     request: function (
       url: string,

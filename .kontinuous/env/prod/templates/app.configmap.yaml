@@ -9,3 +9,4 @@ data:
   SMTP_USER: cje@fabrique.social.gouv.fr
   SMTP_FROM_NAME: "Carte Jeune Engagé"
   SMTP_FROM_ADDRESS: cje@fabrique.social.gouv.fr
+  OBIZ_SOAP_HOST: webservices.reducce.fr

@@ -7,7 +7,7 @@ import { useDebounceValue } from "usehooks-ts";
 import { api } from "~/utils/api";
 import { paginateArray } from "~/utils/tools";
 import { TagIncluded } from "~/server/api/routers/tag";
-import { Media, Partner } from "~/payload/payload-types";
+import { Media, Offer, Partner } from "~/payload/payload-types";
 import LoadingLoader from "../LoadingLoader";
 import { PartnerIncluded } from "~/server/api/routers/partner";
 
@@ -16,7 +16,10 @@ type SearchWrapperProps = {
   fromWidget?: boolean;
   children: (
     paginatedTags: TagIncluded[][],
-    partners: (PartnerIncluded & { link: string })[],
+    partners: (PartnerIncluded & {
+      link: string;
+      offer: { kind: string; source: Offer["source"] };
+    })[],
     debouncedSearch: string
   ) => React.ReactNode;
 };
@@ -53,6 +56,7 @@ const SearchWrapper = ({
 
   const partners = offers.map((offer) => ({
     ...offer.partner,
+    offer: { kind: offer.kind, source: offer.source },
     link: fromWidget
       ? `/widget/offer/${offer.id}`
       : `/dashboard/offer/${offer.source}/${offer.id}`,

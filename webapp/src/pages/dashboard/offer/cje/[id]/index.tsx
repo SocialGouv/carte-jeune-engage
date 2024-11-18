@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import OfferContent from "~/components/offer/page/OfferContent";
 import CouponContent from "~/components/offer/page/CouponContent";
 import { isIOS } from "~/utils/tools";
+import { GetServerSideProps } from "next";
 
 const flipVariants = {
   hidden: { rotateY: 90 },
@@ -17,30 +18,27 @@ const flipVariants = {
   exit: { rotateY: -90 },
 };
 
-export default function OfferCjePage() {
+type OfferCjePageProps = {
+  offer_id: string;
+};
+
+export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
   const router = useRouter();
 
-  const { id } = router.query as {
-    id: string;
-  };
-
   const { data: resultOffer, isLoading: isLoadingOffer } =
-    api.offer.getById.useQuery(
-      { id: parseInt(id), source: "cje" },
-      { enabled: id !== undefined }
-    );
+    api.offer.getById.useQuery({ id: parseInt(offer_id), source: "cje" });
 
   const {
     data: resultCoupon,
     isLoading: isLoadingCoupon,
     refetch: refetchCoupon,
-  } = api.coupon.getOne.useQuery(
-    { offer_id: parseInt(id as string) },
-    { enabled: id !== undefined }
-  );
+  } = api.coupon.getOne.useQuery({ offer_id: parseInt(offer_id) });
 
   const { data: offer } = resultOffer || {};
   const { data: coupon } = resultCoupon || {};
+
+  const { mutateAsync: increaseNbSeen } =
+    api.offer.increaseNbSeen.useMutation();
 
   const {
     mutateAsync: mutateAsyncCouponToUser,
@@ -65,7 +63,7 @@ export default function OfferCjePage() {
 
   const handleBookmarkOfferToUser = async () => {
     return await mutateAsyncCouponToUser({
-      offer_id: parseInt(id),
+      offer_id: parseInt(offer_id),
     });
   };
 
@@ -122,6 +120,14 @@ export default function OfferCjePage() {
       clearTimeout(timeoutIdExternalLink);
     },
   });
+
+  useEffect(() => {
+    const mutateData = async () => {
+      await increaseNbSeen({ offer_id: parseInt(offer_id) });
+    };
+
+    mutateData();
+  }, []);
 
   useEffect(() => {
     if (
@@ -222,3 +228,10 @@ export default function OfferCjePage() {
     </OfferHeaderWrapper>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const offer_id = query.id;
+  return {
+    props: { offer_id },
+  };
+};

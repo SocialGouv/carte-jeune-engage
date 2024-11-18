@@ -17,6 +17,8 @@ const ObizSync = async (req: NextApiRequest, res: NextApiResponse) => {
     numero: string;
   };
 
+  console.log("obiz synchronizing order", numero);
+
   try {
     const payload = await getPayloadClient({ seed: false });
     const createCaller = createCallerFactory(appRouter);
@@ -37,11 +39,17 @@ const ObizSync = async (req: NextApiRequest, res: NextApiResponse) => {
       number: parseInt(numero),
     });
 
-    const result = await caller.order.synchronizeOrder({
-      order_id: orderId.data,
-    });
+    caller.order
+      .synchronizeOrder({
+        order_id: orderId.data,
+      })
+      .then((order) => {
+        console.log(
+          `Finish synchronizing obiz order : [numero: ${numero} / obiz status : ${order.data.obiz_status} / cje status : ${order.data.status}]`
+        );
+      });
 
-    return res.status(200).json(result);
+    return res.status(200).json({ data: "ok" });
   } catch (error) {
     if (error instanceof TRPCError) {
       return res.status(400).json({ message: error.message, code: error.code });

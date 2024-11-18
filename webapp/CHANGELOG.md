@@ -1,3 +1,145 @@
+## [0.65.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.2...v0.65.3) (2024-11-15)
+
+### Bug Fixes
+
+- login-widget erase previous widgetToken from cookies ([62e5369](https://github.com/SocialGouv/carte-jeune-engage/commit/62e5369db8cf95ca63ca0c3370a576294a5c3a7c))
+- add depth 0 on order update for recap mail get of user and offer ([b1241a1](https://github.com/SocialGouv/carte-jeune-engage/commit/b1241a1301f4000bf5428453a37b712d7ba093f7))
+
+## [0.65.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.1...v0.65.2) (2024-11-15)
+
+### Bug Fixes
+
+- add total_amount_to_pay for acompte in CREATION_COMMANDE obiz ([0d84e64](https://github.com/SocialGouv/carte-jeune-engage/commit/0d84e64fa377470466cfb04481012f2b414eac82))
+
+## [0.65.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.0...v0.65.1) (2024-11-15)
+
+### Bug Fixes
+
+- avoid navbar item text to be selected ([a31ace9](https://github.com/SocialGouv/carte-jeune-engage/commit/a31ace93e6816648b6c93c8629bbcb1153e116e2))
+- check oldStatus of order to send sync email ([e708974](https://github.com/SocialGouv/carte-jeune-engage/commit/e708974f6ab83bf34061e6c5e2b2140b43efbc11))
+- launch timeout callback before changing location ([ab8a8e2](https://github.com/SocialGouv/carte-jeune-engage/commit/ab8a8e2f643ddc1d15bc7a8e926d0815152b148f))
+
+# [0.65.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.64.1...v0.65.0) (2024-11-15)
+
+### Bug Fixes
+
+- landing block description mobile ([ba76412](https://github.com/SocialGouv/carte-jeune-engage/commit/ba76412db59df5edcb3c8706943a8ba909066cb1))
+- message triangle ([1e8f9df](https://github.com/SocialGouv/carte-jeune-engage/commit/1e8f9dfe488771b3c3e825b45a9dff106e7f650a))
+- mobile logos ([8efae7e](https://github.com/SocialGouv/carte-jeune-engage/commit/8efae7e6c4d61c3cbbf7c4119f0e8f701a5447ab))
+
+### Features
+
+- landing block description desktop ([a124c89](https://github.com/SocialGouv/carte-jeune-engage/commit/a124c892c3e21ab22478c7eca8b2a0725f740ebe))
+
+## [0.64.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.64.0...v0.64.1) (2024-11-15)
+
+### Bug Fixes
+
+- margin between blocs home ([92214ff](https://github.com/SocialGouv/carte-jeune-engage/commit/92214ff61bc23c50549ace6ac968403193a65fbd))
+
+# [0.64.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.15...v0.64.0) (2024-11-15)
+
+### Features
+
+- add recap order email on payment_completed and fix cje logo on login email ([ef31a2a](https://github.com/SocialGouv/carte-jeune-engage/commit/ef31a2a730b3bb653e175fc193ee5106a48380cc))
+
+## [0.63.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.14...v0.63.15) (2024-11-15)
+
+### Bug Fixes
+
+- AvatarGroup to Image for load optimizations ([c41fbfa](https://github.com/SocialGouv/carte-jeune-engage/commit/c41fbfa44f106fec0b2800b649d5bf287a7a39c8))
+
+## [0.63.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.13...v0.63.14) (2024-11-15)
+
+### Bug Fixes
+
+- wait 5sc before reseting offer state after payment link ([81b18e8](https://github.com/SocialGouv/carte-jeune-engage/commit/81b18e8998212598e49c192b20b8b83d6f6aa388))
+
+## [0.63.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.12...v0.63.13) (2024-11-15)
+
+### Bug Fixes
+
+- return init state offer after payment redirect ([c88def7](https://github.com/SocialGouv/carte-jeune-engage/commit/c88def7526e8664c5935a8b1c8d6212a66c5001c))
+
+## [0.63.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.11...v0.63.12) (2024-11-15)
+
+### Bug Fixes
+
+- app cpu limit ([776aada](https://github.com/SocialGouv/carte-jeune-engage/commit/776aada009eae79f6e51aa2d0eea300fa00a8ca5))
+
+## [0.63.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.10...v0.63.11) (2024-11-15)
+
+### Bug Fixes
+
+- add app replicas ([e559908](https://github.com/SocialGouv/carte-jeune-engage/commit/e559908312b1975f9007d0809f4207eb694e19e0))
+
+## [0.63.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.9...v0.63.10) (2024-11-15)
+
+### Bug Fixes
+
+- swap the obiz and cje offers on home page ([6ab73aa](https://github.com/SocialGouv/carte-jeune-engage/commit/6ab73aa7a6dfdec437752d58e0107d159e212e73))
+
+## [0.63.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.8...v0.63.9) (2024-11-15)
+
+### Bug Fixes
+
+- getServerSideProps on offer cje and obiz name ([6c85714](https://github.com/SocialGouv/carte-jeune-engage/commit/6c85714d4580a3006eb93a0507f563182fd6e41c))
+
+## [0.63.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.7...v0.63.8) (2024-11-15)
+
+### Bug Fixes
+
+- partner image component minWidth and borderRadius on image ([1ad4b1a](https://github.com/SocialGouv/carte-jeune-engage/commit/1ad4b1a44067697048aaca586ac04c113093cd70))
+- remove padding from partner image ([b962b6c](https://github.com/SocialGouv/carte-jeune-engage/commit/b962b6cb1112224aceb672b31b50f85f4c6c19bd))
+
+## [0.63.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.6...v0.63.7) (2024-11-14)
+
+### Bug Fixes
+
+- log obyzSync to track status ([58ad53e](https://github.com/SocialGouv/carte-jeune-engage/commit/58ad53e80666a30313324f2c9344e5375417e37d))
+- switch obiz status NON FINALISEE to payment_completed ([30b3e7f](https://github.com/SocialGouv/carte-jeune-engage/commit/30b3e7f953448b750973ff5748d28e88f23c1b63))
+
+## [0.63.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.5...v0.63.6) (2024-11-14)
+
+### Bug Fixes
+
+- add contact help on bottom page of order and fix styles on help modal ([8fae675](https://github.com/SocialGouv/carte-jeune-engage/commit/8fae67552ef47cb6226bf2e8ec56803099b89496))
+- add obiz cgv link on order recap ([f97a7b5](https://github.com/SocialGouv/carte-jeune-engage/commit/f97a7b56f7115fa3d310a55ec6d9c60bb292ee85))
+- add OfferKindBadge on partners search results ([fcbb7ab](https://github.com/SocialGouv/carte-jeune-engage/commit/fcbb7aba4963164592afbebc26283590a425ab9a))
+- add splash screen modal on second login and refetch user on cookie setting ([6bebd25](https://github.com/SocialGouv/carte-jeune-engage/commit/6bebd2570854412a856c5b2708a99b8bbe91e48f))
+- change design for help page and add correct mailto with subject on account informations page for modify / delete ([46c9f43](https://github.com/SocialGouv/carte-jeune-engage/commit/46c9f434337a06053a7e12e1431d7a28b86f4f40))
+- change second login from magic link to otp code in mail ([3c13d88](https://github.com/SocialGouv/carte-jeune-engage/commit/3c13d88dcd7f4fbdfed07fc4189508e9d269e1fb))
+- create PartnerImage component for constant pattern ([01583fc](https://github.com/SocialGouv/carte-jeune-engage/commit/01583fc1721b57342c4a2dd52fe3d4880d1b83d2))
+- increase property nbSeen for cje and obiz offer user read ([6fc84bd](https://github.com/SocialGouv/carte-jeune-engage/commit/6fc84bdc0c5e30f5f83e70b391890e6826543191))
+- only display need help block if order is not delivered ([bd93b2d](https://github.com/SocialGouv/carte-jeune-engage/commit/bd93b2dd43c37d54519bd5934bfe4b4a907d5e1c))
+
+## [0.63.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.4...v0.63.5) (2024-11-14)
+
+### Bug Fixes
+
+- login-widget erase previous widgetToken from cookies ([62e5369](https://github.com/SocialGouv/carte-jeune-engage/commit/62e5369db8cf95ca63ca0c3370a576294a5c3a7c))
+- add OBIZ_SOAP_HOST env to init soap client ([0b733fb](https://github.com/SocialGouv/carte-jeune-engage/commit/0b733fbdc3ed04ed1cd42d231336be0c43c18247))
+- obiz variable amount issue ([ee0be93](https://github.com/SocialGouv/carte-jeune-engage/commit/ee0be9359fd9ef6fd13c0d1cd84b49a297032f58))
+
+## [0.63.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.3...v0.63.4) (2024-11-14)
+
+### Bug Fixes
+
+- add OBIZ_SOAP_HOST env to init soap client ([0b733fb](https://github.com/SocialGouv/carte-jeune-engage/commit/0b733fbdc3ed04ed1cd42d231336be0c43c18247))
+
+## [0.63.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.2...v0.63.3) (2024-11-14)
+
+### Bug Fixes
+
+- obiz env url ([0c67caf](https://github.com/SocialGouv/carte-jeune-engage/commit/0c67caf3e4cb691792d88deee99979ed7dded72b))
+
+## [0.63.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.1...v0.63.2) (2024-11-14)
+
+### Bug Fixes
+
+- obiz error soap trpc throw error ([bf3f907](https://github.com/SocialGouv/carte-jeune-engage/commit/bf3f9077ca34c83e621e30bd397cc32203eb94e0))
+- remove val d'oise & interpret \n in faq ([7d03f27](https://github.com/SocialGouv/carte-jeune-engage/commit/7d03f273bc14bc6c7431be8315334d0247dd0ea1))
+
 ## [0.63.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.63.0...v0.63.1) (2024-11-13)
 
 ### Bug Fixes

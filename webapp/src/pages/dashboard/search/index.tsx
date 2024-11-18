@@ -14,6 +14,8 @@ import NextImage from "next/image";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
 import { HiCheckCircle } from "react-icons/hi2";
+import OfferKindBadge from "~/components/ui/OfferKindBadge";
+import PartnerImage from "~/components/ui/PartnerImage";
 import SearchWrapper from "~/components/wrappers/SearchWrapper";
 import { api } from "~/utils/api";
 
@@ -141,17 +143,17 @@ export default function DashboardSearch() {
                     _hover={{ textDecoration: "none" }}
                     passHref
                   >
-                    <Flex key={partner.id} alignItems="center" gap={3}>
-                      <NextImage
-                        src={partner.icon.url as string}
-                        alt={partner.icon.alt as string}
-                        width={42}
-                        height={42}
-                        style={{ borderRadius: "20px", marginTop: "4px" }}
-                      />
-                      <Text fontWeight={500} fontSize={18} color="blackLight">
-                        {partner.name}
-                      </Text>
+                    <Flex key={partner.id} alignItems="center" gap={2}>
+                      <PartnerImage partner={partner} width={48} height={48} />
+                      <Flex flexDir="column">
+                        <Text fontWeight={500} fontSize={18} color="blackLight">
+                          {partner.name}
+                        </Text>
+                        <OfferKindBadge
+                          source={partner.offer.source}
+                          kind={partner.offer.kind}
+                        />
+                      </Flex>
                     </Flex>
                   </Link>
                   {partners.length !== index && (

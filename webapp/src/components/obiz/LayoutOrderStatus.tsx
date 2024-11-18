@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Flex,
   Icon,
-  IconButton,
   Text,
 } from "@chakra-ui/react";
 import { HiCheckCircle, HiXMark } from "react-icons/hi2";
@@ -79,6 +78,7 @@ const LayoutOrderStatus = (props: LayoutOrderStatusProps) => {
         color="blackLight"
         mt={14}
         textAlign="center"
+        lineHeight="normal"
       >
         {title}
       </Text>

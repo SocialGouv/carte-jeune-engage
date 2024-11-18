@@ -3,7 +3,7 @@ import { Payload } from "payload";
 import { generatePasswordSaltHash } from "payload/dist/auth/strategies/local/generatePasswordSaltHash";
 import APIError from "payload/dist/errors/APIError";
 import { z } from "zod";
-import { Media, User } from "~/payload/payload-types";
+import { EmailAuthToken, Media, User } from "~/payload/payload-types";
 import {
   createTRPCRouter,
   publicProcedure,
@@ -15,6 +15,10 @@ import {
   maskEmail,
   payloadOrPhoneNumberCheck,
 } from "~/utils/tools";
+
+interface EmailAuthTokenWithUser extends EmailAuthToken {
+  user: User;
+}
 
 export interface UserIncluded extends User {
   image: Media;
@@ -267,36 +271,68 @@ export const userRouter = createTRPCRouter({
         });
       }
 
-      const octopushResponse = await fetch(
-        "https://api.octopush.com/v1/public/service/otp/validate",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "api-login": process.env.OCTOPUSH_API_LOGIN as string,
-            "api-key": process.env.OCTOPUSH_API_KEY as string,
-          },
-          body: JSON.stringify({
-            otp_request_token: user.otp_request_token,
-            code: otp,
-          }),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => data);
+      if (user.userEmail) {
+        const emailAuthTokens = await ctx.payload.find({
+          collection: "email_auth_tokens",
+          where: { token: { equals: otp } },
+          depth: 2,
+          sort: "-createdAt",
+        });
 
-      if (octopushResponse.code === 197) {
-        throw new TRPCError({
-          code: "TIMEOUT",
-          message: "OTP expired",
-          cause: octopushResponse.message,
+        const emailAuthToken = emailAuthTokens
+          .docs[0] as EmailAuthTokenWithUser;
+
+        if (!emailAuthToken) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Token not found",
+          });
+        } else if (
+          new Date(emailAuthToken.expiration as string).getTime() <
+          new Date().getTime()
+        ) {
+          throw new TRPCError({
+            code: "TIMEOUT",
+            message: "Token expired",
+          });
+        }
+
+        await ctx.payload.delete({
+          collection: "email_auth_tokens",
+          where: { user: { equals: emailAuthToken.user.id } },
         });
-      } else if (octopushResponse.code !== 0) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Invalid OTP",
-          cause: octopushResponse.message,
-        });
+      } else {
+        const octopushResponse = await fetch(
+          "https://api.octopush.com/v1/public/service/otp/validate",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "api-login": process.env.OCTOPUSH_API_LOGIN as string,
+              "api-key": process.env.OCTOPUSH_API_KEY as string,
+            },
+            body: JSON.stringify({
+              otp_request_token: user.otp_request_token,
+              code: otp,
+            }),
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => data);
+
+        if (octopushResponse.code === 197) {
+          throw new TRPCError({
+            code: "TIMEOUT",
+            message: "OTP expired",
+            cause: octopushResponse.message,
+          });
+        } else if (octopushResponse.code !== 0) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Invalid OTP",
+            cause: octopushResponse.message,
+          });
+        }
       }
 
       try {
@@ -395,7 +431,7 @@ export const userRouter = createTRPCRouter({
         const currentUser = users.docs[0];
 
         if (currentUser.userEmail) {
-          const token = generateRandomPassword(16);
+          const token = Math.floor(1000 + Math.random() * 9000).toString();
 
           await ctx.payload.create({
             collection: "email_auth_tokens",
