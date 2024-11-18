@@ -94,7 +94,7 @@ export default function AccountHistory() {
             Vous avez économisé
           </Text>
           <Text fontSize={24} fontWeight={800} lineHeight="normal">
-            125€
+            {userTotalAmount}€
           </Text>
           <Text fontSize={12} color="disabled" fontWeight={500} mt={0.5}>
             vous avez la carte “jeune engagé” depuis le{" "}
