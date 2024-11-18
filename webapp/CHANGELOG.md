@@ -1,9 +1,8 @@
 ## [0.65.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.4...v0.65.5) (2024-11-18)
 
-
 ### Bug Fixes
 
-* hostname images remotePattern config ([04bd7ad](https://github.com/SocialGouv/carte-jeune-engage/commit/04bd7add6e4f88269a04dbbddeb72583595f94ae))
+- hostname images remotePattern config ([04bd7ad](https://github.com/SocialGouv/carte-jeune-engage/commit/04bd7add6e4f88269a04dbbddeb72583595f94ae))
 
 ## [0.65.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.3...v0.65.4) (2024-11-18)
 
