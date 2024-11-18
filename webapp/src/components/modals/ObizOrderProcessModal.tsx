@@ -212,11 +212,11 @@ export default function ObizOrderProcessModal(
     onMutate: () => setStep("payment"),
     onSuccess: ({ data: { payment_url } }) => {
       if (payment_url) {
-        window.location.href = payment_url;
         setTimeout(() => {
           onRedirectPayment();
           setStep("amount");
         }, 5000);
+        window.location.href = payment_url;
       }
     },
     onError: () => router.push("/dashboard/order/error"),

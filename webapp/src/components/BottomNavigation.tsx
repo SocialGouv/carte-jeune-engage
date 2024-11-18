@@ -89,7 +89,12 @@ const BottomNavigation = () => {
             width={6}
             height={6}
           />
-          <Text fontSize={12} fontWeight={500} color="blackLight">
+          <Text
+            fontSize={12}
+            fontWeight={500}
+            color="blackLight"
+            userSelect="none"
+          >
             {label}
           </Text>
         </Flex>

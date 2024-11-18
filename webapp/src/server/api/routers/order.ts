@@ -129,11 +129,30 @@ export const orderRouter = createTRPCRouter({
       });
 
       try {
+        const total_amount_to_pay = articles.reduce((acc, currentArticle) => {
+          const articleReference = article_references.find(
+            (ar) => ar.reference === currentArticle.reference
+          );
+
+          if (articleReference) {
+            if (currentArticle.kind === "fixed_price" && currentArticle.price) {
+              return acc + currentArticle.price * articleReference.quantity;
+            } else if (
+              currentArticle.kind === "variable_price" &&
+              input_value
+            ) {
+              return acc + input_value * articleReference.quantity;
+            }
+          }
+          return acc;
+        }, 0);
+
         // CREATION DE LA COMMANDE
         const create_order_payload = createOrderPayload(
           user,
           initialOrder,
-          "CARTECADEAU"
+          "CARTECADEAU",
+          total_amount_to_pay
         );
         const [resultOrder] =
           await ctx.soapObizClient.CREATION_COMMANDE_ARRAYAsync({
@@ -316,6 +335,7 @@ export const orderRouter = createTRPCRouter({
           newStatus !== order.status ||
           resultOrderStatusObject.etats_statut !== order.obiz_status
         ) {
+          const oldStatus = order.status;
           order = await ctx.payload.update({
             id: order_id,
             collection: "orders",
@@ -323,9 +343,10 @@ export const orderRouter = createTRPCRouter({
               status: newStatus,
               obiz_status: resultOrderStatusObject.etats_statut,
             },
+            depth: 0,
           });
 
-          if (newStatus !== order.status && newStatus === "payment_completed") {
+          if (newStatus !== oldStatus && newStatus === "payment_completed") {
             const currentUser = await ctx.payload.findByID({
               collection: "users",
               id: order.user as number,
