@@ -1,3 +1,24 @@
+# [0.67.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.5...v0.67.0) (2024-11-18)
+
+
+### Bug Fixes
+
+* add ok/ko to condition block in bo ([0ef3aee](https://github.com/SocialGouv/carte-jeune-engage/commit/0ef3aee5b9dbe6ce9dc81ad48015d55927e6d6b1))
+* dynamic icon io path import ([3b3abd1](https://github.com/SocialGouv/carte-jeune-engage/commit/3b3abd1d93b7be9e3b17a44e05cdf84e6674d150))
+* wording for terms of use in cje offer ([c39ca18](https://github.com/SocialGouv/carte-jeune-engage/commit/c39ca1834b2c4662315df6244ec9d0c06ccab1e2))
+
+
+### Features
+
+* refactor conditions blocks for cje and obiz offer ([8cd7934](https://github.com/SocialGouv/carte-jeune-engage/commit/8cd7934b5cfead45591ae36a409a83f7d75d848c))
+
+## [0.66.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.4...v0.66.5) (2024-11-18)
+
+
+### Bug Fixes
+
+* small minor design issues ([805d361](https://github.com/SocialGouv/carte-jeune-engage/commit/805d361aaf728d0a68f2ba325620180d131a63af))
+
 ## [0.66.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.3...v0.66.4) (2024-11-18)
 
 ### Bug Fixes

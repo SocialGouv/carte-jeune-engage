@@ -115,6 +115,7 @@ export interface User {
 export interface Media {
   id: number;
   alt?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -250,6 +251,7 @@ export interface Offer {
   conditionBlocks?:
     | {
         slug: string;
+        isCrossed?: boolean | null;
         id?: string | null;
       }[]
     | null;

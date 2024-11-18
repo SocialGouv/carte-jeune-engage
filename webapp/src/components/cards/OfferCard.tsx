@@ -8,7 +8,6 @@ import { dottedPattern } from "~/utils/chakra-theme";
 import ConditionalLink from "../ConditionalLink";
 import ExpiryTag from "../offer/ExpiryTag";
 import { BsEyeFill } from "react-icons/bs";
-import Cookies from "js-cookie";
 import { ObizCard } from "./ObizCard";
 import PartnerImage from "../ui/PartnerImage";
 
