@@ -1,9 +1,9 @@
 ## [0.65.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.2...v0.65.3) (2024-11-15)
 
-
 ### Bug Fixes
 
-* add depth 0 on order update for recap mail get of user and offer ([b1241a1](https://github.com/SocialGouv/carte-jeune-engage/commit/b1241a1301f4000bf5428453a37b712d7ba093f7))
+- login-widget erase previous widgetToken from cookies ([62e5369](https://github.com/SocialGouv/carte-jeune-engage/commit/62e5369db8cf95ca63ca0c3370a576294a5c3a7c))
+- add depth 0 on order update for recap mail get of user and offer ([b1241a1](https://github.com/SocialGouv/carte-jeune-engage/commit/b1241a1301f4000bf5428453a37b712d7ba093f7))
 
 ## [0.65.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.1...v0.65.2) (2024-11-15)
 
