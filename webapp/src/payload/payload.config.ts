@@ -62,6 +62,8 @@ export default buildConfig({
           disableLocalStorage: true,
           disablePayloadAccessControl: true,
           prefix: "public",
+          generateFileURL: (file) =>
+            `https://${process.env.S3_BUCKET_NAME}.${(process.env.S3_ENDPOINT || "").replace("https://", "")}/public/${file.filename}`,
         },
       },
     }),
