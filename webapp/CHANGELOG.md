@@ -1,3 +1,10 @@
+## [0.66.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.0...v0.66.1) (2024-11-18)
+
+
+### Bug Fixes
+
+* import coupon loader & concurrency handling ([c37ba40](https://github.com/SocialGouv/carte-jeune-engage/commit/c37ba40b720044e8fcc4aa14673902cb00f8e1ca))
+
 # [0.66.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.6...v0.66.0) (2024-11-18)
 
 
