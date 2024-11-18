@@ -119,7 +119,10 @@ export default function OrderObizPage() {
   const handlePDFActions = async (isShare: boolean) => {
     if (typeof order.ticket === "object" && order.ticket?.url) {
       try {
-        const response = await fetch(order.ticket.url);
+        const response = await fetch(
+          `/api/image?filename=${order.ticket.filename}`
+        );
+        console.log(`/api/image?filename=${order.ticket.filename}`);
         const blob = await response.blob();
         const filename = `bon-${order.offer.partner.name}-${order.number}.pdf`;
 
