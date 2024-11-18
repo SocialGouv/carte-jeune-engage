@@ -27,68 +27,81 @@ export const getItemsTermsOfUse = (offerKind: Offer["kind"]) => {
   }
 
   if (offerKind.startsWith("code")) {
-    const defaultCodeItems = [
-      {
-        text: 'Cliquez sur "Voir le code"',
-        slug: "use-link",
-        icon: "HiLink",
-      },
-      {
-        text: "On vous emmène sur le bon site",
-        slug: "accept-cookies",
-        icon: "HiCheckBadge",
-      },
-    ];
-
     if (offerKind === "code") {
-      items.push(...defaultCodeItems, {
-        text: "Dès qu’il faut mettre le code carte <strong>“jeune engagé”</strong> on vous prévient 🙂",
-        slug: "paste-code",
-        icon: "FiCopy",
-      });
+      items.push(
+        {
+          text: "Affichez votre code",
+          slug: "use-link",
+          icon: "HiLink",
+        },
+        {
+          text: "Ouvrez le lien qui se trouve sous votre code",
+          slug: "accept-cookies",
+          icon: "HiCheckBadge",
+        },
+        {
+          text: "Sur le site du partenaire collez le code au moment où on vous le demande",
+          slug: "paste-code",
+          icon: "FiCopy",
+        }
+      );
     } else if (offerKind === "code_space") {
-      items.push(...defaultCodeItems, {
-        text: "Vous n’avez plus qu’à acheter ce qu’il vous faut",
-        slug: "no-code",
-        icon: "HiLockClosed",
-      });
+      items.push(
+        {
+          text: "Affichez votre lien",
+          slug: "use-link",
+          icon: "HiLink",
+        },
+        {
+          text: "Ouvrez le lien qui s’affiche sous le code",
+          slug: "accept-cookies",
+          icon: "HiCheckBadge",
+        },
+        {
+          text: "Le lien contient déjà la réduction, pas besoin de code ici",
+          slug: "no-code",
+          icon: "HiLockClosed",
+        }
+      );
     }
   } else {
     const defaultVoucherItems = [
       {
-        text: "Cliquez sur “Voir le code”",
+        text: "Affichez votre code",
         slug: "go-to-store",
         icon: "MdOutlineDirectionsWalk",
       },
       {
-        text: "Rendez-vous dans un des magasins participants",
+        text: "Rendez-vous dans un magasin participant",
         slug: "buy-items",
         icon: "HiShoppingCart",
-      },
-      {
-        text: "Achetez les articles correspondants à la réduction",
-        slug: "scan-barcode",
-        icon: "HiReceiptPercent",
-      },
-      {
-        text: "Au moment de payer, scannez votre code barre en caisse",
-        slug: "show-pass",
-        icon: "PassIcon",
       },
     ];
 
     if (offerKind === "voucher") {
-      items.push(...defaultVoucherItems);
+      items.push(
+        ...defaultVoucherItems,
+        {
+          text: "Vérifiez que vos articles sont éligibles à la réduction",
+          slug: "check-eligibility",
+          icon: "HiReceiptPercent",
+        },
+        {
+          text: "Avant de payer en caisse, scannez votre code",
+          slug: "scan-code",
+          icon: "PassIcon",
+        }
+      );
     } else if (offerKind === "voucher_pass") {
       items.push(
-        ...defaultVoucherItems.filter((item) => item.slug === "buy-items"),
+        ...defaultVoucherItems,
         {
-          text: 'Cliquez sur <strong>"présenter ma carte"</strong>',
+          text: "Avant de payer en caisse, montrez votre carte virtuelle “jeune engagé”",
           slug: "show-pass",
           icon: "PassIcon",
         },
         {
-          text: "La personne en caisse vous offre la réduction",
+          text: "La personne en caisse vous fait la réduction",
           slug: "offer-reduction",
           icon: "PassIcon",
         }

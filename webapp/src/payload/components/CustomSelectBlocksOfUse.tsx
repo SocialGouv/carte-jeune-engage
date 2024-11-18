@@ -1,84 +1,49 @@
 import { SelectInput, useField, useFormFields } from "payload/components/forms";
-import { Offer } from "../payload-types";
 import React from "react";
+import { Offer } from "../payload-types";
 
-export const getItemsConditionBlocks = (offerKind: Offer["kind"]) => {
-  const items: { text: string; slug: string; icon: string }[] = [];
-
-  if (offerKind === "code_obiz") {
-    return [
-      {
-        text: "en magasin uniquement",
-        slug: "go-to-store",
-        icon: "HiBuildingStorefront",
-      },
-      {
-        text: "utilisable en plusieurs fois",
-        slug: "usable-in-parts",
-        icon: "HiRectangleStack",
-      },
-      {
-        text: "cumulable avec carte ou espèce",
-        slug: "cumulative-with-other-payment-methods",
-        icon: "HiCreditCard",
-      },
-      {
-        text: "cumulable avec d'autres bons",
-        slug: "cumulative-with-other-codes",
-        icon: "BsCashStack",
-      },
-    ];
-  }
-
-  let defaultItems = [
+export const getItemsConditionBlocks = (source: Offer["source"]) => {
+  const cjeSpecificConditions = [
     {
-      text: "en ligne ou en magasin",
-      slug: "use-link-or-go-to-store",
-      icon: "HiCursorArrowRays",
-    },
-    {
-      text: "réservé aux nouveaux clients",
-      slug: "new-customers",
-      icon: "HiUser",
-    },
-    {
-      text: "valable 1 seule fois",
+      text: "Offre valable 1 seule fois",
       slug: "one-time",
       icon: "HiMiniEye",
     },
     {
-      text: "valable tout le temps",
+      text: "Offre utilisable à l'infini",
       slug: "all-time",
-      icon: "HiOutlineInformationCircle",
+      icon: "TiInfinity",
     },
   ];
 
-  if (offerKind.startsWith("code")) {
-    items.push(
-      {
-        text: "en ligne uniquement",
-        slug: "use-link",
-        icon: "HiCursorArrowRays",
-      },
-      ...defaultItems
-    );
-  } else {
-    items.push(
-      {
-        text: "en magasin uniquement",
-        slug: "go-to-store",
-        icon: "HiBuildingStorefront",
-      },
-      {
-        text: "uniquement sur certains produits",
-        slug: "specific-products",
-        icon: "HiShoppingCart",
-      },
-      ...defaultItems
-    );
-  }
-
-  return items;
+  return [
+    {
+      text: "Utilisable en magasin",
+      slug: "go-to-store",
+      icon: "HiBuildingStorefront",
+    },
+    {
+      text: "Utilisable en ligne",
+      slug: "use-link",
+      icon: "HiCursorArrowRays",
+    },
+    {
+      text: "Utilisable en plusieurs fois",
+      slug: "usable-in-parts",
+      icon: "HiRectangleStack",
+    },
+    ...(source === "cje" ? cjeSpecificConditions : []),
+    {
+      text: "Cumulable avec d’autres moyens de paiement",
+      slug: "cumulative-with-other-payment-methods",
+      icon: "HiCreditCard",
+    },
+    {
+      text: "Cumulable avec d’autres bons",
+      slug: "cumulative-with-other-codes",
+      icon: "BsCashStack",
+    },
+  ];
 };
 
 export const CustomSelectConditionBlocks: React.FC<{ path: string }> = ({
@@ -89,17 +54,19 @@ export const CustomSelectConditionBlocks: React.FC<{ path: string }> = ({
     { label: string; value: string }[]
   >([]);
 
-  const offerKind = useFormFields(([fields, _]) => fields.kind);
+  const offerSource = useFormFields(([fields, _]) => fields.kind);
+
+  console.log("offerSource", offerSource);
 
   React.useEffect(() => {
     const tmpOptions = getItemsConditionBlocks(
-      offerKind?.value as Offer["kind"]
+      offerSource.value as Offer["source"]
     ).map((item) => ({
       label: item.text,
       value: item.slug,
     }));
     setOptions(tmpOptions);
-  }, [offerKind]);
+  }, [offerSource]);
 
   return (
     <div className="field-type">
