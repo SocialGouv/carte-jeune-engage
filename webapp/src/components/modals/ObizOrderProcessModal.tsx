@@ -94,7 +94,7 @@ const ObizOfferVariableContent = ({
 
         return (
           <>
-            <Box mt={10} mb={16}>
+            <Box mt={10} mb={32}>
               <DiscountAmountBlock
                 kind="fixed_price"
                 amount={amount}
@@ -104,15 +104,25 @@ const ObizOfferVariableContent = ({
                 setSelectedArticles={setSelectedArticles}
               />
             </Box>
-            <Button
-              mt="auto"
-              mb={12}
-              onClick={() => setStep("summary")}
-              isDisabled={amount === 0}
+            <Box
+              position={"fixed"}
+              p={4}
+              bg="white"
+              bottom={0}
+              left={0}
               w="full"
+              borderTopWidth={1}
+              borderTopColor="bgGray"
             >
-              Acheter ces bons
-            </Button>
+              <Button
+                mt="auto"
+                onClick={() => setStep("summary")}
+                isDisabled={amount === 0}
+                w="full"
+              >
+                Acheter ces bons
+              </Button>
+            </Box>
           </>
         );
       }

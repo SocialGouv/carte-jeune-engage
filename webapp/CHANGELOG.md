@@ -1,3 +1,36 @@
+## [0.66.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.4...v0.66.5) (2024-11-18)
+
+
+### Bug Fixes
+
+* small minor design issues ([805d361](https://github.com/SocialGouv/carte-jeune-engage/commit/805d361aaf728d0a68f2ba325620180d131a63af))
+
+## [0.66.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.3...v0.66.4) (2024-11-18)
+
+
+### Bug Fixes
+
+* add route API image for public folder & fetch pdf ([77126e9](https://github.com/SocialGouv/carte-jeune-engage/commit/77126e93abf830e6c48dac9fc521f83060c81242))
+* add route image api ([5962d2a](https://github.com/SocialGouv/carte-jeune-engage/commit/5962d2a8cea7aafb23503bbfa2df4d917a617496))
+
+## [0.66.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.2...v0.66.3) (2024-11-18)
+
+### Bug Fixes
+
+- rows order home ([ebd0b41](https://github.com/SocialGouv/carte-jeune-engage/commit/ebd0b41ca7f8af775577988cf22ec520635851df))
+
+## [0.66.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.1...v0.66.2) (2024-11-18)
+
+### Bug Fixes
+
+- increase pg resources ([c327bd8](https://github.com/SocialGouv/carte-jeune-engage/commit/c327bd8777b40389b2f743091850cc5b88a5b15e))
+
+## [0.66.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.0...v0.66.1) (2024-11-18)
+
+### Bug Fixes
+
+- import coupon loader & concurrency handling ([c37ba40](https://github.com/SocialGouv/carte-jeune-engage/commit/c37ba40b720044e8fcc4aa14673902cb00f8e1ca))
+
 # [0.66.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.65.6...v0.66.0) (2024-11-18)
 
 ### Features
