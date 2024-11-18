@@ -314,3 +314,21 @@ export const sortOffersObizFirst = (a: OfferIncluded, b: OfferIncluded) => {
   if (a.source !== "obiz" && b.source === "obiz") return 1;
   return 0;
 };
+
+export const getAfterTextMessageTriangle = (
+  color: string,
+  placement: "left" | "right"
+) => {
+  return {
+    content: '""',
+    position: "absolute",
+    bottom: "-16px",
+    [placement]: "24px",
+    width: "0",
+    height: "0",
+    borderLeft: "8px solid transparent",
+    borderRight: "8px solid transparent",
+    borderTop: "16px solid",
+    borderTopColor: color,
+  };
+};

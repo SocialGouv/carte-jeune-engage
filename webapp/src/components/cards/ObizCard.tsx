@@ -3,6 +3,7 @@ import { OfferIncluded } from "~/server/api/routers/offer";
 import { BarcodeIcon } from "../icons/barcode";
 import NextLink from "next/link";
 import Image from "../ui/Image";
+import PartnerImage from "../ui/PartnerImage";
 
 type ObizCardProps = {
   offer: OfferIncluded;
@@ -47,32 +48,7 @@ export const ObizCard = (props: ObizCardProps) => {
             }}
           />
         )}
-        <Flex
-          alignItems="center"
-          borderRadius="md"
-          border="1px solid"
-          borderColor="bgGray"
-          p={0.5}
-          bg={"white"}
-          overflow={"hidden"}
-          zIndex={1}
-          height="56px"
-          maxWidth="56px"
-        >
-          <Image
-            src={offer.partner.icon.url as string}
-            alt={offer.partner.icon.alt as string}
-            width={offer.partner.icon.width || 56}
-            height={offer.partner.icon.height || 56}
-            imageStyle={{
-              width: "56px",
-              maxHeight: "56px",
-              borderRadius: "5px",
-              objectFit: "cover",
-              objectPosition: "center",
-            }}
-          />
-        </Flex>
+        <PartnerImage partner={offer.partner} width={50} height={50} />
         <Tag fontWeight={700} w="fit-content" borderRadius="3xl">
           <BarcodeIcon mr={1} /> Bon d'achat
         </Tag>

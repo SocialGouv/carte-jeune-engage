@@ -10,7 +10,6 @@ import { savingRouter } from "./routers/saving";
 import { permissionRouter } from "./routers/permission";
 import { tagRouter } from "./routers/tag";
 import { searchRequestRouter } from "./routers/searchRequest";
-import { emailAuthTokenRouter } from "./routers/emailAuthToken";
 import { widgetRouter } from "./routers/widget";
 import { orderRouter } from "./routers/order";
 
@@ -30,7 +29,6 @@ export const appRouter = createTRPCRouter({
   permission: permissionRouter,
   tag: tagRouter,
   searchRequest: searchRequestRouter,
-  emailAuthToken: emailAuthTokenRouter,
   widget: widgetRouter,
   order: orderRouter,
 });

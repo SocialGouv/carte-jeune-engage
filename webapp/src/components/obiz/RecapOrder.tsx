@@ -141,17 +141,18 @@ const RecapOrder = (props: RecapOrderProps) => {
         >
           <Text fontSize={14}>
             J'accepte les{" "}
-            <Link as={NextLink} href="/">
-              <Text
-                as="span"
-                color="primary"
-                fontWeight={700}
-                textDecor="underline"
-                textUnderlineOffset={2}
-                textDecorationThickness="2px"
-              >
-                CGV du partenaire
-              </Text>
+            <Link
+              as={NextLink}
+              href="https://obiz.fr/medias/upload/pdf/cgv_reducce-obiz.pdf"
+              target="_blank"
+              color="primary"
+              fontWeight={700}
+              textDecor="underline"
+              textUnderlineOffset={2}
+              textDecorationThickness="2px"
+              passHref
+            >
+              CGV du partenaire
             </Link>
           </Text>
         </Checkbox>
