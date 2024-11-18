@@ -34,7 +34,7 @@ const BottomNavigation = () => {
 
   const navigationItems = [
     {
-      label: "Mes réductions",
+      label: "Mon portefeuille",
       icon: ReductionOutlineIcon,
       activeIcon: ReductionIcon,
       href: "/dashboard/wallet",
