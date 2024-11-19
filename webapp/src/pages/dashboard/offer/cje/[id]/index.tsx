@@ -151,7 +151,7 @@ export default function OfferCjePage() {
     }
   }, [router.isReady, isLoadingCoupon]);
 
-  if (isLoadingOffer || isLoadingCoupon || !router.isReady)
+  if (isLoadingOffer || !offer || isLoadingCoupon || !router.isReady)
     return (
       <OfferHeaderWrapper
         kind="offer"
@@ -163,11 +163,6 @@ export default function OfferCjePage() {
         </Center>
       </OfferHeaderWrapper>
     );
-
-  if (!offer) {
-    router.replace("/dashboard");
-    return;
-  }
 
   return (
     <OfferHeaderWrapper

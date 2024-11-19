@@ -83,17 +83,12 @@ export default function OfferObizPage() {
     if (!!offer_id) mutateData();
   }, [offer_id]);
 
-  if (isLoadingOffer || !router.isReady) {
+  if (isLoadingOffer || !offer || !router.isReady) {
     return (
       <Center h="full">
         <LoadingLoader />
       </Center>
     );
-  }
-
-  if (!offer) {
-    router.replace("/dashboard");
-    return;
   }
 
   return (
