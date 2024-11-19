@@ -10,7 +10,7 @@ export const getItemsConditionBlocks = (source: Offer["source"]) => {
       icon: "HiMiniEye",
     },
     {
-      text: "Offre utilisable à l'infini",
+      text: "Offre valable tout le temps",
       slug: "all-time",
       icon: "TiInfinity",
     },
@@ -39,9 +39,14 @@ export const getItemsConditionBlocks = (source: Offer["source"]) => {
       icon: "HiCreditCard",
     },
     {
-      text: "Cumulable avec d’autres bons",
+      text: "Cumulable avec plusieurs bons d'achat",
       slug: "cumulative-with-other-codes",
-      icon: "BsCashStack",
+      icon: "HiSquare2Stack",
+    },
+    {
+      text: "Cumulable avec d'autres réductions",
+      slug: "cumulative-with-other-discounts",
+      icon: "HiMiniReceiptPercent",
     },
   ];
 };
@@ -54,9 +59,7 @@ export const CustomSelectConditionBlocks: React.FC<{ path: string }> = ({
     { label: string; value: string }[]
   >([]);
 
-  const offerSource = useFormFields(([fields, _]) => fields.kind);
-
-  console.log("offerSource", offerSource);
+  const offerSource = useFormFields(([fields, _]) => fields.source);
 
   React.useEffect(() => {
     const tmpOptions = getItemsConditionBlocks(

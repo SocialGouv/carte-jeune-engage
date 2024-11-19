@@ -1,9 +1,8 @@
 # [0.68.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.67.2...v0.68.0) (2024-11-19)
 
-
 ### Features
 
-* add crisp to help button ([0b08132](https://github.com/SocialGouv/carte-jeune-engage/commit/0b0813285b641ed051bc8dff3c14cc5b7d7755a0))
+- add crisp to help button ([0b08132](https://github.com/SocialGouv/carte-jeune-engage/commit/0b0813285b641ed051bc8dff3c14cc5b7d7755a0))
 
 ## [0.67.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.67.1...v0.67.2) (2024-11-18)
 
