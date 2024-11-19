@@ -21,11 +21,9 @@ type Step = {
 };
 
 export const OrderSuccess = ({ order_id }: OrderSuccessProps) => {
-  const utils = api.useUtils();
   const { user } = useAuth();
   const router = useRouter();
 
-  const [stepInterval, setStepInterval] = useState<NodeJS.Timeout>();
   const [currentStep, setCurrentStep] = useState<Step>({
     subtitle: "Validation du paiement...",
     status: "loading",
@@ -64,8 +62,6 @@ export const OrderSuccess = ({ order_id }: OrderSuccessProps) => {
         clearInterval(interval);
       }
     }, 2000);
-
-    setStepInterval(interval);
 
     return () => clearInterval(interval);
   }, []);
