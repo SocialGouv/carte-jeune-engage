@@ -1,16 +1,14 @@
 ## [0.70.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.2...v0.70.3) (2024-11-19)
 
-
 ### Bug Fixes
 
-* matomo events widget ([2f07052](https://github.com/SocialGouv/carte-jeune-engage/commit/2f070522ad1ed586bc8687ff004fac8d85ca7419))
+- matomo events widget ([2f07052](https://github.com/SocialGouv/carte-jeune-engage/commit/2f070522ad1ed586bc8687ff004fac8d85ca7419))
 
 ## [0.70.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.1...v0.70.2) (2024-11-19)
 
-
 ### Bug Fixes
 
-* subject name for delivered status email ([c0de09b](https://github.com/SocialGouv/carte-jeune-engage/commit/c0de09bd45bf7a217f93d1ed44e2c2f14761572a))
+- subject name for delivered status email ([c0de09b](https://github.com/SocialGouv/carte-jeune-engage/commit/c0de09bd45bf7a217f93d1ed44e2c2f14761572a))
 
 ## [0.70.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.0...v0.70.1) (2024-11-19)
 

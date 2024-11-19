@@ -15,7 +15,8 @@ def convert_date_format(date_str: str) -> str:
     """
     try:
         if date_str == '':
-            return '1970-01-01T00:00:00.000Z'
+            current_year = datetime.now().year
+            date_str = f"31/12/{current_year} 23:59:59"
 
         naive_date = datetime.strptime(date_str, "%d/%m/%Y %H:%M:%S")
 
