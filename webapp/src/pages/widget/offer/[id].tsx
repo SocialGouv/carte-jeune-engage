@@ -1,4 +1,5 @@
 import { Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { push } from "@socialgouv/matomo-next";
 import { GetServerSideProps } from "next";
 import NextImage from "next/image";
 import NextLink from "next/link";
@@ -88,6 +89,13 @@ export default function WidgetOfferPage({
         </Flex>
         <Button
           as={NextLink}
+          onClick={() => {
+            push([
+              "trackEvent",
+              "Widget - Télécharger l'application",
+              `Offre - ${offer.partner.name} - ${offer.title} `,
+            ]);
+          }}
           href={`/login-widget?widgetToken=${widgetToken}&offer_id=${id}`}
           target="_blank"
           colorScheme="whiteBtn"

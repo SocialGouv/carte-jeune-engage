@@ -20,6 +20,7 @@ import { decryptData } from "~/utils/tools";
 import { appRouter } from "~/server/api/root";
 import getPayloadClient from "~/payload/payloadClient";
 import { createCallerFactory } from "~/server/api/trpc";
+import { push } from "@socialgouv/matomo-next";
 
 type HomeLoginWidgetProps = {
   cej_id: string;
@@ -121,7 +122,14 @@ export default function HomeLoginWidget({
               </Box>
             ))}
           </Box>
-          <Button mt={24} type="submit" isLoading={isLoadingOtp}>
+          <Button
+            mt={24}
+            type="submit"
+            isLoading={isLoadingOtp}
+            onClick={() => {
+              push(["trackEvent", "Widget - Inscription"]);
+            }}
+          >
             Suivant
           </Button>
         </Flex>

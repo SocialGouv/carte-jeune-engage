@@ -287,10 +287,6 @@ export const Offers: CollectionConfig = {
         singular: "Condition Bloc",
         plural: "Condition Blocs",
       },
-      admin: {
-        condition: (_, siblingData) =>
-          !!siblingData.source && siblingData.source === "cje",
-      },
       fields: [
         {
           name: "slug",
@@ -301,7 +297,11 @@ export const Offers: CollectionConfig = {
               Field: CustomSelectConditionBlocks,
             },
           },
-          required: true,
+        },
+        {
+          name: "isCrossed",
+          type: "checkbox",
+          label: "Barré",
         },
       ],
     },

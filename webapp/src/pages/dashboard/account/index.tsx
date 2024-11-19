@@ -8,21 +8,29 @@ import {
   HiXMark,
 } from "react-icons/hi2";
 import NextLink from "next/link";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+import { useAuth } from "~/providers/Auth";
+
+const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
 const HeaderButton = ({
   icon,
   text,
   link,
+  onClick,
 }: {
   icon: any;
   text: string;
   link: string;
+  onClick?: () => void;
 }) => {
   return (
     <Link
       as={NextLink}
       href={link}
       _hover={{ textDecoration: "none" }}
+      {...(onClick && { onClick: onClick })}
       passHref
     >
       <Flex flexDir="column" alignItems="center">
@@ -45,6 +53,13 @@ const HeaderButton = ({
 
 export default function AccountCard() {
   const router = useRouter();
+  const { user } = useAuth();
+
+  const [isOpenCrisp, setIsOpenCrisp] = useState(false);
+
+  const CrispWithNoSSR = dynamic(
+    () => import("../../../components/support/Crisp")
+  );
 
   return (
     <Box pt={12} pb={24} px={8} bgColor="primary" h="max-content">
@@ -68,10 +83,18 @@ export default function AccountCard() {
             text="Réglages"
             link="/dashboard/account/settings"
           />
-          <HeaderButton
+          {/* <HeaderButton
             icon={HiQuestionMarkCircle}
             text="Aides"
             link="/dashboard/account/help"
+          /> */}
+          <HeaderButton
+            icon={HiQuestionMarkCircle}
+            text="Aides"
+            link=""
+            onClick={() => {
+              setIsOpenCrisp(true);
+            }}
           />
         </Flex>
       </Flex>
@@ -96,6 +119,15 @@ export default function AccountCard() {
           Retour à mes réductions
         </Text>
       </Link>
+      {isOpenCrisp && user && (
+        <CrispWithNoSSR
+          crispToken={CRISP_TOKEN}
+          user={user}
+          onClose={() => {
+            setIsOpenCrisp(false);
+          }}
+        />
+      )}
     </Box>
   );
 }

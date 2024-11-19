@@ -31,6 +31,10 @@ const CategoryWrapper = ({
 
   const { slug } = router.query;
 
+  const uniqueTags = tags
+    ? Array.from(new Map(tags.map((tag) => [tag.id, tag])).values())
+    : [];
+
   return (
     <Flex flexDir="column" py={12} h="full">
       <Box px={8}>
@@ -61,7 +65,7 @@ const CategoryWrapper = ({
           </Flex>
         )}
       </Box>
-      {tags && tags.length > 0 && (
+      {uniqueTags.length > 0 && (
         <Flex
           key="tags"
           alignItems="center"
@@ -77,7 +81,7 @@ const CategoryWrapper = ({
           gap={3}
           mt={6}
         >
-          {tags
+          {uniqueTags
             .sort((a, b) => {
               const isSelectedA = selectedTagIds?.includes(a.id);
               const isSelectedB = selectedTagIds?.includes(b.id);

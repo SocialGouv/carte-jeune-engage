@@ -12,7 +12,11 @@ import fs from "fs/promises";
 import os from "os";
 import { Where } from "payload/types";
 import { PDFDocument } from "pdf-lib";
-import { getHtmlRecapOrder, getHtmlSignalOrder } from "~/utils/emailHtml";
+import {
+  getHtmlRecapOrderPaid,
+  getHtmlRecapOrderDelivered,
+  getHtmlSignalOrder,
+} from "~/utils/emailHtml";
 import { OfferIncluded } from "./offer";
 
 export interface OrderIncluded extends Order {
@@ -346,7 +350,10 @@ export const orderRouter = createTRPCRouter({
             depth: 0,
           });
 
-          if (newStatus !== oldStatus && newStatus === "payment_completed") {
+          if (
+            newStatus !== oldStatus &&
+            ["payment_completed", "delivered"].includes(newStatus)
+          ) {
             const currentUser = await ctx.payload.findByID({
               collection: "users",
               id: order.user as number,
@@ -359,12 +366,21 @@ export const orderRouter = createTRPCRouter({
               depth: 2,
             })) as OfferIncluded;
 
-            ctx.payload.sendEmail({
-              from: process.env.SMTP_FROM_ADDRESS,
-              to: currentUser.userEmail,
-              subject: "Récapitulatif de votre commande",
-              html: getHtmlRecapOrder(currentUser, order, offer),
-            });
+            if (newStatus === "payment_completed") {
+              ctx.payload.sendEmail({
+                from: process.env.SMTP_FROM_ADDRESS,
+                to: currentUser.userEmail,
+                subject: "Récapitulatif de votre commande",
+                html: getHtmlRecapOrderPaid(currentUser, order, offer),
+              });
+            } else if (newStatus === "delivered") {
+              ctx.payload.sendEmail({
+                from: process.env.SMTP_FROM_ADDRESS,
+                to: currentUser.userEmail,
+                subject: "Votre commande est arrivée",
+                html: getHtmlRecapOrderDelivered(currentUser, order, offer),
+              });
+            }
           }
         }
 

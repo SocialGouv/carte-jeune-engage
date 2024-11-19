@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Center,
   Divider,
@@ -12,29 +11,25 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
 import ObizOrderProcessModal from "~/components/modals/ObizOrderProcessModal";
-import { StackItem } from "~/components/offer/StackItems";
+import ConditionBlocksSection from "~/components/offer/ConditionBlocksSection";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import PartnerImage from "~/components/ui/PartnerImage";
 import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { api } from "~/utils/api";
-import ReactIcon from "~/utils/dynamicIcon";
 import { cleanHtml } from "~/utils/tools";
 
-type OfferObizPageProps = {
-  offer_id: string;
-};
-
-export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
+export default function OfferObizPage() {
   const router = useRouter();
+
+  const { id: offer_id } = router.query as { id: string };
 
   const {
     isOpen: isOpenOrderProcessModal,
@@ -48,18 +43,32 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
     api.offer.increaseNbSeen.useMutation();
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
-    api.offer.getById.useQuery({ id: parseInt(offer_id), source: "obiz" });
+    api.offer.getById.useQuery(
+      { id: parseInt(offer_id), source: "obiz" },
+      { enabled: !!offer_id }
+    );
 
   const { data: offer } = resultOffer || {};
+
+  const offerConditionBlocks = useMemo(() => {
+    if (!offer) return [];
+    return getItemsConditionBlocks(offer.source)
+      .filter((conditionBlock) =>
+        offer.conditionBlocks
+          ?.map((cb) => cb.slug)
+          .includes(conditionBlock.slug)
+      )
+      .map((conditionBlock) => ({
+        ...conditionBlock,
+        isCrossed:
+          offer.conditionBlocks?.find((cb) => cb.slug === conditionBlock.slug)
+            ?.isCrossed ?? false,
+      }));
+  }, [offer]);
 
   const itemsTermsOfUse = useMemo(() => {
     if (!offer) return [];
     return getItemsTermsOfUse(offer.kind);
-  }, [offer]);
-
-  const offerConditionBlocks = useMemo(() => {
-    if (!offer) return [];
-    return getItemsConditionBlocks(offer.kind) as StackItem[];
   }, [offer]);
 
   const onRedirectPayment = () => {
@@ -71,20 +80,15 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
       await increaseNbSeen({ offer_id: parseInt(offer_id) });
     };
 
-    mutateData();
-  }, []);
+    if (!!offer_id) mutateData();
+  }, [offer_id]);
 
-  if (isLoadingOffer || !router.isReady) {
+  if (isLoadingOffer || !offer || !router.isReady) {
     return (
       <Center h="full">
         <LoadingLoader />
       </Center>
     );
-  }
-
-  if (!offer) {
-    router.replace("/dashboard");
-    return;
   }
 
   return (
@@ -153,52 +157,10 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
             Acheter un bon
           </Button>
         </Flex>
-        {offerConditionBlocks.length > 0 && (
-          <Flex
-            gap={3}
-            w="full"
-            h="max-content"
-            py={1}
-            px={4}
-            pl={4}
-            overflowX="scroll"
-            sx={{
-              "&::-webkit-scrollbar": {
-                display: "none",
-              },
-            }}
-          >
-            {offerConditionBlocks.map(({ text, icon }, index) => (
-              <Flex
-                key={text}
-                position="relative"
-                minW="43%"
-                flexDir="column"
-                alignItems="center"
-                justifyContent="center"
-                py={4}
-                px={6}
-              >
-                <Box
-                  position="absolute"
-                  inset={0}
-                  bg="bgGray"
-                  zIndex={1}
-                  borderRadius="3xl"
-                  transform={`rotate(${index % 2 === 0 ? 3 : -2}deg)`}
-                />
-                <Box p={4} bg="white" borderRadius="full" zIndex={2}>
-                  {typeof icon === "string" && (
-                    <ReactIcon icon={icon} size={24} color="inherit" />
-                  )}
-                </Box>
-                <Text fontWeight={500} textAlign="center" mt={2} zIndex={2}>
-                  {text}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
-        )}
+        <ConditionBlocksSection
+          offerConditionBlocks={offerConditionBlocks}
+          offerSource={offer.source}
+        />
         <Flex direction={"column"} px={4} pb={8} gap={8}>
           <Flex flexDir="column" mt={10}>
             <Text fontWeight="extrabold" fontSize={20}>
@@ -310,10 +272,3 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const offer_id = query.id;
-  return {
-    props: { offer_id },
-  };
-};

@@ -1,3 +1,104 @@
+## [0.70.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.2...v0.70.3) (2024-11-19)
+
+
+### Bug Fixes
+
+* matomo events widget ([2f07052](https://github.com/SocialGouv/carte-jeune-engage/commit/2f070522ad1ed586bc8687ff004fac8d85ca7419))
+
+## [0.70.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.1...v0.70.2) (2024-11-19)
+
+
+### Bug Fixes
+
+* subject name for delivered status email ([c0de09b](https://github.com/SocialGouv/carte-jeune-engage/commit/c0de09bd45bf7a217f93d1ed44e2c2f14761572a))
+
+## [0.70.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.0...v0.70.1) (2024-11-19)
+
+### Bug Fixes
+
+- remove redirect if offer is undefined, display loader instead for offer cje and obiz ([9a76af0](https://github.com/SocialGouv/carte-jeune-engage/commit/9a76af043eadcbe2a0e175bb1d4bfcbaee1fc4b0))
+
+# [0.70.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.2...v0.70.0) (2024-11-19)
+
+### Features
+
+- add email for paid order ([bc85969](https://github.com/SocialGouv/carte-jeune-engage/commit/bc85969187bf3cd309471a8817aa2a164487feec))
+
+## [0.69.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.1...v0.69.2) (2024-11-19)
+
+### Bug Fixes
+
+- add order success final step with cta to wallet ([60106a2](https://github.com/SocialGouv/carte-jeune-engage/commit/60106a2c33c85166c023d97f254f1ad58e7e91c1))
+- change background color on order success final step to match gif background color ([68e1d72](https://github.com/SocialGouv/carte-jeune-engage/commit/68e1d72b8188ea309ec5a53f64e234b0cc013304))
+- remove unnessary code useState and import ([30e9b0f](https://github.com/SocialGouv/carte-jeune-engage/commit/30e9b0f45139a1751da3bfc7dbb6a6e0d5fbf31f))
+
+## [0.69.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.0...v0.69.1) (2024-11-19)
+
+### Bug Fixes
+
+- change get of id query params from getServerSideProps to client side ([20309ed](https://github.com/SocialGouv/carte-jeune-engage/commit/20309edb6ff699c62ce101c0b9bb7a8129d233c9))
+
+# [0.69.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.2...v0.69.0) (2024-11-19)
+
+### Features
+
+- CRISP help in dashboard page ([504e645](https://github.com/SocialGouv/carte-jeune-engage/commit/504e64560ac74d47d9c265cdfb1c29441dc58e0b))
+
+## [0.68.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.1...v0.68.2) (2024-11-19)
+
+### Bug Fixes
+
+- add defensive code in getserversideprops offer & log ([07d6e1b](https://github.com/SocialGouv/carte-jeune-engage/commit/07d6e1b1a9dd4738d6943558d17fbbd7aa321c85))
+
+## [0.68.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.0...v0.68.1) (2024-11-19)
+
+### Bug Fixes
+
+- wordings, icons and add missing one for condition blocks ([9fa391d](https://github.com/SocialGouv/carte-jeune-engage/commit/9fa391d414ee51703bd11a3c98b2086fba3ff919))
+
+# [0.68.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.67.2...v0.68.0) (2024-11-19)
+
+### Features
+
+- add crisp to help button ([0b08132](https://github.com/SocialGouv/carte-jeune-engage/commit/0b0813285b641ed051bc8dff3c14cc5b7d7755a0))
+
+## [0.67.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.67.1...v0.67.2) (2024-11-18)
+
+### Bug Fixes
+
+- add spacing bottom fixed buttons ([16e485e](https://github.com/SocialGouv/carte-jeune-engage/commit/16e485edb3bd18fafa86c6fba54b69718b6117b7))
+
+## [0.67.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.67.0...v0.67.1) (2024-11-18)
+
+### Bug Fixes
+
+- widget token erase previous one ([24dab90](https://github.com/SocialGouv/carte-jeune-engage/commit/24dab90694d60517954d4c94a5c78df954b2227b))
+
+# [0.67.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.5...v0.67.0) (2024-11-18)
+
+### Bug Fixes
+
+- add ok/ko to condition block in bo ([0ef3aee](https://github.com/SocialGouv/carte-jeune-engage/commit/0ef3aee5b9dbe6ce9dc81ad48015d55927e6d6b1))
+- dynamic icon io path import ([3b3abd1](https://github.com/SocialGouv/carte-jeune-engage/commit/3b3abd1d93b7be9e3b17a44e05cdf84e6674d150))
+- wording for terms of use in cje offer ([c39ca18](https://github.com/SocialGouv/carte-jeune-engage/commit/c39ca1834b2c4662315df6244ec9d0c06ccab1e2))
+
+### Features
+
+- refactor conditions blocks for cje and obiz offer ([8cd7934](https://github.com/SocialGouv/carte-jeune-engage/commit/8cd7934b5cfead45591ae36a409a83f7d75d848c))
+
+## [0.66.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.4...v0.66.5) (2024-11-18)
+
+### Bug Fixes
+
+- small minor design issues ([805d361](https://github.com/SocialGouv/carte-jeune-engage/commit/805d361aaf728d0a68f2ba325620180d131a63af))
+
+## [0.66.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.3...v0.66.4) (2024-11-18)
+
+### Bug Fixes
+
+- add route API image for public folder & fetch pdf ([77126e9](https://github.com/SocialGouv/carte-jeune-engage/commit/77126e93abf830e6c48dac9fc521f83060c81242))
+- add route image api ([5962d2a](https://github.com/SocialGouv/carte-jeune-engage/commit/5962d2a8cea7aafb23503bbfa2df4d917a617496))
+
 ## [0.66.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.2...v0.66.3) (2024-11-18)
 
 ### Bug Fixes
