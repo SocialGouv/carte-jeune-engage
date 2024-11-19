@@ -10,7 +10,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import OfferContent from "~/components/offer/page/OfferContent";
 import CouponContent from "~/components/offer/page/CouponContent";
 import { isIOS } from "~/utils/tools";
-import { GetServerSideProps } from "next";
 
 const flipVariants = {
   hidden: { rotateY: 90 },
@@ -18,21 +17,25 @@ const flipVariants = {
   exit: { rotateY: -90 },
 };
 
-type OfferCjePageProps = {
-  offer_id: string;
-};
-
-export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
+export default function OfferCjePage() {
   const router = useRouter();
 
+  const { id: offer_id } = router.query as { id: string };
+
   const { data: resultOffer, isLoading: isLoadingOffer } =
-    api.offer.getById.useQuery({ id: parseInt(offer_id), source: "cje" });
+    api.offer.getById.useQuery(
+      { id: parseInt(offer_id), source: "cje" },
+      { enabled: !!offer_id }
+    );
 
   const {
     data: resultCoupon,
     isLoading: isLoadingCoupon,
     refetch: refetchCoupon,
-  } = api.coupon.getOne.useQuery({ offer_id: parseInt(offer_id) });
+  } = api.coupon.getOne.useQuery(
+    { offer_id: parseInt(offer_id) },
+    { enabled: !!offer_id }
+  );
 
   const { data: offer } = resultOffer || {};
   const { data: coupon } = resultCoupon || {};
@@ -126,8 +129,8 @@ export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
       await increaseNbSeen({ offer_id: parseInt(offer_id) });
     };
 
-    mutateData();
-  }, []);
+    if (!!offer_id) mutateData();
+  }, [offer_id]);
 
   useEffect(() => {
     if (
@@ -228,24 +231,3 @@ export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
     </OfferHeaderWrapper>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  params,
-}) => {
-  const offer_id = query.id || params?.id || null;
-
-  if (!offer_id || Array.isArray(offer_id)) {
-    console.error("Invalid offer_id in getServerSideProps:", { query, params });
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { offer_id },
-  };
-};

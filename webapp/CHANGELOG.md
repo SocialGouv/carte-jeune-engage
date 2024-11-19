@@ -1,3 +1,23 @@
+## [0.69.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.1...v0.69.2) (2024-11-19)
+
+### Bug Fixes
+
+- add order success final step with cta to wallet ([60106a2](https://github.com/SocialGouv/carte-jeune-engage/commit/60106a2c33c85166c023d97f254f1ad58e7e91c1))
+- change background color on order success final step to match gif background color ([68e1d72](https://github.com/SocialGouv/carte-jeune-engage/commit/68e1d72b8188ea309ec5a53f64e234b0cc013304))
+- remove unnessary code useState and import ([30e9b0f](https://github.com/SocialGouv/carte-jeune-engage/commit/30e9b0f45139a1751da3bfc7dbb6a6e0d5fbf31f))
+
+## [0.69.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.0...v0.69.1) (2024-11-19)
+
+### Bug Fixes
+
+- change get of id query params from getServerSideProps to client side ([20309ed](https://github.com/SocialGouv/carte-jeune-engage/commit/20309edb6ff699c62ce101c0b9bb7a8129d233c9))
+
+# [0.69.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.2...v0.69.0) (2024-11-19)
+
+### Features
+
+- CRISP help in dashboard page ([504e645](https://github.com/SocialGouv/carte-jeune-engage/commit/504e64560ac74d47d9c265cdfb1c29441dc58e0b))
+
 ## [0.68.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.1...v0.68.2) (2024-11-19)
 
 ### Bug Fixes
