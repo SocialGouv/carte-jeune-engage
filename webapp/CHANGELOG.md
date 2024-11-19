@@ -1,3 +1,10 @@
+# [0.70.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.2...v0.70.0) (2024-11-19)
+
+
+### Features
+
+* add email for paid order ([bc85969](https://github.com/SocialGouv/carte-jeune-engage/commit/bc85969187bf3cd309471a8817aa2a164487feec))
+
 ## [0.69.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.1...v0.69.2) (2024-11-19)
 
 ### Bug Fixes
