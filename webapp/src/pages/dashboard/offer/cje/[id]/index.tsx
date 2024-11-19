@@ -229,8 +229,22 @@ export default function OfferCjePage({ offer_id }: OfferCjePageProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const offer_id = query.id;
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  params,
+}) => {
+  const offer_id = query.id || params?.id || null;
+
+  if (!offer_id || Array.isArray(offer_id)) {
+    console.error("Invalid offer_id in getServerSideProps:", { query, params });
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: { offer_id },
   };
