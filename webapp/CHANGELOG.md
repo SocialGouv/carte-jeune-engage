@@ -1,9 +1,8 @@
 ## [0.68.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.0...v0.68.1) (2024-11-19)
 
-
 ### Bug Fixes
 
-* wordings, icons and add missing one for condition blocks ([9fa391d](https://github.com/SocialGouv/carte-jeune-engage/commit/9fa391d414ee51703bd11a3c98b2086fba3ff919))
+- wordings, icons and add missing one for condition blocks ([9fa391d](https://github.com/SocialGouv/carte-jeune-engage/commit/9fa391d414ee51703bd11a3c98b2086fba3ff919))
 
 # [0.68.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.67.2...v0.68.0) (2024-11-19)
 

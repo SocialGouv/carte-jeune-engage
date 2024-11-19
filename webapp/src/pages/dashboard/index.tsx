@@ -7,8 +7,10 @@ import {
   Icon,
   Link,
 } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 import NextLink from "next/link";
-import { HiMiniTag } from "react-icons/hi2";
+import { useState } from "react";
+import { HiMiniTag, HiQuestionMarkCircle } from "react-icons/hi2";
 import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
 import SearchBar from "~/components/SearchBar";
@@ -16,9 +18,20 @@ import OfferCard from "~/components/cards/OfferCard";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import CategoriesList from "~/components/lists/CategoriesList";
 import TagsList from "~/components/lists/TagsList";
+import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 
+const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
+
 export default function Dashboard() {
+  const { user } = useAuth();
+
+  const [isOpenCrisp, setIsOpenCrisp] = useState(false);
+
+  const CrispWithNoSSR = dynamic(
+    () => import("../../components/support/Crisp")
+  );
+
   const { data: resultOffersCje, isLoading: isLoadingOffersCje } =
     api.offer.getListOfAvailables.useQuery({
       page: 1,
@@ -58,10 +71,25 @@ export default function Dashboard() {
         borderBottomWidth={1}
         borderBottomColor="cje-gray.400"
         mb={6}
+        position={"relative"}
       >
         <Heading as="h2" fontSize="2xl" fontWeight="extrabold" mb={9}>
           Explorer
         </Heading>
+        <Box
+          borderRadius="2.25xl"
+          px={2}
+          py={1}
+          w="fit-content"
+          position={"absolute"}
+          right={8}
+          top={0}
+          onClick={() => {
+            setIsOpenCrisp(true);
+          }}
+        >
+          <Icon as={HiQuestionMarkCircle} w={6} h={6} mt={1} color="black" />
+        </Box>
         <Link
           as={NextLink}
           href="/dashboard/search"
@@ -162,6 +190,15 @@ export default function Dashboard() {
       <Box mt={8}>
         <TagsList offers={allOffers} />
       </Box>
+      {isOpenCrisp && user && (
+        <CrispWithNoSSR
+          crispToken={CRISP_TOKEN}
+          user={user}
+          onClose={() => {
+            setIsOpenCrisp(false);
+          }}
+        />
+      )}
     </Box>
   );
 }
