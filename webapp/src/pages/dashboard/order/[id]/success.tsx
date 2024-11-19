@@ -82,7 +82,7 @@ export const OrderSuccess = ({ order_id }: OrderSuccessProps) => {
         <Flex
           flexDir="column"
           h="full"
-          bgColor="primary"
+          bgColor="#1489FB"
           color="white"
           px={8}
           pb={20}
