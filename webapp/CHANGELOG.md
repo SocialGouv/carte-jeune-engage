@@ -1,3 +1,10 @@
+## [0.70.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.3...v0.70.4) (2024-11-19)
+
+
+### Bug Fixes
+
+* obiz-script no date define end of current year ([91b07df](https://github.com/SocialGouv/carte-jeune-engage/commit/91b07dfb5f7cdda2fa5e8b27477aa2603d7fb3c1))
+
 ## [0.70.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.2...v0.70.3) (2024-11-19)
 
 ### Bug Fixes
