@@ -1,16 +1,14 @@
 ## [0.67.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.67.1...v0.67.2) (2024-11-18)
 
-
 ### Bug Fixes
 
-* add spacing bottom fixed buttons ([16e485e](https://github.com/SocialGouv/carte-jeune-engage/commit/16e485edb3bd18fafa86c6fba54b69718b6117b7))
+- add spacing bottom fixed buttons ([16e485e](https://github.com/SocialGouv/carte-jeune-engage/commit/16e485edb3bd18fafa86c6fba54b69718b6117b7))
 
 ## [0.67.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.67.0...v0.67.1) (2024-11-18)
 
-
 ### Bug Fixes
 
-* widget token erase previous one ([24dab90](https://github.com/SocialGouv/carte-jeune-engage/commit/24dab90694d60517954d4c94a5c78df954b2227b))
+- widget token erase previous one ([24dab90](https://github.com/SocialGouv/carte-jeune-engage/commit/24dab90694d60517954d4c94a5c78df954b2227b))
 
 # [0.67.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.66.5...v0.67.0) (2024-11-18)
 
