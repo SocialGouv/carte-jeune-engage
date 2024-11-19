@@ -377,7 +377,7 @@ export const orderRouter = createTRPCRouter({
               ctx.payload.sendEmail({
                 from: process.env.SMTP_FROM_ADDRESS,
                 to: currentUser.userEmail,
-                subject: "Récapitulatif de votre commande",
+                subject: "Votre commande est arrivée",
                 html: getHtmlRecapOrderDelivered(currentUser, order, offer),
               });
             }

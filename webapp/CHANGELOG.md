@@ -1,9 +1,8 @@
 ## [0.70.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.0...v0.70.1) (2024-11-19)
 
-
 ### Bug Fixes
 
-* remove redirect if offer is undefined, display loader instead for offer cje and obiz ([9a76af0](https://github.com/SocialGouv/carte-jeune-engage/commit/9a76af043eadcbe2a0e175bb1d4bfcbaee1fc4b0))
+- remove redirect if offer is undefined, display loader instead for offer cje and obiz ([9a76af0](https://github.com/SocialGouv/carte-jeune-engage/commit/9a76af043eadcbe2a0e175bb1d4bfcbaee1fc4b0))
 
 # [0.70.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.2...v0.70.0) (2024-11-19)
 
