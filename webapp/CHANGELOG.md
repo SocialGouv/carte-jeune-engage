@@ -1,3 +1,10 @@
+# [0.69.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.2...v0.69.0) (2024-11-19)
+
+
+### Features
+
+* CRISP help in dashboard page ([504e645](https://github.com/SocialGouv/carte-jeune-engage/commit/504e64560ac74d47d9c265cdfb1c29441dc58e0b))
+
 ## [0.68.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.1...v0.68.2) (2024-11-19)
 
 
