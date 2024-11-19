@@ -53,6 +53,7 @@ export const getHtmlLoginByEmail = (user: User, userAuthToken: string) => {
         }
         .auth-code {
           text-align: center;
+					width: 100%;
           font-size: 1.5rem;
           font-weight: 800;
           color: #20202C;
@@ -163,7 +164,7 @@ export const getHtmlSignalOrder = (user: User, order: Order) => {
   `;
 };
 
-export const getHtmlRecapOrder = (
+export const getHtmlRecapOrderPaid = (
   user: User,
   order: Order,
   offer: OfferIncluded
@@ -218,7 +219,7 @@ export const getHtmlRecapOrder = (
           }
           h1 {
               font-size: 1.8em;
-              margin: 10px 0;
+              margin: 20px 0 10px 0;
               font-weight: bold;
           }
           .button {
@@ -234,18 +235,25 @@ export const getHtmlRecapOrder = (
           .button::after {
               content: " →";
           }
+					.button:visited {
+						color: white !important;
+					}
           .summary {
               margin-top: 40px;
           }
-          .summary-wrapper {
-              display: flex;
-              gap: 20px;
-          }
-          .summary-row {
-              display: flex;
-              justify-content: space-between;
-              margin: 10px 0;
-          }
+					.summary table {
+						text-align: left;
+						width: 100%;
+					}
+					.summary table tr td:last-of-type {
+						text-align: right;
+					}
+					.total-row > td {
+						padding-bottom: 20px;
+					}
+					.total-paid-row > td {
+						padding-top: 20px;
+					}
           .summary-article-wrapper {
               display: flex;  
               flex-direction: column;
@@ -269,6 +277,9 @@ export const getHtmlRecapOrder = (
               font-weight: 800;
               flex-shrink: 0;
           }
+					.blue {
+						color: #4285f4;
+					}
       </style>
       </head>
       <body>
@@ -280,7 +291,186 @@ export const getHtmlRecapOrder = (
 
           <span>VOTRE COMMANDE</span>
           
-          <h1>Votre bon d’achat ${offer.partner.name} est arrivé ${user.firstName} !</h1>
+          <h1>Votre bon d’achat <span class="blue">${offer.partner.name}</span> va bientôt arriver...</h1>
+          
+          <p>
+						Les bon d’achats peuvent prendre jusqu’à 24h maximum pour arriver dans votre appli. Dès que votre bon d’achat est disponible nous vous tenons au courant.
+					</p>
+
+          <div class="summary">
+            <div class="summary-title">RÉCAPITULATIF</div>
+						<table>
+							<tr>
+								<td><span class="bold">Marque :</span></td>
+								<td><span>${offer.partner.name}</span></td>
+							</tr>
+							<tr class="total-row">
+								<td><span class="bold">Total valeur bon d'achat :</span></td>
+								<td><span>${total_amount}€</span></td>
+							</tr>
+							<tr>
+								<td><span class="bold">Détails :</span></td>
+								<td></td>
+							</tr>
+							${order.articles?.map((article) => {
+                return `
+											<tr>
+													<td><span>Bon d'achat ${article.article_montant}€</span></td><td><span>x${article.article_quantity}</span></td>
+											</tr>
+										`;
+              })}
+							<tr class="total-paid-row">
+								<td><span class="bold">Montant réglé :</span></td>
+								<td><span>${formatter2Digits.format(total_amount_discounted)}€</span></td>
+							</tr>
+							<tr>
+								<td><span class="bold">Économies réalisées</span></td>
+								<td><span>${formatter2Digits.format(total_amount - total_amount_discounted)}€</span></td>
+							</tr>
+							<tr>
+								<td><span class="bold">Date de commande :</span></td>
+								<td><span>${formatDateToDDMMYYYY(order.createdAt)}</span></td>
+							</tr>
+							<tr>
+								<td><span class="bold">Durée de validité :</span></td>
+								<td><span>Voir sur le PDF</span></td>
+							</tr>
+						</table>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
+export const getHtmlRecapOrderDelivered = (
+  user: User,
+  order: Order,
+  offer: OfferIncluded
+) => {
+  const total_amount =
+    order.articles?.reduce(
+      (acc, article) =>
+        acc + article.article_montant * article.article_quantity,
+      0
+    ) || 0;
+
+  const total_amount_discounted =
+    order.articles?.reduce(
+      (acc, article) =>
+        acc + article.article_montant_discounted * article.article_quantity,
+      0
+    ) || 0;
+
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body {
+           	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            text-align: center;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 32px;
+						text-align: center;
+          }
+          .logo-container {
+            margin-bottom: 48px;
+          }
+          .logo {
+            height: 48px;
+						width: 48px;
+            margin: 0 8px;
+          }
+          .logo-cje {
+						width: 80px;
+					}
+          .image-wallet {
+            display: block;
+            width: 250px;
+            height: 250px;
+            margin: 20px auto;
+          }
+          h1 {
+              font-size: 1.8em;
+              margin: 20px 0 10px 0;
+              font-weight: bold;
+          }
+          .button {
+              background-color: #4285f4;
+              color: white !important;
+              padding: 15px 30px;
+              border-radius: 18px;
+              text-decoration: none;
+              display: inline-block;
+              margin: 20px 0;
+              font-weight: 500;
+          }
+          .button::after {
+              content: " →";
+          }
+					.button:visited {
+						color: white !important;
+					}
+          .summary {
+              margin-top: 40px;
+          }
+					.summary table {
+						text-align: left;
+						width: 100%;
+					}
+					.summary table tr td:last-of-type {
+						text-align: right;
+					}
+					.total-row > td {
+						padding-bottom: 20px;
+					}
+					.total-paid-row > td {
+						padding-top: 20px;
+					}
+          .summary-article-wrapper {
+              display: flex;  
+              flex-direction: column;
+              gap: 0.5rem;
+              width: 100%;
+          }
+          .summary-article {
+              display: flex;
+              justify-content: space-between;
+              width: 100%;
+          }
+          .summary-title {
+              font-size: 1.2em;
+              font-weight: bold;
+              margin: 20px 0;
+          }
+          .details-row {
+              padding-left: 20px;
+          }
+          .bold {
+              font-weight: 800;
+              flex-shrink: 0;
+          }
+					.blue {
+						color: #4285f4;
+					}
+      </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="logo-container">
+            <img src="${getBaseUrl()}/images/landing/ministere-travail.png" alt="Ministère" class="logo">
+            <img src="${getBaseUrl()}/images/cje-logo.png" width={} alt="Jeune Engagé" class="logo logo-cje">
+          </div>
+
+          <span>VOTRE COMMANDE</span>
+          
+          <h1>Votre bon d’achat <span class="blue">${offer.partner.name}</span> est arrivé ${user.firstName} !</h1>
           
           <a href="${getBaseUrl()}/dashboard/order/${order.id}" class="button">
             Récupérer mon bon d’achat
@@ -294,43 +484,43 @@ export const getHtmlRecapOrder = (
 
           <div class="summary">
             <div class="summary-title">RÉCAPITULATIF</div>
-            <div class="summary-row">
-                <span class="bold">Marque :</span>
-                <span>${offer.partner.name}</span>
-            </div>
-            <div class="summary-row">
-                <span class="bold">Total valeur bon d'achat :</span>
-                <span>${total_amount}€</span>
-            </div>
-            <div class="summary-wrapper">
-              <span class="bold">Détails :</span>
-              <div class="summary-article-wrapper">
-                ${order.articles?.map((article) => {
-                  return `
-                    <div class="summary-article">
-                        <span>Bon d'achat ${article.article_montant}€</span>
-                        <span>x${article.article_quantity}</span>
-                    </div>
-                  `;
-                })}
-              </div>
-            </div>
-            <div class="summary-row">
-                <span class="bold">Montant réglé :</span>
-                <span>${formatter2Digits.format(total_amount_discounted)}€</span>
-            </div>
-            <div class="summary-row">
-                <span class="bold">Économies réalisées</span>
-                <span>${formatter2Digits.format(total_amount - total_amount_discounted)}€</span>
-            </div>
-            <div class="summary-row">
-                <span class="bold">Date de commande :</span>
-                <span>${formatDateToDDMMYYYY(order.createdAt)}</span>
-            </div>
-            <div class="summary-row">
-                <span class="bold">Durée de validité :</span>
-                <span>Voir sur le PDF</span>
-            </div>
+            <table>
+							<tr>
+								<td><span class="bold">Marque :</span></td>
+								<td><span>${offer.partner.name}</span></td>
+							</tr>
+							<tr class="total-row">
+								<td><span class="bold">Total valeur bon d'achat :</span></td>
+								<td><span>${total_amount}€</span></td>
+							</tr>
+							<tr>
+								<td><span class="bold">Détails :</span></td>
+								<td></td>
+							</tr>
+							${order.articles?.map((article) => {
+                return `
+											<tr>
+													<td><span>Bon d'achat ${article.article_montant}€</span></td><td><span>x${article.article_quantity}</span></td>
+											</tr>
+										`;
+              })}
+							<tr class="total-paid-row">
+								<td><span class="bold">Montant réglé :</span></td>
+								<td><span>${formatter2Digits.format(total_amount_discounted)}€</span></td>
+							</tr>
+							<tr>
+								<td><span class="bold">Économies réalisées</span></td>
+								<td><span>${formatter2Digits.format(total_amount - total_amount_discounted)}€</span></td>
+							</tr>
+							<tr>
+								<td><span class="bold">Date de commande :</span></td>
+								<td><span>${formatDateToDDMMYYYY(order.createdAt)}</span></td>
+							</tr>
+							<tr>
+								<td><span class="bold">Durée de validité :</span></td>
+								<td><span>Voir sur le PDF</span></td>
+							</tr>
+						</table>
           </div>
 
           <a href="${getBaseUrl()}/dashboard/order/${order.id}" class="button">
