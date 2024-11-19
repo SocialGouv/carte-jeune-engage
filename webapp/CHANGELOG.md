@@ -1,3 +1,10 @@
+## [0.69.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.69.0...v0.69.1) (2024-11-19)
+
+
+### Bug Fixes
+
+* change get of id query params from getServerSideProps to client side ([20309ed](https://github.com/SocialGouv/carte-jeune-engage/commit/20309edb6ff699c62ce101c0b9bb7a8129d233c9))
+
 # [0.69.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.68.2...v0.69.0) (2024-11-19)
 
 ### Features
