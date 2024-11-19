@@ -1,3 +1,10 @@
+## [0.70.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.1...v0.70.2) (2024-11-19)
+
+
+### Bug Fixes
+
+* subject name for delivered status email ([c0de09b](https://github.com/SocialGouv/carte-jeune-engage/commit/c0de09bd45bf7a217f93d1ed44e2c2f14761572a))
+
 ## [0.70.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.0...v0.70.1) (2024-11-19)
 
 ### Bug Fixes
