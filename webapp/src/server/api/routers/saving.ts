@@ -57,32 +57,25 @@ export const savingRouter = createTRPCRouter({
       };
     }),
 
-  getTotalAmountByUserId: userProtectedProcedure
-    .input(
-      z.object({
-        userId: z.number(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      const { userId } = input;
-      const userSavings = await ctx.payload.find({
-        collection: "savings",
-        depth: 0,
-        where: {
-          "coupon.user": {
-            equals: userId,
-          },
+  getTotalAmountByCurrentUser: userProtectedProcedure.query(async ({ ctx }) => {
+    const userSavings = await ctx.payload.find({
+      collection: "savings",
+      depth: 0,
+      where: {
+        "coupon.user": {
+          equals: ctx.session.id,
         },
-      });
+      },
+    });
 
-      const totalAmount = userSavings.docs.reduce(
-        (total, saving) =>
-          total + (typeof saving.amount === "number" ? saving.amount : 0),
-        0
-      );
+    const totalAmount = userSavings.docs.reduce(
+      (total, saving) =>
+        total + (typeof saving.amount === "number" ? saving.amount : 0),
+      0
+    );
 
-      return {
-        data: Math.round(totalAmount * 100) / 100,
-      };
-    }),
+    return {
+      data: Math.round(totalAmount * 100) / 100,
+    };
+  }),
 });

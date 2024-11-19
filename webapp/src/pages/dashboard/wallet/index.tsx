@@ -21,9 +21,12 @@ import Image from "next/image";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OrderIncluded } from "~/server/api/routers/order";
 import OrderCard from "~/components/cards/OrderCard";
+import { useMemo, useState } from "react";
 
 export default function Wallet() {
   const router = useRouter();
+
+  const [filterSelected, setFilterSelected] = useState("all");
 
   const { data: resultOffers, isLoading: isLoadingOffers } =
     api.offer.getListOfAvailables.useQuery({
@@ -40,24 +43,38 @@ export default function Wallet() {
   const { data: currentUserOrders } = resultUserOrders || { data: [] };
   const { data: offers } = resultOffers || { data: [] };
 
+  const walletOffers = useMemo(() => {
+    let filteredOffers: (CouponIncluded | OrderIncluded)[] = [];
+    if (filterSelected === "all") {
+      filteredOffers = [...currentUserCoupons, ...currentUserOrders];
+    } else if (filterSelected === "coupons") {
+      filteredOffers = currentUserCoupons;
+    } else if (filterSelected === "orders") {
+      filteredOffers = currentUserOrders;
+    }
+    return filteredOffers.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [filterSelected, currentUserCoupons, currentUserOrders]);
+
   if (isLoadingUserCoupons || isLoadingOffers || isLoadingUserOrders)
     return (
-      <WalletWrapper>
+      <WalletWrapper
+        filterSelected={filterSelected}
+        setFilterSelected={setFilterSelected}
+      >
         <Center h="85%" w="full">
           <LoadingLoader />
         </Center>
       </WalletWrapper>
     );
 
-  const walletOffers: (CouponIncluded | OrderIncluded)[] = [
-    ...currentUserCoupons,
-    ...currentUserOrders,
-  ].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-
   return (
-    <WalletWrapper>
+    <WalletWrapper
+      filterSelected={filterSelected}
+      setFilterSelected={setFilterSelected}
+    >
       {walletOffers && walletOffers.length > 0 ? (
         <>
           <Flex flexDir="column" gap={6}>
@@ -69,7 +86,7 @@ export default function Wallet() {
                 pt={index !== 0 ? 3 : 0}
                 zIndex={1}
                 borderTopWidth={index !== 0 ? 1 : 0}
-                px={8}
+                px={7}
               >
                 {"code" in walletOffer ? (
                   <CouponCard
@@ -84,7 +101,7 @@ export default function Wallet() {
               </Box>
             ))}
           </Flex>
-          <Box px={8}>
+          <Box px={7}>
             <Divider mt={16} borderColor="cje-gray.100" />
             <Link
               as={NextLink}
@@ -110,11 +127,11 @@ export default function Wallet() {
           </Box>
         </>
       ) : (
-        <Box px={8}>
+        <Box px={7}>
           <CouponCard mode="wallet" />
         </Box>
       )}
-      <Box px={8}>
+      <Box px={7}>
         <Center
           flexDir="column"
           mt={4}
