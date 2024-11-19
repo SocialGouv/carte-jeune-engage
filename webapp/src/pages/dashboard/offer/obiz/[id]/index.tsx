@@ -11,10 +11,9 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
 import ObizOrderProcessModal from "~/components/modals/ObizOrderProcessModal";
@@ -27,12 +26,10 @@ import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse"
 import { api } from "~/utils/api";
 import { cleanHtml } from "~/utils/tools";
 
-type OfferObizPageProps = {
-  offer_id: string;
-};
-
-export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
+export default function OfferObizPage() {
   const router = useRouter();
+
+  const { id: offer_id } = router.query as { id: string };
 
   const {
     isOpen: isOpenOrderProcessModal,
@@ -46,7 +43,10 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
     api.offer.increaseNbSeen.useMutation();
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
-    api.offer.getById.useQuery({ id: parseInt(offer_id), source: "obiz" });
+    api.offer.getById.useQuery(
+      { id: parseInt(offer_id), source: "obiz" },
+      { enabled: !!offer_id }
+    );
 
   const { data: offer } = resultOffer || {};
 
@@ -80,8 +80,8 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
       await increaseNbSeen({ offer_id: parseInt(offer_id) });
     };
 
-    mutateData();
-  }, []);
+    if (!!offer_id) mutateData();
+  }, [offer_id]);
 
   if (isLoadingOffer || !router.isReady) {
     return (
@@ -277,24 +277,3 @@ export default function OfferObizPage({ offer_id }: OfferObizPageProps) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  params,
-}) => {
-  const offer_id = query.id || params?.id || null;
-
-  if (!offer_id || Array.isArray(offer_id)) {
-    console.error("Invalid offer_id in getServerSideProps:", { query, params });
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { offer_id },
-  };
-};
