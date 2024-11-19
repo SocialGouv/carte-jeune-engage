@@ -23,7 +23,12 @@ const WalletFilter = ({
   const selected = filterSelected === slug;
 
   return (
-    <Center flexDir="column" gap={1} flex={1}>
+    <Center
+      flexDir="column"
+      gap={1}
+      flex={1}
+      onClick={onClick ? onClick : () => !disabled && setFilterSelected(slug)}
+    >
       <Box
         bgColor={selected ? "primary" : "bgGray"}
         color={selected ? "white" : "black"}
@@ -31,7 +36,6 @@ const WalletFilter = ({
         py={1.5}
         fontWeight={500}
         borderRadius="2.5xl"
-        onClick={onClick ? onClick : () => !disabled && setFilterSelected(slug)}
         aria-label="Account"
       >
         {icon}

@@ -92,6 +92,16 @@ const WalletWrapper = ({
             color="disabled"
             onClick={onOpenInfoModal}
           />
+          <Box position="absolute" top={-3.5} left={8}>
+            <WalletFilter
+              label="Ma carte"
+              slug="card"
+              icon={<PassIcon w={5} h={5} mt={-1} />}
+              filterSelected={filterSelected}
+              setFilterSelected={setFilterSelected}
+              onClick={() => router.push("/dashboard/account")}
+            />
+          </Box>
           <Image src="/images/cje-logo.png" alt="Logo" width={73} height={40} />
           <Text fontSize={14} fontWeight={500} mt={4}>
             Vous avez économisé
@@ -140,14 +150,6 @@ const WalletWrapper = ({
               filterSelected={filterSelected}
               setFilterSelected={setFilterSelected}
               disabled
-            />
-            <WalletFilter
-              label="Ma carte"
-              slug="card"
-              icon={<PassIcon w={5} h={5} mt={-1} />}
-              filterSelected={filterSelected}
-              setFilterSelected={setFilterSelected}
-              onClick={() => router.push("/dashboard/account")}
             />
           </Flex>
           <Box flex={1} mt={8} pb={28}>
