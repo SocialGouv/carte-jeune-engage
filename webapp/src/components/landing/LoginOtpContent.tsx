@@ -33,7 +33,7 @@ const LoginOtpContent = (props: LoginOtpContentProps) => {
           { expires: new Date((data.exp as number) * 1000), sameSite: "lax" }
         );
         await refetchUser();
-        if (!data.user.userEmail) {
+        if (!data.user.userEmail || !data.user.firstName) {
           router.push("/signup");
         } else {
           setShowSplashScreenModal(true);
