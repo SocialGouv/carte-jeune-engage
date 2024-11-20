@@ -202,10 +202,10 @@ const PassCard = ({ offer }: PropsPassCard) => {
           </Flex>
         </Flex>
       </Flex>
-      <NewPassComponent
+      {/* <NewPassComponent
         isOpen={isOpenNewPassComponent}
         onClose={onCloseNewPassComponent}
-      />
+      /> */}
     </>
   );
 };

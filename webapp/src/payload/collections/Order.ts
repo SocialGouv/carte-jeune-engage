@@ -1,6 +1,5 @@
-import { type CollectionConfig } from "payload/types";
+import { type CollectionConfig } from "payload";
 import { isAdmin } from "../access/isAdmin";
-import { RowLabelArgs } from "payload/dist/admin/components/forms/RowLabel/types";
 
 export const Orders: CollectionConfig = {
   slug: "orders",
@@ -77,9 +76,9 @@ export const Orders: CollectionConfig = {
       label: "Panier",
       admin: {
         components: {
-          RowLabel: ({ data }: RowLabelArgs) => {
-            return `${data.article_reference} (x${data.article_quantity})`;
-          },
+          // RowLabel: ({ data }: any) => {
+          //   return `${data.article_reference} (x${data.article_quantity})`;
+          // },
         },
       },
       fields: [

@@ -1,8 +1,9 @@
 import { ChakraProps, Link, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
 import crypto from "crypto";
-import { Where } from "payload/types";
+import { PayloadRequest, SanitizedCollectionConfig, Where } from "payload";
 import { OfferIncluded } from "~/server/api/routers/offer";
+import { ValidationError } from "payload";
 
 export const convertFrenchDateToEnglish = (
   frenchDate: string
@@ -331,4 +332,34 @@ export const getAfterTextMessageTriangle = (
     borderTop: "16px solid",
     borderTopColor: color,
   };
+};
+
+function randomBytes(): Promise<Buffer> {
+  return new Promise((resolve, reject) =>
+    crypto.randomBytes(32, (err, saltBuffer) =>
+      err ? reject(err) : resolve(saltBuffer)
+    )
+  );
+}
+
+function pbkdf2Promisified(password: string, salt: string): Promise<Buffer> {
+  return new Promise((resolve, reject) =>
+    crypto.pbkdf2(password, salt, 25000, 512, "sha256", (err, hashRaw) =>
+      err ? reject(err) : resolve(hashRaw)
+    )
+  );
+}
+
+export const generatePasswordSaltHash = async ({
+  password: passwordToSet,
+}: {
+  password: string;
+}): Promise<{ hash: string; salt: string }> => {
+  const saltBuffer = await randomBytes();
+  const salt = saltBuffer.toString("hex");
+
+  const hashRaw = await pbkdf2Promisified(passwordToSet, salt);
+  const hash = hashRaw.toString("hex");
+
+  return { hash, salt };
 };

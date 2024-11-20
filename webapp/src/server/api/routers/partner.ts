@@ -1,4 +1,4 @@
-import { Where } from "payload/types";
+import { Where } from "payload";
 import { z } from "zod";
 import type { Media, Partner } from "~/payload/payload-types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";

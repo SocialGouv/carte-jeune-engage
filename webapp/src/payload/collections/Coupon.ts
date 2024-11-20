@@ -1,16 +1,16 @@
 import dynamic from "next/dynamic";
-import type { Props } from "payload/components/views/List";
-import { type CollectionConfig } from "payload/types";
+// import type { Props } from "payload/components/views/List";
+import { type CollectionConfig } from "payload";
 import { getBaseUrl } from "../../utils/tools";
 import { sendPushNotification } from "../../utils/sendPushNotification";
 import { isAdmin } from "../access/isAdmin";
 
-const ImportCoupons = dynamic<Props>(
-  () => import("../components/ImportCoupons"),
-  {
-    ssr: false,
-  }
-);
+// const ImportCoupons = dynamic<Props>(
+//   () => import("../components/ImportCoupons"),
+//   {
+//     ssr: false,
+//   }
+// );
 
 export const Coupons: CollectionConfig = {
   slug: "coupons",
@@ -165,7 +165,7 @@ export const Coupons: CollectionConfig = {
   admin: {
     useAsTitle: "code",
     components: {
-      BeforeListTable: [ImportCoupons],
+      // BeforeListTable: [ImportCoupons],
     },
   },
 };

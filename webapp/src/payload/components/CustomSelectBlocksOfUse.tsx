@@ -1,4 +1,4 @@
-import { SelectInput, useField, useFormFields } from "payload/components/forms";
+import { SelectInput, useField, useFormFields } from "@payloadcms/ui";
 import React from "react";
 import { Offer } from "../payload-types";
 

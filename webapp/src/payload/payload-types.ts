@@ -7,6 +7,11 @@
  */
 
 export interface Config {
+  auth: {
+    admins: AdminAuthOperations;
+    users: UserAuthOperations;
+    supervisors: SupervisorAuthOperations;
+  };
   collections: {
     admins: Admin;
     users: User;
@@ -25,8 +30,35 @@ export interface Config {
     notifications: Notification;
     search_requests: SearchRequest;
     email_auth_tokens: EmailAuthToken;
-    "payload-preferences": PayloadPreference;
-    "payload-migrations": PayloadMigration;
+    'payload-locked-documents': PayloadLockedDocument;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
+  };
+  collectionsJoins: {};
+  collectionsSelect: {
+    admins: AdminsSelect<false> | AdminsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
+    supervisors: SupervisorsSelect<false> | SupervisorsSelect<true>;
+    permissions: PermissionsSelect<false> | PermissionsSelect<true>;
+    apikeys: ApikeysSelect<false> | ApikeysSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
+    partners: PartnersSelect<false> | PartnersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    offers: OffersSelect<false> | OffersSelect<true>;
+    coupons: CouponsSelect<false> | CouponsSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    savings: SavingsSelect<false> | SavingsSelect<true>;
+    ordersignals: OrdersignalsSelect<false> | OrdersignalsSelect<true>;
+    notifications: NotificationsSelect<false> | NotificationsSelect<true>;
+    search_requests: SearchRequestsSelect<false> | SearchRequestsSelect<true>;
+    email_auth_tokens: EmailAuthTokensSelect<false> | EmailAuthTokensSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+  };
+  db: {
+    defaultIDType: number;
   };
   globals: {
     quickAccess: QuickAccess;
@@ -35,6 +67,83 @@ export interface Config {
     newCategory: NewCategory;
     categories_list: CategoriesList;
     tags_list: TagsList;
+  };
+  globalsSelect: {
+    quickAccess: QuickAccessSelect<false> | QuickAccessSelect<true>;
+    landingPartners: LandingPartnersSelect<false> | LandingPartnersSelect<true>;
+    landingFAQ: LandingFAQSelect<false> | LandingFAQSelect<true>;
+    newCategory: NewCategorySelect<false> | NewCategorySelect<true>;
+    categories_list: CategoriesListSelect<false> | CategoriesListSelect<true>;
+    tags_list: TagsListSelect<false> | TagsListSelect<true>;
+  };
+  locale: 'fr';
+  user:
+    | (Admin & {
+        collection: 'admins';
+      })
+    | (User & {
+        collection: 'users';
+      })
+    | (Supervisor & {
+        collection: 'supervisors';
+      });
+  jobs: {
+    tasks: unknown;
+    workflows: unknown;
+  };
+}
+export interface AdminAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface SupervisorAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
   };
 }
 /**
@@ -54,7 +163,7 @@ export interface Admin {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
-  password: string | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -63,29 +172,21 @@ export interface Admin {
 export interface User {
   id: number;
   phone_number: string;
-  civility?: ("man" | "woman") | null;
+  civility?: ('man' | 'woman') | null;
   birthDate?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   address?: string | null;
-  image?: number | Media | null;
+  image?: (number | null) | Media;
   userEmail?: string | null;
-  cejFrom?:
-    | (
-        | "franceTravail"
-        | "missionLocale"
-        | "serviceCivique"
-        | "ecole2ndeChance"
-        | "epide"
-      )
-    | null;
-  timeAtCEJ?: ("started" | "lessThan3Months" | "moreThan3Months") | null;
-  hasAJobIdea?: ("yes" | "no") | null;
+  cejFrom?: ('franceTravail' | 'missionLocale' | 'serviceCivique' | 'ecole2ndeChance' | 'epide') | null;
+  timeAtCEJ?: ('started' | 'lessThan3Months' | 'moreThan3Months') | null;
+  hasAJobIdea?: ('yes' | 'no') | null;
   projectTitle?: string | null;
   projectDescription?: string | null;
-  status_image?: ("pending" | "approved") | null;
+  status_image?: ('pending' | 'approved') | null;
   preferences?: (number | Tag)[] | null;
-  notification_status?: ("enabled" | "disabled") | null;
+  notification_status?: ('enabled' | 'disabled') | null;
   notification_subscription?:
     | {
         [k: string]: unknown;
@@ -106,7 +207,7 @@ export interface User {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
-  password: string | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -119,6 +220,7 @@ export interface Media {
   updatedAt: string;
   createdAt: string;
   url?: string | null;
+  thumbnailURL?: string | null;
   filename?: string | null;
   mimeType?: string | null;
   filesize?: number | null;
@@ -146,7 +248,7 @@ export interface Tag {
 export interface Supervisor {
   id: number;
   cgu?: boolean | null;
-  kind?: ("ML" | "SC" | "FT") | null;
+  kind?: ('ML' | 'SC' | 'FT') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -156,7 +258,7 @@ export interface Supervisor {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
-  password: string | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -166,7 +268,7 @@ export interface Permission {
   id: number;
   phone_number: string;
   createdBy?: (number | null) | Supervisor;
-  supervisorKind?: ("ML" | "SC" | "FT") | null;
+  supervisorKind?: ('ML' | 'SC' | 'FT') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -225,16 +327,14 @@ export interface Offer {
   validityFrom?: string | null;
   validityTo: string;
   published: boolean;
-  source: "cje" | "obiz";
+  source: 'cje' | 'obiz';
   obiz_id?: string | null;
   kind: string;
   url?: string | null;
   nbOfEligibleStores?: number | null;
-  imageOfEligibleStores?: number | Media | null;
+  imageOfEligibleStores?: (number | null) | Media;
   linkOfEligibleStores?: string | null;
-  barcodeFormat?:
-    | ("CODE39" | "EAN13" | "ITF14" | "MSI" | "pharmacode" | "codabar" | "upc")
-    | null;
+  barcodeFormat?: ('CODE39' | 'EAN13' | 'ITF14' | 'MSI' | 'pharmacode' | 'codabar' | 'upc') | null;
   termsOfUse?:
     | {
         slug?: string | null;
@@ -250,7 +350,7 @@ export interface Offer {
     | null;
   conditionBlocks?:
     | {
-        slug: string;
+        slug?: string | null;
         isCrossed?: boolean | null;
         id?: string | null;
       }[]
@@ -258,13 +358,13 @@ export interface Offer {
   articles?:
     | {
         available: boolean;
-        image?: number | Media | null;
+        image?: (number | null) | Media;
         name: string;
         reference: string;
         description?: string | null;
         reductionPercentage: number;
         validityTo: string;
-        kind: "variable_price" | "fixed_price";
+        kind: 'variable_price' | 'fixed_price';
         minimumPrice?: number | null;
         maximumPrice?: number | null;
         publicPrice?: number | null;
@@ -282,7 +382,7 @@ export interface Offer {
       }[]
     | null;
   nbSeen?: number | null;
-  image?: number | Media | null;
+  image?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -310,13 +410,8 @@ export interface Order {
   number: number;
   user: number | User;
   offer: number | Offer;
-  ticket?: number | Media | null;
-  status:
-    | "init"
-    | "awaiting_payment"
-    | "payment_completed"
-    | "delivered"
-    | "archived";
+  ticket?: (number | null) | Media;
+  status: 'init' | 'awaiting_payment' | 'payment_completed' | 'delivered' | 'archived';
   obiz_status?: string | null;
   payment_url?: string | null;
   articles?:
@@ -401,21 +496,113 @@ export interface EmailAuthToken {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents".
+ */
+export interface PayloadLockedDocument {
+  id: number;
+  document?:
+    | ({
+        relationTo: 'admins';
+        value: number | Admin;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'supervisors';
+        value: number | Supervisor;
+      } | null)
+    | ({
+        relationTo: 'permissions';
+        value: number | Permission;
+      } | null)
+    | ({
+        relationTo: 'apikeys';
+        value: number | Apikey;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
+      } | null)
+    | ({
+        relationTo: 'partners';
+        value: number | Partner;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'offers';
+        value: number | Offer;
+      } | null)
+    | ({
+        relationTo: 'coupons';
+        value: number | Coupon;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'savings';
+        value: number | Saving;
+      } | null)
+    | ({
+        relationTo: 'ordersignals';
+        value: number | Ordersignal;
+      } | null)
+    | ({
+        relationTo: 'notifications';
+        value: number | Notification;
+      } | null)
+    | ({
+        relationTo: 'search_requests';
+        value: number | SearchRequest;
+      } | null)
+    | ({
+        relationTo: 'email_auth_tokens';
+        value: number | EmailAuthToken;
+      } | null);
+  globalSlug?: string | null;
+  user:
+    | {
+        relationTo: 'admins';
+        value: number | Admin;
+      }
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'supervisors';
+        value: number | Supervisor;
+      };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
   id: number;
   user:
     | {
-        relationTo: "admins";
+        relationTo: 'admins';
         value: number | Admin;
       }
     | {
-        relationTo: "users";
+        relationTo: 'users';
         value: number | User;
       }
     | {
-        relationTo: "supervisors";
+        relationTo: 'supervisors';
         value: number | Supervisor;
       };
   key?: string | null;
@@ -441,6 +628,342 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admins_select".
+ */
+export interface AdminsSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  phone_number?: T;
+  civility?: T;
+  birthDate?: T;
+  firstName?: T;
+  lastName?: T;
+  address?: T;
+  image?: T;
+  userEmail?: T;
+  cejFrom?: T;
+  timeAtCEJ?: T;
+  hasAJobIdea?: T;
+  projectTitle?: T;
+  projectDescription?: T;
+  status_image?: T;
+  preferences?: T;
+  notification_status?: T;
+  notification_subscription?: T;
+  otp_request_token?: T;
+  cej_id?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supervisors_select".
+ */
+export interface SupervisorsSelect<T extends boolean = true> {
+  cgu?: T;
+  kind?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "permissions_select".
+ */
+export interface PermissionsSelect<T extends boolean = true> {
+  phone_number?: T;
+  createdBy?: T;
+  supervisorKind?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "apikeys_select".
+ */
+export interface ApikeysSelect<T extends boolean = true> {
+  key?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  slug?: T;
+  label?: T;
+  color?: T;
+  textWhite?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  slug?: T;
+  label?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners_select".
+ */
+export interface PartnersSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  url?: T;
+  color?: T;
+  icon?: T;
+  stared?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  prefix?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offers_select".
+ */
+export interface OffersSelect<T extends boolean = true> {
+  title?: T;
+  formatedTitle?: T;
+  subtitle?: T;
+  description?: T;
+  partner?: T;
+  category?: T;
+  tags?: T;
+  validityFrom?: T;
+  validityTo?: T;
+  published?: T;
+  source?: T;
+  obiz_id?: T;
+  kind?: T;
+  url?: T;
+  nbOfEligibleStores?: T;
+  imageOfEligibleStores?: T;
+  linkOfEligibleStores?: T;
+  barcodeFormat?: T;
+  termsOfUse?:
+    | T
+    | {
+        slug?: T;
+        isHighlighted?: T;
+        id?: T;
+      };
+  conditions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  conditionBlocks?:
+    | T
+    | {
+        slug?: T;
+        isCrossed?: T;
+        id?: T;
+      };
+  articles?:
+    | T
+    | {
+        available?: T;
+        image?: T;
+        name?: T;
+        reference?: T;
+        description?: T;
+        reductionPercentage?: T;
+        validityTo?: T;
+        kind?: T;
+        minimumPrice?: T;
+        maximumPrice?: T;
+        publicPrice?: T;
+        price?: T;
+        obizJson?: T;
+        id?: T;
+      };
+  nbSeen?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons_select".
+ */
+export interface CouponsSelect<T extends boolean = true> {
+  code?: T;
+  used?: T;
+  usedAt?: T;
+  user?: T;
+  assignUserAt?: T;
+  offer?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  number?: T;
+  user?: T;
+  offer?: T;
+  ticket?: T;
+  status?: T;
+  obiz_status?: T;
+  payment_url?: T;
+  articles?:
+    | T
+    | {
+        article_reference?: T;
+        article_quantity?: T;
+        article_montant?: T;
+        article_montant_discounted?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "savings_select".
+ */
+export interface SavingsSelect<T extends boolean = true> {
+  amount?: T;
+  coupon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ordersignals_select".
+ */
+export interface OrdersignalsSelect<T extends boolean = true> {
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications_select".
+ */
+export interface NotificationsSelect<T extends boolean = true> {
+  slug?: T;
+  user?: T;
+  title?: T;
+  offer?: T;
+  message?: T;
+  error?: T;
+  appVersion?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search_requests_select".
+ */
+export interface SearchRequestsSelect<T extends boolean = true> {
+  name?: T;
+  count?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email_auth_tokens_select".
+ */
+export interface EmailAuthTokensSelect<T extends boolean = true> {
+  user?: T;
+  token?: T;
+  expiration?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents_select".
+ */
+export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
+  document?: T;
+  globalSlug?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences_select".
+ */
+export interface PayloadPreferencesSelect<T extends boolean = true> {
+  user?: T;
+  key?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-migrations_select".
+ */
+export interface PayloadMigrationsSelect<T extends boolean = true> {
+  name?: T;
+  batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -536,7 +1059,109 @@ export interface TagsList {
   updatedAt?: string | null;
   createdAt?: string | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quickAccess_select".
+ */
+export interface QuickAccessSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        partner?: T;
+        offer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "landingPartners_select".
+ */
+export interface LandingPartnersSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        partner?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "landingFAQ_select".
+ */
+export interface LandingFAQSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        title?: T;
+        content?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newCategory_select".
+ */
+export interface NewCategorySelect<T extends boolean = true> {
+  label?: T;
+  icon?: T;
+  items?:
+    | T
+    | {
+        offer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_list_select".
+ */
+export interface CategoriesListSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        category?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_list_select".
+ */
+export interface TagsListSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "auth".
+ */
+export interface Auth {
+  [k: string]: unknown;
+}
 
-declare module "payload" {
+
+declare module 'payload' {
   export interface GeneratedTypes extends Config {}
 }

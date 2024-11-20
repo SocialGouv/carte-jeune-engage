@@ -2,14 +2,14 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2022",
+    "target": "ES2017",
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
     "strict": true,
     "checkJs": true,
-    "lib": ["dom", "dom.iterable", "ES2022", "webworker"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -22,7 +22,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@payload-config": ["src/payload/payload.config.ts"]
     },
     "types": ["@serwist/next/typings"]
   },
@@ -31,7 +32,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.cjs",
     ".next/types/**/*.ts",
     "src/notifications/re"
   ],

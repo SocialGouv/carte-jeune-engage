@@ -1,4 +1,4 @@
-import { type CollectionConfig } from "payload/types";
+import { type CollectionConfig } from "payload";
 import { isAdmin, isAdminOrSelf } from "../access/isAdmin";
 
 export const Supervisors: CollectionConfig = {

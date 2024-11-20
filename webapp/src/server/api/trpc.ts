@@ -11,10 +11,10 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import getPayloadClient from "~/payload/payloadClient";
 import { jwtDecode } from "jwt-decode";
 import jwt from "jsonwebtoken";
-import { Payload } from "payload";
+import { getPayload, Payload } from "payload";
+import config from "@payload-config";
 import { NextApiRequest } from "next";
 import { ZWidgetToken } from "../types";
 var soap = require("soap");
@@ -57,16 +57,14 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://trpc.io/docs/context
  */
-type CustomTRPCContext = {
+export type CustomTRPCContext = {
   payload: Payload;
   session: PayloadJwtSession;
   req?: NextApiRequest;
 };
 
 export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
-  const payload = await getPayloadClient({
-    seed: false,
-  });
+  const payload = await getPayload({ config });
 
   var soapObizClient = await soap.createClientAsync(
     obiz_soap_client_url,
