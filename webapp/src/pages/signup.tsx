@@ -101,6 +101,16 @@ const SignupPage: React.FC = () => {
     data
   ) => {
     setIsSubmitting(true);
+
+    if (onBoardingKind.name === "widget") {
+      const isValid = Object.keys(methods.formState.errors).length === 0;
+
+      if (!isValid) {
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
     updateUser({
       ...data,
       preferences:
