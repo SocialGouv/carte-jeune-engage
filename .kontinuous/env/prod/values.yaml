@@ -21,7 +21,7 @@ app:
   host: cje.fabrique.social.gouv.fr
   autoscale:
     minReplicas: 4
-    maxReplicas: 12
+    maxReplicas: 16
     enabled: true
   resources:
     limits:
