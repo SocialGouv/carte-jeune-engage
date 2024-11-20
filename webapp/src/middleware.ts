@@ -19,7 +19,10 @@ export function middleware(request: NextRequest) {
         isUserComplete =
           decoded.firstName !== null &&
           decoded.firstName !== "" &&
-          decoded.preferences.length > 0;
+          decoded.lastName !== null &&
+          decoded.lastName !== "" &&
+          decoded.userEmail !== null &&
+          decoded.userEmail !== "";
         if (
           (decoded.firstName === null || decoded.firstName === "") &&
           !request.nextUrl.pathname.startsWith("/signup")

@@ -1,44 +1,38 @@
 ## [0.70.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.8...v0.70.9) (2024-11-20)
 
-
 ### Bug Fixes
 
-* remove splash screen on first login for cej login widget ([1273ad9](https://github.com/SocialGouv/carte-jeune-engage/commit/1273ad9ed8676e5b91b6bbb7c62013c9a83662fa))
+- remove splash screen on first login for cej login widget ([1273ad9](https://github.com/SocialGouv/carte-jeune-engage/commit/1273ad9ed8676e5b91b6bbb7c62013c9a83662fa))
 
 ## [0.70.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.7...v0.70.8) (2024-11-20)
 
-
 ### Bug Fixes
 
-* client side sms for second try of login widget ([3de2b53](https://github.com/SocialGouv/carte-jeune-engage/commit/3de2b53f0145e3cc4aa1b65fc4c363b8b305b4bc))
+- client side sms for second try of login widget ([3de2b53](https://github.com/SocialGouv/carte-jeune-engage/commit/3de2b53f0145e3cc4aa1b65fc4c363b8b305b4bc))
 
 ## [0.70.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.6...v0.70.7) (2024-11-20)
 
-
 ### Bug Fixes
 
-* on send otp check user has onboarding ([0985f65](https://github.com/SocialGouv/carte-jeune-engage/commit/0985f65d1ffef45b17cb5ba08a64887a8b045c57))
+- on send otp check user has onboarding ([0985f65](https://github.com/SocialGouv/carte-jeune-engage/commit/0985f65d1ffef45b17cb5ba08a64887a8b045c57))
 
 ## [0.70.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.5...v0.70.6) (2024-11-20)
 
-
 ### Bug Fixes
 
-* user email check for login widget case ([862204c](https://github.com/SocialGouv/carte-jeune-engage/commit/862204cea930f3f1f369fd006b430fed642ecece))
+- user email check for login widget case ([862204c](https://github.com/SocialGouv/carte-jeune-engage/commit/862204cea930f3f1f369fd006b430fed642ecece))
 
 ## [0.70.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.4...v0.70.5) (2024-11-20)
 
-
 ### Bug Fixes
 
-* default address if address is invalid for obiz ([3e1bf41](https://github.com/SocialGouv/carte-jeune-engage/commit/3e1bf417b62b1ac28522ceceb23c3e0dc70200cd))
+- default address if address is invalid for obiz ([3e1bf41](https://github.com/SocialGouv/carte-jeune-engage/commit/3e1bf417b62b1ac28522ceceb23c3e0dc70200cd))
 
 ## [0.70.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.3...v0.70.4) (2024-11-19)
 
-
 ### Bug Fixes
 
-* obiz-script no date define end of current year ([91b07df](https://github.com/SocialGouv/carte-jeune-engage/commit/91b07dfb5f7cdda2fa5e8b27477aa2603d7fb3c1))
+- obiz-script no date define end of current year ([91b07df](https://github.com/SocialGouv/carte-jeune-engage/commit/91b07dfb5f7cdda2fa5e8b27477aa2603d7fb3c1))
 
 ## [0.70.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.2...v0.70.3) (2024-11-19)
 
