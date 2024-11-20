@@ -430,7 +430,7 @@ export const userRouter = createTRPCRouter({
       } else {
         const currentUser = users.docs[0];
 
-        if (currentUser.userEmail) {
+        if (currentUser.userEmail && currentUser.firstName) {
           const token = Math.floor(1000 + Math.random() * 9000).toString();
 
           await ctx.payload.create({
