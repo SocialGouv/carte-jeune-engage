@@ -76,9 +76,10 @@ export const Orders: CollectionConfig = {
       label: "Panier",
       admin: {
         components: {
-          // RowLabel: ({ data }: any) => {
-          //   return `${data.article_reference} (x${data.article_quantity})`;
-          // },
+          RowLabel: {
+            path: "~/payload/components/RowLabels",
+            exportName: "OrderRowLabel",
+          },
         },
       },
       fields: [

@@ -143,7 +143,10 @@ export const Offers: CollectionConfig = {
       admin: {
         position: "sidebar",
         components: {
-          // Field: CustomSelectKind,
+          Field: {
+            path: "~/payload/components/CustomSelectKind",
+            exportName: "CustomSelectKind",
+          },
         },
       },
     },
@@ -246,7 +249,10 @@ export const Offers: CollectionConfig = {
           label: "Texte",
           admin: {
             components: {
-              // Field: CustomSelectTermsOfUse,
+              Field: {
+                path: "~/payload/components/CustomSelectTermsOfUse",
+                exportName: "CustomSelectTermsOfUse",
+              },
             },
           },
         },
@@ -293,7 +299,10 @@ export const Offers: CollectionConfig = {
           label: "Texte",
           admin: {
             components: {
-              // Field: CustomSelectConditionBlocks,
+              Field: {
+                path: "~/payload/components/CustomSelectConditionBlocks",
+                exportName: "CustomSelectConditionBlocks",
+              },
             },
           },
         },
@@ -317,11 +326,10 @@ export const Offers: CollectionConfig = {
           !!siblingData.source && siblingData.source === "obiz",
         initCollapsed: true,
         components: {
-          // RowLabel: ({ data, index }: any) => {
-          //   return data
-          //     ? `${data.available ? "🟢" : "🔴"} ${data.name}`
-          //     : `Article ${String(index).padStart(2, "0")}`;
-          // },
+          RowLabel: {
+            path: "~/payload/components/RowLabels",
+            exportName: "OfferRowLabel",
+          },
         },
       },
       fields: [

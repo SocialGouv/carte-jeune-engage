@@ -1,3 +1,5 @@
+"use client";
+
 import { SelectInput, useField, useFormFields } from "@payloadcms/ui";
 import React from "react";
 import { Offer } from "../payload-types";
@@ -44,7 +46,10 @@ export const CustomSelectKind: React.FC<{ path: string }> = ({ path }) => {
         name={path}
         options={options}
         value={value}
-        onChange={(e) => setValue(e.value)}
+        onChange={(e) => {
+          const option = e as { label: string; value: string };
+          setValue(option.value);
+        }}
       />
     </div>
   );

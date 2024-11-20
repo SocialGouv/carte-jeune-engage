@@ -79,7 +79,10 @@ export const CustomSelectConditionBlocks: React.FC<{ path: string }> = ({
         name={path}
         options={options}
         value={value}
-        onChange={(e) => setValue(e.value)}
+        onChange={(e) => {
+          const option = e as { label: string; value: string };
+          setValue(option.value);
+        }}
       />
     </div>
   );
