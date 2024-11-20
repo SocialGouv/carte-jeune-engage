@@ -271,7 +271,7 @@ export const userRouter = createTRPCRouter({
         });
       }
 
-      if (user.userEmail) {
+      if (user.userEmail && user.firstName) {
         const emailAuthTokens = await ctx.payload.find({
           collection: "email_auth_tokens",
           where: { token: { equals: otp } },
