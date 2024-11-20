@@ -1,3 +1,10 @@
+## [0.70.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.10...v0.70.11) (2024-11-20)
+
+
+### Bug Fixes
+
+* signup page onboarding check for widget if all fields have no errors ([e89b3a5](https://github.com/SocialGouv/carte-jeune-engage/commit/e89b3a5cc9e8df327ac0bc88425aadb16ad91670))
+
 ## [0.70.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.9...v0.70.10) (2024-11-20)
 
 
