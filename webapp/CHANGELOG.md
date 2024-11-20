@@ -1,3 +1,10 @@
+## [0.70.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.6...v0.70.7) (2024-11-20)
+
+
+### Bug Fixes
+
+* on send otp check user has onboarding ([0985f65](https://github.com/SocialGouv/carte-jeune-engage/commit/0985f65d1ffef45b17cb5ba08a64887a8b045c57))
+
 ## [0.70.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.5...v0.70.6) (2024-11-20)
 
 
