@@ -1,3 +1,10 @@
+## [0.70.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.11...v0.70.12) (2024-11-20)
+
+
+### Bug Fixes
+
+* add page for widget redirect on offer to add source to redirection url ([4213d23](https://github.com/SocialGouv/carte-jeune-engage/commit/4213d239976e33fb414f4d846382b42f706b8895))
+
 ## [0.70.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.10...v0.70.11) (2024-11-20)
 
 
