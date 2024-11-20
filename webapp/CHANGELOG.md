@@ -1,23 +1,20 @@
 ## [0.70.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.11...v0.70.12) (2024-11-20)
 
-
 ### Bug Fixes
 
-* add page for widget redirect on offer to add source to redirection url ([4213d23](https://github.com/SocialGouv/carte-jeune-engage/commit/4213d239976e33fb414f4d846382b42f706b8895))
+- add page for widget redirect on offer to add source to redirection url ([4213d23](https://github.com/SocialGouv/carte-jeune-engage/commit/4213d239976e33fb414f4d846382b42f706b8895))
 
 ## [0.70.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.10...v0.70.11) (2024-11-20)
 
-
 ### Bug Fixes
 
-* signup page onboarding check for widget if all fields have no errors ([e89b3a5](https://github.com/SocialGouv/carte-jeune-engage/commit/e89b3a5cc9e8df327ac0bc88425aadb16ad91670))
+- signup page onboarding check for widget if all fields have no errors ([e89b3a5](https://github.com/SocialGouv/carte-jeune-engage/commit/e89b3a5cc9e8df327ac0bc88425aadb16ad91670))
 
 ## [0.70.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.9...v0.70.10) (2024-11-20)
 
-
 ### Bug Fixes
 
-* middleware check user complete ([5af9653](https://github.com/SocialGouv/carte-jeune-engage/commit/5af965371344798bbb735810198cc0606cbaa894))
+- middleware check user complete ([5af9653](https://github.com/SocialGouv/carte-jeune-engage/commit/5af965371344798bbb735810198cc0606cbaa894))
 
 ## [0.70.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.8...v0.70.9) (2024-11-20)
 
