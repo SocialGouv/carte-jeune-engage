@@ -21,7 +21,7 @@ export const createOrderPayload = (
   total_amount_to_pay: number
 ) => {
   const { street_address, city, zip_code } = extractAddressInformations(
-    user.address || ""
+    user.address || "8 Rue du cej, Fabrique 75002"
   );
 
   const signature = crypto

@@ -295,18 +295,28 @@ export function cleanHtml(html: string): string {
 }
 
 export function extractAddressInformations(address: string) {
-  const regex = /^(.+?),\s*([^0-9]+?)\s+(\d+)$/;
-  const match = address.match(regex);
-
-  if (!match) {
-    throw new Error("Invalid address format");
-  }
-
-  return {
-    street_address: match[1].trim(),
-    city: match[2].trim(),
-    zip_code: match[3],
+  const defaultAddress = {
+    street_address: "8 Rue du cej",
+    city: "Fabrique",
+    zip_code: "75002",
   };
+
+  try {
+    const regex = /^(.+?),\s*([^0-9]+?)\s+(\d+)$/;
+    const match = address.match(regex);
+
+    if (!match) {
+      return defaultAddress;
+    }
+
+    return {
+      street_address: match[1].trim(),
+      city: match[2].trim(),
+      zip_code: match[3],
+    };
+  } catch {
+    return defaultAddress;
+  }
 }
 
 export const sortOffersObizFirst = (a: OfferIncluded, b: OfferIncluded) => {
