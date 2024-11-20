@@ -182,7 +182,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
 
     // If no user found, we redirect to the widget login page
-    if (!users.docs.length) {
+    if (!users.docs.length || (users.docs[0] && !users.docs[0].firstName)) {
       return {
         props: {
           cej_id: cejUserId,
