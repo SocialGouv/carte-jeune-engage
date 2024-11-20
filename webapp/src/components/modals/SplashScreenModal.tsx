@@ -30,7 +30,7 @@ const SplashScreenModal = ({
       router
         .push(
           cjeRedirectionOfferId
-            ? `/dashboard/offer/cje/${cjeRedirectionOfferId}`
+            ? `/dashboard/offer/${cjeRedirectionOfferId}`
             : "/dashboard"
         )
         .then(() => {
