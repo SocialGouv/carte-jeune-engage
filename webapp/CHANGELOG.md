@@ -1,3 +1,10 @@
+## [0.70.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.5...v0.70.6) (2024-11-20)
+
+
+### Bug Fixes
+
+* user email check for login widget case ([862204c](https://github.com/SocialGouv/carte-jeune-engage/commit/862204cea930f3f1f369fd006b430fed642ecece))
+
 ## [0.70.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.4...v0.70.5) (2024-11-20)
 
 
