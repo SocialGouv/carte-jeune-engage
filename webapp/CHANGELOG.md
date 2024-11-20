@@ -1,3 +1,10 @@
+## [0.70.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.9...v0.70.10) (2024-11-20)
+
+
+### Bug Fixes
+
+* middleware check user complete ([5af9653](https://github.com/SocialGouv/carte-jeune-engage/commit/5af965371344798bbb735810198cc0606cbaa894))
+
 ## [0.70.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.8...v0.70.9) (2024-11-20)
 
 ### Bug Fixes
