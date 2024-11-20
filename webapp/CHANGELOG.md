@@ -1,3 +1,10 @@
+## [0.70.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.4...v0.70.5) (2024-11-20)
+
+
+### Bug Fixes
+
+* default address if address is invalid for obiz ([3e1bf41](https://github.com/SocialGouv/carte-jeune-engage/commit/3e1bf417b62b1ac28522ceceb23c3e0dc70200cd))
+
 ## [0.70.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.3...v0.70.4) (2024-11-19)
 
 
