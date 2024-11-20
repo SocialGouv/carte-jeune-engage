@@ -1,3 +1,10 @@
+## [0.70.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.12...v0.70.13) (2024-11-20)
+
+
+### Bug Fixes
+
+* order wallet items by updatedAt ([667ba0e](https://github.com/SocialGouv/carte-jeune-engage/commit/667ba0e04284aefdd37d37c7665439a10b85b761))
+
 ## [0.70.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.11...v0.70.12) (2024-11-20)
 
 ### Bug Fixes
