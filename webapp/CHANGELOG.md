@@ -1,3 +1,10 @@
+## [0.70.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.8...v0.70.9) (2024-11-20)
+
+
+### Bug Fixes
+
+* remove splash screen on first login for cej login widget ([1273ad9](https://github.com/SocialGouv/carte-jeune-engage/commit/1273ad9ed8676e5b91b6bbb7c62013c9a83662fa))
+
 ## [0.70.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.7...v0.70.8) (2024-11-20)
 
 
