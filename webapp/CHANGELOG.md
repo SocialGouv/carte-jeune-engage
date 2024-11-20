@@ -1,3 +1,10 @@
+## [0.70.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.7...v0.70.8) (2024-11-20)
+
+
+### Bug Fixes
+
+* client side sms for second try of login widget ([3de2b53](https://github.com/SocialGouv/carte-jeune-engage/commit/3de2b53f0145e3cc4aa1b65fc4c363b8b305b4bc))
+
 ## [0.70.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.6...v0.70.7) (2024-11-20)
 
 
