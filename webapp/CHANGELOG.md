@@ -1,3 +1,10 @@
+## [0.70.16](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.15...v0.70.16) (2024-11-21)
+
+
+### Bug Fixes
+
+* remove link to page help and put crisp ([16a9d60](https://github.com/SocialGouv/carte-jeune-engage/commit/16a9d60405fc003e1e46a60aeba71a7957c47968))
+
 ## [0.70.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.14...v0.70.15) (2024-11-21)
 
 ### Bug Fixes
