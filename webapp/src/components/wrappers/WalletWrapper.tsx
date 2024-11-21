@@ -1,33 +1,52 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Icon, Link } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { PassIcon } from "../icons/pass";
-import { useRouter } from "next/router";
+import { HiCog6Tooth, HiQuestionMarkCircle, HiUser } from "react-icons/hi2";
+import NextLink from "next/link";
 
 type WalletWrapperProps = {
   children: ReactNode;
 };
 
 const WalletWrapper = ({ children }: WalletWrapperProps) => {
-  const router = useRouter();
-
   return (
     <Flex flexDir="column" pt={14} h="full" bgColor="bgGray">
-      <Button
-        colorScheme="whiteBtn"
-        color="black"
-        alignSelf="start"
-        leftIcon={<PassIcon w={6} h={6} />}
-        ml={8}
-        mb={4}
-        py={5}
-        px={3}
-        fontWeight={500}
-        borderRadius="2.5xl"
-        size="xs"
-        onClick={() => router.push("/dashboard/account")}
-      >
-        Ma carte
-      </Button>
+      <Flex alignItems="center" mx={8} mb={4} gap={3}>
+        <Link as={NextLink} href="/dashboard/account/information" passHref>
+          <Button
+            colorScheme="whiteBtn"
+            color="black"
+            leftIcon={<Icon as={HiUser} w={6} h={6} />}
+            iconSpacing={0}
+            py={5}
+            px={3}
+            fontWeight={500}
+            borderRadius="2.5xl"
+            size="xs"
+          />
+        </Link>
+        <Link as={NextLink} href="/dashboard/account/settings" passHref>
+          <Button
+            colorScheme="whiteBtn"
+            color="black"
+            leftIcon={<Icon as={HiCog6Tooth} w={6} h={6} />}
+            iconSpacing={0}
+            py={5}
+            px={3}
+            fontWeight={500}
+            borderRadius="2.5xl"
+            size="xs"
+          />
+        </Link>
+        <Link
+          as={NextLink}
+          href="/dashboard/account/help"
+          passHref
+          h={6}
+          ml="auto"
+        >
+          <Icon as={HiQuestionMarkCircle} w={6} h={6} />
+        </Link>
+      </Flex>
       <Flex
         flexDir="column"
         h="full"

@@ -1,9 +1,8 @@
 ## [0.70.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.13...v0.70.14) (2024-11-20)
 
-
 ### Bug Fixes
 
-* remove hard coded cje from redirect to specific offer_id from user widget ([a81b7d8](https://github.com/SocialGouv/carte-jeune-engage/commit/a81b7d81c519e042208d9d7aea5c42a4a3ba532f))
+- remove hard coded cje from redirect to specific offer_id from user widget ([a81b7d8](https://github.com/SocialGouv/carte-jeune-engage/commit/a81b7d81c519e042208d9d7aea5c42a4a3ba532f))
 
 ## [0.70.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.12...v0.70.13) (2024-11-20)
 
