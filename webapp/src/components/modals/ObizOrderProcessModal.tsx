@@ -46,6 +46,13 @@ const ObizOfferVariableContent = ({
   const isVariablePrice =
     articles.length === 1 && articles[0].kind === "variable_price";
 
+  const amountWithDiscount = isVariablePrice
+    ? amount - (amount * articles[0].reductionPercentage) / 100
+    : selectedArticles.reduce(
+        (acc, { article, quantity }) => acc + quantity * (article.price ?? 0),
+        0
+      );
+
   switch (step) {
     case "amount":
       if (isVariablePrice) {
@@ -164,9 +171,8 @@ const ObizOfferVariableContent = ({
                 setCheckedCGV={setCheckedCGV}
                 formError={error}
                 setFormError={setError}
-                discount={articles[0].reductionPercentage}
-                articles={selectedArticles}
                 amount={amount}
+                articles={selectedArticles}
                 offer={offer}
               />
             )}
@@ -177,11 +183,10 @@ const ObizOfferVariableContent = ({
         </>
       );
     case "payment":
-      const discount = articles[0].reductionPercentage;
       return (
         <LayoutOrderStatus
           status="loading"
-          title={`Vous allez payer ${formatter2Digits.format(amount - (amount * discount) / 100)}€`}
+          title={`Vous allez payer ${formatter2Digits.format(amountWithDiscount)}€`}
         >
           {" "}
           <Box mt="auto" textAlign="center">

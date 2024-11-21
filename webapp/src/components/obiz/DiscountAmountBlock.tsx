@@ -89,11 +89,13 @@ const DiscountArticleBlock = ({
               if (quantity === 0) return;
               setIsMaximumQuantity(false);
               setSelectedArticles((prev) =>
-                prev.map((a) =>
-                  a.article.reference === article.reference
-                    ? { ...a, quantity: a.quantity - 1 }
-                    : a
-                )
+                prev
+                  .map((a) =>
+                    a.article.reference === article.reference
+                      ? { ...a, quantity: a.quantity - 1 }
+                      : a
+                  )
+                  .filter((a) => a.quantity > 0)
               );
               setAmount((prev) => prev - (article.publicPrice as number));
             }}
@@ -278,9 +280,18 @@ const DiscountAmountBlock = (props: DiscountAmountBlockProps) => {
               fontWeight={800}
               opacity={isDisabled ? 0.25 : 1}
             >
-              {(amount - amount * (discount / 100))
-                .toFixed(isDisabled ? 0 : 2)
-                .replace(".", ",")}
+              {kind === "variable_price"
+                ? (amount - amount * (discount / 100))
+                    .toFixed(isDisabled ? 0 : 2)
+                    .replace(".", ",")
+                : props.selectedArticles
+                    .reduce(
+                      (acc, { article, quantity }) =>
+                        acc + (article.price ?? 0) * quantity,
+                      0
+                    )
+                    .toFixed(isDisabled ? 0 : 2)
+                    .replace(".", ",")}
               €
             </Text>
           </Flex>
@@ -314,9 +325,20 @@ const DiscountAmountBlock = (props: DiscountAmountBlockProps) => {
               fontWeight={800}
               opacity={isDisabled ? 0.25 : 1}
             >
-              {(amount * (discount / 100))
-                .toFixed(isDisabled ? 0 : 2)
-                .replace(".", ",")}
+              {kind === "variable_price"
+                ? (amount * (discount / 100))
+                    .toFixed(isDisabled ? 0 : 2)
+                    .replace(".", ",")
+                : props.selectedArticles
+                    .reduce(
+                      (acc, { article, quantity }) =>
+                        acc +
+                        ((article.publicPrice ?? 0) - (article.price ?? 0)) *
+                          quantity,
+                      0
+                    )
+                    .toFixed(isDisabled ? 0 : 2)
+                    .replace(".", ",")}
               €
             </Text>
           </Center>

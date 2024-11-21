@@ -16,7 +16,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 type RecapOrderDefaultProps = {
   amount: number;
-  discount: number;
   offer: OfferIncluded;
   checkedCGV: boolean;
   setCheckedCGV: Dispatch<SetStateAction<boolean>>;
@@ -26,6 +25,7 @@ type RecapOrderDefaultProps = {
 
 interface RecapOrderVariable extends RecapOrderDefaultProps {
   kind: "variable_price";
+  discount: number;
 }
 
 interface RecapOrderFixed extends RecapOrderDefaultProps {
@@ -39,15 +39,27 @@ const RecapOrder = (props: RecapOrderProps) => {
   const {
     kind,
     amount,
-    discount,
     offer,
     checkedCGV,
     setCheckedCGV,
     formError,
     setFormError,
   } = props;
-  const amountWithDiscount = amount - (amount * discount) / 100;
+
+  const amountWithDiscount =
+    kind === "variable_price"
+      ? amount - (amount * props.discount) / 100
+      : props.articles.reduce(
+          (acc, { article, quantity }) => acc + quantity * (article.price ?? 0),
+          0
+        );
+
   const discountAmount = amount - amountWithDiscount;
+
+  const discount =
+    kind === "variable_price"
+      ? props.discount
+      : Math.round(((amount - amountWithDiscount) / amount) * 100);
 
   const [showCondition, setShowCondition] = useState(false);
 
