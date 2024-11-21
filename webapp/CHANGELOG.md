@@ -1,3 +1,10 @@
+## [0.70.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.14...v0.70.15) (2024-11-21)
+
+
+### Bug Fixes
+
+* remove card link on wallet page and put settings, informations and help links ([0b26571](https://github.com/SocialGouv/carte-jeune-engage/commit/0b2657138d4b63daced65f4f7e14cfb2c079a5e7))
+
 ## [0.70.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.13...v0.70.14) (2024-11-20)
 
 ### Bug Fixes
