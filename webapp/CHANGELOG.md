@@ -1,3 +1,10 @@
+## [0.70.20](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.19...v0.70.20) (2024-11-22)
+
+
+### Bug Fixes
+
+* submitting avoid replacing route signup ([a3ccf6d](https://github.com/SocialGouv/carte-jeune-engage/commit/a3ccf6dfb2055c0850c91c10fe0b5a6a78f7df19))
+
 ## [0.70.19](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.18...v0.70.19) (2024-11-22)
 
 ### Bug Fixes
