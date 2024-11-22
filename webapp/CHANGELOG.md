@@ -1,9 +1,8 @@
 ## [0.70.18](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.17...v0.70.18) (2024-11-22)
 
-
 ### Bug Fixes
 
-* remove router push from signup submit ([8c777e5](https://github.com/SocialGouv/carte-jeune-engage/commit/8c777e50da8b1c98c9d3c586e6ba64bfc9184e91))
+- remove router push from signup submit ([8c777e5](https://github.com/SocialGouv/carte-jeune-engage/commit/8c777e50da8b1c98c9d3c586e6ba64bfc9184e91))
 
 ## [0.70.17](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.16...v0.70.17) (2024-11-21)
 
