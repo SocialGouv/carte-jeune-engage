@@ -9,6 +9,7 @@ import {
 import Image from "next/image";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { UserIncluded } from "~/server/api/routers/user";
 import { useAuth } from "~/providers/Auth";
 
 const SplashScreenModal = ({
@@ -22,23 +23,26 @@ const SplashScreenModal = ({
   const router = useRouter();
 
   useEffect(() => {
+    if (!router.isReady) return;
+
     const cjeRedirectionOfferId = localStorage.getItem(
       "cje-widget-redirection-offer-id"
     );
     const timeoutId = setTimeout(() => {
-      if (!cjeRedirectionOfferId) {
-        router.reload();
-        onClose();
-      } else {
-        router.push(`/dashboard/offer/${cjeRedirectionOfferId}`).then(() => {
+      const nextRoute = cjeRedirectionOfferId
+        ? `/dashboard/offer/${cjeRedirectionOfferId}`
+        : "/dashboard";
+
+      router.prefetch(nextRoute, nextRoute, { priority: true }).then(() => {
+        router.push(nextRoute).then(() => {
           localStorage.removeItem("cje-widget-redirection-offer-id");
           onClose();
         });
-      }
+      });
     }, 1200);
 
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [router.isReady]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
