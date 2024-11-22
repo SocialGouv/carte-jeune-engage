@@ -143,7 +143,6 @@ const SignupPage: React.FC = () => {
             } else {
               setShowSplashScreenModal(true);
             }
-            setIsSubmitting(false);
           });
         });
       });
@@ -197,11 +196,13 @@ const SignupPage: React.FC = () => {
   }, [tags]);
 
   useEffect(() => {
+    if (isSubmitting) return;
+
     const localStorageSignupStep =
       JSON.parse(localStorage.getItem("cje-signup-form") as string)
         ?.signupStepNumber ?? 0;
 
-    console.log("replacing route : ", router.pathname);
+    console.log("replacing route : ", router.pathname, isSubmitting);
 
     if (!signupStep || typeof signupStep !== "string" || steps.length === 0) {
       if (router.isReady) {
