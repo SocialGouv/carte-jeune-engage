@@ -1,3 +1,10 @@
+## [0.70.23](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.22...v0.70.23) (2024-11-22)
+
+
+### Bug Fixes
+
+* prefetch nextroute ([0410b5d](https://github.com/SocialGouv/carte-jeune-engage/commit/0410b5dd78b22384a1e6b4547bb618f6aa9cfade))
+
 ## [0.70.22](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.21...v0.70.22) (2024-11-22)
 
 
