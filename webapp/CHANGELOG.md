@@ -1,3 +1,10 @@
+## [0.70.24](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.23...v0.70.24) (2024-11-22)
+
+
+### Bug Fixes
+
+* reload after classic onboarding ([6aa1437](https://github.com/SocialGouv/carte-jeune-engage/commit/6aa14370ccfc5e809e0a1a84095cf8f9cad00469))
+
 ## [0.70.23](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.22...v0.70.23) (2024-11-22)
 
 

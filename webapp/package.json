@@ -1,6 +1,6 @@
 {
   "name": "webapp",
-  "version": "0.70.23",
+  "version": "0.70.24",
   "private": true,
   "scripts": {
     "dev": "next dev",
