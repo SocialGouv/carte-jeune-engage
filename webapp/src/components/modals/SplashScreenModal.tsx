@@ -9,7 +9,6 @@ import {
 import Image from "next/image";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { UserIncluded } from "~/server/api/routers/user";
 import { useAuth } from "~/providers/Auth";
 
 const SplashScreenModal = ({

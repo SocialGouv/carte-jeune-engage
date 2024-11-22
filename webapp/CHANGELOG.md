@@ -1,9 +1,8 @@
 ## [0.70.17](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.16...v0.70.17) (2024-11-21)
 
-
 ### Bug Fixes
 
-* calculate discount price and economy from article price instead of article discount with amount for fixed price kind ([a9071cf](https://github.com/SocialGouv/carte-jeune-engage/commit/a9071cf664ff3fbe133216bd66c21add4ea78293))
+- calculate discount price and economy from article price instead of article discount with amount for fixed price kind ([a9071cf](https://github.com/SocialGouv/carte-jeune-engage/commit/a9071cf664ff3fbe133216bd66c21add4ea78293))
 
 ## [0.70.16](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.15...v0.70.16) (2024-11-21)
 

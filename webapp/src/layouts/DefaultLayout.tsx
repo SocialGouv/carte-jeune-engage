@@ -35,7 +35,10 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
         !!user &&
         !user.notification_status &&
         !isIOS(),
-      onClose: () => setShowNotificationModal(false),
+      onClose: () => {
+        setShowNotificationModal(false);
+        setShowSplashScreenModal(true);
+      },
     });
 
   const { isOpen: isSplashscreenModalOpen, onClose: onSplashscreenModalClose } =

@@ -11,7 +11,6 @@ import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import { base64ToUint8Array } from "~/utils/tools";
 import LoadingLoader from "../LoadingLoader";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const NotificationModalContent = ({
@@ -88,9 +87,7 @@ const NotificationModal = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const router = useRouter();
-  const { refetchUser, serviceWorkerRegistration, setShowSplashScreenModal } =
-    useAuth();
+  const { refetchUser, serviceWorkerRegistration } = useAuth();
 
   const { mutateAsync: updateUser } = api.user.update.useMutation({
     onSuccess: () => refetchUser(),
@@ -115,7 +112,6 @@ const NotificationModal = ({
     });
 
     refetchUser();
-    setShowSplashScreenModal(true);
     onClose();
   };
 
@@ -123,7 +119,6 @@ const NotificationModal = ({
     const timeout = setTimeout(() => {
       if (!serviceWorkerRegistration) {
         onClose();
-        setShowSplashScreenModal(true);
       }
     }, 2000);
 

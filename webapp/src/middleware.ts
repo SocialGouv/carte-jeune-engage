@@ -13,6 +13,7 @@ export function middleware(request: NextRequest) {
   if (jwtCookie?.value) {
     const decoded = jwtDecode(jwtCookie.value) as { [key: string]: any };
     const collection = (decoded as any)["collection"] as string;
+    console.log("Decoded JWT", decoded);
     switch (collection) {
       case "users":
         jwtRole = "user";
@@ -27,6 +28,7 @@ export function middleware(request: NextRequest) {
           (decoded.firstName === null || decoded.firstName === "") &&
           !request.nextUrl.pathname.startsWith("/signup")
         ) {
+          console.log("Redirecting to /signup");
           return NextResponse.redirect(new URL("/signup", request.url));
         }
         break;
