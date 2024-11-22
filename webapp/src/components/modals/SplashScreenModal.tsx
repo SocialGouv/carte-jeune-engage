@@ -26,16 +26,15 @@ const SplashScreenModal = ({
       "cje-widget-redirection-offer-id"
     );
     const timeoutId = setTimeout(() => {
-      const nextRoute = cjeRedirectionOfferId
-        ? `/dashboard/offer/${cjeRedirectionOfferId}`
-        : "/dashboard";
-
-      console.log(nextRoute);
-
-      router.push(nextRoute).then(() => {
-        localStorage.removeItem("cje-widget-redirection-offer-id");
+      if (!cjeRedirectionOfferId) {
+        router.reload();
         onClose();
-      });
+      } else {
+        router.push(`/dashboard/offer/${cjeRedirectionOfferId}`).then(() => {
+          localStorage.removeItem("cje-widget-redirection-offer-id");
+          onClose();
+        });
+      }
     }, 1200);
 
     return () => clearTimeout(timeoutId);
