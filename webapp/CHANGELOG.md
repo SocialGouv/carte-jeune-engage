@@ -1,3 +1,10 @@
+## [0.70.21](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.20...v0.70.21) (2024-11-22)
+
+
+### Bug Fixes
+
+* log nextRoute before redirect ([0905f65](https://github.com/SocialGouv/carte-jeune-engage/commit/0905f65f27c89696a8aebd89b1e861e550f07467))
+
 ## [0.70.20](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.19...v0.70.20) (2024-11-22)
 
 
