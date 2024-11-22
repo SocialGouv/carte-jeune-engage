@@ -138,6 +138,7 @@ const SignupPage: React.FC = () => {
           refetchUser().then(() => {
             localStorage.removeItem("cje-signup-cgu");
             localStorage.removeItem("cje-signup-form");
+            router.push("/dashboard");
             if (!!user && !user.notification_status && !isIOS()) {
               setShowNotificationModal(true);
             } else {
