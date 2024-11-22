@@ -1,3 +1,10 @@
+## [0.70.19](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.18...v0.70.19) (2024-11-22)
+
+
+### Bug Fixes
+
+* log router replace ([78461cb](https://github.com/SocialGouv/carte-jeune-engage/commit/78461cbd8277b78121a36082d3f14b94cab558ac))
+
 ## [0.70.18](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.17...v0.70.18) (2024-11-22)
 
 ### Bug Fixes
