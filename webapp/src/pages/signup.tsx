@@ -202,8 +202,6 @@ const SignupPage: React.FC = () => {
       JSON.parse(localStorage.getItem("cje-signup-form") as string)
         ?.signupStepNumber ?? 0;
 
-    console.log("replacing route : ", router.pathname, isSubmitting);
-
     if (!signupStep || typeof signupStep !== "string" || steps.length === 0) {
       if (router.isReady) {
         router.replace({

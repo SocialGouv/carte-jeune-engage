@@ -27,7 +27,6 @@ export function middleware(request: NextRequest) {
           (decoded.firstName === null || decoded.firstName === "") &&
           !request.nextUrl.pathname.startsWith("/signup")
         ) {
-          console.log("Redirecting to /signup");
           return NextResponse.redirect(new URL("/signup", request.url));
         }
         break;

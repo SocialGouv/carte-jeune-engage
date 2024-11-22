@@ -23,26 +23,22 @@ const SplashScreenModal = ({
   const router = useRouter();
 
   useEffect(() => {
-    if (!router.isReady) return;
-
     const cjeRedirectionOfferId = localStorage.getItem(
       "cje-widget-redirection-offer-id"
     );
     const timeoutId = setTimeout(() => {
-      const nextRoute = cjeRedirectionOfferId
-        ? `/dashboard/offer/${cjeRedirectionOfferId}`
-        : "/dashboard";
-
-      router.prefetch(nextRoute, nextRoute, { priority: true }).then(() => {
-        router.push(nextRoute).then(() => {
+      if (!cjeRedirectionOfferId) {
+        router.reload();
+      } else {
+        router.push(`/dashboard/offer/${cjeRedirectionOfferId}`).then(() => {
           localStorage.removeItem("cje-widget-redirection-offer-id");
           onClose();
         });
-      });
+      }
     }, 1200);
 
     return () => clearTimeout(timeoutId);
-  }, [router.isReady]);
+  }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
