@@ -13,7 +13,6 @@ export function middleware(request: NextRequest) {
   if (jwtCookie?.value) {
     const decoded = jwtDecode(jwtCookie.value) as { [key: string]: any };
     const collection = (decoded as any)["collection"] as string;
-    console.log("Decoded JWT", decoded);
     switch (collection) {
       case "users":
         jwtRole = "user";
