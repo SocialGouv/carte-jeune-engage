@@ -56,9 +56,11 @@ export default function Wallet() {
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );
 
+  const isWalletEmpty = !walletOffers || !walletOffers.length;
+
   return (
     <WalletWrapper>
-      {walletOffers && walletOffers.length > 0 ? (
+      {!isWalletEmpty ? (
         <>
           <Flex flexDir="column" gap={6}>
             {walletOffers.map((walletOffer, index) => (
@@ -84,36 +86,36 @@ export default function Wallet() {
               </Box>
             ))}
           </Flex>
-          <Box px={8}>
-            <Divider mt={16} borderColor="cje-gray.100" />
-            <Link
-              as={NextLink}
-              href="/dashboard/account/history"
-              _hover={{ textDecoration: "none" }}
-              passHref
-            >
-              <Flex alignItems="center" justifyContent="space-between" py={5}>
-                <Flex alignItems="center" gap={4}>
-                  <Icon
-                    as={HiReceiptRefund}
-                    w={5}
-                    h={5}
-                    mt={0.5}
-                    color="blackLight"
-                  />
-                  <Text fontWeight={500}>Historique des réductions</Text>
-                </Flex>
-                <Icon as={HiChevronRight} w={6} h={6} />
-              </Flex>
-            </Link>
-            <Divider borderColor="cje-gray.100" />
-          </Box>
         </>
       ) : (
         <Box px={8}>
           <CouponCard mode="wallet" />
         </Box>
       )}
+      <Box px={8} my={8}>
+        <Divider borderColor="cje-gray.100" />
+        <Link
+          as={NextLink}
+          href="/dashboard/account/history"
+          _hover={{ textDecoration: "none" }}
+          passHref
+        >
+          <Flex alignItems="center" justifyContent="space-between" py={5}>
+            <Flex alignItems="center" gap={4}>
+              <Icon
+                as={HiReceiptRefund}
+                w={5}
+                h={5}
+                mt={0.5}
+                color="blackLight"
+              />
+              <Text fontWeight={500}>Historique des réductions</Text>
+            </Flex>
+            <Icon as={HiChevronRight} w={6} h={6} />
+          </Flex>
+        </Link>
+        <Divider borderColor="cje-gray.100" />
+      </Box>
       <Box px={8}>
         <Center
           flexDir="column"
