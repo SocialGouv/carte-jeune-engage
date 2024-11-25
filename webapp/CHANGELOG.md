@@ -1,16 +1,14 @@
 ## [0.70.25](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.24...v0.70.25) (2024-11-22)
 
-
 ### Bug Fixes
 
-* router push dashboard before ([4651d31](https://github.com/SocialGouv/carte-jeune-engage/commit/4651d31d7a442a549565c2756f3d07bcd5169892))
+- router push dashboard before ([4651d31](https://github.com/SocialGouv/carte-jeune-engage/commit/4651d31d7a442a549565c2756f3d07bcd5169892))
 
 ## [0.70.24](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.23...v0.70.24) (2024-11-22)
 
-
 ### Bug Fixes
 
-* reload after classic onboarding ([6aa1437](https://github.com/SocialGouv/carte-jeune-engage/commit/6aa14370ccfc5e809e0a1a84095cf8f9cad00469))
+- reload after classic onboarding ([6aa1437](https://github.com/SocialGouv/carte-jeune-engage/commit/6aa14370ccfc5e809e0a1a84095cf8f9cad00469))
 
 ## [0.70.23](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.22...v0.70.23) (2024-11-22)
 
