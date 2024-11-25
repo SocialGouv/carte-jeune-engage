@@ -22,10 +22,12 @@ import InStoreSection from "../InStoreSection";
 import TextWithLinks from "../TextWithLinks";
 import ConditionBlocksSection from "../ConditionBlocksSection";
 import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
+import { formatMinutesDisplay } from "~/utils/tools";
 
 type OfferContentProps = {
   offer: OfferIncluded;
   canTakeCoupon: boolean;
+  cooldownInMinutes: number | null;
   disabled: boolean;
   handleValidateOffer: (
     offerId: number,
@@ -38,6 +40,7 @@ const OfferContent = (props: OfferContentProps) => {
   const {
     offer,
     canTakeCoupon,
+    cooldownInMinutes,
     disabled,
     handleValidateOffer,
     isLoadingValidateOffer,
@@ -91,6 +94,7 @@ const OfferContent = (props: OfferContentProps) => {
         ) : (
           <Button
             fontSize={14}
+            isDisabled={!!cooldownInMinutes}
             w="full"
             size="md"
             isLoading={isLoadingValidateOffer}
@@ -98,9 +102,21 @@ const OfferContent = (props: OfferContentProps) => {
               push(["trackEvent", "Inactive", "J'active mon offre"]);
               handleValidateOffer(offer.id);
             }}
-            leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
+            leftIcon={
+              cooldownInMinutes ? undefined : (
+                <Icon as={HiMiniEye} w={5} h={5} />
+              )
+            }
+            lineHeight={"xl"}
           >
-            Voir mon code
+            {cooldownInMinutes ? (
+              <>
+                Nouveau code disponible dans <br />{" "}
+                {formatMinutesDisplay(cooldownInMinutes)}
+              </>
+            ) : (
+              "Voir mon code"
+            )}
           </Button>
         )}
       </Box>
@@ -213,7 +229,7 @@ const OfferContent = (props: OfferContentProps) => {
         w="full"
       />
       <Box h="200px" w="full" bgColor={offer?.partner.color} />
-      {!disabled && (
+      {!disabled && !cooldownInMinutes && (
         <Flex
           position="fixed"
           zIndex={10}

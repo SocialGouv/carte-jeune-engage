@@ -214,11 +214,42 @@ export const isNbOfDaysToEndOfTheMonth = (nbOfDays: number) => {
 
 export const dateDiffInDays = (a: Date, b: Date) => {
   const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-  // Discard the time and time-zone information.
+
   const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
   const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
 
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+};
+
+export const dateDiffInHours = (a: Date, b: Date) => {
+  const _MS_PER_HOUR = 1000 * 60 * 60;
+
+  const time1 = a.getTime();
+  const time2 = b.getTime();
+
+  return Math.floor((time2 - time1) / _MS_PER_HOUR);
+};
+
+export const dateDiffInMinutes = (a: Date, b: Date) => {
+  const _MS_PER_MINUTE = 1000 * 60;
+
+  const time1 = a.getTime();
+  const time2 = b.getTime();
+
+  return Math.floor((time2 - time1) / _MS_PER_MINUTE);
+};
+
+export const formatMinutesDisplay = (minutes: number) => {
+  if (minutes <= 0) return "";
+
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (hours > 0) {
+    return `${hours} heure${hours > 1 ? "s" : ""} ${remainingMinutes > 0 ? `et ${remainingMinutes} minute${remainingMinutes > 1 ? "s" : ""}` : ""}`;
+  }
+
+  return `${remainingMinutes} minute${remainingMinutes > 1 ? "s" : ""}`;
 };
 
 export function paginateArray<T>(array: T[], itemsPerPage: number): T[][] {

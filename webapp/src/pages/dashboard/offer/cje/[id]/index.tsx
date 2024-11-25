@@ -1,17 +1,17 @@
 import { Center, useDisclosure, useToast } from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { IoCloseCircleOutline } from "react-icons/io5";
 import CouponCard from "~/components/cards/CouponCard";
 import OfferCard from "~/components/cards/OfferCard";
 import LoadingLoader from "~/components/LoadingLoader";
+import CouponContent from "~/components/offer/page/CouponContent";
+import OfferContent from "~/components/offer/page/OfferContent";
+import ToastComponent from "~/components/ToastComponent";
 import OfferHeaderWrapper from "~/components/wrappers/OfferHeaderWrapper";
 import { api } from "~/utils/api";
-import { motion, AnimatePresence } from "framer-motion";
-import OfferContent from "~/components/offer/page/OfferContent";
-import CouponContent from "~/components/offer/page/CouponContent";
-import { isIOS } from "~/utils/tools";
-import ToastComponent from "~/components/ToastComponent";
-import { IoCloseCircleOutline } from "react-icons/io5";
+import { dateDiffInMinutes, isIOS, isOlderThan24Hours } from "~/utils/tools";
 
 const flipVariants = {
   hidden: { rotateY: 90 },
@@ -43,7 +43,7 @@ export default function OfferCjePage() {
   const { data: offer } = resultOffer || {};
   const { data: coupon } = resultCoupon || {};
 
-  // There is 3 ways user can take a new coupon
+  // There is 3 ways user see the "Voir mon code" button
   //		1 - User does not have a coupon assigned
   //		2 - User has an unused coupon assigned
   //		3 - User has a used coupon assigned but offer is cumulative
@@ -51,8 +51,26 @@ export default function OfferCjePage() {
     !coupon ||
     (!!coupon && !coupon.used) ||
     (!!coupon && !!coupon.used && !!offer?.cumulative);
+
   const hasUnusedCoupon = !!coupon && !coupon.used;
-  const disabled = !!coupon && !!coupon.used && !offer?.cumulative;
+
+  // Non cumulative offer
+  const disabled = !offer?.cumulative && !!coupon && !!coupon.used;
+
+  // Cumulative offer
+  const cooldownInMinutes =
+    !!offer?.cumulative &&
+    !!coupon &&
+    !!coupon.used &&
+    !!coupon.assignUserAt &&
+    !isOlderThan24Hours(coupon.assignUserAt)
+      ? dateDiffInMinutes(
+          new Date(),
+          new Date(
+            new Date(coupon.assignUserAt).getTime() + 24 * 60 * 60 * 1000
+          )
+        )
+      : null;
 
   const { mutateAsync: increaseNbSeen } =
     api.offer.increaseNbSeen.useMutation();
@@ -251,6 +269,7 @@ export default function OfferCjePage() {
           handleValidateOffer={handleValidateOffer}
           isLoadingValidateOffer={isLoadingCouponToUser}
           canTakeCoupon={canTakeCoupon}
+          cooldownInMinutes={cooldownInMinutes}
           disabled={disabled}
         />
       ) : (
