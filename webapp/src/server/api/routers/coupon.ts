@@ -18,6 +18,7 @@ export const couponRouter = createTRPCRouter({
       const coupons = await ctx.payload.find({
         collection: "coupons",
         depth: 3,
+        sort: "-usedAt",
         where: {
           and: [
             { offer: { equals: offer_id } },

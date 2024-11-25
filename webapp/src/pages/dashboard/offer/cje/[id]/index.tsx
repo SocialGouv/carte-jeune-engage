@@ -1,4 +1,4 @@
-import { Center, useDisclosure } from "@chakra-ui/react";
+import { Center, useDisclosure, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import CouponCard from "~/components/cards/CouponCard";
@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import OfferContent from "~/components/offer/page/OfferContent";
 import CouponContent from "~/components/offer/page/CouponContent";
 import { isIOS } from "~/utils/tools";
+import ToastComponent from "~/components/ToastComponent";
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 const flipVariants = {
   hidden: { rotateY: 90 },
@@ -19,6 +21,7 @@ const flipVariants = {
 
 export default function OfferCjePage() {
   const router = useRouter();
+  const toast = useToast();
 
   const { id: offer_id } = router.query as { id: string };
 
@@ -40,6 +43,17 @@ export default function OfferCjePage() {
   const { data: offer } = resultOffer || {};
   const { data: coupon } = resultCoupon || {};
 
+  // There is 3 ways user can take a new coupon
+  //		1 - User does not have a coupon assigned
+  //		2 - User has an unused coupon assigned
+  //		3 - User has a used coupon assigned but offer is cumulative
+  const canTakeCoupon =
+    !coupon ||
+    (!!coupon && !coupon.used) ||
+    (!!coupon && !!coupon.used && !!offer?.cumulative);
+  const hasUnusedCoupon = !!coupon && !coupon.used;
+  const disabled = !!coupon && !!coupon.used && !offer?.cumulative;
+
   const { mutateAsync: increaseNbSeen } =
     api.offer.increaseNbSeen.useMutation();
 
@@ -47,7 +61,27 @@ export default function OfferCjePage() {
     mutateAsync: mutateAsyncCouponToUser,
     isLoading: isLoadingCouponToUser,
   } = api.coupon.assignToUser.useMutation({
-    onSuccess: () => refetchCoupon(),
+    onSuccess: () => {
+      refetchCoupon();
+    },
+    onError: (error) => {
+      if (error.data?.httpStatus === 404) {
+        toast({
+          render: () => (
+            <ToastComponent
+              bgColor="error"
+              text="Plus aucun code disponible pour cette offre, redirection..."
+              icon={IoCloseCircleOutline}
+            />
+          ),
+          duration: 2000,
+        });
+
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 2000);
+      }
+    },
   });
 
   const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -59,9 +93,16 @@ export default function OfferCjePage() {
     offerId: number,
     displayCoupon: boolean = true
   ) => {
-    if (!coupon) await mutateAsyncCouponToUser({ offer_id: offerId });
-    else if (coupon && coupon.used) return;
-    if (displayCoupon) setKind("coupon");
+    if (hasUnusedCoupon) {
+      setKind("coupon");
+    } else if (canTakeCoupon) {
+      try {
+        await mutateAsyncCouponToUser({ offer_id: offerId });
+        if (displayCoupon) setKind("coupon");
+      } catch (e) {
+        console.error(e);
+      }
+    }
   };
 
   const handleBookmarkOfferToUser = async () => {
@@ -209,7 +250,8 @@ export default function OfferCjePage() {
           offer={offer}
           handleValidateOffer={handleValidateOffer}
           isLoadingValidateOffer={isLoadingCouponToUser}
-          coupon={coupon}
+          canTakeCoupon={canTakeCoupon}
+          disabled={disabled}
         />
       ) : (
         coupon && (

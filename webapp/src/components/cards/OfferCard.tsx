@@ -32,7 +32,7 @@ const OfferCard = ({
   const utils = api.useUtils();
 
   const isBookmarked = !!offer.userCoupon;
-  const isDisabled = !!offer.userCoupon?.used;
+  const isDisabled = !!offer.userCoupon?.used && !offer.cumulative;
 
   const {
     mutateAsync: mutateAsyncCouponToUser,

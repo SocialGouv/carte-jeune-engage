@@ -25,7 +25,8 @@ import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocks
 
 type OfferContentProps = {
   offer: OfferIncluded;
-  coupon?: CouponIncluded;
+  canTakeCoupon: boolean;
+  disabled: boolean;
   handleValidateOffer: (
     offerId: number,
     displayCoupon?: boolean
@@ -34,8 +35,13 @@ type OfferContentProps = {
 };
 
 const OfferContent = (props: OfferContentProps) => {
-  const { offer, coupon, handleValidateOffer, isLoadingValidateOffer } = props;
-  const hasCoupon = !!coupon;
+  const {
+    offer,
+    canTakeCoupon,
+    disabled,
+    handleValidateOffer,
+    isLoadingValidateOffer,
+  } = props;
 
   const conditionsRef = useRef<HTMLUListElement>(null);
   const [isConditionsOpen, setIsConditionsOpen] = useState(false);
@@ -67,12 +73,10 @@ const OfferContent = (props: OfferContentProps) => {
     return offer.conditions ?? [];
   }, [offer, isConditionsOpen]);
 
-  const disabled = coupon && !!coupon.used;
-
   return (
     <Flex flexDir="column">
       <Box mt={6} px={4} w="full">
-        {coupon && coupon.used ? (
+        {disabled ? (
           <Box
             w="full"
             color="success"
@@ -177,13 +181,6 @@ const OfferContent = (props: OfferContentProps) => {
                   lineHeight="shorter"
                   borderBottom="2px solid black"
                   onClick={() => {
-                    // push([
-                    //   "trackEvent",
-                    //   "Offre",
-                    //   `${offer.partner.name} - ${offer.title} - ${
-                    //     !!coupon ? "Active" : "Inactive"
-                    //   } - Conditions`,
-                    // ]);
                     setIsConditionsOpen(true);
                   }}
                 >
@@ -234,25 +231,25 @@ const OfferContent = (props: OfferContentProps) => {
             w="40%"
             fontSize={16}
             borderWidth={1}
-            borderColor={hasCoupon ? "transparent" : "cje-gray.100"}
-            color={hasCoupon ? "white" : "blackLight"}
-            colorScheme={hasCoupon ? "primaryShades" : "inherit"}
-            isDisabled={hasCoupon}
-            isLoading={!hasCoupon && isLoadingValidateOffer}
+            borderColor={canTakeCoupon ? "cje-gray.100" : "transparent"}
+            color={canTakeCoupon ? "blackLight" : "white"}
+            colorScheme={canTakeCoupon ? "inherit" : "primaryShades"}
+            isDisabled={!canTakeCoupon}
+            isLoading={canTakeCoupon && isLoadingValidateOffer}
             onClick={() => {
-              if (!hasCoupon) {
+              if (canTakeCoupon) {
                 handleValidateOffer(offer.id, false);
               }
             }}
             leftIcon={
               <Icon
-                as={hasCoupon ? HiBookmark : HiOutlineBookmark}
+                as={canTakeCoupon ? HiOutlineBookmark : HiBookmark}
                 w={5}
                 h={5}
               />
             }
           >
-            {hasCoupon ? "Enregistré" : "Enregistrer"}
+            {canTakeCoupon ? "Enregistrer" : "Enregistré"}
           </Button>
           <Button
             w="60%"
