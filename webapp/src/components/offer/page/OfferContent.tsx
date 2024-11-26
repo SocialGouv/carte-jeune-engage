@@ -13,7 +13,12 @@ import {
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
-import { HiBookmark, HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
+import {
+  HiArrowPathRoundedSquare,
+  HiBookmark,
+  HiMiniEye,
+  HiOutlineBookmark,
+} from "react-icons/hi2";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
@@ -94,8 +99,8 @@ const OfferContent = (props: OfferContentProps) => {
         ) : (
           <Button
             fontSize={14}
-            isDisabled={!!cooldownInMinutes}
             w="full"
+            colorScheme={cooldownInMinutes ? "gray" : "blackBtn"}
             size="md"
             isLoading={isLoadingValidateOffer}
             onClick={() => {
@@ -103,20 +108,20 @@ const OfferContent = (props: OfferContentProps) => {
               handleValidateOffer(offer.id);
             }}
             leftIcon={
-              cooldownInMinutes ? undefined : (
+              cooldownInMinutes ? (
+                <Icon as={HiArrowPathRoundedSquare} w={5} h={5} />
+              ) : (
                 <Icon as={HiMiniEye} w={5} h={5} />
               )
             }
             lineHeight={"xl"}
+            style={{
+              pointerEvents: cooldownInMinutes ? "none" : "auto",
+            }}
           >
-            {cooldownInMinutes ? (
-              <>
-                Nouveau code disponible dans <br />{" "}
-                {formatMinutesDisplay(cooldownInMinutes)}
-              </>
-            ) : (
-              "Voir mon code"
-            )}
+            {cooldownInMinutes
+              ? `Prochain code dans ${formatMinutesDisplay(cooldownInMinutes)}`
+              : "Voir mon code"}
           </Button>
         )}
       </Box>

@@ -246,7 +246,7 @@ export const formatMinutesDisplay = (minutes: number) => {
   const remainingMinutes = minutes % 60;
 
   if (hours > 0) {
-    return `${hours} heure${hours > 1 ? "s" : ""} ${remainingMinutes > 0 ? `et ${remainingMinutes} minute${remainingMinutes > 1 ? "s" : ""}` : ""}`;
+    return `${hours}h${remainingMinutes > 0 ? `${remainingMinutes}min` : ""}`;
   }
 
   return `${remainingMinutes} minute${remainingMinutes > 1 ? "s" : ""}`;
