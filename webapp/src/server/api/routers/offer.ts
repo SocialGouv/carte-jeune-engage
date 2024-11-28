@@ -176,6 +176,7 @@ export const offerRouter = createTRPCRouter({
         collection: "coupons",
         depth: 0,
         limit: 1000,
+        sort: "-usedAt",
         where: {
           user: { equals: ctx.session.id },
         },

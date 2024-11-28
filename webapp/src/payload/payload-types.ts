@@ -230,6 +230,7 @@ export interface Offer {
   source: "cje" | "obiz";
   obiz_id?: string | null;
   kind: string;
+  cumulative?: boolean | null;
   url?: string | null;
   nbOfEligibleStores?: number | null;
   imageOfEligibleStores?: number | Media | null;

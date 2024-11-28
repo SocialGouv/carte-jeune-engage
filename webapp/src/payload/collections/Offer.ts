@@ -149,6 +149,17 @@ export const Offers: CollectionConfig = {
       },
     },
     {
+      type: "checkbox",
+      name: "cumulative",
+      label: "Bons cumulables",
+      defaultValue: false,
+      admin: {
+        position: "sidebar",
+        condition: (_, siblingData) =>
+          !!siblingData.kind && ["code", "voucher"].includes(siblingData.kind),
+      },
+    },
+    {
       name: "url",
       type: "text",
       label: "Lien de redirection de l'offre",

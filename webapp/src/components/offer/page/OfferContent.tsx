@@ -13,7 +13,12 @@ import {
 import { push } from "@socialgouv/matomo-next";
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
-import { HiBookmark, HiMiniEye, HiOutlineBookmark } from "react-icons/hi2";
+import {
+  HiArrowPathRoundedSquare,
+  HiBookmark,
+  HiMiniEye,
+  HiOutlineBookmark,
+} from "react-icons/hi2";
 import { getItemsTermsOfUse } from "~/payload/components/CustomSelectTermsOfUse";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
@@ -22,10 +27,13 @@ import InStoreSection from "../InStoreSection";
 import TextWithLinks from "../TextWithLinks";
 import ConditionBlocksSection from "../ConditionBlocksSection";
 import { getItemsConditionBlocks } from "~/payload/components/CustomSelectBlocksOfUse";
+import { formatMinutesDisplay } from "~/utils/tools";
 
 type OfferContentProps = {
   offer: OfferIncluded;
-  coupon?: CouponIncluded;
+  canTakeCoupon: boolean;
+  cooldownInMinutes: number | null;
+  disabled: boolean;
   handleValidateOffer: (
     offerId: number,
     displayCoupon?: boolean
@@ -34,8 +42,14 @@ type OfferContentProps = {
 };
 
 const OfferContent = (props: OfferContentProps) => {
-  const { offer, coupon, handleValidateOffer, isLoadingValidateOffer } = props;
-  const hasCoupon = !!coupon;
+  const {
+    offer,
+    canTakeCoupon,
+    cooldownInMinutes,
+    disabled,
+    handleValidateOffer,
+    isLoadingValidateOffer,
+  } = props;
 
   const conditionsRef = useRef<HTMLUListElement>(null);
   const [isConditionsOpen, setIsConditionsOpen] = useState(false);
@@ -67,12 +81,10 @@ const OfferContent = (props: OfferContentProps) => {
     return offer.conditions ?? [];
   }, [offer, isConditionsOpen]);
 
-  const disabled = coupon && !!coupon.used;
-
   return (
     <Flex flexDir="column">
       <Box mt={6} px={4} w="full">
-        {coupon && coupon.used ? (
+        {disabled ? (
           <Box
             w="full"
             color="success"
@@ -88,15 +100,28 @@ const OfferContent = (props: OfferContentProps) => {
           <Button
             fontSize={14}
             w="full"
+            colorScheme={cooldownInMinutes ? "gray" : "blackBtn"}
             size="md"
             isLoading={isLoadingValidateOffer}
             onClick={() => {
               push(["trackEvent", "Inactive", "J'active mon offre"]);
               handleValidateOffer(offer.id);
             }}
-            leftIcon={<Icon as={HiMiniEye} w={5} h={5} />}
+            leftIcon={
+              cooldownInMinutes ? (
+                <Icon as={HiArrowPathRoundedSquare} w={5} h={5} />
+              ) : (
+                <Icon as={HiMiniEye} w={5} h={5} />
+              )
+            }
+            lineHeight={"xl"}
+            style={{
+              pointerEvents: cooldownInMinutes ? "none" : "auto",
+            }}
           >
-            Voir mon code
+            {cooldownInMinutes
+              ? `Prochain code dans ${formatMinutesDisplay(cooldownInMinutes)}`
+              : "Voir mon code"}
           </Button>
         )}
       </Box>
@@ -177,13 +202,6 @@ const OfferContent = (props: OfferContentProps) => {
                   lineHeight="shorter"
                   borderBottom="2px solid black"
                   onClick={() => {
-                    // push([
-                    //   "trackEvent",
-                    //   "Offre",
-                    //   `${offer.partner.name} - ${offer.title} - ${
-                    //     !!coupon ? "Active" : "Inactive"
-                    //   } - Conditions`,
-                    // ]);
                     setIsConditionsOpen(true);
                   }}
                 >
@@ -216,7 +234,7 @@ const OfferContent = (props: OfferContentProps) => {
         w="full"
       />
       <Box h="200px" w="full" bgColor={offer?.partner.color} />
-      {!disabled && (
+      {!disabled && !cooldownInMinutes && (
         <Flex
           position="fixed"
           zIndex={10}
@@ -234,25 +252,25 @@ const OfferContent = (props: OfferContentProps) => {
             w="40%"
             fontSize={16}
             borderWidth={1}
-            borderColor={hasCoupon ? "transparent" : "cje-gray.100"}
-            color={hasCoupon ? "white" : "blackLight"}
-            colorScheme={hasCoupon ? "primaryShades" : "inherit"}
-            isDisabled={hasCoupon}
-            isLoading={!hasCoupon && isLoadingValidateOffer}
+            borderColor={canTakeCoupon ? "cje-gray.100" : "transparent"}
+            color={canTakeCoupon ? "blackLight" : "white"}
+            colorScheme={canTakeCoupon ? "inherit" : "primaryShades"}
+            isDisabled={!canTakeCoupon}
+            isLoading={canTakeCoupon && isLoadingValidateOffer}
             onClick={() => {
-              if (!hasCoupon) {
+              if (canTakeCoupon) {
                 handleValidateOffer(offer.id, false);
               }
             }}
             leftIcon={
               <Icon
-                as={hasCoupon ? HiBookmark : HiOutlineBookmark}
+                as={canTakeCoupon ? HiOutlineBookmark : HiBookmark}
                 w={5}
                 h={5}
               />
             }
           >
-            {hasCoupon ? "Enregistré" : "Enregistrer"}
+            {canTakeCoupon ? "Enregistrer" : "Enregistré"}
           </Button>
           <Button
             w="60%"

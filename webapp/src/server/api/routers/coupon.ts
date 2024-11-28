@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { Coupon, Media, Offer, Partner, User } from "~/payload/payload-types";
 import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
-import { payloadWhereOfferIsValid } from "~/utils/tools";
+import { isOlderThan24Hours, payloadWhereOfferIsValid } from "~/utils/tools";
 
 export interface CouponIncluded extends Coupon {
   offer: Offer & { partner: Partner & { icon: Media } };
@@ -18,6 +18,7 @@ export const couponRouter = createTRPCRouter({
       const coupons = await ctx.payload.find({
         collection: "coupons",
         depth: 3,
+        sort: "-usedAt",
         where: {
           and: [
             { offer: { equals: offer_id } },
@@ -65,6 +66,52 @@ export const couponRouter = createTRPCRouter({
           code: "NOT_FOUND",
           message: "Offer not found",
         });
+
+      const userOfferCoupon = await ctx.payload.find({
+        collection: "coupons",
+        sort: "-usedAt",
+        where: {
+          and: [
+            { offer: { equals: offer_id } },
+            { user: { equals: ctx.session.id } },
+          ],
+        },
+      });
+
+      if (!!userOfferCoupon.docs.length) {
+        if (currentOffer.cumulative) {
+          const hasUnusedCoupon = userOfferCoupon.docs.some(
+            (coupon) => !coupon.used
+          );
+          if (hasUnusedCoupon) {
+            throw new TRPCError({
+              code: "FORBIDDEN",
+              message:
+                "User must used his coupon before taking another one on a cumulative offer",
+            });
+          }
+
+          const lastUsedCoupon = userOfferCoupon.docs.find(
+            (coupon) => coupon.used
+          );
+          if (
+            lastUsedCoupon &&
+            lastUsedCoupon.assignUserAt &&
+            !isOlderThan24Hours(lastUsedCoupon.assignUserAt)
+          ) {
+            throw new TRPCError({
+              code: "FORBIDDEN",
+              message: "User last used coupon is not older than 24 hours",
+            });
+          }
+        } else {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message:
+              "User can't take several coupons on a non cumulative offer",
+          });
+        }
+      }
 
       let availableCoupon;
 
