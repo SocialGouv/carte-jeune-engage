@@ -151,7 +151,7 @@ export const Offers: CollectionConfig = {
     {
       type: "checkbox",
       name: "cumulative",
-      label: "Bons cumulables",
+      label: "Bons renouvelables",
       defaultValue: false,
       admin: {
         position: "sidebar",

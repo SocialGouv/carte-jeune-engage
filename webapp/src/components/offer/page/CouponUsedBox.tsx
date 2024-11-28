@@ -1,4 +1,12 @@
-import { Flex, Text, Button, useDisclosure } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Button,
+  useDisclosure,
+  FormControl,
+  FormLabel,
+  Switch,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import CouponUsedFeedbackModal from "~/components/modals/CouponUsedFeedbackModal";
 import { CouponIncluded } from "~/server/api/routers/coupon";
@@ -14,6 +22,7 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
   const utils = api.useUtils();
 
   const [showUsedBox, setShowUsedBox] = useState<boolean>(true);
+  const [isSwitched, setIsSwitched] = useState<boolean>(false);
 
   const {
     isOpen: isOpenCouponUsedFeedbackModal,
@@ -29,6 +38,7 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
   );
 
   const handleCouponUsed = (used: boolean) => {
+    console.log(used);
     if (!used) {
       setShowUsedBox(false);
     } else {
@@ -37,8 +47,17 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
   };
 
   const closeFeedbackModal = () => {
-    confirmCouponUsed();
     onCloseCouponUsedFeedbackModal();
+    setIsSwitched(true);
+
+    setTimeout(() => {
+      confirmCouponUsed();
+    }, 1000);
+
+    // window.open(
+    // 	"https://surveys.hotjar.com/8d25a606-6e24-4437-97be-75fcdb4c3e35",
+    // 	"_blank"
+    // );
   };
 
   if (!showUsedBox) return;
@@ -49,36 +68,22 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
       gap={4}
       p={3}
       bg="white"
-      borderRadius="2.5xl"
+      rounded={"2xl"}
       borderWidth={2}
       borderColor="cje-gray.400"
       mt={6}
     >
-      <Text w="full" textAlign={"center"}>
-        🤔 Vous avez déjà utilisé votre code ?
-      </Text>
-      <Flex gap={2}>
-        <Button
-          fontSize="md"
-          rounded={"1.25rem"}
-          p={3}
-          colorScheme="errorShades"
-          flexGrow={1}
-          onClick={() => handleCouponUsed(false)}
-        >
-          Non
-        </Button>
-        <Button
-          fontSize="md"
-          rounded={"1.25rem"}
-          p={3}
-          colorScheme="primaryShades"
-          flexGrow={1}
-          onClick={() => handleCouponUsed(true)}
-        >
-          Oui
-        </Button>
-      </Flex>
+      <FormControl
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        onClick={() => handleCouponUsed(true)}
+      >
+        <FormLabel htmlFor="coupon-used" mb={0}>
+          J'ai déjà utilisé la réduction
+        </FormLabel>
+        <Switch id="coupon-used" isChecked={isSwitched} />
+      </FormControl>
       <CouponUsedFeedbackModal
         isOpen={isOpenCouponUsedFeedbackModal}
         onClose={closeFeedbackModal}

@@ -23,6 +23,8 @@ export default function OfferCjePage() {
   const router = useRouter();
   const toast = useToast();
 
+  const [couponErased, setCouponErased] = useState(false);
+
   const { id: offer_id } = router.query as { id: string };
 
   const { data: resultOffer, isLoading: isLoadingOffer } =
@@ -136,8 +138,11 @@ export default function OfferCjePage() {
   const [timeoutProgress, setTimeoutProgress] = useState<number>(0);
 
   const onCouponUsed = () => {
-    refetchCoupon();
-    setKind("offer");
+    setCouponErased(true);
+    setTimeout(() => {
+      refetchCoupon();
+      setKind("offer");
+    }, 3000);
   };
 
   const {
@@ -252,6 +257,7 @@ export default function OfferCjePage() {
             ) : (
               <motion.div style={{ backfaceVisibility: "hidden" }} layout>
                 <CouponCard
+                  erased={couponErased}
                   coupon={coupon}
                   handleOpenExternalLink={onOpenExternalLink}
                 />
