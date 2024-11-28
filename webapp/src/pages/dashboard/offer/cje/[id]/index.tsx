@@ -142,7 +142,7 @@ export default function OfferCjePage() {
     setTimeout(() => {
       refetchCoupon();
       setKind("offer");
-    }, 3000);
+    }, 1200);
   };
 
   const {

@@ -85,8 +85,8 @@ const AnimatedText = ({ text, erased }: { text: string; erased: boolean }) => {
             y: erased ? -20 : 0,
           }}
           transition={{
-            duration: 0.3,
-            delay: 1 + index * 0.05,
+            duration: 0.8,
+            delay: index * 0.05,
           }}
           className="inline-block"
         >

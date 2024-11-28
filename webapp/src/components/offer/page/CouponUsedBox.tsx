@@ -55,7 +55,10 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
 
   const closeFeedbackModal = () => {
     onCloseCouponUsedFeedbackModal();
-    setIsSwitched(true);
+
+    setTimeout(() => {
+      setIsSwitched(true);
+    }, 500);
 
     setTimeout(() => {
       confirmCouponUsed();
