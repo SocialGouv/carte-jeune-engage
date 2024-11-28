@@ -215,6 +215,12 @@ export default function OfferCjePage() {
     }
   }, [router.isReady, isLoadingCoupon]);
 
+  useEffect(() => {
+    if (kind === "offer") {
+      setCouponErased(false);
+    }
+  }, [kind]);
+
   if (isLoadingOffer || !offer || isLoadingCoupon || !router.isReady)
     return (
       <OfferHeaderWrapper

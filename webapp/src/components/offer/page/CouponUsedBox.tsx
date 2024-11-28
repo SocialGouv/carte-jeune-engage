@@ -34,7 +34,6 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     api.coupon.usedFromUser.useMutation();
 
   const handleCouponUsed = (used: boolean) => {
-    console.log(used);
     if (!used) {
       setShowUsedBox(false);
     } else {
@@ -42,8 +41,8 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     }
   };
 
-  const closeFeedbackModal = () => {
-    onCloseCouponUsedFeedbackModal();
+  const confirmUsed = () => {
+    mutateCouponUsed({ coupon_id: coupon.id });
 
     setTimeout(() => {
       setIsSwitched(true);
@@ -52,11 +51,6 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     setTimeout(() => {
       confirmCouponUsed();
     }, 1000);
-
-    // window.open(
-    // 	"https://surveys.hotjar.com/8d25a606-6e24-4437-97be-75fcdb4c3e35",
-    // 	"_blank"
-    // );
   };
 
   if (!showUsedBox) return;
@@ -85,8 +79,8 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
       </FormControl>
       <CouponUsedFeedbackModal
         isOpen={isOpenCouponUsedFeedbackModal}
-        onClose={closeFeedbackModal}
-        onConfirm={() => mutateCouponUsed({ coupon_id: coupon.id })}
+        onClose={onCloseCouponUsedFeedbackModal}
+        onConfirm={confirmUsed}
       />
     </Flex>
   );
