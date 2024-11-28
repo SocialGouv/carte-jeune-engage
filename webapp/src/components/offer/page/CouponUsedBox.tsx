@@ -11,6 +11,7 @@ type CouponUsedBoxProps = {
 
 const CouponUsedBox = (props: CouponUsedBoxProps) => {
   const { coupon, confirmCouponUsed } = props;
+  const utils = api.useUtils();
 
   const [showUsedBox, setShowUsedBox] = useState<boolean>(true);
 
@@ -20,8 +21,12 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     onClose: onCloseCouponUsedFeedbackModal,
   } = useDisclosure();
 
-  const { mutateAsync: mutateCouponUsed } =
-    api.coupon.usedFromUser.useMutation();
+  const { mutateAsync: mutateCouponUsed } = api.coupon.usedFromUser.useMutation(
+    {
+      onSuccess: () =>
+        utils.coupon.getOne.invalidate({ offer_id: coupon.offer.id }),
+    }
+  );
 
   const handleCouponUsed = (used: boolean) => {
     if (!used) {

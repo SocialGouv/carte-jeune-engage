@@ -23,17 +23,17 @@ type CouponUsedFeedbackModalProps = {
 
 const CouponUsedFeedbackModalContent = ({
   couponUsedFeedbackForm,
+  currentStep,
+  setCurrentStep,
   onConfirm,
   onClose,
 }: {
   couponUsedFeedbackForm: Form | undefined;
+  currentStep: "form" | "finish" | undefined;
+  setCurrentStep: (step: "form" | "finish" | undefined) => void;
   onConfirm: () => void;
   onClose: () => void;
 }) => {
-  const [currentStep, setCurrentStep] = useState<"form" | "finish" | undefined>(
-    undefined
-  );
-
   switch (currentStep) {
     case "form":
       return (
@@ -88,7 +88,7 @@ const CouponUsedFeedbackModalContent = ({
               fontSize="sm"
               p={7}
               fontWeight={800}
-              onClick={() => onClose()}
+              onClick={onClose}
             >
               Non
             </Button>
@@ -112,22 +112,34 @@ const CouponUsedFeedbackModalContent = ({
 const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
   const { isOpen, onClose, onConfirm } = props;
 
+  const [currentStep, setCurrentStep] = useState<"form" | "finish" | undefined>(
+    undefined
+  );
+
   const { data: resultForm } = api.form.getFormBySlug.useQuery({
     slug: "coupon-used-feedback-form",
   });
 
   const { data: form } = resultForm || {};
 
+  const closeModal = () => {
+    setCurrentStep(undefined);
+    if (currentStep) onConfirm();
+    onClose();
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent borderRadius="2.5xl" bgColor="white" mx={4} my="auto">
-        <ModalCloseButton onClick={onClose} />
+        <ModalCloseButton onClick={closeModal} />
         <ModalBody pb={8}>
           <CouponUsedFeedbackModalContent
             couponUsedFeedbackForm={form}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
             onConfirm={onConfirm}
-            onClose={onClose}
+            onClose={closeModal}
           />
         </ModalBody>
       </ModalContent>
