@@ -1,20 +1,21 @@
 import { TRPCError } from "@trpc/server";
-import { Payload } from "payload";
-import { generatePasswordSaltHash } from "payload/dist/auth/strategies/local/generatePasswordSaltHash";
-import APIError from "payload/dist/errors/APIError";
+import { Payload, APIError, PayloadRequest } from "payload";
 import { z } from "zod";
 import { EmailAuthToken, Media, User } from "~/payload/payload-types";
 import {
   createTRPCRouter,
+  CustomTRPCContext,
   publicProcedure,
   userProtectedProcedure,
 } from "~/server/api/trpc";
 import { getHtmlLoginByEmail } from "~/utils/emailHtml";
 import {
+  generatePasswordSaltHash,
   generateRandomPassword,
   maskEmail,
   payloadOrPhoneNumberCheck,
 } from "~/utils/tools";
+import config from "@payload-config";
 
 interface EmailAuthTokenWithUser extends EmailAuthToken {
   user: User;

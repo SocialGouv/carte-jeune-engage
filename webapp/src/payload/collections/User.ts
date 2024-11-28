@@ -1,14 +1,14 @@
-import { type CollectionConfig } from "payload/types";
+import { type CollectionConfig } from "payload";
 import { User } from "../payload-types";
 import { getBaseUrl } from "../../utils/tools";
 import UserCustomView from "../components/UserCustomView";
-import type { Props } from "payload/components/views/List";
+// import type { Props } from "payload/components/views/List";
 import dynamic from "next/dynamic";
 import { isAdmin, isAdminOrSelf } from "../access/isAdmin";
 
-const ExportUsers = dynamic<Props>(() => import("../components/ExportUsers"), {
-  ssr: false,
-});
+// const ExportUsers = dynamic<Props>(() => import("../components/ExportUsers"), {
+//   ssr: false,
+// });
 
 const getHtmlPassAccepted = (user: User) => {
   return `
@@ -42,10 +42,10 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: "email",
     components: {
-      BeforeListTable: [ExportUsers],
-      views: {
-        Edit: UserCustomView,
-      },
+      // BeforeListTable: [ExportUsers],
+      // views: {
+      //   Edit: UserCustomView,
+      // },
     },
   },
   access: {

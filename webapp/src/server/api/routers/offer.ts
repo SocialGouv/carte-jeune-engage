@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { Where } from "payload/types";
+import { Where } from "payload";
 import { z } from "zod";
 import {
   Category,
@@ -181,26 +181,23 @@ export const offerRouter = createTRPCRouter({
         },
       });
 
-      const resultUniqueOffersWithAvailableCoupons =
-        await ctx.payload.db.pool.query(
-          `
-				SELECT DISTINCT offers_id
-				FROM coupons_rels cr_offers
-				WHERE cr_offers.path = 'offer'
-				AND cr_offers.offers_id = ANY($1)
-				AND NOT EXISTS (
-						SELECT 1 
-						FROM coupons_rels cr_users
-						WHERE cr_users.parent_id = cr_offers.parent_id 
-						AND cr_users.path = 'user'
-				)
-				`,
-          [offers.docs.map((o) => o.id)]
-        );
-      const CJE_OfferIdsAvailable =
-        resultUniqueOffersWithAvailableCoupons.rows.map(
-          (row: { offers_id: number }) => row.offers_id
-        ) as number[];
+      const couponCountOfOffersPromises = offers.docs.map((offer) =>
+        ctx.payload.find({
+          collection: "coupons",
+          limit: 1,
+          where: {
+            offer: {
+              equals: offer.id,
+            },
+            used: { equals: false },
+            user: { exists: false },
+          },
+        })
+      );
+
+      const couponCountOfOffers = await Promise.all(
+        couponCountOfOffersPromises
+      );
 
       let offersFiltered = (offers.docs as OfferIncludedWithUserCoupon[])
         .map((offer) => {
@@ -229,8 +226,8 @@ export const offerRouter = createTRPCRouter({
             return true;
           else if (isCurrentUser) return !!myUnusedOfferCoupon;
 
-          const hasAvailableCoupons = CJE_OfferIdsAvailable.includes(offer.id);
-          return hasAvailableCoupons || !!myUnusedOfferCoupon;
+          const coupons = couponCountOfOffers[index];
+          return (!!coupons && !!coupons.docs.length) || !!myUnusedOfferCoupon;
         });
 
       if (shuffle) {

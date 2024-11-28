@@ -1,6 +1,8 @@
 import path from "path";
 import { type Payload } from "payload";
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
 export const categories = [
   {
     slug: "shop",

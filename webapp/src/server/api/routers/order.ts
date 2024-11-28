@@ -10,7 +10,7 @@ import {
 import { createOrderPayload, insertItemPayload } from "~/utils/obiz";
 import fs from "fs/promises";
 import os from "os";
-import { Where } from "payload/types";
+import { Where } from "payload";
 import { PDFDocument } from "pdf-lib";
 import {
   getHtmlRecapOrderPaid,

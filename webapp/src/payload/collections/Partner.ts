@@ -1,4 +1,4 @@
-import { type CollectionConfig } from "payload/types";
+import { type CollectionConfig } from "payload";
 import { QuickAccess } from "../payload-types";
 import { isAdmin } from "../access/isAdmin";
 

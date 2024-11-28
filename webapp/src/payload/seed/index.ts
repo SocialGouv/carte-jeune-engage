@@ -1,6 +1,7 @@
 import "ignore-styles";
 import "dotenv/config";
-import { getPayloadClient } from "../payloadClient";
+import { getPayload } from "payload";
+import config from "@payload-config";
 
 import { seedCategories } from "./categories";
 import { seedPartners } from "./partners";
@@ -9,8 +10,8 @@ import { seedTags } from "./tags";
 
 export const seedData = async () => {
   try {
-    const payload = await getPayloadClient({
-      seed: true,
+    const payload = await getPayload({
+      config,
     });
 
     await payload.create({
