@@ -25,13 +25,11 @@ const CouponUsedFeedbackModalContent = ({
   couponUsedFeedbackForm,
   currentStep,
   setCurrentStep,
-  onConfirm,
   onClose,
 }: {
   couponUsedFeedbackForm: Form | undefined;
   currentStep: "form" | "finish" | undefined;
   setCurrentStep: (step: "form" | "finish" | undefined) => void;
-  onConfirm: () => void;
   onClose: () => void;
 }) => {
   switch (currentStep) {
@@ -138,7 +136,6 @@ const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
             couponUsedFeedbackForm={form}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
-            onConfirm={onConfirm}
             onClose={closeModal}
           />
         </ModalBody>

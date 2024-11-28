@@ -30,12 +30,8 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     onClose: onCloseCouponUsedFeedbackModal,
   } = useDisclosure();
 
-  const { mutateAsync: mutateCouponUsed } = api.coupon.usedFromUser.useMutation(
-    {
-      onSuccess: () =>
-        utils.coupon.getOne.invalidate({ offer_id: coupon.offer.id }),
-    }
-  );
+  const { mutateAsync: mutateCouponUsed } =
+    api.coupon.usedFromUser.useMutation();
 
   const handleCouponUsed = (used: boolean) => {
     console.log(used);

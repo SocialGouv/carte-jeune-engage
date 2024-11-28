@@ -25,6 +25,7 @@ export const seedData = async () => {
           fields: [
             {
               blockType: "country",
+              blockName: "coupon-satisfaction",
               name: "coupon-satisfaction",
               label: "Comment ça s’est passé avec la réduction ?",
               required: true,
@@ -34,6 +35,7 @@ export const seedData = async () => {
             },
             {
               blockType: "country",
+              blockName: "coupon-complexity",
               name: "coupon-complexity",
               label: "Utiliser la réduction vous avez trouvé ça...",
               required: true,
@@ -46,6 +48,7 @@ export const seedData = async () => {
             },
             {
               blockType: "textarea",
+              blockName: "coupon-text-feedback",
               name: "coupon-text-feedback",
               label: "Que faut-il améliorer selon vous ?",
               placeholder: "Décrivez ce qu’on peut améliorer ici...",
