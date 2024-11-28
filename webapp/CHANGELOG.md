@@ -1,3 +1,26 @@
+# [0.71.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.26...v0.71.0) (2024-11-28)
+
+
+### Bug Fixes
+
+* add script to seed form coupon used feedback ([ace04e9](https://github.com/SocialGouv/carte-jeune-engage/commit/ace04e93439948053a9a56da308b26347a115e15))
+* blockName on forms seed and remove invalidate for animation purpose ([7bc7bb7](https://github.com/SocialGouv/carte-jeune-engage/commit/7bc7bb75bf417b4fd626d29c604361a358a285ef))
+* change number input to country to prevent name collision, add base fields for textarea and ladder ([19276bd](https://github.com/SocialGouv/carte-jeune-engage/commit/19276bd766ca0cbcda07f35cc86ceba4962b93d0))
+* confirm coupon after close modal ([0d6bd20](https://github.com/SocialGouv/carte-jeune-engage/commit/0d6bd20aa89af5e9b87c21e4f9a467dddd0235fc))
+* integrate form in coupon used feedback modal and add missing fields in textarea and number fields ([46b3d5f](https://github.com/SocialGouv/carte-jeune-engage/commit/46b3d5fabb290add3711c2b484ecf4865d7a20f3))
+* merging issues ([535e744](https://github.com/SocialGouv/carte-jeune-engage/commit/535e744253da809319ebc20aac04a5d2e3263bf1))
+* timing animation erase coupon ([25ffa7b](https://github.com/SocialGouv/carte-jeune-engage/commit/25ffa7b3e4cba2de2aeb0c33c66851885c57babd))
+
+
+### Features
+
+* add cumulative field to offers ([0d20a0e](https://github.com/SocialGouv/carte-jeune-engage/commit/0d20a0e73ae3d409c42c755e804554fad1b18841))
+* begin form builder plugin implementation, plug textarea and number / ladder fields ([c5d837a](https://github.com/SocialGouv/carte-jeune-engage/commit/c5d837a06ffe1ab2e058069a662a2666b9e97525))
+* coupon api security & design disable button ([02b4134](https://github.com/SocialGouv/carte-jeune-engage/commit/02b41346ce3a0fb916e592f41586220e7cb9ad95))
+* cumulative offers ([506cf78](https://github.com/SocialGouv/carte-jeune-engage/commit/506cf78dd6a6c8eddcf849ecc9c974c180454154))
+* erase coupon after used ([2153528](https://github.com/SocialGouv/carte-jeune-engage/commit/2153528073ec3312cc87a980b8bc1241ff587b3b))
+* handle 24h cooldown on cumulative offers ([3ddac40](https://github.com/SocialGouv/carte-jeune-engage/commit/3ddac40648ff09bcd2dd8b47dee1d367bed53d8b))
+
 ## [0.70.26](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.25...v0.70.26) (2024-11-25)
 
 ### Bug Fixes
