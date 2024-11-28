@@ -1,21 +1,36 @@
-import { PluginConfig } from "@payloadcms/plugin-form-builder/dist/types";
 import { fields } from "@payloadcms/plugin-form-builder";
+import { PluginConfig } from "@payloadcms/plugin-form-builder/dist/types";
+import { Field } from "payload/types";
 
-export const FormBuilderConfig: PluginConfig = {
+const baseFields: Field[] = [
+  {
+    type: "row",
+    fields: [
+      {
+        type: "text",
+        name: "name",
+        required: true,
+        label: "Nom (miniscule, pas de caractères spéciaux)",
+      },
+      { type: "text", name: "label", label: "Libellé" },
+    ],
+  },
+  {
+    type: "checkbox",
+    name: "required",
+    label: "Requis",
+  },
+];
+
+export const formBuilderConfig: PluginConfig = {
   fields: {
-    textarea: {
+    country: {
+      labels: {
+        singular: "Échelle de valeurs",
+        plural: "Échelles de valeurs",
+      },
       fields: [
-        ...(fields.textarea as any).fields,
-        {
-          type: "text",
-          name: "placeholder",
-          label: "Placeholder",
-        },
-      ],
-    },
-    number: {
-      fields: [
-        ...(fields.number as any).fields,
+        ...baseFields,
         {
           type: "row",
           fields: [
@@ -31,8 +46,22 @@ export const FormBuilderConfig: PluginConfig = {
         },
       ],
     },
+    textarea: {
+      labels: {
+        singular: "Zone de texte",
+        plural: "Zones de texte",
+      },
+      fields: [
+        ...baseFields,
+        {
+          type: "text",
+          name: "placeholder",
+          label: "Placeholder",
+        },
+      ],
+    },
+    number: false,
     checkbox: false,
-    country: false,
     email: false,
     message: false,
     select: false,

@@ -32,39 +32,6 @@ export type FormBlockType = {
   form: FormType;
 };
 
-const FormField = ({
-  formFromProps,
-  register,
-  errors,
-  control,
-  formMethods,
-  field,
-}: {
-  formFromProps: FormType;
-  register: any;
-  errors: any;
-  control: any;
-  formMethods: any;
-  field: any;
-}) => {
-  const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields];
-  if (Field) {
-    return (
-      <React.Fragment key={field.blockName}>
-        <Field
-          form={formFromProps}
-          field={field}
-          {...formMethods}
-          register={register}
-          errors={errors}
-          control={control}
-        />
-      </React.Fragment>
-    );
-  }
-  return null;
-};
-
 export const FormBlock: React.FC<
   FormBlockType & {
     id?: string;
@@ -72,15 +39,8 @@ export const FormBlock: React.FC<
   }
 > = (props) => {
   const {
-    enableIntro,
     form: formFromProps,
-    form: {
-      id: formID,
-      submitButtonLabel,
-      confirmationType,
-      redirect,
-      confirmationMessage,
-    } = {},
+    form: { id: formID, confirmationType, redirect } = {},
     afterOnSubmit,
   } = props;
 
@@ -113,9 +73,9 @@ export const FormBlock: React.FC<
     }
   };
 
-  const handlePrevStep = () => {
-    setCurrentStep((prev) => prev - 1);
-  };
+  // const handlePrevStep = () => {
+  //   setCurrentStep((prev) => prev - 1);
+  // };
 
   const onSubmit = useCallback(
     (data: Data) => {
@@ -129,7 +89,6 @@ export const FormBlock: React.FC<
           value,
         })) as { field: string; value: string }[];
 
-        // delay loading indicator by 1s
         loadingTimerID = setTimeout(() => {
           setIsLoading(true);
         }, 1000);
@@ -146,13 +105,6 @@ export const FormBlock: React.FC<
           setHasSubmitted(true);
 
           afterOnSubmit();
-          // if (confirmationType === "redirect" && redirect) {
-          //   const { url } = redirect;
-
-          //   const redirectUrl = url;
-
-          //   if (redirectUrl) router.push(redirectUrl);
-          // }
         } catch (err) {
           console.warn(err);
           setIsLoading(false);
@@ -169,34 +121,36 @@ export const FormBlock: React.FC<
 
   return (
     <div>
-      {/* {enableIntro && introContent && !hasSubmitted && (
-        <div>{introContent}</div>
-      )} */}
-      {!isLoading && hasSubmitted && confirmationType === "message" && (
-        <pre>{JSON.stringify(confirmationMessage, null, 2)}</pre>
-      )}
-      {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
       {error && <div>{`${error.status || "500"}: ${error.message || ""}`}</div>}
       {!hasSubmitted && (
         <Box as="form" id={formID} onSubmit={handleSubmit(onSubmit)} w="full">
           <div>
-            {formFromProps && formFromProps.fields && (
-              <Flex flexDir="column" gap={6}>
-                {"label" in formFromProps.fields[currentStep] && (
-                  <Text fontSize={24} fontWeight={800} textAlign="center">
-                    {formFromProps.fields[currentStep].label}
-                  </Text>
-                )}
-                <FormField
-                  formFromProps={formFromProps}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  formMethods={formMethods}
-                  field={{ ...formFromProps.fields[currentStep], label: "" }}
-                />
-              </Flex>
-            )}
+            {formFromProps &&
+              formFromProps.fields &&
+              (() => {
+                const field = formFromProps.fields[currentStep];
+                const Field: React.FC<any> =
+                  fields?.[field.blockType as keyof typeof fields];
+                return (
+                  <Flex flexDir="column" gap={6}>
+                    {"label" in field && (
+                      <Text fontSize={24} fontWeight={800} textAlign="center">
+                        {field.label}
+                      </Text>
+                    )}
+                    <React.Fragment key={field.blockName}>
+                      <Field
+                        form={formFromProps}
+                        field={{ ...field, label: undefined }}
+                        {...formMethods}
+                        register={register}
+                        errors={errors}
+                        control={control}
+                      />
+                    </React.Fragment>
+                  </Flex>
+                );
+              })()}
           </div>
           <ButtonGroup justifyContent="space-between" w="full" mt={6}>
             {/* {currentStep > 0 && (
@@ -211,6 +165,7 @@ export const FormBlock: React.FC<
             <IconButton
               colorScheme="blackBtn"
               aria-label="Next"
+              isLoading={isLoading || hasSubmitted}
               icon={<Icon as={HiArrowRight} w={5} h={5} />}
               onClick={handleNextStep}
               ml="auto"

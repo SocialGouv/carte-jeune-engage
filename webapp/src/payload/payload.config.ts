@@ -31,7 +31,7 @@ import { SearchRequests } from "./collections/SearchRequest";
 import { EmailAuthTokens } from "./collections/EmailAuthToken";
 import { Orders } from "./collections/Order";
 import { OrderSignals } from "./collections/OrderSignal";
-import { FormBuilderConfig } from "./payload-form-builder";
+import { formBuilderConfig } from "./payload-form-builder";
 
 const publicAdapter = s3Adapter({
   config: {
@@ -69,7 +69,7 @@ export default buildConfig({
         },
       },
     }),
-    formBuilder(FormBuilderConfig),
+    formBuilder(formBuilderConfig),
   ],
   editor: slateEditor({}),
   admin: {

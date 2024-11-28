@@ -98,7 +98,6 @@ const CouponUsedFeedbackModalContent = ({
               p={7}
               colorScheme="blackBtn"
               onClick={() => {
-                onConfirm();
                 setCurrentStep(couponUsedFeedbackForm ? "form" : "finish");
               }}
             >

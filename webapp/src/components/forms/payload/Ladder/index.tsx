@@ -28,8 +28,6 @@ export const Ladder: React.FC<{
     textLegend: { label: string }[];
   };
 }> = ({ field: currentField, control }) => {
-  console.log("currentField", currentField);
-
   const ladderArr = Array.from(
     { length: currentField.max - currentField.min + 1 },
     (_, index) => (index + currentField.min).toString()
@@ -37,18 +35,10 @@ export const Ladder: React.FC<{
 
   return (
     <FormControl>
-      <FormLabel
-        fontSize={24}
-        fontWeight={800}
-        lineHeight="normal"
-        textAlign="center"
-      >
-        {currentField.label}
-      </FormLabel>
       <Controller
         control={control}
         name={currentField.name}
-        render={({ field }) => {
+        render={({ field: { onChange, value } }) => {
           return (
             <Flex flexDir="column" gap={2} alignItems="center">
               <Flex alignItems="center" gap={0.5} w="full">
@@ -63,11 +53,11 @@ export const Ladder: React.FC<{
                     fontSize={16}
                     fontWeight={800}
                     minWidth="auto"
-                    color={field.value === item ? "white" : "black"}
+                    color={value === item ? "white" : "black"}
                     colorScheme={
-                      field.value === item ? "primaryShades" : "bgGrayShades"
+                      value === item ? "primaryShades" : "bgGrayShades"
                     }
-                    onClick={() => field.onChange(item)}
+                    onClick={() => onChange(item)}
                   />
                 ))}
               </Flex>
