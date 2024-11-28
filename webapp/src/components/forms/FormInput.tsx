@@ -80,9 +80,11 @@ const FormInput = ({
           : {}
       }
     >
-      <FormLabel fontWeight="medium" color="disabled" fontSize={12} mb={1}>
-        {label}
-      </FormLabel>
+      {label && (
+        <FormLabel fontWeight="medium" color="disabled" fontSize={12} mb={1}>
+          {label}
+        </FormLabel>
+      )}
       <Input
         id={name}
         as={kind === "textarea" ? Textarea : Input}
