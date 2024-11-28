@@ -27,7 +27,7 @@ export const Ladder: React.FC<{
     max: number;
     textLegend: { label: string }[];
   };
-}> = ({ field: currentField, register, control, errors }) => {
+}> = ({ field: currentField, control }) => {
   console.log("currentField", currentField);
 
   const ladderArr = Array.from(
@@ -51,14 +51,14 @@ export const Ladder: React.FC<{
         render={({ field }) => {
           return (
             <Flex flexDir="column" gap={2} alignItems="center">
-              <Flex alignItems="center" gap={1} w="full">
+              <Flex alignItems="center" gap={0.5} w="full">
                 {ladderArr.map((item) => (
                   <IconButton
                     flex={1}
                     key={item}
                     aria-label="Test"
                     icon={<>{item}</>}
-                    px={2.5}
+                    h={10}
                     borderRadius="base"
                     fontSize={16}
                     fontWeight={800}
@@ -73,7 +73,9 @@ export const Ladder: React.FC<{
               </Flex>
               <Flex w="full" alignItems="center" justifyContent="space-between">
                 {currentField.textLegend.map((item) => (
-                  <Text>{item.label}</Text>
+                  <Text fontSize={14} fontWeight={500}>
+                    {item.label}
+                  </Text>
                 ))}
               </Flex>
             </Flex>

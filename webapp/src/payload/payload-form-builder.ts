@@ -3,7 +3,16 @@ import { fields } from "@payloadcms/plugin-form-builder";
 
 export const FormBuilderConfig: PluginConfig = {
   fields: {
-    textarea: true,
+    textarea: {
+      fields: [
+        ...(fields.textarea as any).fields,
+        {
+          type: "text",
+          name: "placeholder",
+          label: "Placeholder",
+        },
+      ],
+    },
     number: {
       fields: [
         ...(fields.number as any).fields,
@@ -21,13 +30,6 @@ export const FormBuilderConfig: PluginConfig = {
           fields: [{ type: "text", name: "label", label: "Label" }],
         },
       ],
-      // fields: {
-      //   // ...(fields.number.fields as any),
-      //   // min: {
-      //   //   label: "Minimum",
-      //   //   type: "number",
-      //   // },
-      // },
     },
     checkbox: false,
     country: false,

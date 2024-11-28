@@ -1,6 +1,5 @@
 import { Flex, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import ConfirmModal from "~/components/modals/ConfirmModal";
 import CouponUsedFeedbackModal from "~/components/modals/CouponUsedFeedbackModal";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { api } from "~/utils/api";
@@ -16,39 +15,24 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
   const [showUsedBox, setShowUsedBox] = useState<boolean>(true);
 
   const {
-    isOpen: isOpenCouponUsedModal,
-    onOpen: onOpenCouponUsedModal,
-    onClose: onCloseCouponUsedModal,
-  } = useDisclosure();
-
-  const {
     isOpen: isOpenCouponUsedFeedbackModal,
     onOpen: onOpenCouponUsedFeedbackModal,
     onClose: onCloseCouponUsedFeedbackModal,
   } = useDisclosure();
 
-  const { mutateAsync: mutateCouponUsed } = api.coupon.usedFromUser.useMutation(
-    {
-      onSuccess: () => {
-        onOpenCouponUsedFeedbackModal();
-      },
-    }
-  );
+  const { mutateAsync: mutateCouponUsed } =
+    api.coupon.usedFromUser.useMutation();
 
   const handleCouponUsed = (used: boolean) => {
     if (!used) {
       setShowUsedBox(false);
     } else {
-      onOpenCouponUsedModal();
+      onOpenCouponUsedFeedbackModal();
     }
   };
 
   const closeFeedbackModal = () => {
     confirmCouponUsed();
-    window.open(
-      "https://surveys.hotjar.com/8d25a606-6e24-4437-97be-75fcdb4c3e35",
-      "_blank"
-    );
     onCloseCouponUsedFeedbackModal();
   };
 
@@ -90,24 +74,10 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
           Oui
         </Button>
       </Flex>
-      <ConfirmModal
-        title={"Confirmer que vous avez utilisé ce code ?"}
-        description="Vous ne pourrez plus l'utiliser ensuite"
-        labels={{
-          primary: "Oui je l'ai utilisé",
-          secondary: "Non pas encore",
-        }}
-        isOpen={isOpenCouponUsedModal}
-        onClose={onCloseCouponUsedModal}
-        onConfirm={() => {
-          mutateCouponUsed({ coupon_id: coupon.id });
-        }}
-        placement="center"
-      />
       <CouponUsedFeedbackModal
         isOpen={isOpenCouponUsedFeedbackModal}
         onClose={closeFeedbackModal}
-        onConfirm={closeFeedbackModal}
+        onConfirm={() => mutateCouponUsed({ coupon_id: coupon.id })}
       />
     </Flex>
   );
