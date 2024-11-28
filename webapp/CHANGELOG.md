@@ -1,9 +1,8 @@
 ## [0.70.26](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.25...v0.70.26) (2024-11-25)
 
-
 ### Bug Fixes
 
-* wallet history button disappear when wallet is empty ([f0477c4](https://github.com/SocialGouv/carte-jeune-engage/commit/f0477c44279b5ddb5d85deff09d5eb095cf97574))
+- wallet history button disappear when wallet is empty ([f0477c4](https://github.com/SocialGouv/carte-jeune-engage/commit/f0477c44279b5ddb5d85deff09d5eb095cf97574))
 
 ## [0.70.25](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.24...v0.70.25) (2024-11-22)
 

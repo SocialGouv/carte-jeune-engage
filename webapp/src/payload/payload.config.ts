@@ -5,6 +5,7 @@ import { slateEditor } from "@payloadcms/richtext-slate";
 import { webpackBundler } from "@payloadcms/bundler-webpack";
 import { cloudStorage } from "@payloadcms/plugin-cloud-storage";
 import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
+import formBuilder from "@payloadcms/plugin-form-builder";
 
 import { QuickAccess } from "./globals/QuickAccess";
 import { LandingPartners } from "./globals/LandingPartners";
@@ -30,6 +31,7 @@ import { SearchRequests } from "./collections/SearchRequest";
 import { EmailAuthTokens } from "./collections/EmailAuthToken";
 import { Orders } from "./collections/Order";
 import { OrderSignals } from "./collections/OrderSignal";
+import { FormBuilderConfig } from "./payload-form-builder";
 
 const publicAdapter = s3Adapter({
   config: {
@@ -67,6 +69,7 @@ export default buildConfig({
         },
       },
     }),
+    formBuilder(FormBuilderConfig),
   ],
   editor: slateEditor({}),
   admin: {
