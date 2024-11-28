@@ -101,7 +101,6 @@ const OfferContent = (props: OfferContentProps) => {
             fontSize={14}
             w="full"
             colorScheme={cooldownInMinutes ? "gray" : "blackBtn"}
-            size="md"
             isLoading={isLoadingValidateOffer}
             onClick={() => {
               push(["trackEvent", "Inactive", "J'active mon offre"]);
@@ -114,7 +113,6 @@ const OfferContent = (props: OfferContentProps) => {
                 <Icon as={HiMiniEye} w={5} h={5} />
               )
             }
-            lineHeight={"xl"}
             style={{
               pointerEvents: cooldownInMinutes ? "none" : "auto",
             }}

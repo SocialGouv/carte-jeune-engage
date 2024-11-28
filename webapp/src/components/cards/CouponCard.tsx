@@ -31,6 +31,7 @@ import PassCard from "../account/PassCard";
 import { useMemo } from "react";
 import { useAuth } from "~/providers/Auth";
 import PartnerImage from "../ui/PartnerImage";
+import { motion } from "framer-motion";
 
 const BasicExternalCard = ({
   title,
@@ -70,18 +71,46 @@ const BasicExternalCard = ({
   );
 };
 
+const AnimatedText = ({ text, erased }: { text: string; erased: boolean }) => {
+  const characters = text.split("");
+
+  return (
+    <div className="flex">
+      {characters.map((char, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 1 }}
+          animate={{
+            opacity: erased ? 0 : 1,
+            y: erased ? -20 : 0,
+          }}
+          transition={{
+            duration: 0.3,
+            delay: 1 + index * 0.05,
+          }}
+          className="inline-block"
+        >
+          {char}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
+
 const CouponCodeCard = ({
   coupon,
   mode,
   offerKind,
   barCodeFormat,
   handleOpenCardModal,
+  erased,
 }: {
   coupon: CouponIncluded;
   mode: "default" | "wallet";
   offerKind: Offer["kind"];
   barCodeFormat: Offer["barcodeFormat"];
   handleOpenCardModal: () => void;
+  erased?: boolean;
 }) => {
   const { user } = useAuth();
 
@@ -105,9 +134,14 @@ const CouponCodeCard = ({
           color={offerKind === "code" ? "black" : "disabled"}
           filter={mode === "default" ? "none" : "blur(5px)"}
         >
-          {offerKind === "code"
-            ? coupon.code
-            : "Le code est déjà appliqué sur le site 😉"}
+          <AnimatedText
+            text={
+              offerKind === "code"
+                ? coupon.code
+                : "Le code est déjà appliqué sur le site 😉"
+            }
+            erased={!!erased}
+          />
         </Text>
       );
     case "voucher":
@@ -244,6 +278,7 @@ type CouponCardProps = {
   mode?: "default" | "wallet";
   link?: string;
   handleOpenExternalLink?: () => void;
+  erased?: boolean;
 };
 
 const CouponCard = ({
@@ -251,6 +286,7 @@ const CouponCard = ({
   mode = "default",
   link,
   handleOpenExternalLink,
+  erased,
 }: CouponCardProps) => {
   const toast = useToast();
 
@@ -397,6 +433,7 @@ const CouponCard = ({
                   offerKind={coupon.offer.kind}
                   barCodeFormat={coupon.offer.barcodeFormat}
                   handleOpenCardModal={onOpenUserCard}
+                  erased={erased}
                 />
               </Flex>
             ) : (
