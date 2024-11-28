@@ -11,6 +11,7 @@ import localFont from "next/font/local";
 import { avatarTheme } from "~/components/theme/avatar";
 import { checkboxTheme } from "~/components/theme/checkbox";
 import { modalTheme } from "~/components/theme/modal";
+import { switchTheme } from "~/components/theme/switch";
 import { textareaTheme } from "~/components/theme/textarea";
 
 export const Marianne = localFont({
@@ -139,6 +140,7 @@ export const theme = extendTheme({
     Modal: modalTheme,
     Checkbox: checkboxTheme,
     Avatar: avatarTheme,
+    Switch: switchTheme,
   },
   styles: {
     global: () => ({
@@ -220,6 +222,17 @@ export const theme = extendTheme({
       "700": "#ffffff",
       "800": "#ffffff",
       "900": "#ffffff",
+    },
+    bgGrayShades: {
+      100: "#FBFBFD",
+      200: "#F8F8FB",
+      300: "#F6F6FA",
+      400: "#F4F4F9",
+      500: "#F2F2F8",
+      600: "#D9D9DF",
+      700: "#C0C0C6",
+      800: "#A7A7AD",
+      900: "#8E8E94",
     },
     success: "#459F00",
     successLight: "#E9F6DF",

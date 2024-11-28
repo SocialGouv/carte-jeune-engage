@@ -10,7 +10,7 @@ import {
 
 type ConfirmModalProps = {
   title: string;
-  description?: string;
+  description?: string | React.ReactNode;
   labels?: {
     primary?: string;
     secondary?: string;

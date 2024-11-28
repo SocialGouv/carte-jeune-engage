@@ -1,6 +1,13 @@
-import { Flex, Text, Button, useDisclosure } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Button,
+  useDisclosure,
+  FormControl,
+  FormLabel,
+  Switch,
+} from "@chakra-ui/react";
 import { useState } from "react";
-import ConfirmModal from "~/components/modals/ConfirmModal";
 import CouponUsedFeedbackModal from "~/components/modals/CouponUsedFeedbackModal";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { api } from "~/utils/api";
@@ -12,14 +19,10 @@ type CouponUsedBoxProps = {
 
 const CouponUsedBox = (props: CouponUsedBoxProps) => {
   const { coupon, confirmCouponUsed } = props;
+  const utils = api.useUtils();
 
   const [showUsedBox, setShowUsedBox] = useState<boolean>(true);
-
-  const {
-    isOpen: isOpenCouponUsedModal,
-    onOpen: onOpenCouponUsedModal,
-    onClose: onCloseCouponUsedModal,
-  } = useDisclosure();
+  const [isSwitched, setIsSwitched] = useState<boolean>(false);
 
   const {
     isOpen: isOpenCouponUsedFeedbackModal,
@@ -27,29 +30,27 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     onClose: onCloseCouponUsedFeedbackModal,
   } = useDisclosure();
 
-  const { mutateAsync: mutateCouponUsed } = api.coupon.usedFromUser.useMutation(
-    {
-      onSuccess: () => {
-        onOpenCouponUsedFeedbackModal();
-      },
-    }
-  );
+  const { mutateAsync: mutateCouponUsed } =
+    api.coupon.usedFromUser.useMutation();
 
   const handleCouponUsed = (used: boolean) => {
     if (!used) {
       setShowUsedBox(false);
     } else {
-      onOpenCouponUsedModal();
+      onOpenCouponUsedFeedbackModal();
     }
   };
 
-  const closeFeedbackModal = () => {
-    confirmCouponUsed();
-    window.open(
-      "https://surveys.hotjar.com/8d25a606-6e24-4437-97be-75fcdb4c3e35",
-      "_blank"
-    );
-    onCloseCouponUsedFeedbackModal();
+  const confirmUsed = () => {
+    mutateCouponUsed({ coupon_id: coupon.id });
+
+    setTimeout(() => {
+      setIsSwitched(true);
+    }, 500);
+
+    setTimeout(() => {
+      confirmCouponUsed();
+    }, 1000);
   };
 
   if (!showUsedBox) return;
@@ -60,54 +61,26 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
       gap={4}
       p={3}
       bg="white"
-      borderRadius="2.5xl"
+      rounded={"2xl"}
       borderWidth={2}
       borderColor="cje-gray.400"
       mt={6}
     >
-      <Text w="full" textAlign={"center"}>
-        🤔 Vous avez déjà utilisé votre code ?
-      </Text>
-      <Flex gap={2}>
-        <Button
-          fontSize="md"
-          rounded={"1.25rem"}
-          p={3}
-          colorScheme="errorShades"
-          flexGrow={1}
-          onClick={() => handleCouponUsed(false)}
-        >
-          Non
-        </Button>
-        <Button
-          fontSize="md"
-          rounded={"1.25rem"}
-          p={3}
-          colorScheme="primaryShades"
-          flexGrow={1}
-          onClick={() => handleCouponUsed(true)}
-        >
-          Oui
-        </Button>
-      </Flex>
-      <ConfirmModal
-        title={"Confirmer que vous avez utilisé ce code ?"}
-        description="Vous ne pourrez plus l'utiliser ensuite"
-        labels={{
-          primary: "Oui je l'ai utilisé",
-          secondary: "Non pas encore",
-        }}
-        isOpen={isOpenCouponUsedModal}
-        onClose={onCloseCouponUsedModal}
-        onConfirm={() => {
-          mutateCouponUsed({ coupon_id: coupon.id });
-        }}
-        placement="center"
-      />
+      <FormControl
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        onClick={() => handleCouponUsed(true)}
+      >
+        <FormLabel htmlFor="coupon-used" mb={0}>
+          J'ai déjà utilisé la réduction
+        </FormLabel>
+        <Switch id="coupon-used" isChecked={isSwitched} />
+      </FormControl>
       <CouponUsedFeedbackModal
         isOpen={isOpenCouponUsedFeedbackModal}
-        onClose={closeFeedbackModal}
-        onConfirm={closeFeedbackModal}
+        onClose={onCloseCouponUsedFeedbackModal}
+        onConfirm={confirmUsed}
       />
     </Flex>
   );

@@ -3927,6 +3927,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@payloadcms/plugin-form-builder@npm:1.2.1":
+  version: 1.2.1
+  resolution: "@payloadcms/plugin-form-builder@npm:1.2.1"
+  dependencies:
+    deepmerge: "npm:^4.2.2"
+    escape-html: "npm:^1.0.3"
+  peerDependencies:
+    payload: ^0.18.5 || ^1.0.0 || ^2.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10c0/b564b14d63c6462aa2b45e0cb7e4eed309c6efe566fc52ff8fd1323b2fcff8c6cce86ba8a2ff9c662568e95beb64092dfc526dbbdf46698d528c97fa74d8256e
+  languageName: node
+  linkType: hard
+
 "@payloadcms/richtext-slate@npm:^1.3.1":
   version: 1.5.2
   resolution: "@payloadcms/richtext-slate@npm:1.5.2"
@@ -7297,7 +7310,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:4.3.1, deepmerge@npm:^4.0.0":
+"deepmerge@npm:4.3.1, deepmerge@npm:^4.0.0, deepmerge@npm:^4.2.2":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
   checksum: 10c0/e53481aaf1aa2c4082b5342be6b6d8ad9dfe387bc92ce197a66dea08bd4265904a087e75e464f14d1347cf2ac8afe1e4c16b266e0561cc5df29382d3c5f80044
@@ -8163,7 +8176,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-html@npm:~1.0.3":
+"escape-html@npm:^1.0.3, escape-html@npm:~1.0.3":
   version: 1.0.3
   resolution: "escape-html@npm:1.0.3"
   checksum: 10c0/524c739d776b36c3d29fa08a22e03e8824e3b2fd57500e5e44ecf3cc4707c34c60f9ca0781c0e33d191f2991161504c295e98f68c78fe7baa6e57081ec6ac0a3
@@ -14997,6 +15010,7 @@ __metadata:
     "@payloadcms/db-postgres": "npm:^0.7.0"
     "@payloadcms/next-payload": "npm:^0.1.11"
     "@payloadcms/plugin-cloud-storage": "npm:^1.1.1"
+    "@payloadcms/plugin-form-builder": "npm:1.2.1"
     "@payloadcms/richtext-slate": "npm:^1.3.1"
     "@sentry/nextjs": "npm:^7.100.1"
     "@serwist/next": "npm:^9.0.2"

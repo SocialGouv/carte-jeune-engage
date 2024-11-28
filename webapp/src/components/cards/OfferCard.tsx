@@ -10,6 +10,7 @@ import ExpiryTag from "../offer/ExpiryTag";
 import { BsEyeFill } from "react-icons/bs";
 import { ObizCard } from "./ObizCard";
 import PartnerImage from "../ui/PartnerImage";
+import { isOlderThan24Hours } from "~/utils/tools";
 
 type OfferCardProps = {
   offer: OfferIncludedWithUserCoupon;
@@ -31,8 +32,14 @@ const OfferCard = ({
 }: OfferCardProps) => {
   const utils = api.useUtils();
 
-  const isBookmarked = !!offer.userCoupon;
-  const isDisabled = !!offer.userCoupon?.used;
+  const isBookmarked = !!offer.userCoupon && !offer.userCoupon.used;
+  const isDisabled =
+    !offer.cumulative && !!offer.userCoupon && !!offer.userCoupon.used;
+  const hasCooldown =
+    !!offer.cumulative &&
+    !!offer.userCoupon &&
+    !!offer.userCoupon.assignUserAt &&
+    !isOlderThan24Hours(offer.userCoupon.assignUserAt);
 
   const {
     mutateAsync: mutateAsyncCouponToUser,
@@ -126,7 +133,7 @@ const OfferCard = ({
             </Flex>
             {variant === "default" && !fromWidget && (
               <IconButton
-                isDisabled={isBookmarked}
+                isDisabled={isBookmarked || hasCooldown}
                 isLoading={isLoadingCouponToUser}
                 aria-label="Enregistrer l'offre"
                 alignItems="center"

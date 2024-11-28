@@ -4,15 +4,17 @@ import { IconType } from "react-icons/lib";
 export default function ToastComponent({
   text,
   icon,
+  bgColor,
 }: {
   text: string;
   icon: IconType;
+  bgColor?: string;
 }) {
   return (
     <Flex
       alignItems="center"
       justifyContent="space-between"
-      bgColor="success"
+      bgColor={bgColor || "success"}
       color="white"
       px={6}
       py={4}
