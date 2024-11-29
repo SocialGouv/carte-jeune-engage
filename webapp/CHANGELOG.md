@@ -1,9 +1,8 @@
 ## [0.71.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.71.0...v0.71.1) (2024-11-29)
 
-
 ### Bug Fixes
 
-* transpile package payloadcms form builder to prevent build error ([c9e460f](https://github.com/SocialGouv/carte-jeune-engage/commit/c9e460fce3ebae0688c30290f273671d3caad543))
+- transpile package payloadcms form builder to prevent build error ([c9e460f](https://github.com/SocialGouv/carte-jeune-engage/commit/c9e460fce3ebae0688c30290f273671d3caad543))
 
 # [0.71.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.70.26...v0.71.0) (2024-11-28)
 
