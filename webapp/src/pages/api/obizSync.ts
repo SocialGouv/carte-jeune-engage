@@ -13,11 +13,10 @@ const ObizSync = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).send("Invalid request method.");
   }
 
-  const { numero } = req.query as {
-    numero: string;
+  const { numero, article_id } = req.query as {
+    numero?: string;
+    article_id?: string;
   };
-
-  console.log("obiz synchronizing order", numero);
 
   try {
     const payload = await getPayloadClient({ seed: false });
@@ -35,19 +34,43 @@ const ObizSync = async (req: NextApiRequest, res: NextApiResponse) => {
       req,
     });
 
-    const orderId = await caller.order.getIdByNumber({
-      number: parseInt(numero),
-    });
+    if (numero) {
+      console.log("obiz synchronizing order", numero);
 
-    caller.order
-      .synchronizeOrder({
-        order_id: orderId.data,
-      })
-      .then((order) => {
-        console.log(
-          `Finish synchronizing obiz order : [numero: ${numero} / obiz status : ${order.data.obiz_status} / cje status : ${order.data.status}]`
-        );
+      const orderId = await caller.order.getIdByNumber({
+        number: parseInt(numero),
       });
+
+      caller.order
+        .synchronizeOrder({
+          order_id: orderId.data,
+        })
+        .then((order) => {
+          console.log(
+            `Finish synchronizing obiz order : [numero: ${numero} / obiz status : ${order.data.obiz_status} / cje status : ${order.data.status}]`
+          );
+        });
+    } else if (article_id) {
+      console.log("obiz synchronizing article", article_id);
+      caller.offer
+        .synchronizeObizOffer({
+          article_id,
+        })
+        .then(({ offer, updateArticles, article_actif }) => {
+          if (updateArticles) {
+            console.log(
+              `Finish synchronizing obiz offer : [${offer.formatedTitle} : article ${article_actif ? "listed" : "delisted"} (${article_id})]`
+            );
+          } else {
+            console.log(`Nothing to synchronize`);
+          }
+        });
+    } else {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: `No order number or article_id provided`,
+      });
+    }
 
     return res.status(200).json({ data: "ok" });
   } catch (error) {
