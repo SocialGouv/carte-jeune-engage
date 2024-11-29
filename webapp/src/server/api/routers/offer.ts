@@ -615,4 +615,74 @@ export const offerRouter = createTRPCRouter({
         updated_offers,
       };
     }),
+
+  synchronizeObizOffer: publicProcedure
+    .input(
+      z.object({
+        article_id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { article_id } = input;
+
+      const offers = await ctx.payload.find({
+        collection: "offers",
+        where: {
+          "articles.obiz_id": { equals: article_id },
+        },
+        depth: 0,
+      });
+      let offer = offers.docs[0];
+
+      if (!offer) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `Offer for this article not found.`,
+        });
+      }
+
+      try {
+        let updateArticles = false;
+        const [resultGetArticle] = await ctx.soapObizClient.GET_ARTICLEAsync({
+          partenaire_id: process.env.OBIZ_PARTNER_ID,
+          articles_id: article_id,
+        });
+
+        const article_actif =
+          resultGetArticle?.GET_ARTICLEResult?.diffgram?.NewDataSet?.Articles
+            ?.articles_actif === "true";
+
+        if (article_actif !== undefined) {
+          offer.articles = (offer.articles || []).map((article) => {
+            if (
+              article.obiz_id === article_id &&
+              article.available !== article_actif
+            ) {
+              article.available = article_actif;
+              updateArticles = true;
+            }
+            return article;
+          });
+
+          if (updateArticles) {
+            offer = await ctx.payload.update({
+              collection: "offers",
+              id: offer.id,
+              data: {
+                articles: (offer.articles as any) || [],
+              },
+              depth: 0,
+            });
+          }
+        }
+
+        return { offer, updateArticles, article_actif };
+      } catch (error) {
+        console.log(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `An error occurred while synchronizing the offer with article ${article_id}`,
+        });
+      }
+    }),
 });
