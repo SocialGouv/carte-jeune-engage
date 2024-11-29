@@ -30,7 +30,10 @@ const nextOptions = {
   env: {
     NEXT_PUBLIC_CURRENT_PACKAGE_VERSION: version,
   },
-  transpilePackages: ["@choc-ui/chakra-autocomplete"],
+  transpilePackages: [
+    "@choc-ui/chakra-autocomplete",
+    "@payloadcms/plugin-form-builder",
+  ],
 };
 
 const payloadOptions = {
