@@ -373,3 +373,8 @@ export const getAfterTextMessageTriangle = (
     borderTopColor: color,
   };
 };
+
+export const areObjectsEqual = (obj1: any, obj2: any) => {
+  const normalize = (obj: any) => JSON.stringify(obj, Object.keys(obj).sort());
+  return normalize(obj1) === normalize(obj2);
+};

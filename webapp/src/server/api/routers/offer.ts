@@ -17,7 +17,7 @@ import {
   widgetTokenProtectedProcedure,
 } from "~/server/api/trpc";
 import { ZGetListParams, ZObizOffer } from "~/server/types";
-import { payloadWhereOfferIsValid } from "~/utils/tools";
+import { areObjectsEqual, payloadWhereOfferIsValid } from "~/utils/tools";
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
@@ -482,16 +482,24 @@ export const offerRouter = createTRPCRouter({
               if (!existingArticle) {
                 updatedData.articles = [
                   ...(updatedData.articles || []),
-                  obiz_article,
+                  {
+                    ...obiz_article,
+                    obizJson: JSON.parse(obiz_article.obizJson),
+                  },
                 ];
               } else {
-                const hasDifferentJson =
-                  JSON.stringify(existingArticle.obizJson) !==
-                  JSON.stringify(JSON.parse(obiz_article.obizJson));
+                const hasDifferentJson = !areObjectsEqual(
+                  existingArticle.obizJson,
+                  JSON.parse(obiz_article.obizJson)
+                );
                 if (hasDifferentJson) {
                   updatedData.articles = [
                     ...(updatedData.articles || []),
-                    { id: existingArticle.id, ...obiz_article },
+                    {
+                      id: existingArticle.id,
+                      ...obiz_article,
+                      obizJson: JSON.parse(obiz_article.obizJson),
+                    },
                   ];
                 }
               }
@@ -579,6 +587,8 @@ export const offerRouter = createTRPCRouter({
 
               article.image = mediaIcon.id;
             }
+
+            article.obizJson = JSON.parse(article.obizJson);
           }
 
           const offer = await ctx.payload.create({
