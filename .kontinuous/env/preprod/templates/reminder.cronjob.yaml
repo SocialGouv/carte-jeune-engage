@@ -31,6 +31,8 @@ spec:
                   value: 'true'
                 - name: NEXT_PUBLIC_ENV_APP
                   value: preproduction
+                - name: NEXT_PUBLIC_URL_APP
+                  value: "https://{{ .Values.global.host }}"
                 - name: DATABASE_URL
                   value: "$(DATABASE_URL)"
                 - name: TZ
