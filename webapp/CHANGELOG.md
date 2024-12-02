@@ -1,3 +1,11 @@
+## [0.73.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.3...v0.73.4) (2024-12-02)
+
+
+### Bug Fixes
+
+* design email reminder ([9798cc0](https://github.com/SocialGouv/carte-jeune-engage/commit/9798cc06a7616b9ff600572364980c061ec8818b))
+* reminder email image link ([3a8b496](https://github.com/SocialGouv/carte-jeune-engage/commit/3a8b496aa77c1307f174b9ffcb5d35e5a621685c))
+
 ## [0.73.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.2...v0.73.3) (2024-12-02)
 
 
