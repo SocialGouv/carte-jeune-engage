@@ -1,12 +1,12 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: cron-notification
+  name: cron-reminder
 spec:
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
-  schedule: 0 18 * * *
+  schedule: 15 19 * * 5
   timeZone: Europe/Paris
   jobTemplate:
     spec:
@@ -17,7 +17,7 @@ spec:
           containers:
             - name: notification
               image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/app:{{ .Values.global.imageTag }}"
-              command: ["yarn", "cron-job-notifications"]
+              command: ["yarn", "cron-job-reminder"]
               resources:
                 requests:
                   cpu: 200m
@@ -30,7 +30,7 @@ spec:
                 - name: PRODUCTION
                   value: 'true'
                 - name: NEXT_PUBLIC_ENV_APP
-                  value: production
+                  value: preproduction
                 - name: DATABASE_URL
                   value: "$(DATABASE_URL)"
                 - name: TZ
@@ -43,4 +43,4 @@ spec:
                 - secretRef:
                     name: app-sealed-secret
                 - secretRef:
-                    name: carte-jeune-engage-prod-app-access-key
+                    name: carte-jeune-engage-dev-app-access-key
