@@ -17,7 +17,7 @@ spec:
           containers:
             - name: reminder
               image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/app:{{ .Values.global.imageTag }}"
-              command: ["yarn", "cron-job-reminder"]
+              command: ["yarn", "cron-job-reminders"]
               resources:
                 requests:
                   cpu: 200m

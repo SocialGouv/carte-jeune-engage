@@ -1,23 +1,20 @@
 # [0.73.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.72.1...v0.73.0) (2024-12-02)
 
-
 ### Bug Fixes
 
-* container name reminder ([5854efa](https://github.com/SocialGouv/carte-jeune-engage/commit/5854efaabc17cbc4e91de533b47f1b0bbadfaa45))
-* cronjob notification architecture refactoring ([b318049](https://github.com/SocialGouv/carte-jeune-engage/commit/b3180490d972ffef80871b75b080b08356d7f4f2))
-
+- container name reminder ([5854efa](https://github.com/SocialGouv/carte-jeune-engage/commit/5854efaabc17cbc4e91de533b47f1b0bbadfaa45))
+- cronjob notification architecture refactoring ([b318049](https://github.com/SocialGouv/carte-jeune-engage/commit/b3180490d972ffef80871b75b080b08356d7f4f2))
 
 ### Features
 
-* add reminder cron to kontinuous ([323390b](https://github.com/SocialGouv/carte-jeune-engage/commit/323390b8e7b5a42810e3db62865522eb4530c98b))
-* reminder email ts script ([b574dcf](https://github.com/SocialGouv/carte-jeune-engage/commit/b574dcf81e14670b44443bc2ac54f78d5c3a4ab2))
+- add reminder cron to kontinuous ([323390b](https://github.com/SocialGouv/carte-jeune-engage/commit/323390b8e7b5a42810e3db62865522eb4530c98b))
+- reminder email ts script ([b574dcf](https://github.com/SocialGouv/carte-jeune-engage/commit/b574dcf81e14670b44443bc2ac54f78d5c3a4ab2))
 
 ## [0.72.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.72.0...v0.72.1) (2024-12-02)
 
-
 ### Bug Fixes
 
-* re-design order issue modal and add cause to order issue ([f5b0e2f](https://github.com/SocialGouv/carte-jeune-engage/commit/f5b0e2f78036dae0b3c36ec0ddc605a993351c50))
+- re-design order issue modal and add cause to order issue ([f5b0e2f](https://github.com/SocialGouv/carte-jeune-engage/commit/f5b0e2f78036dae0b3c36ec0ddc605a993351c50))
 
 # [0.72.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.71.3...v0.72.0) (2024-11-29)
 
