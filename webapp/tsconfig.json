@@ -33,7 +33,7 @@
     "**/*.tsx",
     "**/*.cjs",
     ".next/types/**/*.ts",
-    "src/notifications/re"
+    "src/cronjobs/notifications/re"
   ],
   "exclude": ["node_modules", "public/sw.js"]
 }

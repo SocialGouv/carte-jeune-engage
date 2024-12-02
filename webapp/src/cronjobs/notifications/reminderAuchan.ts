@@ -2,10 +2,10 @@ import {
   getBaseUrl,
   isNbOfDaysToEndOfTheMonth,
   payloadWhereOfferIsValid,
-} from "../utils/tools";
-import { getPayloadClient } from "../payload/payloadClient";
-import { sendPushNotification } from "../utils/sendPushNotification";
-import { Offer } from "../payload/payload-types";
+} from "../../utils/tools";
+import { getPayloadClient } from "../../payload/payloadClient";
+import { sendPushNotification } from "../../utils/sendPushNotification";
+import { Offer } from "../../payload/payload-types";
 
 const slug = "reminder-auchan";
 

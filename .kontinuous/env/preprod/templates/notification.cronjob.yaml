@@ -17,7 +17,7 @@ spec:
           containers:
             - name: notification
               image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/app:{{ .Values.global.imageTag }}"
-              command: ["yarn", "cron-job"]
+              command: ["yarn", "cron-job-notifications"]
               resources:
                 requests:
                   cpu: 200m
