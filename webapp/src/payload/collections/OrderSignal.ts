@@ -22,5 +22,10 @@ export const OrderSignals: CollectionConfig = {
       required: true,
       unique: true,
     },
+    {
+      name: "cause",
+      type: "text",
+      label: "Cause",
+    },
   ],
 };

@@ -352,6 +352,7 @@ export interface Saving {
 export interface Ordersignal {
   id: number;
   order: number | Order;
+  cause?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -414,18 +415,15 @@ export interface Form {
         | {
             name: string;
             label?: string | null;
-            width?: number | null;
             required?: boolean | null;
-            defaultValue?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: "checkbox";
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
+            min?: number | null;
+            max?: number | null;
+            textLegend?:
+              | {
+                  label?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
             id?: string | null;
             blockName?: string | null;
             blockType: "country";
@@ -433,74 +431,8 @@ export interface Form {
         | {
             name: string;
             label?: string | null;
-            width?: number | null;
             required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: "email";
-          }
-        | {
-            message?:
-              | {
-                  [k: string]: unknown;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: "message";
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: "number";
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            options?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: "select";
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: "state";
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: "text";
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
+            placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: "textarea";

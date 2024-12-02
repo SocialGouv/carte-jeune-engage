@@ -5,11 +5,6 @@ import {
   Divider,
   Flex,
   Icon,
-  Link,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
   Tag,
   Text,
   useDisclosure,
@@ -18,20 +13,19 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import {
   HiCheckCircle,
+  HiChevronRight,
   HiClock,
-  HiEnvelope,
   HiExclamationCircle,
   HiEye,
-  HiMiniChatBubbleLeftEllipsis,
+  HiMiniChatBubbleOvalLeftEllipsis,
   HiMinus,
-  HiPhone,
   HiPlus,
 } from "react-icons/hi2";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { PiWarningFill } from "react-icons/pi";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
-import LayoutOrderStatus from "~/components/obiz/LayoutOrderStatus";
+import OrderIssueModal from "~/components/modals/OrderIssueModal";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import PartnerImage from "~/components/ui/PartnerImage";
@@ -80,9 +74,6 @@ export default function OrderObizPage() {
     });
 
   const { data: order } = resultOrder || {};
-
-  const { mutateAsync: mutateCreateSignal } =
-    api.order.createSignal.useMutation({});
 
   const amount = useMemo(() => {
     return formatter2Digits.format(
@@ -154,13 +145,6 @@ export default function OrderObizPage() {
     }
   };
 
-  const signalIssueWithOrder = () => {
-    mutateCreateSignal({
-      id: order.id,
-    });
-    onOpenModalSignalIssue();
-  };
-
   const getOrderContent = () => {
     if (!order.articles) return;
 
@@ -192,7 +176,7 @@ export default function OrderObizPage() {
               mt={4}
               fontSize={"md"}
               px={8}
-              onClick={signalIssueWithOrder}
+              onClick={onOpenModalSignalIssue}
             >
               Signaler mon problème
             </Button>
@@ -430,104 +414,33 @@ export default function OrderObizPage() {
             >
               Voir les conditions détaillées
             </Text> */}
-            {order.status !== "delivered" && (
-              <Flex
-                mt={14}
-                px={6}
-                py={4}
-                alignItems="center"
-                bgColor="white"
-                borderRadius="2.5xl"
-                cursor="pointer"
-                onClick={onOpenModalSignalIssue}
-              >
-                <Icon
-                  as={HiMiniChatBubbleLeftEllipsis}
-                  color="blackLight"
-                  mr={4}
-                  w={5}
-                  h={5}
-                  mb={-0.5}
-                />
-                <Text
-                  fontWeight={700}
-                  textDecor="underline"
-                  textDecorationThickness="2px"
-                  textUnderlineOffset={2}
-                >
-                  Besoin d’aide ?
-                </Text>
-              </Flex>
-            )}
+            <Flex
+              p={4}
+              alignItems="center"
+              bgColor="white"
+              borderRadius="2.5xl"
+              cursor="pointer"
+              onClick={onOpenModalSignalIssue}
+            >
+              <Icon
+                as={HiMiniChatBubbleOvalLeftEllipsis}
+                color="blackLight"
+                mr={2}
+                w={5}
+                h={5}
+                mb={-0.5}
+              />
+              <Text fontWeight={500}>Besoin d’aide ? Un problème ?</Text>
+              <Icon as={HiChevronRight} w={5} h={5} ml="auto" mb={-0.5} />
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
-      <Modal
+      <OrderIssueModal
         isOpen={isOpenModalSignalIssue}
         onClose={onCloseModalSignalIssue}
-        size="full"
-      >
-        <ModalOverlay />
-        <ModalContent h="100dvh">
-          <ModalBody display="flex" flexDir="column" px={4} h="100dvh">
-            <LayoutOrderStatus
-              title={
-                orderHasIssue
-                  ? `Votre problème est bien signalé ${user?.firstName}`
-                  : "Contactez le service d’aide pour les bons d’achat"
-              }
-              subtitle="Pour obtenir de l’aide vous pouvez contacter directement les coordonnées ci-dessous"
-              status="info"
-              onClose={onCloseModalSignalIssue}
-            >
-              <Flex mt={10} direction={"column"} gap={4} w="full">
-                <Flex direction={"column"} gap={4} mx={4}>
-                  <Flex gap={4} alignItems="center" fontWeight={600}>
-                    <Icon as={HiEnvelope} w={5} h={5} mb={-0.5} />
-                    <Link
-                      href="mailto:serviceclient@reducce.fr"
-                      textDecor="underline"
-                      textDecorationThickness="2px"
-                      textUnderlineOffset={2}
-                    >
-                      serviceclient@reducce.fr
-                    </Link>
-                  </Flex>
-                  <Flex gap={4} alignItems="center" fontWeight={600}>
-                    <Icon as={HiPhone} w={5} h={5} mb={-0.5} />
-                    <Link
-                      href="telto:0472402828"
-                      textDecor="underline"
-                      textDecorationThickness="2px"
-                      textUnderlineOffset={2}
-                    >
-                      04 72 40 28 28
-                    </Link>
-                  </Flex>
-                </Flex>
-                <Divider my={4} />
-                <Flex direction="column" gap={4} fontSize={"sm"} mx={8}>
-                  <Text textAlign="center" color="disabled">
-                    Horaires de réponses
-                  </Text>
-                  <Flex justifyContent="space-between">
-                    <Text>Du lundi au vendredi</Text>
-                    <Text textAlign="end">
-                      9h00 - 12h30
-                      <br />
-                      14h00 - 17h30
-                    </Text>
-                  </Flex>
-                  <Flex justifyContent="space-between">
-                    <Text>Samedi et dimanche</Text>
-                    <Text color="disabled">Indisponible</Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </LayoutOrderStatus>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+        order={order}
+      />
     </>
   );
 }

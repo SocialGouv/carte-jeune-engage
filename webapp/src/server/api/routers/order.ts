@@ -484,10 +484,11 @@ export const orderRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number(),
+        cause: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { id } = input;
+      const { id, cause } = input;
 
       const existingOrderSignals = await ctx.payload.find({
         collection: "ordersignals",
@@ -507,6 +508,7 @@ export const orderRouter = createTRPCRouter({
         collection: "ordersignals",
         data: {
           order: id,
+          cause,
         },
         depth: 1,
       });
