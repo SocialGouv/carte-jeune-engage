@@ -1,3 +1,10 @@
+## [0.73.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.1...v0.73.2) (2024-12-02)
+
+
+### Bug Fixes
+
+* import relative paths for cronjob reminder ([fb1a47f](https://github.com/SocialGouv/carte-jeune-engage/commit/fb1a47f9c5ec3356fd002b188e04054537fe3f16))
+
 ## [0.73.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.0...v0.73.1) (2024-12-02)
 
 
