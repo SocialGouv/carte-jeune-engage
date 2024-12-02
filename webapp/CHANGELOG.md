@@ -1,3 +1,10 @@
+## [0.72.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.72.0...v0.72.1) (2024-12-02)
+
+
+### Bug Fixes
+
+* re-design order issue modal and add cause to order issue ([f5b0e2f](https://github.com/SocialGouv/carte-jeune-engage/commit/f5b0e2f78036dae0b3c36ec0ddc605a993351c50))
+
 # [0.72.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.71.3...v0.72.0) (2024-11-29)
 
 
