@@ -623,7 +623,7 @@ export const getHtmlUserReminderCJEOffer = (
 						line-height: 22px;
 					}
 					.coupon-box > div.coupon-box-third {
-						width: 15%;
+						width: 13%;
 						text-align: right;
 						vertical-align: middle;
 						font-weight: bold;
@@ -703,7 +703,7 @@ export const getHtmlUserReminderCJEOffer = (
 					<div class="separator"></div>
 
 					<div class="offers-box">
-						<img src="https://carte-jeune-engage-prod-app.s3.gra.io.cloud.ovh.net/public/cje-mail-catalogue%201.svg" />
+						<img src="https://carte-jeune-engage-prod-app.s3.gra.io.cloud.ovh.net/public/cje-mail-catalogue.svg" />
 						<p>Faites des économies à chaque dépenses sur un large choix de marques</p>
 						<a href="${getBaseUrl()}/dashboard">Voir toutes les offres</a>
 					</div>
