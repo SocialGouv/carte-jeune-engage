@@ -1,9 +1,8 @@
 ## [0.73.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.0...v0.73.1) (2024-12-02)
 
-
 ### Bug Fixes
 
-* cronjob name of yarn cmd ([b5009d4](https://github.com/SocialGouv/carte-jeune-engage/commit/b5009d404f769e92ae14441f1183943cacd5f9e3))
+- cronjob name of yarn cmd ([b5009d4](https://github.com/SocialGouv/carte-jeune-engage/commit/b5009d404f769e92ae14441f1183943cacd5f9e3))
 
 # [0.73.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.72.1...v0.73.0) (2024-12-02)
 
