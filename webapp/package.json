@@ -10,6 +10,7 @@
     "seed:prod": "tsx ./src/payload/seed/index.ts",
     "seed:forms": "tsx ./src/payload/seed/forms/index.ts",
     "cron-job-notifications": "tsx ./src/cronjobs/notifications/index.ts",
+    "cron-job-reminders": "tsx ./src/cronjobs/reminders/index.ts",
     "payload": "PAYLOAD_CONFIG_PATH=./src/payload/payload.config.ts payload",
     "format": "prettier --write .",
     "lint": "next lint"

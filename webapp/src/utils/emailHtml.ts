@@ -5,7 +5,8 @@ import {
   formatter2Digits,
   getBaseUrl,
 } from "./tools";
-import { Order, User } from "~/payload/payload-types";
+import { Coupon, Order, User } from "~/payload/payload-types";
+import { CouponIncluded } from "~/server/api/routers/coupon";
 
 export const getHtmlLoginByEmail = (user: User, userAuthToken: string) => {
   return `
@@ -526,6 +527,188 @@ export const getHtmlRecapOrderDelivered = (
           <a href="${getBaseUrl()}/dashboard/order/${order.id}" class="button">
             Récupérer mon bon d’achat
           </a>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
+export const getHtmlUserReminderCJEOffer = (
+  user: User,
+  coupons: CouponIncluded[]
+) => {
+  const offerTitleMaxLength = 50;
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body {
+           	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            text-align: center;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+						text-align: center;
+          }
+          .logo-container {
+            margin-bottom: 48px;
+          }
+          .logo {
+            height: 48px;
+						width: 48px;
+            margin: 0 8px;
+          }
+					.logo-cje {
+						width: 80px;
+					}
+					.bold {
+						font-weight: bold;
+					}
+          h1 {
+            font-size: 28px;
+            font-weight: bolder;
+            margin-bottom: 30px;
+          }
+					hr {
+						border-color: #E2E8F0;
+						border-width: 1px;
+					}
+					.bottom-container {
+						font-size: 14px;
+					}
+					.button {
+						background-color: #4285f4;
+						color: white !important;
+						padding: 15px 30px;
+						border-radius: 18px;
+						text-decoration: none;
+						display: inline-block;
+						margin: 20px 0;
+						font-weight: 500;
+          }
+          .button::after {
+              content: " →";
+          }
+					.button:visited {
+						color: white !important;
+					}
+					.coupon-box {
+						display: block;
+						max-width: 475px;
+						border: 1px solid #E0E0EA;
+						border-radius: 10px;
+						padding: 0 25px;
+						text-decoration: none;
+						color: black !important;
+						text-align: left;
+						line-height: 100px;
+						margin: 10px auto;
+					}
+					.coupon-box > div {
+						display: inline-block;
+					}
+					.coupon-box > div.coupon-box-first {
+						width: 15%;
+						vertical-align: middle;
+					}
+					.coupon-box > div.coupon-box-second {
+						width: 65%;
+						padding-left: 15px;
+						vertical-align: middle;
+						line-height: 22px;
+					}
+					.coupon-box > div.coupon-box-third {
+						width: 15%;
+						text-align: right;
+						vertical-align: middle;
+						font-weight: bold;
+					}
+					.coupon-box img.partner-logo {
+						width: 42px;
+						height: 42px;
+						borderRadius: 8px;
+						vertical-align: middle;
+					}
+					.coupon-box img.arrow-icon {
+						width: 25px;
+						height: 25px;
+						vertical-align: middle;
+					}
+					.offers-box {
+						max-width: 400px;
+						font-weight: bold;
+						margin: 0 auto;
+					}
+					.offers-box img {
+						width: 100%;
+					}
+					.offers-box p {
+						padding: 0 20px;
+					}
+					.offers-box a {
+						color: #1698FC;
+						margin-top: 15px;
+					}
+					.footer {
+						margin: 40px auto;
+					}
+					.blue {
+						color: #4285f4;
+					}
+					.separator {
+						height: 1px;
+						background-color: #E0E0EA;
+						margin: 40px 0;
+					}
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="logo-container">
+            <img src="${getBaseUrl()}/images/landing/ministere-travail.png" alt="Ministère" class="logo">
+            <img src="${getBaseUrl()}/images/cje-logo.png" width={} alt="Jeune Engagé" class="logo logo-cje">
+          </div>
+          
+          <span>VOS CODES DE RÉDUCTION</span>
+          
+          <h1>Vous avez <span class="blue">${coupons.length}</span> code${coupons.length > 1 ? "s" : ""} de réduction actif${coupons.length > 1 ? "s" : ""}</h1>
+          
+          <p>Il${coupons.length > 1 ? "s" : ""} vous ${coupons.length > 1 ? "attendent" : "attend"} encore dans votre carte “jeune engagé”</p>
+
+  				<a href="${getBaseUrl()}/dashboard/wallet" class="button">
+            Voir tous mes codes
+          </a>
+
+          <p>LES CODES QUE VOUS AVEZ ACTIVÉS</p>
+
+					${coupons
+            .map(
+              (coupon) => `
+						<a class="coupon-box" href="${getBaseUrl()}/dashboard/offer/cje/${coupon.offer.id}?offerKind=coupon">
+							<div class="coupon-box-first"><img src="${coupon.offer.partner.icon.url}" class="partner-logo" /></div>
+							<div class="coupon-box-second"><span class="bold">${coupon.offer.partner.name}</span><br>${coupon.offer.title.length > offerTitleMaxLength ? coupon.offer.title.substring(0, offerTitleMaxLength) + "..." : coupon.offer.title}</div>
+							<div class="coupon-box-third">
+								<img src="https://www.svgrepo.com/show/520912/right-arrow.svg" class="arrow-icon" />
+							</div>
+						</a>
+					`
+            )
+            .join("")}
+
+					<div class="separator"></div>
+
+					<div class="offers-box">
+						<img src="https://carte-jeune-engage-prod-app.s3.gra.io.cloud.ovh.net/public/cje-mail-catalogue%201.svg" />
+						<p>Faites des économies à chaque dépenses sur un large choix de marques</p>
+						<a href="${getBaseUrl()}/dashboard">Voir toutes les offres</a>
+					</div>
+
+					<p class="footer">L'équipe Carte "jeune engagé"</p>
         </div>
       </body>
     </html>
