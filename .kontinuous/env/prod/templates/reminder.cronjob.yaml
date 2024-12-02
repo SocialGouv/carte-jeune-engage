@@ -15,7 +15,7 @@ spec:
         spec:
           restartPolicy: Never
           containers:
-            - name: notification
+            - name: reminder
               image: "{{ or .Values.registry .Values.global.registry }}/{{ .Values.global.imageProject }}/{{ .Values.global.imageRepository }}/app:{{ .Values.global.imageTag }}"
               command: ["yarn", "cron-job-reminder"]
               resources:
