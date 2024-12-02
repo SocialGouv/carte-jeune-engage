@@ -623,7 +623,7 @@ export const getHtmlUserReminderCJEOffer = (
 						line-height: 22px;
 					}
 					.coupon-box > div.coupon-box-third {
-						width: 15%;
+						width: 13%;
 						text-align: right;
 						vertical-align: middle;
 						font-weight: bold;
