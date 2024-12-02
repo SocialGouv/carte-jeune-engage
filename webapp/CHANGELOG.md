@@ -1,3 +1,10 @@
+# [0.72.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.71.3...v0.72.0) (2024-11-29)
+
+
+### Features
+
+* obiz hook article update integration ([b56c08a](https://github.com/SocialGouv/carte-jeune-engage/commit/b56c08a36b575a16846854ab883212e859dd4474))
+
 ## [0.71.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.71.2...v0.71.3) (2024-11-29)
 
 ### Bug Fixes

@@ -260,6 +260,7 @@ export interface Offer {
     | null;
   articles?:
     | {
+        obiz_id?: string | null;
         available: boolean;
         image?: number | Media | null;
         name: string;

@@ -338,6 +338,14 @@ export const Offers: CollectionConfig = {
       },
       fields: [
         {
+          name: "obiz_id",
+          type: "text",
+          label: "Identifiant Obiz",
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
           name: "available",
           label: "Disponible",
           type: "checkbox",
