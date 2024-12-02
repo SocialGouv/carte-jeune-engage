@@ -1,8 +1,8 @@
 import "ignore-styles";
 import "dotenv/config";
-import getPayloadClient from "~/payload/payloadClient";
-import { getHtmlUserReminderCJEOffer } from "~/utils/emailHtml";
-import { CouponIncluded } from "~/server/api/routers/coupon";
+import getPayloadClient from "../../payload/payloadClient";
+import { getHtmlUserReminderCJEOffer } from "../../utils/emailHtml";
+import { CouponIncluded } from "../../server/api/routers/coupon";
 
 const BATCH_SIZE = 50;
 
