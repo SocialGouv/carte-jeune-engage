@@ -1,7 +1,7 @@
-import { CouponIncluded } from "../server/api/routers/coupon";
-import { getPayloadClient } from "../payload/payloadClient";
-import { sendPushNotification } from "../utils/sendPushNotification";
-import { getBaseUrl, dateDiffInDays } from "../utils/tools";
+import { CouponIncluded } from "../../server/api/routers/coupon";
+import { getPayloadClient } from "../../payload/payloadClient";
+import { sendPushNotification } from "../../utils/sendPushNotification";
+import { getBaseUrl, dateDiffInDays } from "../../utils/tools";
 
 const slug = "reminder-offer-activated";
 

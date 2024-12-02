@@ -9,7 +9,7 @@
     "seed:dev": "PAYLOAD_DROP_DATABASE=true tsx ./src/payload/seed/index.ts",
     "seed:prod": "tsx ./src/payload/seed/index.ts",
     "seed:forms": "tsx ./src/payload/seed/forms/index.ts",
-    "cron-job": "tsx ./src/notifications/index.ts",
+    "cron-job-notifications": "tsx ./src/cronjobs/notifications/index.ts",
     "payload": "PAYLOAD_CONFIG_PATH=./src/payload/payload.config.ts payload",
     "format": "prettier --write .",
     "lint": "next lint"

@@ -1,7 +1,7 @@
-import { OfferIncluded } from "../server/api/routers/offer";
-import { getPayloadClient } from "../payload/payloadClient";
-import { sendPushNotification } from "../utils/sendPushNotification";
-import { getBaseUrl } from "../utils/tools";
+import { OfferIncluded } from "../../server/api/routers/offer";
+import { getPayloadClient } from "../../payload/payloadClient";
+import { sendPushNotification } from "../../utils/sendPushNotification";
+import { getBaseUrl } from "../../utils/tools";
 
 const slug = "new-offer-available";
 

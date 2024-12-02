@@ -1,7 +1,7 @@
-import { OfferIncluded } from "../server/api/routers/offer";
-import { getPayloadClient } from "../payload/payloadClient";
-import { sendPushNotification } from "../utils/sendPushNotification";
-import { getBaseUrl, payloadWhereOfferIsValid } from "../utils/tools";
+import { OfferIncluded } from "../../server/api/routers/offer";
+import { getPayloadClient } from "../../payload/payloadClient";
+import { sendPushNotification } from "../../utils/sendPushNotification";
+import { getBaseUrl, payloadWhereOfferIsValid } from "../../utils/tools";
 
 const slug = "reminder-offer-user-preferences";
 
