@@ -1,3 +1,10 @@
+## [0.73.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.2...v0.73.3) (2024-12-02)
+
+
+### Bug Fixes
+
+* add NEXT_PUBLIC_URL_APP to ts cronjobs ([01d1778](https://github.com/SocialGouv/carte-jeune-engage/commit/01d177837a0598a20013ba5e77b1807cf5c639e9))
+
 ## [0.73.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.1...v0.73.2) (2024-12-02)
 
 
