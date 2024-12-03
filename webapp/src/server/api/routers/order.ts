@@ -527,7 +527,9 @@ export const orderRouter = createTRPCRouter({
         from: process.env.SMTP_FROM_ADDRESS,
         to: currentUser.userEmail,
         subject: "Signalement d'une commande défaillante",
-        html: getHtmlSignalOrder(currentUser, orderSignal.order as Order),
+        html: getHtmlSignalOrder(currentUser, {
+          order: orderSignal.order as Order,
+        }),
       });
 
       return {

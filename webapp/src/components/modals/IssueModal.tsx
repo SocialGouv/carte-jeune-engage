@@ -7,7 +7,6 @@ import {
   Divider,
   Text,
   Icon,
-  Link,
   ModalCloseButton,
   Radio,
   RadioGroup,
@@ -25,18 +24,13 @@ import {
   HiCheckCircle,
 } from "react-icons/hi2";
 import { IconType } from "react-icons/lib";
-import { Order } from "~/payload/payload-types";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import ConditionalLink from "../ConditionalLink";
 
 const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
-const orderIssueCauses = [
-  "Mon bon d’achat n’arrive toujours pas...",
-  "Je ne comprends pas comment utiliser mon bon",
-  "Mon bon ne fonctionne pas sur internet",
-  "Mon bon ne fonctionne pas en boutique",
+const defaultIssueCases = [
   "Le prix avec la réduction ne correspond pas",
   "Autre chose",
 ];
@@ -71,18 +65,33 @@ const ItemLink = ({
   );
 };
 
-const OrderIssueContent = ({ order }: { order: Order }) => {
+const OrderIssueContent = ({
+  id,
+  kind,
+  issues,
+}: {
+  id: number;
+  kind: "order" | "coupon";
+  issues: string[];
+}) => {
   const {
-    mutateAsync: mutateCreateSignal,
-    isLoading: isLoadingCreatingSignal,
+    mutateAsync: mutateCreateOrderSignal,
+    isLoading: isLoadingCreatingOrderSignal,
   } = api.order.createSignal.useMutation();
+
+  const {
+    mutateAsync: mutateCreateCouponSignal,
+    isLoading: isLoadingCreatingCouponSignal,
+  } = api.coupon.createSignal.useMutation();
 
   const [currentStep, setCurrentStep] = useState<"success">();
   const [selectedCause, setSelectedCause] = useState<string>();
 
   const signalIssueWithOrder = async () => {
-    await mutateCreateSignal({
-      id: order.id,
+    await (
+      kind === "order" ? mutateCreateOrderSignal : mutateCreateCouponSignal
+    )({
+      id,
       cause: selectedCause,
     });
     setSelectedCause(undefined);
@@ -115,7 +124,7 @@ const OrderIssueContent = ({ order }: { order: Order }) => {
             Que se passe-t-il ?
           </Text>
           <RadioGroup display="flex" flexDir="column" gap={3.5} mt={8} px={4}>
-            {orderIssueCauses.map((cause) => (
+            {issues.map((cause) => (
               <Flex key={cause} alignItems="center">
                 <Radio value={cause} onChange={() => setSelectedCause(cause)}>
                   <Text fontWeight={cause === selectedCause ? 800 : 500}>
@@ -134,7 +143,9 @@ const OrderIssueContent = ({ order }: { order: Order }) => {
             colorScheme="blackBtn"
             rightIcon={<Icon as={HiMiniPaperAirplane} w={5} h={5} mb={-0.5} />}
             isDisabled={!selectedCause}
-            isLoading={isLoadingCreatingSignal}
+            isLoading={
+              isLoadingCreatingCouponSignal || isLoadingCreatingOrderSignal
+            }
             onClick={signalIssueWithOrder}
           >
             Envoyer mon avis
@@ -144,21 +155,48 @@ const OrderIssueContent = ({ order }: { order: Order }) => {
   }
 };
 
-const OrderIssueModal = ({
-  isOpen,
-  onClose,
-  order,
-}: {
+type IssueModalDefaultProps = {
   isOpen: boolean;
   onClose: () => void;
-  order: Order;
-}) => {
+};
+
+interface IssueModalOrder extends IssueModalDefaultProps {
+  kind: "order";
+  order_id: number;
+}
+
+interface IssueModalCoupon extends IssueModalDefaultProps {
+  kind: "coupon";
+  coupon_id: number;
+}
+
+type IssueModalProps = IssueModalOrder | IssueModalCoupon;
+
+const IssueModal = (props: IssueModalProps) => {
+  const { isOpen, onClose, kind } = props;
   const { user } = useAuth();
-  const CrispWithNoSSR = dynamic(
-    () => import("../../components/support/Crisp")
-  );
+  const CrispWithNoSSR = dynamic(() => import("../support/Crisp"));
 
   const [isOpenCrisp, setIsOpenCrisp] = useState(false);
+
+  const id = kind === "order" ? props.order_id : props.coupon_id;
+
+  const issues =
+    kind === "order"
+      ? [
+          "Mon bon d’achat n’arrive toujours pas...",
+          "Je ne comprends pas comment utiliser mon bon",
+          "Mon bon ne fonctionne pas sur internet",
+          "Mon bon ne fonctionne pas en boutique",
+          ...defaultIssueCases,
+        ]
+      : [
+          "Le code ou le lien ne fonctionne pas",
+          "Mon code ou le lien ne s’affiche pas",
+          "La réduction est trop faible",
+          "Je ne comprends pas comment utiliser l’offre",
+          ...defaultIssueCases,
+        ];
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
@@ -166,7 +204,7 @@ const OrderIssueModal = ({
       <ModalContent minH="full">
         <ModalCloseButton />
         <ModalBody display="flex" flexDir="column" px={8} pb={8} minH="full">
-          <OrderIssueContent order={order} />
+          <OrderIssueContent kind={kind} id={id} issues={issues} />
           <Divider my={6} />
           <Flex direction={"column"} gap={4} w="full">
             <Flex direction={"column"} gap={4} mx={4}>
@@ -175,32 +213,42 @@ const OrderIssueModal = ({
                 icon={HiMiniChatBubbleOvalLeftEllipsis}
                 text="Discutez avec nous en direct"
               />
-              <Text
-                my={2}
-                fontSize={14}
-                fontWeight={500}
-                textAlign="center"
-                color="disabled"
-              >
-                ou
-              </Text>
-              <ItemLink
-                href="telto:0472402828"
-                icon={HiPhone}
-                text="04 72 40 28 28"
-              />
-              <ItemLink
-                href="mailto:serviceclient@reducce.fr"
-                icon={HiEnvelope}
-                text="serviceclient@reducce.fr"
-              />
-            </Flex>
-            <Flex direction="column" gap={4} fontSize={"sm"} mx={8} mt={3}>
-              <Text textAlign="center" color="disabled">
-                Disponible du lundi au vendredi de
-                <br />
-                09h à 12h30 puis de 14h à 17h30
-              </Text>
+              {kind === "order" && (
+                <>
+                  <Text
+                    my={2}
+                    fontSize={14}
+                    fontWeight={500}
+                    textAlign="center"
+                    color="disabled"
+                  >
+                    ou
+                  </Text>
+                  <ItemLink
+                    href="telto:0472402828"
+                    icon={HiPhone}
+                    text="04 72 40 28 28"
+                  />
+                  <ItemLink
+                    href="mailto:serviceclient@reducce.fr"
+                    icon={HiEnvelope}
+                    text="serviceclient@reducce.fr"
+                  />
+                  <Flex
+                    direction="column"
+                    gap={4}
+                    fontSize={"sm"}
+                    mx={8}
+                    mt={3}
+                  >
+                    <Text textAlign="center" color="disabled">
+                      Disponible du lundi au vendredi de
+                      <br />
+                      09h à 12h30 puis de 14h à 17h30
+                    </Text>
+                  </Flex>
+                </>
+              )}
             </Flex>
           </Flex>
         </ModalBody>
@@ -218,4 +266,4 @@ const OrderIssueModal = ({
   );
 };
 
-export default OrderIssueModal;
+export default IssueModal;

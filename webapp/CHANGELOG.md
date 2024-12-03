@@ -1,3 +1,16 @@
+## [0.73.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.7...v0.73.8) (2024-12-03)
+
+### Bug Fixes
+
+- add signal issue in cje offer page, create new table for coupon issue and adapt issuemodal component to handle both case ([119e4be](https://github.com/SocialGouv/carte-jeune-engage/commit/119e4be5d08a02822c3a57eed169b8d246eb6138))
+- conflict changelog ([90ebd2a](https://github.com/SocialGouv/carte-jeune-engage/commit/90ebd2a985df57cb1eb1c14cc65d4b6e38909a4e))
+
+## [0.73.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.6...v0.73.7) (2024-12-03)
+
+### Bug Fixes
+
+- email reminder icon arrow ([aa9d76c](https://github.com/SocialGouv/carte-jeune-engage/commit/aa9d76c5e9a19c4799024203cd72cd37db60a41f))
+
 ## [0.73.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.5...v0.73.6) (2024-12-03)
 
 ### Bug Fixes

@@ -25,6 +25,7 @@ export interface Config {
     notifications: Notification;
     search_requests: SearchRequest;
     email_auth_tokens: EmailAuthToken;
+    couponsignals: Couponsignal;
     forms: Form;
     "form-submissions": FormSubmission;
     "payload-preferences": PayloadPreference;
@@ -401,6 +402,17 @@ export interface EmailAuthToken {
   user: number | User;
   token: string;
   expiration?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "couponsignals".
+ */
+export interface Couponsignal {
+  id: number;
+  coupon: number | Coupon;
+  cause?: string | null;
   updatedAt: string;
   createdAt: string;
 }

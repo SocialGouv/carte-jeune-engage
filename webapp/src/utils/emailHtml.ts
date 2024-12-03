@@ -96,7 +96,10 @@ export const getHtmlLoginByEmail = (user: User, userAuthToken: string) => {
   `;
 };
 
-export const getHtmlSignalOrder = (user: User, order: Order) => {
+export const getHtmlSignalOrder = (
+  user: User,
+  { order, coupon }: { order?: Order; coupon?: Coupon }
+) => {
   const now = new Date();
   return `
     <!DOCTYPE html>
@@ -156,7 +159,7 @@ export const getHtmlSignalOrder = (user: User, order: Order) => {
 					<hr/>
 
 					<p class="bottom-container">
-						<b>Numéro de commande :</b> ${order.number}<br/>
+            <b>${order ? `Numéro de commande :</b> ${order.number}` : ""}<br/>
 						<b>Date de votre demande :</b> ${formatDateTime(now)}
 					</p> 
         </div>

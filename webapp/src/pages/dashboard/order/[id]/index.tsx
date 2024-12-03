@@ -25,7 +25,7 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { PiWarningFill } from "react-icons/pi";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
-import OrderIssueModal from "~/components/modals/OrderIssueModal";
+import OrderIssueModal from "~/components/modals/IssueModal";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import PartnerImage from "~/components/ui/PartnerImage";
@@ -439,7 +439,8 @@ export default function OrderObizPage() {
       <OrderIssueModal
         isOpen={isOpenModalSignalIssue}
         onClose={onCloseModalSignalIssue}
-        order={order}
+        kind="order"
+        order_id={order.id}
       />
     </>
   );

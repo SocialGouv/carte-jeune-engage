@@ -56,16 +56,7 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
   if (!showUsedBox) return;
 
   return (
-    <Flex
-      direction={"column"}
-      gap={4}
-      p={3}
-      bg="white"
-      rounded={"2xl"}
-      borderWidth={2}
-      borderColor="cje-gray.400"
-      mt={6}
-    >
+    <Flex direction={"column"} gap={4} p={4} bg="white" rounded={"2xl"} mt={6}>
       <FormControl
         display="flex"
         alignItems="center"

@@ -31,6 +31,7 @@ import { SearchRequests } from "./collections/SearchRequest";
 import { EmailAuthTokens } from "./collections/EmailAuthToken";
 import { Orders } from "./collections/Order";
 import { OrderSignals } from "./collections/OrderSignal";
+import { CouponSignals } from "./collections/CouponSignal";
 import { formBuilderConfig } from "./payload-form-builder";
 
 const publicAdapter = s3Adapter({
@@ -90,10 +91,11 @@ export default buildConfig({
     Coupons,
     Orders,
     Savings,
-    OrderSignals,
     Notifications,
     SearchRequests,
     EmailAuthTokens,
+    OrderSignals,
+    CouponSignals,
   ],
   localization: {
     locales: ["fr"],

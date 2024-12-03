@@ -1,7 +1,15 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { Coupon, Media, Offer, Partner, User } from "~/payload/payload-types";
+import {
+  Coupon,
+  Couponsignal,
+  Media,
+  Offer,
+  Partner,
+  User,
+} from "~/payload/payload-types";
 import { createTRPCRouter, userProtectedProcedure } from "~/server/api/trpc";
+import { getHtmlSignalOrder } from "~/utils/emailHtml";
 import { isOlderThan24Hours, payloadWhereOfferIsValid } from "~/utils/tools";
 
 export interface CouponIncluded extends Coupon {
@@ -211,5 +219,62 @@ export const couponRouter = createTRPCRouter({
       });
 
       return { data: updatedCoupon };
+    }),
+
+  createSignal: userProtectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        cause: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, cause } = input;
+
+      const existingCouponSignals = await ctx.payload.find({
+        collection: "couponsignals",
+        where: {
+          coupon: { equals: id },
+        },
+      });
+      const existingCouponSignal = existingCouponSignals.docs[0];
+
+      if (!!existingCouponSignal) {
+        return {
+          data: existingCouponSignal,
+        };
+      }
+
+      const couponSignal = await ctx.payload.create({
+        collection: "couponsignals",
+        data: {
+          coupon: id,
+          cause,
+        },
+        depth: 1,
+      });
+
+      const users = await ctx.payload.find({
+        collection: "users",
+        limit: 1,
+        page: 1,
+        where: {
+          id: { equals: ctx.session.id },
+        },
+      });
+      const currentUser = users.docs[0];
+
+      ctx.payload.sendEmail({
+        from: process.env.SMTP_FROM_ADDRESS,
+        to: currentUser.userEmail,
+        subject: "Signalement d'une commande défaillante",
+        html: getHtmlSignalOrder(currentUser, {
+          coupon: couponSignal.coupon as Coupon,
+        }),
+      });
+
+      return {
+        data: couponSignal,
+      };
     }),
 });
