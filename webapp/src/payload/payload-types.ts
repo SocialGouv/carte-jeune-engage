@@ -21,10 +21,10 @@ export interface Config {
     coupons: Coupon;
     orders: Order;
     savings: Saving;
-    ordersignals: Ordersignal;
     notifications: Notification;
     search_requests: SearchRequest;
     email_auth_tokens: EmailAuthToken;
+    ordersignals: Ordersignal;
     couponsignals: Couponsignal;
     forms: Form;
     "form-submissions": FormSubmission;
@@ -349,17 +349,6 @@ export interface Saving {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ordersignals".
- */
-export interface Ordersignal {
-  id: number;
-  order: number | Order;
-  cause?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "notifications".
  */
 export interface Notification {
@@ -407,6 +396,17 @@ export interface EmailAuthToken {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ordersignals".
+ */
+export interface Ordersignal {
+  id: number;
+  order: number | Order;
+  cause?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "couponsignals".
  */
 export interface Couponsignal {
@@ -431,6 +431,12 @@ export interface Form {
             required?: boolean | null;
             min?: number | null;
             max?: number | null;
+            iconLegend?:
+              | {
+                  icon?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
             textLegend?:
               | {
                   label?: string | null;
@@ -495,6 +501,7 @@ export interface FormSubmission {
         id?: string | null;
       }[]
     | null;
+  offer?: (number | null) | Offer;
   updatedAt: string;
   createdAt: string;
 }

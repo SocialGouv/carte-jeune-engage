@@ -44,16 +44,18 @@ export const formRouter = createTRPCRouter({
             value: z.string(),
           })
         ),
+        offer_id: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { formId, submissionData } = input;
+      const { formId, submissionData, offer_id } = input;
 
       const submission = await ctx.payload.create({
         collection: "form-submissions",
         data: {
           form: formId,
           submissionData: submissionData,
+          offer: offer_id,
         },
       });
 

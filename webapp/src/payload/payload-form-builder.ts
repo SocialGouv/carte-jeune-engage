@@ -1,4 +1,3 @@
-import { fields } from "@payloadcms/plugin-form-builder";
 import { PluginConfig } from "@payloadcms/plugin-form-builder/dist/types";
 import { Field } from "payload/types";
 
@@ -40,8 +39,14 @@ export const formBuilderConfig: PluginConfig = {
         },
         {
           type: "array",
+          name: "iconLegend",
+          label: "Icônes de légende",
+          fields: [{ type: "text", name: "icon", label: "Icône" }],
+        },
+        {
+          type: "array",
           name: "textLegend",
-          label: "Text Legend",
+          label: "Texte de légende",
           fields: [{ type: "text", name: "label", label: "Label" }],
         },
       ],
@@ -67,5 +72,25 @@ export const formBuilderConfig: PluginConfig = {
     select: false,
     state: false,
     text: false,
+  },
+  formOverrides: {
+    labels: {
+      singular: "Formulaire",
+      plural: "Formulaires",
+    },
+  },
+  formSubmissionOverrides: {
+    labels: {
+      singular: "Soumission de formulaire",
+      plural: "Soumissions de formulaire",
+    },
+    fields: [
+      {
+        type: "relationship",
+        relationTo: "offers",
+        name: "offer",
+        label: "Offre",
+      },
+    ],
   },
 };

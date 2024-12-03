@@ -1,7 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { buildInitialFormState } from "./buildInitialFormState";
 import { fields } from "./fields";
-import { Form as FormType } from "@payloadcms/plugin-form-builder/dist/types";
+import {
+  CountryField,
+  Form as FormType,
+  TextAreaField,
+} from "@payloadcms/plugin-form-builder/dist/types";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import {
@@ -13,7 +17,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { api } from "~/utils/api";
-import { HiArrowLeft, HiArrowRight } from "react-icons/hi2";
+import { HiArrowRight } from "react-icons/hi2";
 
 export type Value = unknown;
 
@@ -29,30 +33,35 @@ export type FormBlockType = {
   blockName?: string;
   blockType?: "formBlock";
   enableIntro: Boolean;
-  form: FormType;
+  form: Omit<FormType, "fields"> & { fields: (CountryField | TextAreaField)[] };
 };
 
 export const FormBlock: React.FC<
   FormBlockType & {
     id?: string;
+    offer_id: number;
     afterOnSubmit: () => void;
   }
 > = (props) => {
   const {
     form: formFromProps,
     form: { id: formID, confirmationType, redirect } = {},
+    offer_id,
     afterOnSubmit,
   } = props;
 
-  const formMethods = useForm({
+  const formMethods = useForm<{ [x: string]: any }>({
     defaultValues: buildInitialFormState(formFromProps.fields),
   });
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     control,
   } = formMethods;
+
+  const formValues = watch();
 
   const { mutateAsync } = api.form.submitForm.useMutation();
 
@@ -97,6 +106,7 @@ export const FormBlock: React.FC<
           await mutateAsync({
             formId: formID as unknown as number,
             submissionData: dataToSend,
+            offer_id,
           });
 
           clearTimeout(loadingTimerID);
@@ -168,6 +178,15 @@ export const FormBlock: React.FC<
               isLoading={isLoading || hasSubmitted}
               icon={<Icon as={HiArrowRight} w={5} h={5} />}
               onClick={handleNextStep}
+              isDisabled={
+                formFromProps.fields[currentStep].required &&
+                (!formValues[
+                  formFromProps.fields[currentStep].blockName as string
+                ] ||
+                  formValues[
+                    formFromProps.fields[currentStep].blockName as string
+                  ] === "")
+              }
               ml="auto"
               px={6}
             />

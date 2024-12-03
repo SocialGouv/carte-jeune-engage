@@ -31,6 +31,7 @@ export const seedData = async () => {
               required: true,
               min: 0,
               max: 10,
+              iconLegend: [{ icon: "😡" }, { icon: "😐" }, { icon: "😍" }],
               textLegend: [{ label: "Catasrophique" }, { label: "Génial" }],
             },
             {
@@ -41,6 +42,7 @@ export const seedData = async () => {
               required: true,
               min: 0,
               max: 5,
+              iconLegend: [{ icon: "🤯" }, { icon: "👌" }],
               textLegend: [
                 { label: "Super complexe" },
                 { label: "Très simple" },

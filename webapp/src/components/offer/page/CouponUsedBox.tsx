@@ -1,7 +1,5 @@
 import {
   Flex,
-  Text,
-  Button,
   useDisclosure,
   FormControl,
   FormLabel,
@@ -19,7 +17,6 @@ type CouponUsedBoxProps = {
 
 const CouponUsedBox = (props: CouponUsedBoxProps) => {
   const { coupon, confirmCouponUsed } = props;
-  const utils = api.useUtils();
 
   const [showUsedBox, setShowUsedBox] = useState<boolean>(true);
   const [isSwitched, setIsSwitched] = useState<boolean>(false);
@@ -72,6 +69,7 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
         isOpen={isOpenCouponUsedFeedbackModal}
         onClose={onCloseCouponUsedFeedbackModal}
         onConfirm={confirmUsed}
+        offer={coupon.offer}
       />
     </Flex>
   );

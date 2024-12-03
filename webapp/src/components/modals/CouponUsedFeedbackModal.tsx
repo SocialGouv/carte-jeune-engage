@@ -14,11 +14,16 @@ import { useState } from "react";
 import { api } from "~/utils/api";
 import { FormBlock } from "../forms/payload/Form";
 import { Form } from "~/payload/payload-types";
+import { useAuth } from "~/providers/Auth";
+import { UserIncluded } from "~/server/api/routers/user";
+import { OfferIncluded } from "~/server/api/routers/offer";
+import { CouponIncluded } from "~/server/api/routers/coupon";
 
 type CouponUsedFeedbackModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  offer: CouponIncluded["offer"];
 };
 
 const CouponUsedFeedbackModalContent = ({
@@ -26,11 +31,15 @@ const CouponUsedFeedbackModalContent = ({
   currentStep,
   setCurrentStep,
   onClose,
+  user,
+  offer,
 }: {
   couponUsedFeedbackForm: Form | undefined;
   currentStep: "form" | "finish" | undefined;
   setCurrentStep: (step: "form" | "finish" | undefined) => void;
+  user: UserIncluded | null;
   onClose: () => void;
+  offer: CouponIncluded["offer"];
 }) => {
   switch (currentStep) {
     case "form":
@@ -41,6 +50,7 @@ const CouponUsedFeedbackModalContent = ({
               form={couponUsedFeedbackForm as any}
               afterOnSubmit={() => setCurrentStep("finish")}
               enableIntro={true}
+              offer_id={offer.id}
             />
           )}
         </Box>
@@ -49,7 +59,11 @@ const CouponUsedFeedbackModalContent = ({
       return (
         <Flex mt={10} px={2} flexDir="column" alignItems="center" gap={6}>
           <Text fontSize={24} textAlign="center" fontWeight={800}>
-            Merci pour votre avis !
+            Merci pour votre avis
+            <br />
+            {user?.firstName ?? ""} !
+            <br />
+            🤝
           </Text>
           <Button
             w="fit-content"
@@ -108,7 +122,8 @@ const CouponUsedFeedbackModalContent = ({
 };
 
 const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
-  const { isOpen, onClose, onConfirm } = props;
+  const { isOpen, onClose, onConfirm, offer } = props;
+  const { user } = useAuth();
 
   const [currentStep, setCurrentStep] = useState<"form" | "finish" | undefined>(
     undefined
@@ -127,16 +142,23 @@ const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      closeOnOverlayClick={false}
+      isCentered
+    >
       <ModalOverlay />
-      <ModalContent borderRadius="2.5xl" bgColor="white" mx={4} my="auto">
+      <ModalContent borderRadius="2.5xl" bgColor="white" mx={4}>
         <ModalCloseButton onClick={closeModal} />
         <ModalBody pb={8}>
           <CouponUsedFeedbackModalContent
+            user={user}
             couponUsedFeedbackForm={form}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             onClose={closeModal}
+            offer={offer}
           />
         </ModalBody>
       </ModalContent>
