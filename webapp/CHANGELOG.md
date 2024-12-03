@@ -1,3 +1,10 @@
+## [0.73.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.11...v0.73.12) (2024-12-03)
+
+
+### Bug Fixes
+
+* layout header in obiz offer journey ([ddf4b98](https://github.com/SocialGouv/carte-jeune-engage/commit/ddf4b981de602d6d81b6f82b24492d73355533a1))
+
 ## [0.73.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.10...v0.73.11) (2024-12-03)
 
 ### Bug Fixes
