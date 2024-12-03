@@ -1,11 +1,11 @@
 import { type CollectionConfig } from "payload/types";
 import { isAdmin } from "../access/isAdmin";
 
-export const OrderSignals: CollectionConfig = {
-  slug: "ordersignals",
+export const CouponSignals: CollectionConfig = {
+  slug: "couponsignals",
   labels: {
-    singular: "Signalement (obiz)",
-    plural: "Signalements (obiz)",
+    singular: "Signalement (cje)",
+    plural: "Signalements (cje)",
   },
   access: {
     read: isAdmin,
@@ -15,10 +15,10 @@ export const OrderSignals: CollectionConfig = {
   },
   fields: [
     {
-      name: "order",
+      name: "coupon",
       type: "relationship",
       label: "Signalement",
-      relationTo: "orders",
+      relationTo: "coupons",
       required: true,
       unique: true,
     },

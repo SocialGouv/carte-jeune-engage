@@ -8,15 +8,20 @@ import {
   ModalBody,
   ModalContent,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { HiOutlineClock } from "react-icons/hi2";
-import BaseModal from "~/components/modals/BaseModal";
+import {
+  HiChevronRight,
+  HiExclamationCircle,
+  HiOutlineClock,
+} from "react-icons/hi2";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { getExpiryObject } from "../ExpiryTag";
 import InStoreSection from "../InStoreSection";
 import CouponUsedBox from "./CouponUsedBox";
+import IssueModal from "~/components/modals/IssueModal";
 
 type CouponContentProps = {
   offer: OfferIncluded;
@@ -37,6 +42,12 @@ const CouponContent = (props: CouponContentProps) => {
     timeoutProgress,
   } = props;
 
+  const {
+    isOpen: isOpenIssueModal,
+    onClose: onCloseIssueModal,
+    onOpen: onOpenIssueModal,
+  } = useDisclosure();
+
   const { expiryText } = getExpiryObject(coupon.offer.validityTo);
 
   return (
@@ -44,6 +55,31 @@ const CouponContent = (props: CouponContentProps) => {
       {!coupon.used && (
         <CouponUsedBox coupon={coupon} confirmCouponUsed={onCouponUsed} />
       )}
+      <Flex
+        p={4}
+        bg="white"
+        rounded="2xl"
+        mt={2}
+        alignItems="center"
+        onClick={onOpenIssueModal}
+      >
+        <Icon
+          as={HiExclamationCircle}
+          w={5}
+          h={5}
+          mb={-0.5}
+          color="error"
+          mr={4}
+        />
+        <Text fontWeight={500}>Je rencontre un problème</Text>
+        <Icon as={HiChevronRight} w={5} h={5} mb={-0.5} ml="auto" />
+        <IssueModal
+          isOpen={isOpenIssueModal}
+          onClose={onCloseIssueModal}
+          kind="coupon"
+          coupon_id={coupon.id}
+        />
+      </Flex>
       <Flex
         align="center"
         borderRadius="2xl"
