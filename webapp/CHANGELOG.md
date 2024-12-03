@@ -1,3 +1,11 @@
+## [0.73.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.8...v0.73.9) (2024-12-03)
+
+
+### Bug Fixes
+
+* merge changelog ([9a58849](https://github.com/SocialGouv/carte-jeune-engage/commit/9a58849770284d4ce7bbeb88d75b997f53c5aac0))
+* schedule reminder to 17h30 on wednesday ([77d01a4](https://github.com/SocialGouv/carte-jeune-engage/commit/77d01a42760743f8f2b3b3378c61ef9d9ebe26d1))
+
 ## [0.73.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.7...v0.73.8) (2024-12-03)
 
 ### Bug Fixes
