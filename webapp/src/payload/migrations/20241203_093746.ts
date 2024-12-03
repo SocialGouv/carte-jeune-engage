@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS "couponsignals_rels" (
 	"coupons_id" integer
 );
 
-ALTER TABLE "offers_articles" ADD COLUMN "obiz_id" varchar;
 CREATE INDEX IF NOT EXISTS "couponsignals_created_at_idx" ON "couponsignals" ("created_at");
 CREATE INDEX IF NOT EXISTS "couponsignals_rels_order_idx" ON "couponsignals_rels" ("order");
 CREATE INDEX IF NOT EXISTS "couponsignals_rels_parent_idx" ON "couponsignals_rels" ("parent_id");
@@ -43,7 +42,6 @@ export async function down({ payload }: MigrateDownArgs): Promise<void> {
 await payload.db.drizzle.execute(sql`
 
 DROP TABLE "couponsignals";
-DROP TABLE "couponsignals_rels";
-ALTER TABLE "offers_articles" DROP COLUMN IF EXISTS "obiz_id";`);
+DROP TABLE "couponsignals_rels";`);
 
 };

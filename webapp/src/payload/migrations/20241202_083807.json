@@ -1506,6 +1506,12 @@
           "primaryKey": true,
           "notNull": true
         },
+        "obiz_id": {
+          "name": "obiz_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "available": {
           "name": "available",
           "type": "boolean",
