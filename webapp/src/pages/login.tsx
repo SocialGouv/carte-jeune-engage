@@ -21,7 +21,7 @@ import { addSpaceToTwoCharacters } from "~/utils/tools";
 
 const conditionsItems = [
   "Être inscrit dans un Service civique, EPIDE, France travail, Mission locale ou Ecole de la seconde chance",
-  "Habiter dans le Val d’Oise (95)",
+  // "Habiter dans le Val d’Oise (95)",
   "Avoir entre 16 et 25 ans",
   "Ne pas être déjà en emploi",
   "Une personne dans votre Service civique, EPIDE, France travail, Mission locale ou Ecole de la seconde chance vous a inscrit à la carte “jeune engagé” avec votre n° de téléphone",

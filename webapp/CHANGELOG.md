@@ -1,6 +1,22 @@
+## [0.73.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.6...v0.73.7) (2024-12-03)
+
+### Bug Fixes
+
+# <<<<<<< HEAD
+
+- email reminder icon arrow ([aa9d76c](https://github.com/SocialGouv/carte-jeune-engage/commit/aa9d76c5e9a19c4799024203cd72cd37db60a41f))
+
+## [0.73.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.5...v0.73.6) (2024-12-03)
+
+### Bug Fixes
+
+- remove condition displayed login ([6229af9](https://github.com/SocialGouv/carte-jeune-engage/commit/6229af95d2a4c364497576b0b13beff4599509ad))
+
 ## [0.73.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.4...v0.73.5) (2024-12-03)
 
 ### Bug Fixes
+
+> > > > > > > refs/remotes/origin/main
 
 - bottom img to jpeg ([62fab0c](https://github.com/SocialGouv/carte-jeune-engage/commit/62fab0ca4149f041c10c73922da733b5e1620dac))
 
