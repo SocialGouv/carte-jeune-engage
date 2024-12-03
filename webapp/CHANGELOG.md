@@ -1,31 +1,27 @@
 ## [0.73.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.4...v0.73.5) (2024-12-03)
 
-
 ### Bug Fixes
 
-* bottom img to jpeg ([62fab0c](https://github.com/SocialGouv/carte-jeune-engage/commit/62fab0ca4149f041c10c73922da733b5e1620dac))
+- bottom img to jpeg ([62fab0c](https://github.com/SocialGouv/carte-jeune-engage/commit/62fab0ca4149f041c10c73922da733b5e1620dac))
 
 ## [0.73.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.3...v0.73.4) (2024-12-02)
 
-
 ### Bug Fixes
 
-* design email reminder ([9798cc0](https://github.com/SocialGouv/carte-jeune-engage/commit/9798cc06a7616b9ff600572364980c061ec8818b))
-* reminder email image link ([3a8b496](https://github.com/SocialGouv/carte-jeune-engage/commit/3a8b496aa77c1307f174b9ffcb5d35e5a621685c))
+- design email reminder ([9798cc0](https://github.com/SocialGouv/carte-jeune-engage/commit/9798cc06a7616b9ff600572364980c061ec8818b))
+- reminder email image link ([3a8b496](https://github.com/SocialGouv/carte-jeune-engage/commit/3a8b496aa77c1307f174b9ffcb5d35e5a621685c))
 
 ## [0.73.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.2...v0.73.3) (2024-12-02)
 
-
 ### Bug Fixes
 
-* add NEXT_PUBLIC_URL_APP to ts cronjobs ([01d1778](https://github.com/SocialGouv/carte-jeune-engage/commit/01d177837a0598a20013ba5e77b1807cf5c639e9))
+- add NEXT_PUBLIC_URL_APP to ts cronjobs ([01d1778](https://github.com/SocialGouv/carte-jeune-engage/commit/01d177837a0598a20013ba5e77b1807cf5c639e9))
 
 ## [0.73.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.1...v0.73.2) (2024-12-02)
 
-
 ### Bug Fixes
 
-* import relative paths for cronjob reminder ([fb1a47f](https://github.com/SocialGouv/carte-jeune-engage/commit/fb1a47f9c5ec3356fd002b188e04054537fe3f16))
+- import relative paths for cronjob reminder ([fb1a47f](https://github.com/SocialGouv/carte-jeune-engage/commit/fb1a47f9c5ec3356fd002b188e04054537fe3f16))
 
 ## [0.73.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.0...v0.73.1) (2024-12-02)
 
