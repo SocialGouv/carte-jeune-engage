@@ -1,3 +1,10 @@
+## [0.73.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.9...v0.73.10) (2024-12-03)
+
+
+### Bug Fixes
+
+* modal layout and design ([53057b5](https://github.com/SocialGouv/carte-jeune-engage/commit/53057b52ee979d5b7ecc6ca6d6cf33729317414a))
+
 ## [0.73.9](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.8...v0.73.9) (2024-12-03)
 
 ### Bug Fixes
