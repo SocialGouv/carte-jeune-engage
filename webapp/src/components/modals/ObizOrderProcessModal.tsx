@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   Icon,
   Modal,
   ModalBody,
@@ -16,9 +17,10 @@ import { OfferIncluded } from "~/server/api/routers/offer";
 import { OfferArticle } from "~/server/types";
 import { api } from "~/utils/api";
 import LayoutOrderStatus from "../obiz/LayoutOrderStatus";
-import { HiMiniShieldCheck } from "react-icons/hi2";
+import { HiMiniShieldCheck, HiQuestionMarkCircle } from "react-icons/hi2";
 import { formatter2Digits } from "~/utils/tools";
 import { useRouter } from "next/router";
+import PartnerImage from "../ui/PartnerImage";
 
 const ObizOfferVariableContent = ({
   step,
@@ -257,13 +259,31 @@ export default function ObizOrderProcessModal(
       <ModalContent minH="full">
         <ModalBody display="flex" flexDir="column" px={8} minH="full">
           {step !== "payment" && (
-            <Box mt={8}>
-              <BackButton
-                onClick={() =>
-                  step == "amount" ? onClose() : setStep("amount")
-                }
+            <Flex mt={8} alignItems="center">
+              <Box mr={4}>
+                <BackButton
+                  onClick={() =>
+                    step == "amount" ? onClose() : setStep("amount")
+                  }
+                />
+              </Box>
+              <PartnerImage partner={offer.partner} width={42} height={42} />
+              <Flex flexDir="column" gap={0.5} ml={2}>
+                <Text fontSize={14} fontWeight={500}>
+                  {offer.partner.name}
+                </Text>
+                <Text fontSize={12} fontWeight={800}>
+                  {offer.title} {offer.subtitle ?? ""}
+                </Text>
+              </Flex>
+              <Icon
+                as={HiQuestionMarkCircle}
+                w={6}
+                h={6}
+                ml="auto"
+                color="disabled"
               />
-            </Box>
+            </Flex>
           )}
           <ObizOfferVariableContent
             step={step}

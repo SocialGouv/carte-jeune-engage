@@ -1,9 +1,8 @@
 ## [0.73.11](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.10...v0.73.11) (2024-12-03)
 
-
 ### Bug Fixes
 
-* add icons on ladder input, add offer relationship on form submission table and change label for forms and forms submissions ([230a1b4](https://github.com/SocialGouv/carte-jeune-engage/commit/230a1b4132979a12cb4123edfd18e8b219e55488))
+- add icons on ladder input, add offer relationship on form submission table and change label for forms and forms submissions ([230a1b4](https://github.com/SocialGouv/carte-jeune-engage/commit/230a1b4132979a12cb4123edfd18e8b219e55488))
 
 ## [0.73.10](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.9...v0.73.10) (2024-12-03)
 
