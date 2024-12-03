@@ -1,9 +1,8 @@
 ## [0.73.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.5...v0.73.6) (2024-12-03)
 
-
 ### Bug Fixes
 
-* remove condition displayed login ([6229af9](https://github.com/SocialGouv/carte-jeune-engage/commit/6229af95d2a4c364497576b0b13beff4599509ad))
+- remove condition displayed login ([6229af9](https://github.com/SocialGouv/carte-jeune-engage/commit/6229af95d2a4c364497576b0b13beff4599509ad))
 
 ## [0.73.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.4...v0.73.5) (2024-12-03)
 
