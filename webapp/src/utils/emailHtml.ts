@@ -623,7 +623,7 @@ export const getHtmlUserReminderCJEOffer = (
 						line-height: 22px;
 					}
 					.coupon-box > div.coupon-box-third {
-						width: 13%;
+						width: 10%;
 						text-align: right;
 						vertical-align: middle;
 						font-weight: bold;
@@ -693,7 +693,7 @@ export const getHtmlUserReminderCJEOffer = (
 							<div class="coupon-box-first"><img src="${coupon.offer.partner.icon.url}" class="partner-logo" /></div>
 							<div class="coupon-box-second"><span class="bold">${coupon.offer.partner.name}</span><br>${coupon.offer.title.length > offerTitleMaxLength ? coupon.offer.title.substring(0, offerTitleMaxLength) + "..." : coupon.offer.title}</div>
 							<div class="coupon-box-third">
-								<img src="https://www.svgrepo.com/show/520912/right-arrow.svg" class="arrow-icon" />
+								<img src="https://carte-jeune-engage-prod-app.s3.gra.io.cloud.ovh.net/public/chevron-right.png" class="arrow-icon" />
 							</div>
 						</a>
 					`
