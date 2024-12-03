@@ -1,3 +1,10 @@
+## [0.73.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.12...v0.73.13) (2024-12-03)
+
+
+### Bug Fixes
+
+* migrations for obiz_id error in offer_articles ([65c8dc9](https://github.com/SocialGouv/carte-jeune-engage/commit/65c8dc9573bbb4fb7cf47c4e1ad469f610028863))
+
 ## [0.73.12](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.11...v0.73.12) (2024-12-03)
 
 ### Bug Fixes
