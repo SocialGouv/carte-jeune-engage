@@ -1,3 +1,10 @@
+## [0.73.16](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.15...v0.73.16) (2024-12-04)
+
+
+### Bug Fixes
+
+* hide modal content on crisp component open for input text purpose ([abab82d](https://github.com/SocialGouv/carte-jeune-engage/commit/abab82d903ef2da9195becfb2381a12211a12ac2))
+
 ## [0.73.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.14...v0.73.15) (2024-12-04)
 
 ### Bug Fixes
