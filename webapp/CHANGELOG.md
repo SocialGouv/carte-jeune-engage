@@ -1,3 +1,10 @@
+## [0.73.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.13...v0.73.14) (2024-12-04)
+
+
+### Bug Fixes
+
+* add crisp on offer obiz journey ([e655a50](https://github.com/SocialGouv/carte-jeune-engage/commit/e655a501c03568e4cd8aacefee90b557a30cd248))
+
 ## [0.73.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.12...v0.73.13) (2024-12-03)
 
 ### Bug Fixes
