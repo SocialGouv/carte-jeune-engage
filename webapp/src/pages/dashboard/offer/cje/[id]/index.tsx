@@ -280,6 +280,7 @@ export default function OfferCjePage() {
           offer={offer}
           handleValidateOffer={handleValidateOffer}
           isLoadingValidateOffer={isLoadingCouponToUser}
+          hasUnusedCoupon={hasUnusedCoupon}
           canTakeCoupon={canTakeCoupon}
           cooldownInMinutes={cooldownInMinutes}
           disabled={disabled}
