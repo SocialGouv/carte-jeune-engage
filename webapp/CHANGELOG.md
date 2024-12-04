@@ -1,3 +1,17 @@
+## [0.73.16](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.15...v0.73.16) (2024-12-04)
+
+
+### Bug Fixes
+
+* hide modal content on crisp component open for input text purpose ([abab82d](https://github.com/SocialGouv/carte-jeune-engage/commit/abab82d903ef2da9195becfb2381a12211a12ac2))
+
+## [0.73.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.14...v0.73.15) (2024-12-04)
+
+### Bug Fixes
+
+- reminder order users by createdAt ASC ([befae16](https://github.com/SocialGouv/carte-jeune-engage/commit/befae16aa100e84e2b8746c1e33c1c195e1a9979))
+- saved coupon button issue ([08140fd](https://github.com/SocialGouv/carte-jeune-engage/commit/08140fd161b0478fac934390afccf0bbf7c97824))
+
 ## [0.73.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.13...v0.73.14) (2024-12-04)
 
 ### Bug Fixes
