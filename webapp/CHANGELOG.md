@@ -1,3 +1,10 @@
+## [0.73.17](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.16...v0.73.17) (2024-12-04)
+
+
+### Bug Fixes
+
+* catch errors obizSync article ([b28c271](https://github.com/SocialGouv/carte-jeune-engage/commit/b28c2719fbb32ea713b017e9e2a0dbc646b28cdd))
+
 ## [0.73.16](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.15...v0.73.16) (2024-12-04)
 
 ### Bug Fixes
