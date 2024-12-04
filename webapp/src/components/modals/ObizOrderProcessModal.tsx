@@ -21,6 +21,10 @@ import { HiMiniShieldCheck, HiQuestionMarkCircle } from "react-icons/hi2";
 import { formatter2Digits } from "~/utils/tools";
 import { useRouter } from "next/router";
 import PartnerImage from "../ui/PartnerImage";
+import dynamic from "next/dynamic";
+import { useAuth } from "~/providers/Auth";
+
+const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
 const ObizOfferVariableContent = ({
   step,
@@ -219,7 +223,11 @@ export default function ObizOrderProcessModal(
 ) {
   const { isOpen, onClose, onRedirectPayment, offerId } = props;
   const router = useRouter();
+  const { user } = useAuth();
 
+  const CrispWithNoSSR = dynamic(() => import("../support/Crisp"));
+
+  const [isOpenCrisp, setIsOpenCrisp] = useState(false);
   const [amount, setAmount] = useState(0);
   const [step, setStep] = useState<Steps>("amount");
   const [selectedArticles, setSelectedArticles] = useState<
@@ -282,6 +290,7 @@ export default function ObizOrderProcessModal(
                 h={6}
                 ml="auto"
                 color="disabled"
+                onClick={() => setIsOpenCrisp(true)}
               />
             </Flex>
           )}
@@ -319,6 +328,15 @@ export default function ObizOrderProcessModal(
             setSelectedArticles={setSelectedArticles}
           />
         </ModalBody>
+        {isOpenCrisp && user && (
+          <CrispWithNoSSR
+            crispToken={CRISP_TOKEN}
+            user={user}
+            onClose={() => {
+              setIsOpenCrisp(false);
+            }}
+          />
+        )}
       </ModalContent>
     </Modal>
   );
