@@ -78,12 +78,21 @@ export const seedData = async () => {
           fields: [
             {
               blockType: "select",
+              blockName: "order-kind",
               name: "order-kind",
               label: "Vous l’avez utilisé sur internet ou en boutique ?",
               required: true,
               options: [
-                { label: "Sur internet", value: "online" },
-                { label: "En boutique", value: "store" },
+                {
+                  label: "Sur internet",
+                  value: "online",
+                  icon: "HiCursorArrowRays",
+                },
+                {
+                  label: "En boutique",
+                  value: "store",
+                  icon: "HiBuildingStorefront",
+                },
               ],
             },
             {
@@ -118,7 +127,7 @@ export const seedData = async () => {
               label: "Que faut-il améliorer selon vous ?",
               placeholder: "Décrivez ce qu’on peut améliorer ici...",
             },
-          ] as any,
+          ],
           confirmationMessage: [{ children: [{ text: "." }] }],
         },
       });

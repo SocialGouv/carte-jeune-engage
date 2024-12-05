@@ -6,13 +6,7 @@ import {
   FieldErrorsImpl,
   Controller,
 } from "react-hook-form";
-import {
-  Flex,
-  FormControl,
-  FormLabel,
-  IconButton,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, FormControl, IconButton, Text } from "@chakra-ui/react";
 
 export const Ladder: React.FC<{
   register: UseFormRegister<FieldValues & any>;
@@ -53,7 +47,7 @@ export const Ladder: React.FC<{
                 {ladderArr.map((item) => (
                   <IconButton
                     flex={1}
-                    key={item}
+                    key={`${currentField.name}-${item}`}
                     aria-label="Test"
                     icon={<>{item}</>}
                     h={10}

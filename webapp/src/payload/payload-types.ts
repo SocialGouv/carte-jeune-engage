@@ -453,6 +453,22 @@ export interface Form {
             name: string;
             label?: string | null;
             required?: boolean | null;
+            options?:
+              | {
+                  label?: string | null;
+                  value?: string | null;
+                  icon?: ("HiCursorArrowRays" | "HiBuildingStorefront") | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: "select";
+          }
+        | {
+            name: string;
+            label?: string | null;
+            required?: boolean | null;
             placeholder?: string | null;
             id?: string | null;
             blockName?: string | null;
