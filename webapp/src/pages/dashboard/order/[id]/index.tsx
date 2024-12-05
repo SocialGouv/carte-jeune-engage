@@ -45,8 +45,9 @@ export default function OrderObizPage() {
   const utils = api.useUtils();
   const { user, setShowCrispModal } = useAuth();
 
-  const { id } = router.query as {
+  const { id, from } = router.query as {
     id: string;
+    from?: string;
   };
 
   const [showDetails, setShowDetails] = useState(false);
@@ -320,7 +321,15 @@ export default function OrderObizPage() {
       >
         <Flex direction="column" gap={10}>
           <Flex alignItems="center" justifyContent="space-between">
-            <BackButton onClick={() => router.push("/dashboard/wallet")} />
+            <BackButton
+              onClick={() =>
+                router.push(
+                  from === "history"
+                    ? "/dashboard/account/history"
+                    : "/dashboard/wallet"
+                )
+              }
+            />
             {order.status === "delivered" && order.used && (
               <Flex
                 alignItems="center"
