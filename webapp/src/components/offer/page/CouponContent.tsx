@@ -20,7 +20,7 @@ import { CouponIncluded } from "~/server/api/routers/coupon";
 import { OfferIncluded } from "~/server/api/routers/offer";
 import { getExpiryObject } from "../ExpiryTag";
 import InStoreSection from "../InStoreSection";
-import CouponUsedBox from "./CouponUsedBox";
+import OfferUsedBox from "./OfferUsedBox";
 import IssueModal from "~/components/modals/IssueModal";
 
 type CouponContentProps = {
@@ -53,7 +53,13 @@ const CouponContent = (props: CouponContentProps) => {
   return (
     <Flex flexDir="column">
       {!coupon.used && (
-        <CouponUsedBox coupon={coupon} confirmCouponUsed={onCouponUsed} />
+        <Box mt={6}>
+          <OfferUsedBox
+            kind="coupon"
+            coupon={coupon}
+            onConfirm={onCouponUsed}
+          />
+        </Box>
       )}
       <Flex
         p={4}

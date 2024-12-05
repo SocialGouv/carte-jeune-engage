@@ -7,6 +7,7 @@ import {
   Heading,
   Icon,
   IconButton,
+  Link,
   Text,
 } from "@chakra-ui/react";
 import { TinyColor } from "@ctrl/tinycolor";
@@ -19,6 +20,9 @@ import { OrderIncluded } from "~/server/api/routers/order";
 import { CouponExtanded } from "~/server/api/routers/saving";
 import { UserIncluded } from "~/server/api/routers/user";
 import { api } from "~/utils/api";
+import NextLink from "next/link";
+import ConditionalLink from "~/components/ConditionalLink";
+import BackButton from "~/components/ui/BackButton";
 
 const UserSavingsNoData = () => {
   return (
@@ -42,6 +46,7 @@ export default function AccountHistory() {
   const { data: resultUserOrders, isLoading: isLoadingUserOrders } =
     api.order.getList.useQuery({
       status: "delivered",
+      used: true,
     });
 
   const { data: userSavings } = resultUserSavings || {};
@@ -69,19 +74,7 @@ export default function AccountHistory() {
 
   return (
     <Box pt={12} pb={36} px={8}>
-      <IconButton
-        alignSelf="start"
-        shadow="default"
-        flexShrink={0}
-        aria-label="Retour"
-        colorScheme="whiteBtn"
-        onClick={() => {
-          router.back();
-        }}
-        borderRadius="2.25xl"
-        size="md"
-        icon={<ChevronLeftIcon w={6} h={6} color="black" />}
-      />
+      <BackButton />
       <Heading as="h2" size="xl" fontWeight={800} mt={6}>
         Historique de mes réductions
       </Heading>
@@ -93,7 +86,9 @@ export default function AccountHistory() {
               ("usedAt" in userHistoryItem
                 ? userHistoryItem.usedAt
                   ? userHistoryItem.usedAt
-                  : userHistoryItem.assignUserAt
+                  : "assignUserAt" in userHistoryItem
+                    ? userHistoryItem.assignUserAt
+                    : userHistoryItem.createdAt
                 : userHistoryItem.createdAt) as string
             );
             const previousCoupon = history[index - 1];
@@ -102,7 +97,9 @@ export default function AccountHistory() {
                   ("usedAt" in previousCoupon
                     ? previousCoupon.usedAt
                       ? previousCoupon.usedAt
-                      : previousCoupon.assignUserAt
+                      : "assignUserAt" in userHistoryItem
+                        ? userHistoryItem.assignUserAt
+                        : userHistoryItem.createdAt
                     : previousCoupon.createdAt) as string
                 )
               : new Date();
@@ -150,64 +147,80 @@ export default function AccountHistory() {
                   justifyContent="space-between"
                   mt={4}
                 >
-                  <Flex alignItems="center" gap={2}>
-                    <Box
-                      borderRadius="2xl"
-                      flexShrink={0}
-                      bgColor={darkenPartnerColor}
-                      p={1.5}
-                    >
-                      <Image
-                        src={userHistoryItem.offer.partner.icon.url as string}
-                        alt={userHistoryItem.offer.partner.icon.alt as string}
-                        width={36}
-                        height={36}
-                        style={{ borderRadius: "8px" }}
-                      />
-                    </Box>
-                    <Flex flexDir="column" justifyContent="start" w="full">
-                      <Text fontSize={14} fontWeight={500}>
-                        {userHistoryItem.offer.partner.name}
-                      </Text>
-                      <Text fontSize={12} fontWeight={500} noOfLines={1}>
-                        {userHistoryItem.offer.title}
-                      </Text>
-                      <Box mt={1}>
-                        {"used" in userHistoryItem && !userHistoryItem.used ? (
-                          <Flex alignItems="center" color="disabled" gap={0.5}>
-                            <Icon as={HiMiniClock} w={3} h={3} />
-                            <Text fontWeight={500} fontSize={12}>
-                              Fin{" "}
-                              {currentCouponUsedAt.toLocaleDateString("fr-FR", {
-                                day: "2-digit",
-                                month: "2-digit",
-                              })}
-                            </Text>
-                          </Flex>
-                        ) : (
-                          <Flex
-                            alignItems="center"
-                            fontSize={12}
-                            px={1}
-                            color="success"
-                            bgColor="successLight"
-                            w="fit-content"
-                            borderRadius="2.5xl"
-                            gap={0.5}
-                            fontWeight={500}
-                          >
-                            <Icon
-                              as={HiMiniCheckCircle}
-                              stroke="white"
-                              w={3}
-                              h={3}
-                            />
-                            Déjà utilisée
-                          </Flex>
-                        )}
+                  <ConditionalLink
+                    condition={"number" in userHistoryItem}
+                    to={`/dashboard/order/${userHistoryItem.id}?from=history`}
+                    props={{
+                      width: "full",
+                      _hover: { textDecoration: "none" },
+                    }}
+                  >
+                    <Flex alignItems="center" gap={2} w="full">
+                      <Box
+                        borderRadius="2xl"
+                        flexShrink={0}
+                        bgColor={darkenPartnerColor}
+                        p={1.5}
+                      >
+                        <Image
+                          src={userHistoryItem.offer.partner.icon.url as string}
+                          alt={userHistoryItem.offer.partner.icon.alt as string}
+                          width={36}
+                          height={36}
+                          style={{ borderRadius: "8px" }}
+                        />
                       </Box>
+                      <Flex flexDir="column" justifyContent="start" w="full">
+                        <Text fontSize={14} fontWeight={500}>
+                          {userHistoryItem.offer.partner.name}
+                        </Text>
+                        <Text fontSize={12} fontWeight={500} noOfLines={1}>
+                          {userHistoryItem.offer.title}
+                        </Text>
+                        <Box mt={1}>
+                          {!userHistoryItem.used ? (
+                            <Flex
+                              alignItems="center"
+                              color="disabled"
+                              gap={0.5}
+                            >
+                              <Icon as={HiMiniClock} w={3} h={3} />
+                              <Text fontWeight={500} fontSize={12}>
+                                Fin{" "}
+                                {currentCouponUsedAt.toLocaleDateString(
+                                  "fr-FR",
+                                  {
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                  }
+                                )}
+                              </Text>
+                            </Flex>
+                          ) : (
+                            <Flex
+                              alignItems="center"
+                              fontSize={12}
+                              px={1}
+                              color="success"
+                              bgColor="successLight"
+                              w="fit-content"
+                              borderRadius="2.5xl"
+                              gap={0.5}
+                              fontWeight={500}
+                            >
+                              <Icon
+                                as={HiMiniCheckCircle}
+                                stroke="white"
+                                w={3}
+                                h={3}
+                              />
+                              Déjà utilisée
+                            </Flex>
+                          )}
+                        </Box>
+                      </Flex>
                     </Flex>
-                  </Flex>
+                  </ConditionalLink>
                 </Flex>
                 <Divider mt={2} />
               </>

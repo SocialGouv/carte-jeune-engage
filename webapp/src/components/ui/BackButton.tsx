@@ -1,5 +1,6 @@
 import { Icon, IconButton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { IconType } from "react-icons/lib";
 import { TbChevronLeft } from "react-icons/tb";
 
@@ -13,6 +14,22 @@ const BackButton = (props: BackButtonProps) => {
   const router = useRouter();
   const { variant, onClick, icon } = props;
 
+  const [canGoBack, setCanGoBack] = useState(false);
+
+  useEffect(() => {
+    setCanGoBack(window.history.length > 1);
+  }, []);
+
+  const handleBack = () => {
+    if (onClick) {
+      onClick();
+    } else if (canGoBack) {
+      router.back();
+    } else {
+      router.push("/dashboard");
+    }
+  };
+
   return (
     <IconButton
       alignSelf="start"
@@ -22,7 +39,7 @@ const BackButton = (props: BackButtonProps) => {
       aria-label="Retour"
       colorScheme="whiteBtn"
       bgColor="white"
-      onClick={onClick ? onClick : () => router.back()}
+      onClick={handleBack}
       borderRadius="2.25xl"
       size="md"
       icon={<Icon as={icon ? icon : TbChevronLeft} w={6} h={6} color="black" />}

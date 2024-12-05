@@ -65,11 +65,37 @@ export const formBuilderConfig: PluginConfig = {
         },
       ],
     },
+    select: {
+      labels: {
+        singular: "Sélection",
+        plural: "Sélections",
+      },
+      fields: [
+        ...baseFields,
+        {
+          type: "array",
+          name: "options",
+          label: "Options",
+          fields: [
+            { type: "text", name: "label", label: "Label" },
+            { type: "text", name: "value", label: "Valeur" },
+            {
+              type: "select",
+              name: "icon",
+              label: "Icône",
+              options: [
+                { label: "Sur internet", value: "HiCursorArrowRays" },
+                { label: "En boutique", value: "HiBuildingStorefront" },
+              ],
+            },
+          ],
+        },
+      ],
+    },
     number: false,
     checkbox: false,
     email: false,
     message: false,
-    select: false,
     state: false,
     text: false,
   },

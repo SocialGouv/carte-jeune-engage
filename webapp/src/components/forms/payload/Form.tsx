@@ -2,8 +2,9 @@ import React, { useState, useCallback } from "react";
 import { buildInitialFormState } from "./buildInitialFormState";
 import { fields } from "./fields";
 import {
-  CountryField,
   Form as FormType,
+  CountryField,
+  SelectField,
   TextAreaField,
 } from "@payloadcms/plugin-form-builder/dist/types";
 import { useForm } from "react-hook-form";
@@ -33,7 +34,9 @@ export type FormBlockType = {
   blockName?: string;
   blockType?: "formBlock";
   enableIntro: Boolean;
-  form: Omit<FormType, "fields"> & { fields: (CountryField | TextAreaField)[] };
+  form: Omit<FormType, "fields"> & {
+    fields: (CountryField | TextAreaField | SelectField)[];
+  };
 };
 
 export const FormBlock: React.FC<

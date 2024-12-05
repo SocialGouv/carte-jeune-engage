@@ -20,12 +20,14 @@ import {
   HiMiniChatBubbleOvalLeftEllipsis,
   HiMinus,
   HiPlus,
+  HiQuestionMarkCircle,
 } from "react-icons/hi2";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { PiWarningFill } from "react-icons/pi";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import LoadingLoader from "~/components/LoadingLoader";
-import OrderIssueModal from "~/components/modals/IssueModal";
+import IssueModal from "~/components/modals/IssueModal";
+import OfferUsedBox from "~/components/offer/page/OfferUsedBox";
 import BackButton from "~/components/ui/BackButton";
 import Image from "~/components/ui/Image";
 import PartnerImage from "~/components/ui/PartnerImage";
@@ -41,10 +43,11 @@ import {
 export default function OrderObizPage() {
   const router = useRouter();
   const utils = api.useUtils();
-  const { user } = useAuth();
+  const { user, setShowCrispModal } = useAuth();
 
-  const { id } = router.query as {
+  const { id, from } = router.query as {
     id: string;
+    from?: string;
   };
 
   const [showDetails, setShowDetails] = useState(false);
@@ -59,7 +62,7 @@ export default function OrderObizPage() {
   const {
     data: resultOrder,
     isLoading: isLoadingOrder,
-    isRefetching: isRefetchingOrder,
+    refetch: refetchOrder,
     error: errorOrder,
   } = api.order.getById.useQuery(
     { id: parseInt(id) },
@@ -309,15 +312,49 @@ export default function OrderObizPage() {
     <>
       <Flex
         minH="full"
-        direction={"column"}
+        direction="column"
         position="relative"
         pt={8}
         pb={9}
         px={6}
         bg="bgGray"
       >
-        <Flex direction={"column"} gap={10}>
-          <BackButton onClick={() => router.push("/dashboard/wallet")} />
+        <Flex direction="column" gap={10}>
+          <Flex alignItems="center" justifyContent="space-between">
+            <BackButton
+              onClick={() =>
+                router.push(
+                  from === "history"
+                    ? "/dashboard/account/history"
+                    : "/dashboard/wallet"
+                )
+              }
+            />
+            {order.status === "delivered" && order.used && (
+              <Flex
+                alignItems="center"
+                borderRadius="2xl"
+                bgColor="successLight"
+                py={1}
+                px={2}
+                gap={0.5}
+              >
+                <Icon as={HiCheckCircle} color="success" w={4} h={4} />
+                <Text fontSize={12} fontWeight={700} color="success">
+                  Déjà utilisé
+                </Text>
+              </Flex>
+            )}
+            <Flex justifyContent="end" alignItems="center" h="40px" w="40px">
+              <Icon
+                as={HiQuestionMarkCircle}
+                w={6}
+                h={6}
+                color="disabled"
+                onClick={() => setShowCrispModal(true)}
+              />
+            </Flex>
+          </Flex>
           <Flex
             alignItems={"center"}
             direction={"column"}
@@ -411,9 +448,33 @@ export default function OrderObizPage() {
               textDecor="underline"
               textDecorationThickness="2px"
               textUnderlineOffset={2}
+              opacity={0.2}
             >
               Voir les conditions détaillées
             </Text> */}
+            {order.status === "delivered" && (
+              <Box mb={2}>
+                {!order.used ? (
+                  <OfferUsedBox
+                    kind="order"
+                    order={order}
+                    onConfirm={refetchOrder}
+                  />
+                ) : (
+                  <Center
+                    bgColor="successLight"
+                    borderRadius="2xl"
+                    p={4}
+                    gap={0.5}
+                  >
+                    <Icon as={HiCheckCircle} color="success" w={5} h={5} />
+                    <Text fontSize={15} fontWeight={700} color="success">
+                      Bon déjà utilisé
+                    </Text>
+                  </Center>
+                )}
+              </Box>
+            )}
             <Flex
               p={4}
               alignItems="center"
@@ -436,7 +497,7 @@ export default function OrderObizPage() {
           </Flex>
         </Flex>
       </Flex>
-      <OrderIssueModal
+      <IssueModal
         isOpen={isOpenModalSignalIssue}
         onClose={onCloseModalSignalIssue}
         kind="order"

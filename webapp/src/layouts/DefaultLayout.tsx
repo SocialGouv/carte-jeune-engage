@@ -11,10 +11,15 @@ import { push } from "@socialgouv/matomo-next";
 import SplashScreenModal from "~/components/modals/SplashScreenModal";
 import { isIOS } from "~/utils/tools";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+
+const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+
+  const CrispWithNoSSR = dynamic(() => import("../components/support/Crisp"));
 
   const {
     setDeferredEvent,
@@ -26,6 +31,8 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     showSplashScreenModal,
     setShowSplashScreenModal,
     setServiceWorkerRegistration,
+    showCrispModal,
+    setShowCrispModal,
   } = useAuth();
 
   const { isOpen: isNotificationModalOpen, onClose: onNotificationModalClose } =
@@ -191,6 +198,13 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
             <NotificationModal
               isOpen={isNotificationModalOpen}
               onClose={onNotificationModalClose}
+            />
+          )}
+          {showCrispModal && user && (
+            <CrispWithNoSSR
+              crispToken={CRISP_TOKEN}
+              user={user}
+              onClose={() => setShowCrispModal(false)}
             />
           )}
         </Container>

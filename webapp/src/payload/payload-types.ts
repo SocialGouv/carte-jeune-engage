@@ -333,6 +333,8 @@ export interface Order {
         id?: string | null;
       }[]
     | null;
+  used?: boolean | null;
+  usedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -446,6 +448,22 @@ export interface Form {
             id?: string | null;
             blockName?: string | null;
             blockType: "country";
+          }
+        | {
+            name: string;
+            label?: string | null;
+            required?: boolean | null;
+            options?:
+              | {
+                  label?: string | null;
+                  value?: string | null;
+                  icon?: ("HiCursorArrowRays" | "HiBuildingStorefront") | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: "select";
           }
         | {
             name: string;

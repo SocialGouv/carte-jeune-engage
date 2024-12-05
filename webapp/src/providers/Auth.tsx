@@ -44,7 +44,8 @@ type AuthContext = {
   setServiceWorkerRegistration: (
     registration: ServiceWorkerRegistration | null
   ) => void;
-
+  showCrispModal: boolean;
+  setShowCrispModal: Dispatch<SetStateAction<boolean>>;
   refetchUser: () => Promise<void>;
 };
 
@@ -65,6 +66,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [showDesktopQRCode, setShowDesktopQRCode] = useState<boolean>(true);
   const [showDesktopEligibleModal, setShowDesktopEligibleModal] =
     useState<boolean>(false);
+
+  const [showCrispModal, setShowCrispModal] = useState<boolean>(false);
 
   const [showing, setShowing] = useState(true);
   const [deferredEvent, setDeferredEvent] =
@@ -128,6 +131,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setServiceWorkerRegistration,
         deferredEvent,
         setDeferredEvent,
+        showCrispModal,
+        setShowCrispModal,
         refetchUser: fetchMe,
       }}
     >
