@@ -1,3 +1,11 @@
+## [0.73.20](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.19...v0.73.20) (2024-12-05)
+
+
+### Bug Fixes
+
+* desactivate reminder auchan and offer user preferences notifications and group offer activated reminder by user instead by offer ([d52879d](https://github.com/SocialGouv/carte-jeune-engage/commit/d52879d1f07bcbbd4711457fac499ba02691e44e))
+* remove unused import ([fe1bb94](https://github.com/SocialGouv/carte-jeune-engage/commit/fe1bb94cc13ee929b93fd8270523e6cbd0403518))
+
 ## [0.73.19](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.18...v0.73.19) (2024-12-04)
 
 ### Bug Fixes
