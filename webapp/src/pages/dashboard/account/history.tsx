@@ -148,7 +148,7 @@ export default function AccountHistory() {
                   mt={4}
                 >
                   <ConditionalLink
-                    condition={"status" in userHistoryItem}
+                    condition={"number" in userHistoryItem}
                     to={`/dashboard/order/${userHistoryItem.id}?from=history`}
                     props={{
                       width: "full",
@@ -178,8 +178,7 @@ export default function AccountHistory() {
                           {userHistoryItem.offer.title}
                         </Text>
                         <Box mt={1}>
-                          {"used" in userHistoryItem &&
-                          !userHistoryItem.used ? (
+                          {!userHistoryItem.used ? (
                             <Flex
                               alignItems="center"
                               color="disabled"

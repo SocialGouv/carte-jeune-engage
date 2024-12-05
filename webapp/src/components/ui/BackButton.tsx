@@ -17,7 +17,6 @@ const BackButton = (props: BackButtonProps) => {
   const [canGoBack, setCanGoBack] = useState(false);
 
   useEffect(() => {
-    console.log("window.history.length", window.history);
     setCanGoBack(window.history.length > 1);
   }, []);
 
