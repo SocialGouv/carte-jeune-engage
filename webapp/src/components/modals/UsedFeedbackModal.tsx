@@ -16,14 +16,14 @@ import { FormBlock } from "../forms/payload/Form";
 import { Form } from "~/payload/payload-types";
 import { useAuth } from "~/providers/Auth";
 import { UserIncluded } from "~/server/api/routers/user";
-import { OfferIncluded } from "~/server/api/routers/offer";
 import { CouponIncluded } from "~/server/api/routers/coupon";
 
 type CouponUsedFeedbackModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  offer: CouponIncluded["offer"];
+  kind: "coupon" | "order";
+  offer_id: number;
 };
 
 const CouponUsedFeedbackModalContent = ({
@@ -32,14 +32,14 @@ const CouponUsedFeedbackModalContent = ({
   setCurrentStep,
   onClose,
   user,
-  offer,
+  offer_id,
 }: {
   couponUsedFeedbackForm: Form | undefined;
   currentStep: "form" | "finish" | undefined;
   setCurrentStep: (step: "form" | "finish" | undefined) => void;
   user: UserIncluded | null;
   onClose: () => void;
-  offer: CouponIncluded["offer"];
+  offer_id: number;
 }) => {
   switch (currentStep) {
     case "form":
@@ -50,7 +50,7 @@ const CouponUsedFeedbackModalContent = ({
               form={couponUsedFeedbackForm as any}
               afterOnSubmit={() => setCurrentStep("finish")}
               enableIntro={true}
-              offer_id={offer.id}
+              offer_id={offer_id}
             />
           )}
         </Box>
@@ -121,8 +121,8 @@ const CouponUsedFeedbackModalContent = ({
   }
 };
 
-const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
-  const { isOpen, onClose, onConfirm, offer } = props;
+const UsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
+  const { isOpen, onClose, onConfirm, offer_id, kind } = props;
   const { user } = useAuth();
 
   const [currentStep, setCurrentStep] = useState<"form" | "finish" | undefined>(
@@ -130,7 +130,7 @@ const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
   );
 
   const { data: resultForm } = api.form.getFormBySlug.useQuery({
-    slug: "coupon-used-feedback-form",
+    slug: `${kind}-used-feedback-form`,
   });
 
   const { data: form } = resultForm || {};
@@ -158,7 +158,7 @@ const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             onClose={closeModal}
-            offer={offer}
+            offer_id={offer_id}
           />
         </ModalBody>
       </ModalContent>
@@ -166,4 +166,4 @@ const CouponUsedFeedbackModal = (props: CouponUsedFeedbackModalProps) => {
   );
 };
 
-export default CouponUsedFeedbackModal;
+export default UsedFeedbackModal;

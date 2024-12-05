@@ -333,6 +333,8 @@ export interface Order {
         id?: string | null;
       }[]
     | null;
+  used?: boolean | null;
+  usedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }

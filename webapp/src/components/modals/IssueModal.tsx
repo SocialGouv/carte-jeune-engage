@@ -178,10 +178,7 @@ type IssueModalProps = IssueModalOrder | IssueModalCoupon;
 
 const IssueModal = (props: IssueModalProps) => {
   const { isOpen, onClose, kind } = props;
-  const { user } = useAuth();
-  const CrispWithNoSSR = dynamic(() => import("../support/Crisp"));
-
-  const [isOpenCrisp, setIsOpenCrisp] = useState(false);
+  const { setShowCrispModal } = useAuth();
 
   const id = kind === "order" ? props.order_id : props.coupon_id;
 
@@ -216,7 +213,7 @@ const IssueModal = (props: IssueModalProps) => {
           <Divider my={6} />
           <Flex direction="column" gap={4}>
             <ItemLink
-              onClick={() => setIsOpenCrisp(true)}
+              onClick={() => setShowCrispModal(true)}
               icon={HiMiniChatBubbleOvalLeftEllipsis}
               text="Discutez avec nous en direct"
             />
@@ -252,15 +249,6 @@ const IssueModal = (props: IssueModalProps) => {
             )}
           </Flex>
         </ModalBody>
-        {isOpenCrisp && user && (
-          <CrispWithNoSSR
-            crispToken={CRISP_TOKEN}
-            user={user}
-            onClose={() => {
-              setIsOpenCrisp(false);
-            }}
-          />
-        )}
       </ModalContent>
     </Modal>
   );

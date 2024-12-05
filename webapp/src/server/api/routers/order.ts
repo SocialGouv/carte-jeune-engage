@@ -398,10 +398,11 @@ export const orderRouter = createTRPCRouter({
     .input(
       z.object({
         status: z.enum(["delivered"]).optional(),
+        used: z.boolean().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const { status } = input;
+      const { status, used } = input;
 
       let statusQuery: Where = {
         status: { not_in: ["init", "awaiting_payment", "archived"] },
@@ -410,6 +411,12 @@ export const orderRouter = createTRPCRouter({
       if (status) {
         statusQuery = {
           status: { equals: status },
+        };
+      }
+
+      if (used !== undefined) {
+        statusQuery = {
+          used: { equals: used },
         };
       }
 
@@ -535,5 +542,37 @@ export const orderRouter = createTRPCRouter({
       return {
         data: orderSignal,
       };
+    }),
+
+  usedFromUser: userProtectedProcedure
+    .input(z.object({ order_id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const { order_id } = input;
+
+      const order = await ctx.payload.findByID({
+        collection: "orders",
+        id: order_id,
+        depth: 0,
+      });
+
+      if (!order)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Order not found",
+        });
+
+      if (order.user !== ctx.session.id)
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Order not assigned to user",
+        });
+
+      const updatedOrder = await ctx.payload.update({
+        collection: "orders",
+        id: order_id,
+        data: { used: true },
+      });
+
+      return { data: updatedOrder };
     }),
 });

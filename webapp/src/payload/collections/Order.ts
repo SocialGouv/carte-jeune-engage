@@ -109,5 +109,52 @@ export const Orders: CollectionConfig = {
         },
       ],
     },
+    {
+      name: "used",
+      type: "checkbox",
+      label: "Utilisé",
+      admin: {
+        condition: (_, siblingData) =>
+          !!siblingData.status && siblingData.status === "delivered",
+        description: "Cette case est cochée si la commande a été utilisé",
+        position: "sidebar",
+      },
+      defaultValue: false,
+    },
+    {
+      name: "usedAt",
+      type: "date",
+      label: "Date d'utilisation",
+      admin: {
+        position: "sidebar",
+        condition: (_, siblingData) =>
+          !!siblingData.status && siblingData.status === "delivered",
+      },
+    },
   ],
+  hooks: {
+    afterChange: [
+      async ({ doc, previousDoc, operation, req, context }) => {
+        if (context.triggerAfterChange === false) return;
+        if (operation === "update") {
+          if (doc.used !== previousDoc.used) {
+            const usedAt = doc.used ? new Date().toISOString() : null;
+            req.payload.update({
+              collection: "orders",
+              id: doc.id,
+              data: {
+                usedAt,
+                used: doc.used,
+              },
+              context: {
+                triggerAfterChange: false,
+              },
+            });
+
+            doc.usedAt = usedAt;
+          }
+        }
+      },
+    ],
+  },
 };

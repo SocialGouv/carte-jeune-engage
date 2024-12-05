@@ -6,17 +6,29 @@ import {
   Switch,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import CouponUsedFeedbackModal from "~/components/modals/CouponUsedFeedbackModal";
+import UsedFeedbackModal from "~/components/modals/UsedFeedbackModal";
 import { CouponIncluded } from "~/server/api/routers/coupon";
+import { OrderIncluded } from "~/server/api/routers/order";
 import { api } from "~/utils/api";
 
-type CouponUsedBoxProps = {
-  coupon: CouponIncluded;
-  confirmCouponUsed: () => void;
+type OfferUsedBoxDefaultProps = {
+  onConfirm: () => void;
 };
 
-const CouponUsedBox = (props: CouponUsedBoxProps) => {
-  const { coupon, confirmCouponUsed } = props;
+interface CouponUsedBoxProps extends OfferUsedBoxDefaultProps {
+  kind: "coupon";
+  coupon: CouponIncluded;
+}
+
+interface OrderUsedBoxProps extends OfferUsedBoxDefaultProps {
+  kind: "order";
+  order: OrderIncluded;
+}
+
+type OfferUsedBoxProps = CouponUsedBoxProps | OrderUsedBoxProps;
+
+const OfferUsedBox = (props: OfferUsedBoxProps) => {
+  const { kind, onConfirm } = props;
 
   const [showUsedBox, setShowUsedBox] = useState<boolean>(true);
   const [isSwitched, setIsSwitched] = useState<boolean>(false);
@@ -27,8 +39,9 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
     onClose: onCloseCouponUsedFeedbackModal,
   } = useDisclosure();
 
-  const { mutateAsync: mutateCouponUsed } =
-    api.coupon.usedFromUser.useMutation();
+  const { mutate: mutateCouponUsed } = api.coupon.usedFromUser.useMutation();
+
+  const { mutate: mutateOrderUsed } = api.order.usedFromUser.useMutation();
 
   const handleCouponUsed = (used: boolean) => {
     if (!used) {
@@ -39,21 +52,27 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
   };
 
   const confirmUsed = () => {
-    mutateCouponUsed({ coupon_id: coupon.id });
+    if (kind === "coupon") {
+      const { coupon } = props;
+      mutateCouponUsed({ coupon_id: coupon.id });
+    } else {
+      const { order } = props;
+      mutateOrderUsed({ order_id: order.id });
+    }
 
     setTimeout(() => {
       setIsSwitched(true);
     }, 500);
 
     setTimeout(() => {
-      confirmCouponUsed();
+      onConfirm();
     }, 1000);
   };
 
   if (!showUsedBox) return;
 
   return (
-    <Flex direction={"column"} gap={4} p={4} bg="white" rounded={"2xl"} mt={6}>
+    <Flex direction="column" gap={4} p={4} bg="white" rounded="2xl">
       <FormControl
         display="flex"
         alignItems="center"
@@ -65,14 +84,17 @@ const CouponUsedBox = (props: CouponUsedBoxProps) => {
         </FormLabel>
         <Switch id="coupon-used" isChecked={isSwitched} />
       </FormControl>
-      <CouponUsedFeedbackModal
+      <UsedFeedbackModal
         isOpen={isOpenCouponUsedFeedbackModal}
         onClose={onCloseCouponUsedFeedbackModal}
         onConfirm={confirmUsed}
-        offer={coupon.offer}
+        offer_id={
+          kind === "coupon" ? props.coupon.offer.id : props.order.offer.id
+        }
+        kind={kind}
       />
     </Flex>
   );
 };
 
-export default CouponUsedBox;
+export default OfferUsedBox;

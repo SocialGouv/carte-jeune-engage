@@ -42,6 +42,7 @@ export default function AccountHistory() {
   const { data: resultUserOrders, isLoading: isLoadingUserOrders } =
     api.order.getList.useQuery({
       status: "delivered",
+      used: true,
     });
 
   const { data: userSavings } = resultUserSavings || {};

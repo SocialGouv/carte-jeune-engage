@@ -34,7 +34,9 @@ export default function Wallet() {
   const { data: resultUserCoupons, isLoading: isLoadingUserCoupons } =
     api.coupon.getList.useQuery();
   const { data: resultUserOrders, isLoading: isLoadingUserOrders } =
-    api.order.getList.useQuery({});
+    api.order.getList.useQuery({
+      used: false,
+    });
 
   const { data: currentUserCoupons } = resultUserCoupons || { data: [] };
   const { data: currentUserOrders } = resultUserOrders || { data: [] };
