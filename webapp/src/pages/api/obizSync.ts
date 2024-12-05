@@ -64,6 +64,17 @@ const ObizSync = async (req: NextApiRequest, res: NextApiResponse) => {
           } else {
             console.log(`Nothing to synchronize`);
           }
+        })
+        .catch((e) => {
+          if (e.code === "NOT_FOUND") {
+            console.log(
+              `Error synchronizing obiz offer with article_id ${article_id} - Offer not found`
+            );
+          } else {
+            console.log(
+              `Error synchronizing obiz offer with article_id ${article_id} - Unknow error`
+            );
+          }
         });
     } else {
       throw new TRPCError({

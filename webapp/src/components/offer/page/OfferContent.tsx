@@ -31,6 +31,7 @@ import { formatMinutesDisplay } from "~/utils/tools";
 
 type OfferContentProps = {
   offer: OfferIncluded;
+  hasUnusedCoupon: boolean;
   canTakeCoupon: boolean;
   cooldownInMinutes: number | null;
   disabled: boolean;
@@ -44,6 +45,7 @@ type OfferContentProps = {
 const OfferContent = (props: OfferContentProps) => {
   const {
     offer,
+    hasUnusedCoupon,
     canTakeCoupon,
     cooldownInMinutes,
     disabled,
@@ -250,25 +252,25 @@ const OfferContent = (props: OfferContentProps) => {
             w="40%"
             fontSize={16}
             borderWidth={1}
-            borderColor={canTakeCoupon ? "cje-gray.100" : "transparent"}
-            color={canTakeCoupon ? "blackLight" : "white"}
-            colorScheme={canTakeCoupon ? "inherit" : "primaryShades"}
-            isDisabled={!canTakeCoupon}
-            isLoading={canTakeCoupon && isLoadingValidateOffer}
+            borderColor={!hasUnusedCoupon ? "cje-gray.100" : "transparent"}
+            color={!hasUnusedCoupon ? "blackLight" : "white"}
+            colorScheme={!hasUnusedCoupon ? "inherit" : "primaryShades"}
+            isDisabled={hasUnusedCoupon}
+            isLoading={!hasUnusedCoupon && isLoadingValidateOffer}
             onClick={() => {
-              if (canTakeCoupon) {
+              if (!hasUnusedCoupon) {
                 handleValidateOffer(offer.id, false);
               }
             }}
             leftIcon={
               <Icon
-                as={canTakeCoupon ? HiOutlineBookmark : HiBookmark}
+                as={!hasUnusedCoupon ? HiOutlineBookmark : HiBookmark}
                 w={5}
                 h={5}
               />
             }
           >
-            {canTakeCoupon ? "Enregistrer" : "Enregistré"}
+            {!hasUnusedCoupon ? "Enregistrer" : "Enregistré"}
           </Button>
           <Button
             w="60%"
