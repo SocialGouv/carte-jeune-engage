@@ -1,16 +1,14 @@
 ## [0.73.19](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.18...v0.73.19) (2024-12-04)
 
-
 ### Bug Fixes
 
-* return back button offer from url ([f969374](https://github.com/SocialGouv/carte-jeune-engage/commit/f969374c2aab4ead6e125c43aa6ccfda8e48289c))
+- return back button offer from url ([f969374](https://github.com/SocialGouv/carte-jeune-engage/commit/f969374c2aab4ead6e125c43aa6ccfda8e48289c))
 
 ## [0.73.18](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.17...v0.73.18) (2024-12-04)
 
-
 ### Bug Fixes
 
-* wording download button widget ([d9e67f8](https://github.com/SocialGouv/carte-jeune-engage/commit/d9e67f8eed3b093ef7b6e82851188b032326ae53))
+- wording download button widget ([d9e67f8](https://github.com/SocialGouv/carte-jeune-engage/commit/d9e67f8eed3b093ef7b6e82851188b032326ae53))
 
 ## [0.73.17](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.16...v0.73.17) (2024-12-04)
 

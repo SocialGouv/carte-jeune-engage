@@ -47,17 +47,37 @@ export async function sendReminderOfferActivated() {
       return;
     }
 
+    const users = new Map<number, CouponIncluded[]>();
+
     for (const offerActivated of offersActivated.docs as CouponIncluded[]) {
+      if (!users.has(offerActivated.user.id))
+        users.set(offerActivated.user.id, []);
+
+      users.get(offerActivated.user.id)?.push(offerActivated);
+    }
+
+    for (const [user_id, offersActivated] of users.entries()) {
+      const user = offersActivated[0].user;
+
+      const title =
+        offersActivated.length > 1
+          ? "Vos offres vous attendent !"
+          : "Votre offre vous attend !";
+
+      const message =
+        offersActivated.length > 1
+          ? `👉 ${offersActivated.length} offres vous attendent, utilisez-les quand vous voulez. Ne l’oubliez pas 😶`
+          : `👉 L’offre ${offersActivated[0].offer.partner.name} vous attend, utilisez-la quand vous voulez. Ne l’oubliez pas 😶`;
+
       const { notificationSent, notificationInDb } = await sendPushNotification(
         {
-          sub: offerActivated.user.notification_subscription,
+          sub: user.notification_subscription,
           payload,
-          userId: offerActivated.user.id,
-          offerId: offerActivated.offer.id,
+          userId: user_id,
           payloadNotification: {
-            title: "Votre offre vous attend !",
-            message: `👉 L’offre ${offerActivated.offer.title} vous attend, utilisez-la quand vous voulez. Ne l’oubliez pas 😶`,
-            url: `${getBaseUrl()}/dashboard/offer/${offerActivated.offer.source}/${offerActivated.offer.id}`,
+            title,
+            message,
+            url: `${getBaseUrl()}/dashboard/wallet`,
             slug,
           },
         }
