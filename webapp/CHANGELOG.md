@@ -1,3 +1,10 @@
+## [0.73.22](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.21...v0.73.22) (2024-12-13)
+
+
+### Bug Fixes
+
+* log octopush error code ([4bbf0a3](https://github.com/SocialGouv/carte-jeune-engage/commit/4bbf0a38a4e151645056b3665e30a43f4bbf7731))
+
 ## [0.73.21](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.20...v0.73.21) (2024-12-13)
 
 ### Bug Fixes
