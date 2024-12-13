@@ -1,3 +1,22 @@
+## [0.73.21](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.20...v0.73.21) (2024-12-13)
+
+### Bug Fixes
+
+- remove crisp component from all pages ([156b1e1](https://github.com/SocialGouv/carte-jeune-engage/commit/156b1e183fa00a12e1273390e3289aae35b658e3))
+
+## [0.73.20](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.19...v0.73.20) (2024-12-05)
+
+### Bug Fixes
+
+- desactivate reminder auchan and offer user preferences notifications and group offer activated reminder by user instead by offer ([d52879d](https://github.com/SocialGouv/carte-jeune-engage/commit/d52879d1f07bcbbd4711457fac499ba02691e44e))
+- remove unused import ([fe1bb94](https://github.com/SocialGouv/carte-jeune-engage/commit/fe1bb94cc13ee929b93fd8270523e6cbd0403518))
+
+## [0.73.19](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.18...v0.73.19) (2024-12-04)
+
+### Bug Fixes
+
+- return back button offer from url ([f969374](https://github.com/SocialGouv/carte-jeune-engage/commit/f969374c2aab4ead6e125c43aa6ccfda8e48289c))
+
 ## [0.73.18](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.17...v0.73.18) (2024-12-04)
 
 ### Bug Fixes

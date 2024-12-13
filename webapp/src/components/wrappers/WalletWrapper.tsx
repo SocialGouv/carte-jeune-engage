@@ -1,23 +1,13 @@
 import { Box, Button, Flex, Heading, Icon, Link } from "@chakra-ui/react";
-import { ReactNode, useState } from "react";
-import { HiCog6Tooth, HiQuestionMarkCircle, HiUser } from "react-icons/hi2";
+import { ReactNode } from "react";
+import { HiCog6Tooth, HiUser } from "react-icons/hi2";
 import NextLink from "next/link";
-import dynamic from "next/dynamic";
-import { useAuth } from "~/providers/Auth";
-
-const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
 type WalletWrapperProps = {
   children: ReactNode;
 };
 
 const WalletWrapper = ({ children }: WalletWrapperProps) => {
-  const { user } = useAuth();
-
-  const [isOpenCrisp, setIsOpenCrisp] = useState(false);
-
-  const CrispWithNoSSR = dynamic(() => import("../support/Crisp"));
-
   return (
     <Flex flexDir="column" pt={14} h="full" bgColor="bgGray">
       <Flex alignItems="center" mx={8} mb={4} gap={3}>
@@ -47,13 +37,13 @@ const WalletWrapper = ({ children }: WalletWrapperProps) => {
             size="xs"
           />
         </Link>
-        <Icon
+        {/* <Icon
           as={HiQuestionMarkCircle}
           w={6}
           h={6}
           ml="auto"
           onClick={() => setIsOpenCrisp(true)}
-        />
+        /> */}
       </Flex>
       <Flex
         flexDir="column"
@@ -69,15 +59,6 @@ const WalletWrapper = ({ children }: WalletWrapperProps) => {
           {children}
         </Box>
       </Flex>
-      {isOpenCrisp && user && (
-        <CrispWithNoSSR
-          crispToken={CRISP_TOKEN}
-          user={user}
-          onClose={() => {
-            setIsOpenCrisp(false);
-          }}
-        />
-      )}
     </Flex>
   );
 };

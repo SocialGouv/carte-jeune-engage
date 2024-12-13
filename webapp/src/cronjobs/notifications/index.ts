@@ -13,8 +13,8 @@ export const initNotifications = async () => {
       new Date().toLocaleString("fr-FR")
     );
     await sendNewOfferAvailable();
-    await sendReminderAuchan();
-    await sendReminderOfferUserPreferences();
+    // await sendReminderAuchan();
+    // await sendReminderOfferUserPreferences();
     await sendReminderOfferActivated();
     console.log(
       "[INIT] - End sending notifications",

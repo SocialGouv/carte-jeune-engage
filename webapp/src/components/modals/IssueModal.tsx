@@ -13,10 +13,8 @@ import {
   Button,
   Center,
 } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import {
-  HiMiniChatBubbleOvalLeftEllipsis,
   HiEnvelope,
   HiPhone,
   HiChevronRight,
@@ -24,11 +22,8 @@ import {
   HiCheckCircle,
 } from "react-icons/hi2";
 import { IconType } from "react-icons/lib";
-import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import ConditionalLink from "../ConditionalLink";
-
-const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
 const defaultIssueCases = [
   "Le prix avec la réduction ne correspond pas",
@@ -178,10 +173,6 @@ type IssueModalProps = IssueModalOrder | IssueModalCoupon;
 
 const IssueModal = (props: IssueModalProps) => {
   const { isOpen, onClose, kind } = props;
-  const { user } = useAuth();
-  const CrispWithNoSSR = dynamic(() => import("../support/Crisp"));
-
-  const [isOpenCrisp, setIsOpenCrisp] = useState(false);
 
   const id = kind === "order" ? props.order_id : props.coupon_id;
 
@@ -203,74 +194,53 @@ const IssueModal = (props: IssueModalProps) => {
         ];
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered={kind === "coupon"}>
-        <ModalOverlay />
-        {!isOpenCrisp && (
-          <ModalContent
-            mx={2.5}
-            mt={kind == "order" ? 5 : "auto"}
-            borderRadius="2.5xl"
-          >
-            <ModalCloseButton size="lg" top={4} right={4} />
-            <ModalBody display="flex" flexDir="column" px={9} pb={16} pt={4}>
-              <OrderIssueContent kind={kind} id={id} issues={issues} />
-              <Divider my={6} />
-              <Flex direction="column" gap={4}>
-                <ItemLink
-                  onClick={() => setIsOpenCrisp(true)}
-                  icon={HiMiniChatBubbleOvalLeftEllipsis}
-                  text="Discutez avec nous en direct"
-                />
-                {kind === "order" && (
-                  <>
-                    <Text
-                      my={2}
-                      fontSize={14}
-                      fontWeight={500}
-                      textAlign="center"
-                      color="disabled"
-                    >
-                      ou
-                    </Text>
-                    <ItemLink
-                      href="telto:0472402828"
-                      icon={HiPhone}
-                      text="04 72 40 28 28"
-                    />
-                    <ItemLink
-                      href="mailto:serviceclient@reducce.fr"
-                      icon={HiEnvelope}
-                      text="serviceclient@reducce.fr"
-                    />
-                    <Flex direction="column" gap={4} fontSize={"sm"}>
-                      <Text
-                        fontWeight={500}
-                        textAlign="center"
-                        color="disabled"
-                      >
-                        Disponible du lundi au vendredi de
-                        <br />
-                        09h à 12h30 puis de 14h à 17h30
-                      </Text>
-                    </Flex>
-                  </>
-                )}
-              </Flex>
-            </ModalBody>
-          </ModalContent>
-        )}
-      </Modal>
-      {isOpenCrisp && user && (
-        <CrispWithNoSSR
-          crispToken={CRISP_TOKEN}
-          user={user}
-          onClose={() => {
-            setIsOpenCrisp(false);
-          }}
-        />
-      )}
-    </>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered={kind === "coupon"}>
+      <ModalOverlay />
+      <ModalContent
+        mx={2.5}
+        mt={kind == "order" ? 5 : "auto"}
+        borderRadius="2.5xl"
+      >
+        <ModalCloseButton size="lg" top={4} right={4} />
+        <ModalBody display="flex" flexDir="column" px={9} pb={16} pt={4}>
+          <OrderIssueContent kind={kind} id={id} issues={issues} />
+          <Divider my={6} />
+          <Flex direction="column" gap={4}>
+            {/* <ItemLink
+              onClick={() => setIsOpenCrisp(true)}
+              icon={HiMiniChatBubbleOvalLeftEllipsis}
+              text="Discutez avec nous en direct"
+            />
+            <Text
+              my={2}
+              fontSize={14}
+              fontWeight={500}
+              textAlign="center"
+              color="disabled"
+            >
+              ou
+            </Text> */}
+            <ItemLink
+              href="telto:0472402828"
+              icon={HiPhone}
+              text="04 72 40 28 28"
+            />
+            <ItemLink
+              href="mailto:serviceclient@reducce.fr"
+              icon={HiEnvelope}
+              text="serviceclient@reducce.fr"
+            />
+            <Flex direction="column" gap={4} fontSize={"sm"}>
+              <Text fontWeight={500} textAlign="center" color="disabled">
+                Disponible du lundi au vendredi de
+                <br />
+                09h à 12h30 puis de 14h à 17h30
+              </Text>
+            </Flex>
+          </Flex>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 
