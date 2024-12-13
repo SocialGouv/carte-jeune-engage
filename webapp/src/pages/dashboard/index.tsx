@@ -10,7 +10,7 @@ import {
 import dynamic from "next/dynamic";
 import NextLink from "next/link";
 import { useState } from "react";
-import { HiMiniTag, HiQuestionMarkCircle } from "react-icons/hi2";
+import { HiMiniTag } from "react-icons/hi2";
 import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
 import SearchBar from "~/components/SearchBar";
@@ -20,8 +20,6 @@ import CategoriesList from "~/components/lists/CategoriesList";
 import TagsList from "~/components/lists/TagsList";
 import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
-
-const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -76,7 +74,7 @@ export default function Dashboard() {
         <Heading as="h2" fontSize="2xl" fontWeight="extrabold" mb={9}>
           Explorer
         </Heading>
-        <Box
+        {/* <Box
           borderRadius="2.25xl"
           px={2}
           py={1}
@@ -89,7 +87,7 @@ export default function Dashboard() {
           }}
         >
           <Icon as={HiQuestionMarkCircle} w={6} h={6} mt={1} color="black" />
-        </Box>
+        </Box> */}
         <Link
           as={NextLink}
           href="/dashboard/search"
@@ -190,15 +188,6 @@ export default function Dashboard() {
       <Box mt={8}>
         <TagsList offers={allOffers} />
       </Box>
-      {isOpenCrisp && user && (
-        <CrispWithNoSSR
-          crispToken={CRISP_TOKEN}
-          user={user}
-          onClose={() => {
-            setIsOpenCrisp(false);
-          }}
-        />
-      )}
     </Box>
   );
 }
