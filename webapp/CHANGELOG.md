@@ -1,3 +1,10 @@
+## [0.73.21](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.20...v0.73.21) (2024-12-13)
+
+
+### Bug Fixes
+
+* remove crisp component from all pages ([156b1e1](https://github.com/SocialGouv/carte-jeune-engage/commit/156b1e183fa00a12e1273390e3289aae35b658e3))
+
 ## [0.73.20](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.19...v0.73.20) (2024-12-05)
 
 ### Bug Fixes
