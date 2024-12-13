@@ -17,14 +17,10 @@ import { OfferIncluded } from "~/server/api/routers/offer";
 import { OfferArticle } from "~/server/types";
 import { api } from "~/utils/api";
 import LayoutOrderStatus from "../obiz/LayoutOrderStatus";
-import { HiMiniShieldCheck, HiQuestionMarkCircle } from "react-icons/hi2";
+import { HiMiniShieldCheck } from "react-icons/hi2";
 import { formatter2Digits } from "~/utils/tools";
 import { useRouter } from "next/router";
 import PartnerImage from "../ui/PartnerImage";
-import dynamic from "next/dynamic";
-import { useAuth } from "~/providers/Auth";
-
-const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
 const ObizOfferVariableContent = ({
   step,
@@ -223,11 +219,7 @@ export default function ObizOrderProcessModal(
 ) {
   const { isOpen, onClose, onRedirectPayment, offerId } = props;
   const router = useRouter();
-  const { user } = useAuth();
 
-  const CrispWithNoSSR = dynamic(() => import("../support/Crisp"));
-
-  const [isOpenCrisp, setIsOpenCrisp] = useState(false);
   const [amount, setAmount] = useState(0);
   const [step, setStep] = useState<Steps>("amount");
   const [selectedArticles, setSelectedArticles] = useState<
@@ -265,90 +257,75 @@ export default function ObizOrderProcessModal(
     <>
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
-        {!isOpenCrisp && (
-          <ModalContent>
-            <ModalBody display="flex" flexDir="column" px={8}>
-              {step !== "payment" && (
-                <Flex mt={8} alignItems="center">
-                  <Box mr={4}>
-                    <BackButton
-                      onClick={() =>
-                        step == "amount" ? onClose() : setStep("amount")
-                      }
-                    />
-                  </Box>
-                  <PartnerImage
-                    partner={offer.partner}
-                    width={42}
-                    height={42}
+        <ModalContent>
+          <ModalBody display="flex" flexDir="column" px={8}>
+            {step !== "payment" && (
+              <Flex mt={8} alignItems="center">
+                <Box mr={4}>
+                  <BackButton
+                    onClick={() =>
+                      step == "amount" ? onClose() : setStep("amount")
+                    }
                   />
-                  <Flex flexDir="column" gap={0.5} ml={2}>
-                    <Text fontSize={14} fontWeight={500}>
-                      {offer.partner.name}
-                    </Text>
-                    <Text fontSize={12} fontWeight={800}>
-                      {offer.title} {offer.subtitle ?? ""}
-                    </Text>
-                  </Flex>
-                  <Icon
-                    as={HiQuestionMarkCircle}
-                    w={6}
-                    h={6}
-                    ml="auto"
-                    color="disabled"
-                    onClick={() => setIsOpenCrisp(true)}
-                  />
+                </Box>
+                <PartnerImage partner={offer.partner} width={42} height={42} />
+                <Flex flexDir="column" gap={0.5} ml={2}>
+                  <Text fontSize={14} fontWeight={500}>
+                    {offer.partner.name}
+                  </Text>
+                  <Text fontSize={12} fontWeight={800}>
+                    {offer.title} {offer.subtitle ?? ""}
+                  </Text>
                 </Flex>
-              )}
-              <ObizOfferVariableContent
-                step={step}
-                setStep={setStep}
-                amount={amount}
-                setAmount={setAmount}
-                offer={offer}
-                articles={availableArticles}
-                createOrder={() => {
-                  if (
-                    availableArticles.length === 1 &&
-                    availableArticles[0].kind === "variable_price"
-                  ) {
-                    createTestOrder({
-                      offer_id: offer.id,
-                      article_references: [
-                        {
-                          reference: availableArticles[0].reference,
-                          quantity: 1,
-                        },
-                      ],
-                      input_value: amount - (amount * discount) / 100,
-                      input_value_public: amount,
-                    });
-                  } else {
-                    createTestOrder({
-                      offer_id: offer.id,
-                      article_references: selectedArticles.map((article) => ({
-                        reference: article.article.reference,
-                        quantity: article.quantity,
-                      })),
-                    });
-                  }
-                }}
-                selectedArticles={selectedArticles}
-                setSelectedArticles={setSelectedArticles}
-              />
-            </ModalBody>
-          </ModalContent>
-        )}
+                {/* <Icon
+                  as={HiQuestionMarkCircle}
+                  w={6}
+                  h={6}
+                  ml="auto"
+                  color="disabled"
+                  onClick={() => setIsOpenCrisp(true)}
+                /> */}
+              </Flex>
+            )}
+            <ObizOfferVariableContent
+              step={step}
+              setStep={setStep}
+              amount={amount}
+              setAmount={setAmount}
+              offer={offer}
+              articles={availableArticles}
+              createOrder={() => {
+                if (
+                  availableArticles.length === 1 &&
+                  availableArticles[0].kind === "variable_price"
+                ) {
+                  createTestOrder({
+                    offer_id: offer.id,
+                    article_references: [
+                      {
+                        reference: availableArticles[0].reference,
+                        quantity: 1,
+                      },
+                    ],
+                    input_value: amount - (amount * discount) / 100,
+                    input_value_public: amount,
+                  });
+                } else {
+                  createTestOrder({
+                    offer_id: offer.id,
+                    article_references: selectedArticles.map((article) => ({
+                      reference: article.article.reference,
+                      quantity: article.quantity,
+                    })),
+                  });
+                }
+              }}
+              selectedArticles={selectedArticles}
+              setSelectedArticles={setSelectedArticles}
+            />
+          </ModalBody>
+        </ModalContent>
       </Modal>
-      {isOpenCrisp && user && (
-        <CrispWithNoSSR
-          crispToken={CRISP_TOKEN}
-          user={user}
-          onClose={() => {
-            setIsOpenCrisp(false);
-          }}
-        />
-      )}
     </>
   );
 }
