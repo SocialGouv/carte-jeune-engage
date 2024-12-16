@@ -1,3 +1,15 @@
+# [0.74.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.22...v0.74.0) (2024-12-16)
+
+
+### Bug Fixes
+
+* deactivate ([a7f32ee](https://github.com/SocialGouv/carte-jeune-engage/commit/a7f32ee5255857ab7d6b1bdb7eaf71884a068cc2))
+
+
+### Features
+
+* suspend cronjobs ([46652e8](https://github.com/SocialGouv/carte-jeune-engage/commit/46652e8d7a5f7329085c26398d47b7b440eb6434))
+
 ## [0.73.22](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.21...v0.73.22) (2024-12-13)
 
 ### Bug Fixes
