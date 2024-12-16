@@ -203,9 +203,9 @@ const IssueModal = (props: IssueModalProps) => {
       >
         <ModalCloseButton size="lg" top={4} right={4} />
         <ModalBody display="flex" flexDir="column" px={9} pb={16} pt={4}>
-          <OrderIssueContent kind={kind} id={id} issues={issues} />
-          <Divider my={6} />
-          <Flex direction="column" gap={4}>
+          {/* <OrderIssueContent kind={kind} id={id} issues={issues} /> */}
+          {/* <Divider my={6} /> */}
+          <Flex direction="column" gap={4} mt={16}>
             {/* <ItemLink
               onClick={() => setIsOpenCrisp(true)}
               icon={HiMiniChatBubbleOvalLeftEllipsis}
@@ -220,23 +220,35 @@ const IssueModal = (props: IssueModalProps) => {
             >
               ou
             </Text> */}
-            <ItemLink
-              href="telto:0472402828"
-              icon={HiPhone}
-              text="04 72 40 28 28"
-            />
-            <ItemLink
-              href="mailto:serviceclient@reducce.fr"
-              icon={HiEnvelope}
-              text="serviceclient@reducce.fr"
-            />
-            <Flex direction="column" gap={4} fontSize={"sm"}>
-              <Text fontWeight={500} textAlign="center" color="disabled">
-                Disponible du lundi au vendredi de
-                <br />
-                09h à 12h30 puis de 14h à 17h30
-              </Text>
-            </Flex>
+            {kind === "order" ? (
+              <>
+                <ItemLink
+                  href="telto:0472402828"
+                  icon={HiPhone}
+                  text="04 72 40 28 28"
+                />
+                <ItemLink
+                  href="mailto:serviceclient@reducce.fr"
+                  icon={HiEnvelope}
+                  text="serviceclient@reducce.fr"
+                />
+                <Flex direction="column" gap={4} fontSize={"sm"}>
+                  <Text fontWeight={500} textAlign="center" color="disabled">
+                    Disponible du lundi au vendredi de
+                    <br />
+                    09h à 12h30 puis de 14h à 17h30
+                  </Text>
+                </Flex>
+              </>
+            ) : (
+              <>
+                <ItemLink
+                  href="mailto:cje@fabrique.social.gouv.fr"
+                  icon={HiEnvelope}
+                  text="cje@fabrique.social.gouv.fr"
+                />
+              </>
+            )}
           </Flex>
         </ModalBody>
       </ModalContent>
