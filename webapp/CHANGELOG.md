@@ -1,9 +1,8 @@
 ## [0.73.22](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.21...v0.73.22) (2024-12-13)
 
-
 ### Bug Fixes
 
-* log octopush error code ([4bbf0a3](https://github.com/SocialGouv/carte-jeune-engage/commit/4bbf0a38a4e151645056b3665e30a43f4bbf7731))
+- log octopush error code ([4bbf0a3](https://github.com/SocialGouv/carte-jeune-engage/commit/4bbf0a38a4e151645056b3665e30a43f4bbf7731))
 
 ## [0.73.21](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.20...v0.73.21) (2024-12-13)
 
@@ -54,6 +53,10 @@
 ### Bug Fixes
 
 - add crisp on offer obiz journey ([e655a50](https://github.com/SocialGouv/carte-jeune-engage/commit/e655a501c03568e4cd8aacefee90b557a30cd248))
+
+## [0.73.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.12...v0.73.13) (2024-12-03)
+
+### Bug Fixes
 
 ## [0.73.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.12...v0.73.13) (2024-12-03)
 
