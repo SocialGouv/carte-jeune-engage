@@ -63,6 +63,7 @@ export default function HomeLoginWidget({
               "Votre numéro de téléphone n'est pas autorisé à accéder à l'application",
           });
         } else {
+          console.log(`Error generating OTP & creating user : `, data);
           methods.setError("phoneNumber", {
             type: "internal",
             message: "Erreur coté serveur, veuillez contacter le support",
