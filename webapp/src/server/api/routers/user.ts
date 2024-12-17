@@ -90,6 +90,14 @@ const generateAndSendOTP = async (
     });
   } else if (!!octopushResponse.otp_request_token) {
     if (firstLogin) {
+      console.log("tying to create : ", {
+        email: email,
+        otp_request_token: octopushResponse.otp_request_token,
+        password: generateRandomPassword(16),
+        phone_number: phone_number,
+        userEmail: user_email,
+        cej_id: cej_id,
+      });
       await payload.create({
         collection: "users",
         data: {

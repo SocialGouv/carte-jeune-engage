@@ -1,9 +1,8 @@
 ## [0.74.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.74.0...v0.74.1) (2024-12-17)
 
-
 ### Bug Fixes
 
-* add error log user login-widget creation ([cb5d30b](https://github.com/SocialGouv/carte-jeune-engage/commit/cb5d30bc706cfe95d97d6072392376814109887f))
+- add error log user login-widget creation ([cb5d30b](https://github.com/SocialGouv/carte-jeune-engage/commit/cb5d30bc706cfe95d97d6072392376814109887f))
 
 # [0.74.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.22...v0.74.0) (2024-12-16)
 
