@@ -14,5 +14,9 @@ export default createNextApiHandler({
             `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`
           );
         }
-      : undefined,
+      : ({ path, error }) => {
+          console.error(
+            `❌ tRPC failed on ${path ?? "<no-path>"}: [${error.code}] ${error.message}`
+          );
+        },
 });
