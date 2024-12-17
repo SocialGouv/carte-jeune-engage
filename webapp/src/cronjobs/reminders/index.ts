@@ -72,6 +72,7 @@ export const initReminders = async () => {
         where: {
           firstName: { exists: true },
         },
+        sort: "createdAt",
         limit: BATCH_SIZE,
         page: page,
       });

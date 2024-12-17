@@ -101,10 +101,17 @@ export default function WidgetOfferPage({
           colorScheme="whiteBtn"
           color="black"
           fontWeight={800}
-          w="full"
+          w="90%"
+          h={18}
           mt={10}
+          gap={4}
         >
-          Télécharger l'appli <Icon ml={2} as={HiArrowTopRightOnSquare} />
+          <Text>
+            Ouvrir la carte
+            <br />
+            “jeune engagé”
+          </Text>{" "}
+          <Icon ml={2} as={HiArrowTopRightOnSquare} />
         </Button>
         <Button
           variant="unstyled"

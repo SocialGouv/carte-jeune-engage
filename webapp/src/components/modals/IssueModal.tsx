@@ -13,10 +13,8 @@ import {
   Button,
   Center,
 } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import {
-  HiMiniChatBubbleOvalLeftEllipsis,
   HiEnvelope,
   HiPhone,
   HiChevronRight,
@@ -24,11 +22,8 @@ import {
   HiCheckCircle,
 } from "react-icons/hi2";
 import { IconType } from "react-icons/lib";
-import { useAuth } from "~/providers/Auth";
 import { api } from "~/utils/api";
 import ConditionalLink from "../ConditionalLink";
-
-const CRISP_TOKEN = process.env.NEXT_PUBLIC_CRISP_TOKEN as string;
 
 const defaultIssueCases = [
   "Le prix avec la réduction ne correspond pas",
@@ -178,10 +173,6 @@ type IssueModalProps = IssueModalOrder | IssueModalCoupon;
 
 const IssueModal = (props: IssueModalProps) => {
   const { isOpen, onClose, kind } = props;
-  const { user } = useAuth();
-  const CrispWithNoSSR = dynamic(() => import("../support/Crisp"));
-
-  const [isOpenCrisp, setIsOpenCrisp] = useState(false);
 
   const id = kind === "order" ? props.order_id : props.coupon_id;
 
@@ -212,25 +203,25 @@ const IssueModal = (props: IssueModalProps) => {
       >
         <ModalCloseButton size="lg" top={4} right={4} />
         <ModalBody display="flex" flexDir="column" px={9} pb={16} pt={4}>
-          <OrderIssueContent kind={kind} id={id} issues={issues} />
-          <Divider my={6} />
-          <Flex direction="column" gap={4}>
-            <ItemLink
+          {/* <OrderIssueContent kind={kind} id={id} issues={issues} /> */}
+          {/* <Divider my={6} /> */}
+          <Flex direction="column" gap={4} mt={16}>
+            {/* <ItemLink
               onClick={() => setIsOpenCrisp(true)}
               icon={HiMiniChatBubbleOvalLeftEllipsis}
               text="Discutez avec nous en direct"
             />
-            {kind === "order" && (
+            <Text
+              my={2}
+              fontSize={14}
+              fontWeight={500}
+              textAlign="center"
+              color="disabled"
+            >
+              ou
+            </Text> */}
+            {kind === "order" ? (
               <>
-                <Text
-                  my={2}
-                  fontSize={14}
-                  fontWeight={500}
-                  textAlign="center"
-                  color="disabled"
-                >
-                  ou
-                </Text>
                 <ItemLink
                   href="telto:0472402828"
                   icon={HiPhone}
@@ -249,18 +240,17 @@ const IssueModal = (props: IssueModalProps) => {
                   </Text>
                 </Flex>
               </>
+            ) : (
+              <>
+                <ItemLink
+                  href="mailto:cje@fabrique.social.gouv.fr"
+                  icon={HiEnvelope}
+                  text="cje@fabrique.social.gouv.fr"
+                />
+              </>
             )}
           </Flex>
         </ModalBody>
-        {isOpenCrisp && user && (
-          <CrispWithNoSSR
-            crispToken={CRISP_TOKEN}
-            user={user}
-            onClose={() => {
-              setIsOpenCrisp(false);
-            }}
-          />
-        )}
       </ModalContent>
     </Modal>
   );

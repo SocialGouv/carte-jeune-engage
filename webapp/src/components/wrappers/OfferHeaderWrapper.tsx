@@ -59,6 +59,8 @@ const OfferHeaderWrapper = ({
         !hasCoupon
       ) {
         onOpen();
+      } else if (offerKind === "coupon") {
+        router.push("/dashboard/wallet");
       } else {
         router.back();
       }

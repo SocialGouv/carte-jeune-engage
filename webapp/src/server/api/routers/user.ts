@@ -82,6 +82,7 @@ const generateAndSendOTP = async (
     .then((data) => data);
 
   if (octopushResponse.code !== 0) {
+    console.log(`Octopush error code : ${octopushResponse.code}`);
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "Octopush error",

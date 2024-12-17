@@ -1,3 +1,73 @@
+# [0.74.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.22...v0.74.0) (2024-12-16)
+
+### Bug Fixes
+
+- deactivate ([a7f32ee](https://github.com/SocialGouv/carte-jeune-engage/commit/a7f32ee5255857ab7d6b1bdb7eaf71884a068cc2))
+
+### Features
+
+- suspend cronjobs ([46652e8](https://github.com/SocialGouv/carte-jeune-engage/commit/46652e8d7a5f7329085c26398d47b7b440eb6434))
+
+## [0.73.22](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.21...v0.73.22) (2024-12-13)
+
+### Bug Fixes
+
+- log octopush error code ([4bbf0a3](https://github.com/SocialGouv/carte-jeune-engage/commit/4bbf0a38a4e151645056b3665e30a43f4bbf7731))
+
+## [0.73.21](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.20...v0.73.21) (2024-12-13)
+
+### Bug Fixes
+
+- remove crisp component from all pages ([156b1e1](https://github.com/SocialGouv/carte-jeune-engage/commit/156b1e183fa00a12e1273390e3289aae35b658e3))
+
+## [0.73.20](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.19...v0.73.20) (2024-12-05)
+
+### Bug Fixes
+
+- desactivate reminder auchan and offer user preferences notifications and group offer activated reminder by user instead by offer ([d52879d](https://github.com/SocialGouv/carte-jeune-engage/commit/d52879d1f07bcbbd4711457fac499ba02691e44e))
+- remove unused import ([fe1bb94](https://github.com/SocialGouv/carte-jeune-engage/commit/fe1bb94cc13ee929b93fd8270523e6cbd0403518))
+
+## [0.73.19](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.18...v0.73.19) (2024-12-04)
+
+### Bug Fixes
+
+- return back button offer from url ([f969374](https://github.com/SocialGouv/carte-jeune-engage/commit/f969374c2aab4ead6e125c43aa6ccfda8e48289c))
+
+## [0.73.18](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.17...v0.73.18) (2024-12-04)
+
+### Bug Fixes
+
+- wording download button widget ([d9e67f8](https://github.com/SocialGouv/carte-jeune-engage/commit/d9e67f8eed3b093ef7b6e82851188b032326ae53))
+
+## [0.73.17](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.16...v0.73.17) (2024-12-04)
+
+### Bug Fixes
+
+- catch errors obizSync article ([b28c271](https://github.com/SocialGouv/carte-jeune-engage/commit/b28c2719fbb32ea713b017e9e2a0dbc646b28cdd))
+
+## [0.73.16](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.15...v0.73.16) (2024-12-04)
+
+### Bug Fixes
+
+- hide modal content on crisp component open for input text purpose ([abab82d](https://github.com/SocialGouv/carte-jeune-engage/commit/abab82d903ef2da9195becfb2381a12211a12ac2))
+
+## [0.73.15](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.14...v0.73.15) (2024-12-04)
+
+### Bug Fixes
+
+- reminder order users by createdAt ASC ([befae16](https://github.com/SocialGouv/carte-jeune-engage/commit/befae16aa100e84e2b8746c1e33c1c195e1a9979))
+- saved coupon button issue ([08140fd](https://github.com/SocialGouv/carte-jeune-engage/commit/08140fd161b0478fac934390afccf0bbf7c97824))
+
+## [0.73.14](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.13...v0.73.14) (2024-12-04)
+
+### Bug Fixes
+
+- add crisp on offer obiz journey ([e655a50](https://github.com/SocialGouv/carte-jeune-engage/commit/e655a501c03568e4cd8aacefee90b557a30cd248))
+
+## [0.73.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.12...v0.73.13) (2024-12-03)
+
+### Bug Fixes
+
 ## [0.73.13](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.73.12...v0.73.13) (2024-12-03)
 
 ### Bug Fixes
