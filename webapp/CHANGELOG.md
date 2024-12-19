@@ -1,3 +1,10 @@
+## [0.75.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.1...v0.75.2) (2024-12-19)
+
+
+### Bug Fixes
+
+* clean db user with cej_id at first login process ([abd600b](https://github.com/SocialGouv/carte-jeune-engage/commit/abd600bbb4e39dbf73f53709efa4d4b7af470279))
+
 ## [0.75.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.0...v0.75.1) (2024-12-17)
 
 ### Bug Fixes
