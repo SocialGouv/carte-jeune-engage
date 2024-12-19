@@ -90,14 +90,6 @@ const generateAndSendOTP = async (
     });
   } else if (!!octopushResponse.otp_request_token) {
     if (firstLogin) {
-      console.log("tying to create : ", {
-        email: email,
-        otp_request_token: octopushResponse.otp_request_token,
-        password: generateRandomPassword(16),
-        phone_number: phone_number,
-        userEmail: user_email,
-        cej_id: cej_id,
-      });
       await payload.create({
         collection: "users",
         data: {
@@ -414,6 +406,13 @@ export const userRouter = createTRPCRouter({
       if (!users.docs.length) {
         // For CEJ users, we generate an OTP only if the CEJ ID is valid
         if (cej_id) {
+          await ctx.payload.delete({
+            collection: "users",
+            where: {
+              cej_id: { equals: cej_id },
+            },
+          });
+
           await generateAndSendOTP(ctx.payload, userInput, true);
           return { kind: "otp" };
         }

@@ -1,16 +1,14 @@
 ## [0.75.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.0...v0.75.1) (2024-12-17)
 
-
 ### Bug Fixes
 
-* log ([50f4c2e](https://github.com/SocialGouv/carte-jeune-engage/commit/50f4c2e65b2b008d3ceb4196e22d305dccb0fa7a))
+- log ([50f4c2e](https://github.com/SocialGouv/carte-jeune-engage/commit/50f4c2e65b2b008d3ceb4196e22d305dccb0fa7a))
 
 # [0.75.0](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.74.1...v0.75.0) (2024-12-17)
 
-
 ### Features
 
-* trpc error log ([ab54ef3](https://github.com/SocialGouv/carte-jeune-engage/commit/ab54ef34604cb8e2c9a6034f471ca1b1bea696d8))
+- trpc error log ([ab54ef3](https://github.com/SocialGouv/carte-jeune-engage/commit/ab54ef34604cb8e2c9a6034f471ca1b1bea696d8))
 
 ## [0.74.1](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.74.0...v0.74.1) (2024-12-17)
 
