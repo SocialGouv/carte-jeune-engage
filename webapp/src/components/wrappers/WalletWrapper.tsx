@@ -2,6 +2,7 @@ import { Box, Button, Flex, Heading, Icon, Link } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { HiCog6Tooth, HiUser } from "react-icons/hi2";
 import NextLink from "next/link";
+import BannerEndApp from "../BannerEndApp";
 
 type WalletWrapperProps = {
   children: ReactNode;
@@ -55,6 +56,9 @@ const WalletWrapper = ({ children }: WalletWrapperProps) => {
         <Heading as="h2" fontWeight={800} px={8}>
           Mes Réductions
         </Heading>
+        <Box mt={6}>
+          <BannerEndApp />
+        </Box>
         <Box flex={1} mt={8} pb={28}>
           {children}
         </Box>

@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import NextLink from "next/link";
 import { useState } from "react";
 import { HiMiniTag } from "react-icons/hi2";
+import BannerEndApp from "~/components/BannerEndApp";
 import InstallationBanner from "~/components/InstallationBanner";
 import LoadingLoader from "~/components/LoadingLoader";
 import SearchBar from "~/components/SearchBar";
@@ -68,7 +69,6 @@ export default function Dashboard() {
         pb={4}
         borderBottomWidth={1}
         borderBottomColor="cje-gray.400"
-        mb={6}
         position={"relative"}
       >
         <Heading as="h2" fontSize="2xl" fontWeight="extrabold" mb={9}>
@@ -96,6 +96,9 @@ export default function Dashboard() {
         >
           <SearchBar search="" setSearch={() => ""} />
         </Link>
+      </Box>
+      <Box mb={6}>
+        <BannerEndApp />
       </Box>
       <CategoriesList offers={allOffers} />
       <Box px={8} mt={6}>

@@ -13,6 +13,7 @@ import { GetServerSideProps } from "next";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import { HiMiniTag } from "react-icons/hi2";
+import BannerEndApp from "~/components/BannerEndApp";
 import OfferCard from "~/components/cards/OfferCard";
 import { BarcodeIcon } from "~/components/icons/barcode";
 import Jumbotron from "~/components/landing/Jumbotron";
@@ -102,6 +103,9 @@ export default function Widget() {
       </Flex>
       <Jumbotron />
       <Box mt={8}>
+        <BannerEndApp />
+      </Box>
+      <Box mt={6}>
         <CategoriesList offers={allOffers} baseLink="/widget/category" />
       </Box>
       {offersObiz && offersObiz?.length > 0 && (
