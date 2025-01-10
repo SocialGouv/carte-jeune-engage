@@ -1,3 +1,10 @@
+## [0.75.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.2...v0.75.3) (2025-01-10)
+
+
+### Bug Fixes
+
+* add banner end app to home, search and wallet pages ([5e65603](https://github.com/SocialGouv/carte-jeune-engage/commit/5e6560357bb2cfbe4d141f6af57fd96e048ac05e))
+
 ## [0.75.2](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.1...v0.75.2) (2024-12-19)
 
 ### Bug Fixes
