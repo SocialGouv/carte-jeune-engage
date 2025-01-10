@@ -10,6 +10,7 @@ import { TagIncluded } from "~/server/api/routers/tag";
 import { Media, Offer, Partner } from "~/payload/payload-types";
 import LoadingLoader from "../LoadingLoader";
 import { PartnerIncluded } from "~/server/api/routers/partner";
+import BannerEndApp from "../BannerEndApp";
 
 type SearchWrapperProps = {
   onSearchChange?: (search: string) => void;
@@ -78,7 +79,6 @@ const SearchWrapper = ({
           pb={4}
           borderBottomWidth={1}
           borderBottomColor="cje-gray.400"
-          mb={6}
         >
           <IconButton
             variant="unstyled"
@@ -100,6 +100,9 @@ const SearchWrapper = ({
             placeholder={fromWidget ? "Rechercher" : undefined}
           />
         </Flex>
+        <Box mb={6}>
+          <BannerEndApp />
+        </Box>
         {children}
       </Box>
     );
