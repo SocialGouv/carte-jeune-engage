@@ -9,6 +9,8 @@ import {
 import { HiMiniExclamationTriangle } from "react-icons/hi2";
 
 export default function BannerEndApp() {
+  return <></>;
+  // BANNER
   return (
     <Center
       textAlign="center"
