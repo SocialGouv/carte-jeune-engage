@@ -1,3 +1,12 @@
+## [0.75.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.3...v0.75.4) (2025-01-13)
+
+
+### Bug Fixes
+
+* configmap ([cb2deb3](https://github.com/SocialGouv/carte-jeune-engage/commit/cb2deb3ef4a48d6476bad0c9587a9146e2de5504))
+* hide banner for now ([cb15ca9](https://github.com/SocialGouv/carte-jeune-engage/commit/cb15ca9470f21777273e7464908a823575918243))
+* maj sealed_secrets ([ae0a942](https://github.com/SocialGouv/carte-jeune-engage/commit/ae0a942ad738b0288d286d520740c80eae39f8bb))
+
 ## [0.75.3](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.2...v0.75.3) (2025-01-10)
 
 ### Bug Fixes
