@@ -1,3 +1,10 @@
+## [0.75.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.4...v0.75.5) (2025-01-17)
+
+
+### Bug Fixes
+
+* display end-banner & change date ([bf123c4](https://github.com/SocialGouv/carte-jeune-engage/commit/bf123c4a57a2b5e9c8c2cd012d819e2ead84de26))
+
 ## [0.75.4](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.3...v0.75.4) (2025-01-13)
 
 ### Bug Fixes
