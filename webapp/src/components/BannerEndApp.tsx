@@ -9,8 +9,6 @@ import {
 import { HiMiniExclamationTriangle } from "react-icons/hi2";
 
 export default function BannerEndApp() {
-  return <></>;
-  // BANNER
   return (
     <Center
       textAlign="center"
@@ -22,7 +20,7 @@ export default function BannerEndApp() {
     >
       <Icon as={HiMiniExclamationTriangle} w={8} h={8} />
       <Text fontSize={18} fontWeight={800} lineHeight="normal" mt={2}>
-        15 janvier 2025
+        22 janvier 2025
         <br />
         Fin de la carte “jeune engagé”
       </Text>
