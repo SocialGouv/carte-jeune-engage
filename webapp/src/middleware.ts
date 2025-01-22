@@ -13,66 +13,66 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/maintenance", request.url));
   }
 
-  const jwtCookie = request.cookies.get(
-    process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"
-  );
-  let jwtRole: null | "user" | "supervisor" = null;
-  let isUserComplete = false;
+  // const jwtCookie = request.cookies.get(
+  //   process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"
+  // );
+  // let jwtRole: null | "user" | "supervisor" = null;
+  // let isUserComplete = false;
 
-  if (jwtCookie?.value) {
-    const decoded = jwtDecode(jwtCookie.value) as { [key: string]: any };
-    const collection = (decoded as any)["collection"] as string;
-    switch (collection) {
-      case "users":
-        jwtRole = "user";
-        isUserComplete =
-          decoded.firstName !== null &&
-          decoded.firstName !== "" &&
-          decoded.lastName !== null &&
-          decoded.lastName !== "" &&
-          decoded.userEmail !== null &&
-          decoded.userEmail !== "";
-        if (
-          (decoded.firstName === null || decoded.firstName === "") &&
-          !request.nextUrl.pathname.startsWith("/signup")
-        ) {
-          return NextResponse.redirect(new URL("/signup", request.url));
-        }
-        break;
-      case "supervisors":
-        jwtRole = "supervisor";
-        break;
-    }
-  }
+  // if (jwtCookie?.value) {
+  //   const decoded = jwtDecode(jwtCookie.value) as { [key: string]: any };
+  //   const collection = (decoded as any)["collection"] as string;
+  //   switch (collection) {
+  //     case "users":
+  //       jwtRole = "user";
+  //       isUserComplete =
+  //         decoded.firstName !== null &&
+  //         decoded.firstName !== "" &&
+  //         decoded.lastName !== null &&
+  //         decoded.lastName !== "" &&
+  //         decoded.userEmail !== null &&
+  //         decoded.userEmail !== "";
+  //       if (
+  //         (decoded.firstName === null || decoded.firstName === "") &&
+  //         !request.nextUrl.pathname.startsWith("/signup")
+  //       ) {
+  //         return NextResponse.redirect(new URL("/signup", request.url));
+  //       }
+  //       break;
+  //     case "supervisors":
+  //       jwtRole = "supervisor";
+  //       break;
+  //   }
+  // }
 
-  if (
-    !jwtCookie &&
-    (request.nextUrl.pathname.startsWith("/dashboard") ||
-      request.nextUrl.pathname.startsWith("/signup"))
-  ) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  // if (
+  //   !jwtCookie &&
+  //   (request.nextUrl.pathname.startsWith("/dashboard") ||
+  //     request.nextUrl.pathname.startsWith("/signup"))
+  // ) {
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
 
-  if (!jwtCookie && request.nextUrl.pathname.startsWith("/supervisor/form")) {
-    return NextResponse.redirect(new URL("/supervisor", request.url));
-  }
+  // if (!jwtCookie && request.nextUrl.pathname.startsWith("/supervisor/form")) {
+  //   return NextResponse.redirect(new URL("/supervisor", request.url));
+  // }
 
-  if (
-    !!jwtCookie &&
-    jwtRole === "user" &&
-    !(request.nextUrl.pathname.startsWith("/dashboard") || legalRoute) &&
-    isUserComplete
-  ) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
+  // if (
+  //   !!jwtCookie &&
+  //   jwtRole === "user" &&
+  //   !(request.nextUrl.pathname.startsWith("/dashboard") || legalRoute) &&
+  //   isUserComplete
+  // ) {
+  //   return NextResponse.redirect(new URL("/dashboard", request.url));
+  // }
 
-  if (
-    !!jwtCookie &&
-    jwtRole === "supervisor" &&
-    !request.nextUrl.pathname.startsWith("/supervisor/form")
-  ) {
-    return NextResponse.redirect(new URL("/supervisor/form", request.url));
-  }
+  // if (
+  //   !!jwtCookie &&
+  //   jwtRole === "supervisor" &&
+  //   !request.nextUrl.pathname.startsWith("/supervisor/form")
+  // ) {
+  //   return NextResponse.redirect(new URL("/supervisor/form", request.url));
+  // }
 
   return NextResponse.next();
 }
