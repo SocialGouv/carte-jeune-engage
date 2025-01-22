@@ -1,3 +1,10 @@
+## [0.75.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.5...v0.75.6) (2025-01-22)
+
+
+### Bug Fixes
+
+* add service stop page with middleware redirect ([7210ae8](https://github.com/SocialGouv/carte-jeune-engage/commit/7210ae8ffa673c922cfe27ea479f36a88df28b98))
+
 ## [0.75.5](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.4...v0.75.5) (2025-01-17)
 
 ### Bug Fixes
