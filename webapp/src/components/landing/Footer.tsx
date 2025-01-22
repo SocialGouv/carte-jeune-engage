@@ -51,20 +51,23 @@ const Footer = () => {
             justifyContent={{ base: "start", lg: "space-between" }}
             textAlign="start"
           >
-            {menuItems.map(({ link, title }) => (
-              <Box key={link} flex={1}>
-                <Link href={link.includes("#") ? `/${link}-section` : link}>
-                  <Text
-                    key={title}
-                    align="start"
-                    color="secondaryText"
-                    fontSize="sm"
-                  >
-                    {title}
-                  </Text>
-                </Link>
-              </Box>
-            ))}
+            <Link
+              as={NextLink}
+              fontSize="sm"
+              href="https://beta.gouv.fr/startups/pass.engagement.jeune.html"
+              isExternal
+            >
+              <Flex alignItems="center">
+                <Text
+                  color="disabled"
+                  fontSize={{ base: "sm", lg: "md" }}
+                  fontWeight="bold"
+                >
+                  Voir la page du projet sur beta.gouv
+                  <ExternalLinkIcon ml={4} mb={1} />
+                </Text>
+              </Flex>
+            </Link>
           </Flex>
         </Container>
       </Box>

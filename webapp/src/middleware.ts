@@ -4,6 +4,15 @@ import { jwtDecode } from "jwt-decode";
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
+  const legalRoute =
+    request.nextUrl.pathname.startsWith("/cgu") ||
+    request.nextUrl.pathname.startsWith("/politique-de-confidentialite") ||
+    request.nextUrl.pathname.startsWith("/mentions-legales");
+
+  if (request.nextUrl.pathname !== "/maintenance" && !legalRoute) {
+    return NextResponse.redirect(new URL("/maintenance", request.url));
+  }
+
   const jwtCookie = request.cookies.get(
     process.env.NEXT_PUBLIC_JWT_NAME ?? "cje-jwt"
   );
@@ -35,11 +44,6 @@ export function middleware(request: NextRequest) {
         break;
     }
   }
-
-  const legalRoute =
-    request.nextUrl.pathname.startsWith("/cgu") ||
-    request.nextUrl.pathname.startsWith("/politique-de-confidentialite") ||
-    request.nextUrl.pathname.startsWith("/mentions-legales");
 
   if (
     !jwtCookie &&

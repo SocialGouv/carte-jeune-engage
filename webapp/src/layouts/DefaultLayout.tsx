@@ -48,7 +48,10 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     });
 
   const isPublicPage =
-    pathname === "/" || pathname === "/partners" || pathname === "/login";
+    pathname === "/" ||
+    pathname === "/partners" ||
+    pathname === "/login" ||
+    pathname === "/maintenance";
 
   const isLegalPage =
     pathname === "/cgu" ||

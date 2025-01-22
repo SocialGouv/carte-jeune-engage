@@ -214,7 +214,7 @@ const Header = () => {
                 )}
               </Flex>
             </Link>
-            <Flex alignItems="center" ml="auto">
+            {/* <Flex alignItems="center" ml="auto">
               <ButtonGroup spacing={4} position="relative" ref={buttonRef}>
                 <Button
                   zIndex={100}
@@ -353,7 +353,7 @@ const Header = () => {
                   </Flex>
                 </Collapse>
               </Portal>
-            </Flex>
+            </Flex> */}
           </Flex>
         </Container>
       </Box>
