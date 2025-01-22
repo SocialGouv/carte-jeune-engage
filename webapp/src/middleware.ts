@@ -73,7 +73,6 @@ export function middleware(request: NextRequest) {
   // ) {
   //   return NextResponse.redirect(new URL("/supervisor/form", request.url));
   // }
-
   return NextResponse.next();
 }
 
