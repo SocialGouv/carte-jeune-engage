@@ -1,3 +1,10 @@
+## [0.75.8](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.7...v0.75.8) (2025-01-23)
+
+
+### Bug Fixes
+
+* isLanding check only page and not if user is logged to display header and footer ([7983866](https://github.com/SocialGouv/carte-jeune-engage/commit/7983866a623347366da6ebf25f2b660a4c8b1034))
+
 ## [0.75.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.6...v0.75.7) (2025-01-22)
 
 ### Bug Fixes
