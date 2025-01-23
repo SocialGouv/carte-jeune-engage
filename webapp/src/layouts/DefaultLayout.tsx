@@ -58,7 +58,8 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
     pathname === "/mentions-legales" ||
     pathname === "/politique-de-confidentialite";
 
-  const isLanding = (isPublicPage || isLegalPage) && !isOtpGenerated && !user;
+  const isLanding = isPublicPage || isLegalPage;
+  // && !isOtpGenerated && !user;
 
   const handleBeforeInstallPrompt = (event: Event) => {
     // Prevent the default behavior to keep the event available for later use

@@ -1,11 +1,10 @@
 ## [0.75.7](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.6...v0.75.7) (2025-01-22)
 
-
 ### Bug Fixes
 
-* **ci-cd:** use token-bureau ([2d26332](https://github.com/SocialGouv/carte-jeune-engage/commit/2d26332bd9e8624930bdad2f1db71230ee4471b4))
-* comment auth code in middleware ([380f3e3](https://github.com/SocialGouv/carte-jeune-engage/commit/380f3e3d377c05b09c2ff19b6e07ed57d678229f))
-* middleware issue ([92ddaf4](https://github.com/SocialGouv/carte-jeune-engage/commit/92ddaf40e0ed84b14d27fb2c2eff04ef4c555e15))
+- **ci-cd:** use token-bureau ([2d26332](https://github.com/SocialGouv/carte-jeune-engage/commit/2d26332bd9e8624930bdad2f1db71230ee4471b4))
+- comment auth code in middleware ([380f3e3](https://github.com/SocialGouv/carte-jeune-engage/commit/380f3e3d377c05b09c2ff19b6e07ed57d678229f))
+- middleware issue ([92ddaf4](https://github.com/SocialGouv/carte-jeune-engage/commit/92ddaf40e0ed84b14d27fb2c2eff04ef4c555e15))
 
 ## [0.75.6](https://github.com/SocialGouv/carte-jeune-engage/compare/v0.75.5...v0.75.6) (2025-01-22)
 
