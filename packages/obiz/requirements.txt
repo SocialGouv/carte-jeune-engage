@@ -1,5 +1,5 @@
 requests==2.31.0
-pytz==2023.3
+pytz==2025.1
 cryptography>=42.0.0
 paramiko>=3.4.0
 python-dotenv==1.0.0
