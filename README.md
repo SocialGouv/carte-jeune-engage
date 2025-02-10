@@ -29,7 +29,7 @@ Côté Back Office (PayloadCMS), il y a plusieurs modules, dont voici les princi
 
 L'application fait appel aux apis extérieures suivantes :
 - [api-adresse](https://adresse.data.gouv.fr/outils/api-doc/adresse)
-- [API Obiz](lien_vers_doc) (SOAP)
+- API Obiz (SOAP)
 
 ## Architecture technique
 
