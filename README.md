@@ -70,11 +70,11 @@ Pour la persistance des données, PayloadCMS utilise une base PostgreSQL.
 
 Les tâches automatisées sont gérées via Kontinuous :
 
-| Tâche | Horaire | Description |
-|-------|---------|-------------|
-| Obiz | 4h00 | Synchronisation catalogue offres |
-| Reminder | Mercredi 17h30 | Envoi rappels email |
-| Notification | 18h00 | Envoi notifications push |
+| Tâche | Horaire | Description | Technologie |
+|-------|---------|-------------|------------|
+| Obiz | 4h00 | Synchronisation catalogue offres | Python |
+| Reminder | Mercredi 17h30 | Envoi rappels email | TypeScript Node.js |
+| Notification | 18h00 | Envoi notifications push | TypeScript Node.js |
 
 ## Developpement
 
