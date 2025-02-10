@@ -31,6 +31,8 @@ L'application fait appel aux apis extérieures suivantes :
 - [api-adresse](https://adresse.data.gouv.fr/outils/api-doc/adresse)
 - API Obiz (SOAP)
 
+L'application se connecte également à un serveur SMTP pour l'envoi de mail.
+
 ## Architecture technique
 
 ```mermaid
