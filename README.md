@@ -46,6 +46,7 @@ end
 Browser[Navigateur] ---> frontend-pwa
 Browser ---> payloadcms
 frontend-pwa ---> backend
+payloadcms ---> backend
 backend ---> PostgreSQL
 backend ---> api-adresse
 backend ---> api-obiz[API Obiz SOAP]
