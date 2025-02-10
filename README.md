@@ -115,7 +115,12 @@ yarn
 yarn seed:dev
 ```
 
-5. Lancez l'application (port 3000) :
+5. Générez le typage avec la CLI de payload :
+```bash
+yarn payload generate:types
+```
+
+6. Lancez l'application (port 3000) :
 ```bash
 yarn dev
 ```
