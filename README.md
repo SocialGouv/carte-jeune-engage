@@ -138,7 +138,7 @@ Après avoir copié le `.env.example`, configurez manuellement ces services :
 - **Octopush** : envoi de SMS
   - OCTOPUSH_API_KEY, OCTOPUSH_API_LOGIN
 - **API Obiz** : gestion des bons d'achat
-  - OBIZ_SOAP_HOST, OBIZ_SOAP_URL, OBIZ_PARTNER_ID, OBIZ_SECRET
+  - OBIZ_PARTNER_ID, OBIZ_SECRET
 - **Matomo** : analytics (optionnel)
   - NEXT_PUBLIC_MATOMO_URL, NEXT_PUBLIC_MATOMO_SITE_ID
 - **Crisp** : chat support (optionnel)
