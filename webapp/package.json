@@ -68,7 +68,7 @@
     "react-otp-input": "^3.1.1",
     "react-qrcode-logo": "^2.9.0",
     "react-toastify": "^10.0.5",
-    "sharp": "^0.33.2",
+    "sharp": "^0.34.0",
     "soap": "^1.1.6",
     "superjson": "^1.13.3",
     "tsx": "^4.7.0",
